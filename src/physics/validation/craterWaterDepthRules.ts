@@ -140,3 +140,73 @@ export const CRATER_WATER_LATTICE = 33;
  *  metres; the cell under the city, 1.17 m, is the floor it must pass. */
 export const NEW_ORLEANS_WATER_MAX_M = 10;
 export const NEW_ORLEANS_SHORE_DEPTH_M = 1.17;
+
+/**
+ * The outcome of the round, written after the candidate was measured, on
+ * 22 September 2026. The rules above were pushed in commit aa5a591 before the
+ * candidate was written.
+ *
+ * ADOPTED. Rule 800 holds on every clause.
+ *
+ * (a) On maps made for the purpose the lattice reads a disc half sea of 8 m
+ *     as 8 m, a disc read partly on the tile and partly on the mosaic as the
+ *     mosaic's 30 m, drops a pond and a polder of a hundred cells, keeps a
+ *     polder of four hundred (rule 799(c): nothing here can tell it from a
+ *     bay), and reads no water as none — each to 10⁻⁹ m.
+ *
+ * (b) A 1 km stone five kilometres from Biscayne Bay and Chicxulub seventy
+ *     kilometres inland raise no wave, so nothing is read and the physics
+ *     does not run again: nothing moves.
+ *
+ * (c) An impact in open water is never read again.
+ *
+ * (d) Of Chicxulub on New Orleans, the whole result but the wave and the
+ *     depth itself is identical to the bit at 1.17 m and at 5.76 m of water;
+ *     the source moves by the ratio of the depths and by nothing else.
+ *
+ * (e) New Orleans reads 5.76 m: 207 of the lattice's 797 points count as
+ *     water. The 477 read on the tile hold none the search accepts — the tile
+ *     shows Lake Pontchartrain by its surface, and ends at 90° W — so every
+ *     one of the 207 is the mosaic's, east of the tile, over Lake Borgne and
+ *     the sounds beyond the city. Above the 1.17 m of the cell under the city
+ *     and under the 10 m the rule fixed.
+ *
+ * (f) See the commit that adopts this: the gate in strict mode, and the
+ *     validation report regenerated once.
+ *
+ * Rule 801's table, read on the running app (scripts/benchmark/
+ * crater-water.ts). The far field of all four rows is the program's, which
+ * the result prints; Ward & Asphaug's row, the historical reference, does
+ * not depend on the depth and does not move.
+ *
+ *                       shore    depth    lattice       depth     segment  source          A @ 1 000 km      drowned
+ *                                before   pts/tile/wet  after
+ *   Chicxulub  N. Orl.  9.24 km  1.17 m   797/477/207    5.76 m   37.2 %   0.436 → 2.144 m  0.065 → 0.321 m        0 → 20
+ *   Chicxulub  Tampa    8.55 km  4.35 m   797/770/127    4.46 m   38.2 %   1.660 → 1.703 m  0.249 → 0.255 m    1 413 → 1 537
+ *   Chicxulub  Lisbon   3.47 km  2.66 m   797/508/252  200    m*  45.2 %   1.20  → 90.3  m  0.180 → 13.5  m    1 235 → 3 231 344
+ *   1 km stone Lisbon   3.47 km  2.66 m   797/797/12     1.99 m    0.33 %  0.0087 → 0.0065 m  (10⁻⁴ m)          0 → 0
+ *
+ *   * the mean read is 249.9 m; rule 248's cap of 200 m binds.
+ *
+ * What it means, said plainly. At New Orleans the source is five times what
+ * it was and the wave is still small: two metres at the source, a third of a
+ * metre at a thousand kilometres, twenty people drowned. The water within the
+ * crater is a few metres of lake and sound, and the cap that holds the
+ * program's wave to its depth is doing what it was written to do. What
+ * Andrea saw missing at New Orleans is mostly rule 799(b) — the ejecta, the
+ * resurge and the air blast on the water, which nobody has sized — and this
+ * round was never going to supply it.
+ *
+ * At Lisbon the round corrects the defect at its largest. A crater 91 km
+ * across on the Tagus spans the estuary, the shelf and the slope beyond it —
+ * the tile alone reads 225 of the points as water at a mean of 234 m — and
+ * until today it was handed the Tagus's own 2.66 m: a 1.2 m wave for a body
+ * that excavates the open Atlantic. It is now handed the
+ * Atlantic, to the cap: 90 m at the source, 13.5 m at a thousand kilometres,
+ * three million drowned. The 1 km stone at Lisbon moves the other way, from
+ * the shore's cell to the 1.99 m of the estuary within its 3.6 km crater.
+ * Tampa barely moves, because the water in its crater is Tampa Bay and the
+ * shelf beside it, which are about as deep as the shore's cell said.
+ */
+export const CRATER_WATER_OUTCOME =
+  'ADOPTED 22 September 2026: a land impact whose crater reaches the sea raises its wave in the mean depth of the water within its transient crater, read on the finest map at each point with the shoreline search\u2019s own tests, capped at 200 m. New Orleans 1.17 m to 5.76 (source 0.44 m to 2.14), Tampa 4.35 to 4.46, Chicxulub at Lisbon 2.66 m to the cap (source 1.2 m to 90 m, 1 235 drowned to 3.2 million); every output but the wave unchanged to the bit.';

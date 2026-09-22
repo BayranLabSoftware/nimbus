@@ -27,6 +27,7 @@ import {
   fieldSourceOf,
   IMPACT_LAYER_ORDER,
   isFieldLayer,
+  layoutColorbar,
   isolinePointAtBearing,
   levelGeometry,
   nominalRangeAt,
@@ -393,6 +394,13 @@ describe('the tsunami’s layer: the wave map, named as the globe draws it (B-11
       expect(colour).toBe(hex(heatmapColorAt(height, 1, 38, 'waveVeil', 'sqrt')));
     });
     expect(bar.ticks.map((tick) => tick.label)).toEqual(['1 m', '3 m', '6 m', '10 m', '38 m']);
+    // Laid out as the legend lays it: a metre at the foot, the top at the top,
+    // each height where the heatmap's log bar puts it.
+    const laid = layoutColorbar(bar, 0, 100, 10);
+    expect(laid.ticks.map((tick) => tick.label)).toEqual(['1 m', '3 m', '6 m', '10 m', '38 m']);
+    expect(laid.ticks[0]?.y).toBeCloseTo(100, 9);
+    expect(laid.ticks[4]?.y).toBeCloseTo(0, 9);
+    expect(laid.ticks[3]?.y).toBeCloseTo(100 * (1 - 1 / Math.log10(38)), 9);
     expect(layer?.categories.map((c) => [c.shape, c.label])).toEqual([
       ['line', 'globe.impactMap.tsunamiContour{"height":"1 m"}'],
       ['line', 'globe.impactMap.tsunamiContour{"height":"3 m"}'],
@@ -415,10 +423,21 @@ describe('the tsunami’s layer: the wave map, named as the globe draws it (B-11
     const layer = buildImpactLayer(neworleans, 'tsunami', ctx);
     const source = layer?.notes[0]?.text ?? '';
     expect(source).toContain('globe.impactMap.note.tsunamiSourceProgram');
-    expect(source).toContain('"depth":"1,17 m"');
+    // On land, the water within the crater (rules 798 to 804).
+    expect(source).toContain('globe.impactMap.note.depthWithinCrater');
+    expect(source).toContain('1,17 m');
     expect(layer?.notes[2]?.text).toBe('globe.impactMap.note.tsunamiLimitLand');
     expect(buildImpactLayer(ocean, 'tsunami', ctx)?.notes[2]?.text).toBe(
       'globe.impactMap.note.tsunamiLimitSea'
     );
+    // Where rule 248's cap binds, the note says the cap and not a mean.
+    const lisbon = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(200),
+      shoreDistance: m(3_474),
+    });
+    const capped = buildImpactLayer(lisbon, 'tsunami', ctx)?.notes[0]?.text ?? '';
+    expect(capped).toContain('globe.impactMap.note.depthWithinCraterCapped');
+    expect(capped).toContain('200 m');
   });
 });

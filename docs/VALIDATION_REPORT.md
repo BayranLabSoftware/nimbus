@@ -750,7 +750,7 @@ here checks that a file describes the code beside it (rule 276).
 | Audit | File | Scope | Findings | Silences | Declared |
 |-------|------|-------|---------:|---------:|---------:|
 | The globe | `globe-audit-2026-09-20.json` | 30 scenarios, 182 comparisons | **0** | 0 | 6 |
-| The terrain | `terrain-derivation-2026-09-20.json` | 4 points against their geography | **0** | — | — |
+| The terrain | `terrain-derivation-2026-09-22.json` | 4 points against their geography | **0** | — | — |
 
 Published and deliberately NOT drawn, which is a choice and not a debt:
 
@@ -759,7 +759,7 @@ Published and deliberately NOT drawn, which is a choice and not a debt:
 | Point | Shore | Depth | Inside its bounds |
 |-------|------:|------:|:------------------|
 | Miami | 5.06 km | 4.2 m | yes |
-| Lisbon | 3.47 km | 2.7 m | yes |
+| Lisbon | 3.47 km | 2.0 m | yes |
 | Madrid | 331.87 km | 36.8 m | yes |
 | Kansas City | 1033.67 km | 2.1 m | yes |
 

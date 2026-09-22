@@ -11,6 +11,7 @@ import type { TFunction } from 'i18next';
 import type { CasualtyEstimate } from '../../../physics/casualties.js';
 import type { ImpactScenarioResult } from '../../../physics/simulate.js';
 import { joulesToMegatons, radiansToDegrees } from '../../../physics/units.js';
+import { SHORE_DEPTH_CAP_M } from '../../../physics/validation/shoreDepthRules.js';
 import {
   availableImpactLayers,
   isFieldLayer,
@@ -156,15 +157,24 @@ function scenarioRows(r: ImpactScenarioResult, ctx: ImpactReportContext): Report
     // On land the depth is the nearest sea's: "the water depth at impact"
     // would put an inland city under the sea (B-044).
     const shore = input.shoreDistance as number | undefined;
+    // Where the crater reaches that sea, the depth is the mean of the water
+    // within the crater, which is what the wave rises in (rules 798 to 804).
     rows.push(
       shore !== undefined && shore > 0
         ? row(
             t,
             'nearestSea',
-            t('report.impact.value.nearestSea', {
-              distance: length(shore, l),
-              depth: length(water, l),
-            })
+            t(
+              r.tsunami === undefined
+                ? 'report.impact.value.nearestSea'
+                : water >= SHORE_DEPTH_CAP_M
+                  ? 'report.impact.value.nearestSeaCraterCapped'
+                  : 'report.impact.value.nearestSeaCrater',
+              {
+                distance: length(shore, l),
+                depth: length(water, l),
+              }
+            )
           )
         : row(t, 'waterDepth', length(water, l))
     );

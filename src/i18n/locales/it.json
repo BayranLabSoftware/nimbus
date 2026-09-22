@@ -1160,6 +1160,8 @@
         "agreementNowhere": "in nessun punto tutta la forchetta supera la soglia; il suo bordo alto sì, fino a {{high}}",
         "agreementNot": "una probabilità: è la forchetta che il campo dà ai propri modelli, e per questo non la si trasforma in percentuali",
         "tsunamiSourceProgram": "alla sorgente {{amplitude}}, a un diametro del cratere d'acqua dal punto d'impatto, mai più alta dell'acqua in cui nasce ({{depth}}): la legge dell'Earth Impact Effects Program (Collins et al. 2005, regole 150–153)",
+        "depthWithinCrater": "in media {{depth}} dentro il cratere, regole 798–804",
+        "depthWithinCraterCapped": "{{depth}}, il tetto della regola 248: dentro il cratere l'acqua è in media più profonda, regole 798–804",
         "tsunamiSourceRimWave": "alla sorgente {{amplitude}}, l'onda del bordo di Wünnemann, Collins & Weiss (2010), mai più alta dell'acqua in cui nasce ({{depth}})",
         "tsunamiVeilGlobal": "velatura semitrasparente sul reticolo del pianeta, da 1 m a {{top}} (il 98° percentile del campo, mai meno di 10 m); sotto 1 m nessun colore. Le ore d'arrivo sono calcolate sul fondale vero (Fast Marching)",
         "tsunamiVeilLocal": "velatura semitrasparente sul riquadro attorno alla sorgente, perché sul reticolo del pianeta l'onda non arriva a 1 m: da 1 m a {{top}} (il 98° percentile del campo, mai meno di 10 m); sotto 1 m nessun colore",
@@ -1361,6 +1363,8 @@
       },
       "value": {
         "nearestSea": "a {{distance}}, profondo {{depth}}",
+        "nearestSeaCrater": "a {{distance}}; l'onda nasce in {{depth}} d'acqua, la media dentro il cratere",
+        "nearestSeaCraterCapped": "a {{distance}}; l'onda nasce in {{depth}} d'acqua, il tetto: dentro il cratere l'acqua è in media più profonda",
         "magnitudeNone": "— nessuna: nessuna relazione verificata da questo simulatore copre questo airburst",
         "seaCouplingWave": "{{mechanism}} · costa a {{shore}} · {{fraction}} dell’onda",
         "seaCouplingEnergy": "{{mechanism}} · costa a {{shore}} · {{fraction}} dell’energia accoppiata all’acqua",
@@ -2340,7 +2344,7 @@
     },
     "impact-sea-coupling": {
       "name": "Impatto nell’entroterra: come si raggiunge il mare",
-      "formula": "portata = max(R_bordo; D_w / 2; r_ejecta(1 m)) ;  f_mare = 1 per d ≤ R₀ = max(R_bordo; D_w / 2), R₀ / d oltre ;  A = f_mare · A_programma"
+      "formula": "f_mare = (θ − sin θ cos θ) / π ,  θ = arccos(d / R_tc) per d < R_tc, f_mare = 0 oltre ;  h = profondità media dell’acqua entro R_tc, ≤ 200 m ;  A = f_mare · min(0,07 · D_w; h)"
     },
     "celerity": {
       "name": "Celerità delle onde lunghe",

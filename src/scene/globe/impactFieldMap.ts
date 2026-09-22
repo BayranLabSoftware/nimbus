@@ -46,6 +46,7 @@ import {
   programShakingRadiusKm,
 } from '../../physics/events/impact/seismic.js';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
+import { SHORE_DEPTH_CAP_M } from '../../physics/validation/shoreDepthRules.js';
 import { J, m, Pa } from '../../physics/units.js';
 import {
   heatmapColorAt,
@@ -1373,6 +1374,7 @@ function tsunamiLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): Impa
   const metres = (v: number, digits: number): string => `${formatNumber(v, digits, language)} m`;
   const source = wave.rimWaveSourceAmplitude as number;
   const onLand = ((result.inputs.shoreDistance as number | undefined) ?? 0) > 0;
+  const depth = (result.inputs.waterDepth as number | undefined) ?? 0;
   const top = drawn?.veilTop ?? null;
   const colorbar: ColorbarSpec | null =
     top === null
@@ -1384,7 +1386,7 @@ function tsunamiLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): Impa
           log: true,
           ticks: [1, 3, 6, 10, ...(top >= 20 ? [top] : [])]
             .filter((h) => h <= top)
-            .map((h) => ({ value: Math.log10(h), label: metres(h, 0) })),
+            .map((h) => ({ value: h, label: metres(h, 0) })),
           marks: [],
         };
   const categories: CategoryKey[] =
@@ -1463,7 +1465,16 @@ function tsunamiLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): Impa
             : 'globe.impactMap.note.tsunamiSourceRimWave',
           {
             amplitude: metres(source, source < 10 ? 2 : 0),
-            depth: metres((result.inputs.waterDepth as number | undefined) ?? 0, 2),
+            // On land the water is the mean within the crater (rules 798 to
+            // 804); at sea, the water under the point of impact.
+            depth: onLand
+              ? t(
+                  depth >= SHORE_DEPTH_CAP_M
+                    ? 'globe.impactMap.note.depthWithinCraterCapped'
+                    : 'globe.impactMap.note.depthWithinCrater',
+                  { depth: metres(depth, depth < 10 ? 2 : 0) }
+                )
+              : metres(depth, depth < 10 ? 2 : 0),
           }
         ),
       },

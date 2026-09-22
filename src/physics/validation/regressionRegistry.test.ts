@@ -2270,6 +2270,37 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(figures.length).toBeGreaterThan(0);
   });
 
+  it('B-115 An inland impact’s sea coupling is printed as the law its run uses', () => {
+    // Pre-fix: the methodology page and every coastal impact's report gave
+    // f_sea = R₀ / d, the share of the ejecta beyond the shore, which rules
+    // 267 to 273 replaced by the crater's segment on 19 September 2026.
+    const entry = METHODOLOGY_SECTIONS.flatMap((s) => s.entries).find(
+      (e) => e.id === 'impact-sea-coupling'
+    );
+    expect(entry?.formula).toContain('arccos(d / R_tc)');
+    expect(entry?.formula).toContain('mean depth of the water within R_tc');
+    expect(entry?.formula).not.toContain('R₀ / d');
+    const italian = (
+      itLocale as unknown as { methodologyFormula: Record<string, { formula: string }> }
+    ).methodologyFormula['impact-sea-coupling']?.formula;
+    expect(italian).toContain('arccos(d / R_tc)');
+    expect(italian).not.toContain('R₀ / d');
+    // And a coastal impact still prints it, now that it is the one it runs.
+    const neworleans = simulateImpact({
+      ...IMPACT_PRESETS.CHICXULUB.input,
+      waterDepth: m(5.76),
+      shoreDistance: m(9_245),
+    });
+    expect(neworleans.tsunami?.seaCoupling.mechanism).toBe('crater');
+    expect(
+      impactFormulaIds(neworleans, {
+        bathymetricTsunami: false,
+        monteCarlo: false,
+        predictiveBand: false,
+      })
+    ).toContain('impact-sea-coupling');
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.

@@ -19,9 +19,15 @@ import {
   megathrustRuptureLength,
   surfaceRuptureLength,
 } from '../physics/events/earthquake/ruptureLength.js';
-import { ruptureOrigins } from '../physics/tsunami/sourcePlacement.js';
+import {
+  DEFAULT_MIN_BODY_CELLS,
+  ruptureOrigins,
+  waterWithinRadius,
+  type WaterWithinReading,
+} from '../physics/tsunami/sourcePlacement.js';
 import { RESOLUTION_FLOOR_CELLS as SHORE_RESOLUTION_FLOOR_CELLS } from '../physics/validation/shoreDistanceRules.js';
 import { SHORE_DEPTH_CAP_M } from '../physics/validation/shoreDepthRules.js';
+import { CRATER_WATER_LATTICE } from '../physics/validation/craterWaterDepthRules.js';
 import type { TerrainSourceSpan } from '../scene/terrainSampling.js';
 import type { ImpactLayerId, WaveMapKey } from '../scene/globe/impactFieldMap.js';
 import type { GlobeShots } from '../scene/globe/globeShots.js';
@@ -985,23 +991,28 @@ export function gateImpactByTerrain(
  */
 const IMPACT_SEA_SEARCH_M = 2_500_000;
 
+/**
+ * What counts as sea for an impact on ground. Shoreline, not solver floor:
+ * for the coupling question any sea-connected water counts — a bay a few
+ * metres deep is where the crater rim meets the sea — so the search runs at
+ * 1 m with a body large enough to exclude ponds and rivers (≈ 75 km² on the
+ * tile), and lets the planetary mask vouch through its neighbouring cells (a
+ * bay's own cell averages to land). The mosaic's own search keeps the
+ * default body. Rules 798 to 804 read the water within a crater on the same
+ * terms.
+ */
+const IMPACT_SHORELINE = {
+  minDepthM: 1,
+  minBodyCells: 200,
+  seaMaskNeighbourhoodCells: 1,
+} as const;
+
 export function nearestSeaForImpact(
   local: ElevationGrid,
   global: ElevationGrid | null,
   location: Coordinates
 ): { distanceM: number; shoreDepthM: number; basinDepthM: number } | null {
-  // Shoreline, not solver floor: for the coupling question any
-  // sea-connected water counts — a bay a few metres deep is where the
-  // crater rim meets the sea — so the search runs at 1 m with a body
-  // large enough to exclude ponds and rivers (≈ 75 km² on the tile),
-  // and lets the planetary mask vouch through its neighbouring cells
-  // (a bay's own 40 km cell averages to land).
-  const shoreline = {
-    maxRadiusM: IMPACT_SEA_SEARCH_M,
-    minDepthM: 1,
-    minBodyCells: 200,
-    seaMaskNeighbourhoodCells: 1,
-  };
+  const shoreline = { maxRadiusM: IMPACT_SEA_SEARCH_M, ...IMPACT_SHORELINE };
   // Rules 241 to 247 of validation/shoreDistanceRules.ts. `findPropagationSeeds`
   // answers nought metres when the cell holding the point reads water, which is
   // what placing a wave source wants and is a claim about the world when it is
@@ -1030,7 +1041,7 @@ export function nearestSeaForImpact(
       ? floored(
           findPropagationSeeds(global, location.latitude, location.longitude, {
             maxRadiusM: IMPACT_SEA_SEARCH_M,
-            minDepthM: 1,
+            minDepthM: IMPACT_SHORELINE.minDepthM,
           }),
           global
         )
@@ -1058,6 +1069,43 @@ export function nearestSeaForImpact(
       Math.max(50_000, nearest.distanceM * 2)
     ) ?? nearest.depthM;
   return { distanceM: nearest.distanceM, shoreDepthM: nearest.depthM, basinDepthM: basin };
+}
+
+/**
+ * The depth a land impact's wave is built in, once the physics has said how
+ * far its crater reaches: the mean of the water within the transient
+ * crater's radius, read on the shoreline search's own terms and capped at
+ * rule 248's 200 m (rules 798 to 804 of validation/craterWaterDepthRules.ts).
+ * Until 22 September 2026 it was the nearest sea's own cell, which since rule
+ * 268 is only the landward edge of the segment the wave rises in — at New
+ * Orleans the mosaic's cell under the city, 1.17 m. Null where nothing
+ * changes: an impact in the sea, a crater that stops short of it, a disc with
+ * no water the search would take.
+ */
+export function craterWaterDepth(
+  result: ImpactScenarioResult,
+  local: ElevationGrid,
+  global: ElevationGrid | null,
+  location: Coordinates
+): { depthM: number; reading: WaterWithinReading } | null {
+  const shore = (result.inputs.shoreDistance as number | undefined) ?? 0;
+  if (!(shore > 0) || result.tsunami === undefined) return null;
+  const reading = waterWithinRadius(
+    local,
+    global,
+    location.latitude,
+    location.longitude,
+    (result.crater.transientDiameter as number) / 2,
+    {
+      lattice: CRATER_WATER_LATTICE,
+      minDepthM: IMPACT_SHORELINE.minDepthM,
+      tileBodyCells: IMPACT_SHORELINE.minBodyCells,
+      mosaicBodyCells: DEFAULT_MIN_BODY_CELLS,
+      seaMaskNeighbourhoodCells: IMPACT_SHORELINE.seaMaskNeighbourhoodCells,
+    }
+  );
+  if (reading.meanDepthM === null) return null;
+  return { depthM: Math.min(reading.meanDepthM, SHORE_DEPTH_CAP_M), reading };
 }
 
 /**
@@ -3048,6 +3096,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
         //      the coastline so a sandbar one pixel below MSL doesn't
         //      misfire the tsunami cascade.
         let impactInput = state.impact.input;
+        // Whether the sea below is the store's finding (a land impact near a
+        // coast), which rules 798 to 804 may then read inside the crater.
+        let seaFoundHere = false;
         // Sample terrain once and reuse: the same z drives both the
         // waterDepth auto-derivation and the post-simulation gate
         // for terrestrial-only effects (firestorm / liquefaction).
@@ -3088,6 +3139,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
                 waterDepth: m(Math.min(sea.shoreDepthM, SHORE_DEPTH_CAP_M)),
                 shoreDistance: m(sea.distanceM),
               };
+              seaFoundHere = true;
             }
           }
         }
@@ -3103,7 +3155,22 @@ export const useAppStore = create<AppStore>((set, get) => ({
             impactInput = { ...impactInput, coastalBeachSlopeRad: beachSlope };
           }
         }
-        const impactData = await sim.simulateImpact(impactInput);
+        let impactData = await sim.simulateImpact(impactInput);
+        // Rules 798 to 804: where the crater reaches the sea, the wave rises
+        // in the water within it, so the physics runs again with that depth.
+        if (seaFoundHere && state.elevationGrid !== null && state.location !== null) {
+          const crater = craterWaterDepth(
+            impactData,
+            state.elevationGrid,
+            state.globalBathymetricGrid,
+            state.location
+          );
+          if (crater !== null && crater.depthM !== (impactInput.waterDepth as number | undefined)) {
+            impactInput = { ...impactInput, waterDepth: m(crater.depthM) };
+            impactData = await sim.simulateImpact(impactInput);
+            if (evaluationId !== currentEvaluationId) return;
+          }
+        }
         result = {
           type: 'impact',
           data: gateImpactByTerrain(impactData, impactClickIsOpenWater),

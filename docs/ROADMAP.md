@@ -707,6 +707,39 @@ veil drawn, the coast within 1.5° of the source gets no run-up marker (the
 local tile that would carry them is drawn only without the planet's veil),
 and the status line says «global + local» when only the global is drawn.
 
+#### IMP-7e, 22 September 2026: the water a land impact's wave rises in
+
+Andrea chose the same evening to correct the depth New Orleans' wave was
+built in (B-114). Rule 268 raises a land impact's wave in the segment of its
+transient crater beyond the shore; the depth that caps the program's wave had
+stayed rule 248's, the nearest sea's own cell, which since rule 268 is only
+the segment's landward edge. At New Orleans the fine tile holds no sea the
+shoreline search accepts, and the cell was the planetary mosaic's under the
+city itself: 1.17 m, at the floor of half a cell.
+
+**Done the same day, rules first** (rules 798 to 804,
+`validation/craterWaterDepthRules.ts`, pushed in aa5a591 before the
+candidate). The depth is the mean of the water within the transient crater's
+radius, read on a lattice of 33 points a side, each point on the finest map
+that covers it and counted as water on the shoreline search's own tests,
+capped at 200 m (`waterWithinRadius` in `tsunami/sourcePlacement.ts`,
+`craterWaterDepth` in the store, which runs the physics again only when the
+first run raises a wave). New Orleans reads 5.76 m, all of it the mosaic's
+east of the tile, and its source goes from 0.44 m to 2.14 m and its drowned
+from none to twenty; Tampa barely moves; Chicxulub at Lisbon, whose crater
+reaches the open Atlantic, goes from the Tagus's 2.66 m to the cap and from a
+1.2 m wave to 90 m. Every output of a land impact but its wave is unchanged
+to the bit. The methodology entry of the coupling, which still gave the
+ejecta law of before 19 September, now gives the segment and the depth
+(B-115).
+
+What the round leaves, named in rule 799: the segment is still a straight
+coast's; the ejecta's wave, the resurge and the air blast on the water are
+still unsized, and at New Orleans they are most of the answer to Andrea's
+question; the maps read a lake by its surface and a polder by its floor; the
+explosion path keeps the shore's cell; and the Monte Carlo still runs on the
+panel's inputs, without the coast.
+
 #### IMP-9, 21 September 2026: the verdict — impacts at 7.0, and what is missing
 
 _Updated that night: with G6 met by rules 780 to 787 impacts count **8.0**,

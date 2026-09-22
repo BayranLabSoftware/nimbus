@@ -165,6 +165,123 @@ function seaMaskAllows(
   return false;
 }
 
+/** The cell of `grid` a point falls in, or null where the grid does not
+ *  cover it. */
+function cellOf(grid: ElevationGrid, lat: number, lon: number): { i: number; j: number } | null {
+  if (!covers(grid, lat, lon)) return null;
+  const i = Math.round(((grid.maxLat - lat) / (grid.maxLat - grid.minLat)) * (grid.nLat - 1));
+  const j = Math.round(((lon - grid.minLon) / (grid.maxLon - grid.minLon)) * (grid.nLon - 1));
+  return { i, j };
+}
+
+/** What `waterWithinRadius` read. */
+export interface WaterWithinReading {
+  /** Lattice points inside the disc. */
+  points: number;
+  /** Of them, read on the fine tile. */
+  onTile: number;
+  /** Of them, counted as water. */
+  water: number;
+  /** The mean depth of those (m); null when none counts. */
+  meanDepthM: number | null;
+}
+
+/** The terms a point counts as water on (the shoreline search's own). */
+export interface WaterWithinOptions {
+  /** Points a side over the disc's square. */
+  lattice: number;
+  minDepthM: number;
+  /** The body a tile cell must belong to, in the tile's cells. */
+  tileBodyCells: number;
+  /** The body a mosaic cell must belong to, in the mosaic's cells. */
+  mosaicBodyCells: number;
+  /** Mosaic cells about a tile cell that may vouch for it as sea. */
+  seaMaskNeighbourhoodCells: number;
+}
+
+/**
+ * The water within `radiusM` of (lat, lon): rule 798 of
+ * `validation/craterWaterDepthRules.ts`, the water a land impact's crater
+ * reaches. The disc is read on a lattice of `lattice` points a side over its
+ * square, each point inside it placed on the sphere by its range and bearing
+ * and read on the finest map that covers it — `tile`, else `mosaic` — at the
+ * cell it falls in. A point counts as water on the terms the shoreline search
+ * uses on that map: `minDepthM` below the sea at least, in a body of
+ * `tileBodyCells` vouched for by the mosaic on the tile, of `mosaicBodyCells`
+ * on the mosaic.
+ */
+export function waterWithinRadius(
+  tile: ElevationGrid,
+  mosaic: ElevationGrid | null,
+  lat: number,
+  lon: number,
+  radiusM: number,
+  options: WaterWithinOptions
+): WaterWithinReading {
+  const n = Math.max(2, Math.floor(options.lattice));
+  let points = 0;
+  let onTile = 0;
+  let water = 0;
+  let depthSum = 0;
+  if (!(radiusM > 0) || !Number.isFinite(radiusM)) {
+    return { points, onTile, water, meanDepthM: null };
+  }
+  // A body is the same body for every point that falls in it.
+  const bodies = new Map<ElevationGrid, Map<number, boolean>>();
+  const inBody = (grid: ElevationGrid, i: number, j: number, cells: number): boolean => {
+    let memo = bodies.get(grid);
+    if (memo === undefined) {
+      memo = new Map<number, boolean>();
+      bodies.set(grid, memo);
+    }
+    const key = i * grid.nLon + j;
+    let reaches = memo.get(key);
+    if (reaches === undefined) {
+      reaches = waterBodyReaches(grid, i, j, options.minDepthM, cells);
+      memo.set(key, reaches);
+    }
+    return reaches;
+  };
+  for (let a = 0; a < n; a++) {
+    for (let b = 0; b < n; b++) {
+      const east = (-1 + (2 * a) / (n - 1)) * radiusM;
+      const north = (-1 + (2 * b) / (n - 1)) * radiusM;
+      const range = Math.hypot(east, north);
+      if (range > radiusM) continue;
+      points++;
+      const at = destination(lat, lon, (Math.atan2(east, north) * 180) / Math.PI, range);
+      const pLat = at.latitude;
+      const pLon = ((((at.longitude + 180) % 360) + 360) % 360) - 180;
+      let depth: number | null = null;
+      const fine = cellOf(tile, pLat, pLon);
+      if (fine !== null) {
+        onTile++;
+        if (
+          isWaterCell(tile, fine.i, fine.j, options.minDepthM) &&
+          inBody(tile, fine.i, fine.j, options.tileBodyCells) &&
+          seaMaskAllows(mosaic ?? undefined, pLat, pLon, options.seaMaskNeighbourhoodCells)
+        ) {
+          depth = -(tile.samples[fine.i * tile.nLon + fine.j] ?? 0);
+        }
+      } else if (mosaic !== null) {
+        const coarse = cellOf(mosaic, pLat, pLon);
+        if (
+          coarse !== null &&
+          isWaterCell(mosaic, coarse.i, coarse.j, options.minDepthM) &&
+          inBody(mosaic, coarse.i, coarse.j, options.mosaicBodyCells)
+        ) {
+          depth = -(mosaic.samples[coarse.i * mosaic.nLon + coarse.j] ?? 0);
+        }
+      }
+      if (depth !== null) {
+        water++;
+        depthSum += depth;
+      }
+    }
+  }
+  return { points, onTile, water, meanDepthM: water > 0 ? depthSum / water : null };
+}
+
 /**
  * Nearest usable propagation seed in each compass sector within
  * `maxRadiusM` of (lat, lon), nearest first. When the origin itself

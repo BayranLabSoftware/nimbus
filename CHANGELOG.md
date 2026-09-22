@@ -447,6 +447,21 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **A land impact's wave rises in the water its crater reaches (B-114,
+  rules 798 to 804).** The wave of an impact on land comes from the part of
+  its transient crater that lies in the sea, but it was capped at the depth
+  of the nearest sea's own cell — the shallowest edge of that part. It is
+  now capped at the mean depth of the water within the crater, read on the
+  finest map at each point, up to 200 m. Chicxulub on New Orleans goes from
+  1.17 m of water to 5.76 m and from a 0.44 m wave at the source to 2.1 m —
+  still a small wave, because the water within the crater is a few metres of
+  lake and sound; at Lisbon, where the crater reaches the open Atlantic, from
+  2.66 m to the cap and from 1.2 m to 90 m. Nothing else about an impact
+  moves, and neither does an impact in the sea or one whose crater stops
+  short of it.
+- **The report prints the coupling to the sea its run uses (B-115).** An
+  inland impact's report, and the methodology page, still gave the ejecta
+  law of before 19 September 2026.
 - **An impact's wave can be seen (B-113).** Since the map of the field, the
   layer chosen covered the globe whenever an impact was drawn, the tsunami's
   wave map with it, and nothing took the field off: Chicxulub on New Orleans

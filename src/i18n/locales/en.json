@@ -1160,6 +1160,8 @@
         "agreementNowhere": "nowhere does the whole band exceed the threshold; its upper edge does, out to {{high}}",
         "agreementNot": "a probability: it is the band the field gives its own models, and so it is not turned into percentages",
         "tsunamiSourceProgram": "{{amplitude}} at the source, one water crater's diameter from the point of impact, never taller than the water it is raised in ({{depth}}): the Earth Impact Effects Program's law (Collins et al. 2005, rules 150 to 153)",
+        "depthWithinCrater": "{{depth}} on average within the crater, rules 798 to 804",
+        "depthWithinCraterCapped": "{{depth}}, rule 248's cap: the water within the crater is deeper on average, rules 798 to 804",
         "tsunamiSourceRimWave": "{{amplitude}} at the source, the rim wave of Wünnemann, Collins & Weiss (2010), never taller than the water it is raised in ({{depth}})",
         "tsunamiVeilGlobal": "a see-through veil over the planet's grid, from 1 m to {{top}} (the field's 98th percentile, never under 10 m); below 1 m no colour. The hours of arrival are computed over the real sea floor (Fast Marching)",
         "tsunamiVeilLocal": "a see-through veil over the tile about the source, since on the planet's grid the wave does not reach 1 m: from 1 m to {{top}} (the field's 98th percentile, never under 10 m); below 1 m no colour",
@@ -1361,6 +1363,8 @@
       },
       "value": {
         "nearestSea": "{{distance}} away, {{depth}} deep",
+        "nearestSeaCrater": "{{distance}} away; the wave rises in {{depth}} of water, the mean within the crater",
+        "nearestSeaCraterCapped": "{{distance}} away; the wave rises in {{depth}} of water, the cap: the water within the crater is deeper on average",
         "magnitudeNone": "— none: no relation this simulator verifies covers this airburst",
         "seaCouplingWave": "{{mechanism}} · shore {{shore}} · {{fraction}} of the wave",
         "seaCouplingEnergy": "{{mechanism}} · shore {{shore}} · {{fraction}} of the water-coupled energy",
