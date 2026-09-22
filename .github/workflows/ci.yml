@@ -77,7 +77,20 @@ jobs:
         run: pnpm format:check
 
       - name: Unit tests
-        run: pnpm test -- --coverage
+        run: |
+          set -o pipefail
+          pnpm test -- --coverage 2>&1 | tee vitest.log
+
+      - name: Say why the unit tests failed
+        # A job's log needs a signed-in reader; a check run's annotations do
+        # not. When the step above fails without a test's own annotation — a
+        # worker that died, an unhandled error, coverage that could not be
+        # written — this puts the lines that say so where anyone can read them.
+        if: failure()
+        run: |
+          plain() { sed -e 's/\x1b\[[0-9;]*m//g' -e 's/%/%25/g' | awk 'BEGIN { ORS = "%0A" } { print }'; }
+          echo "::error title=vitest, the lines that name a failure::$(grep -E -i 'error|fail|unhandled|worker|heap|killed|timed out|Test Files|Tests  ' vitest.log | tail -n 60 | plain)"
+          echo "::error title=vitest, the last lines::$(grep -v -E '^ *[|-]|\| *[0-9.]+ *\|' vitest.log | tail -n 40 | plain)"
 
       - name: Validation gate (strict)
         # The strict gate (closes H7) runs the V&V replay corpus + the
