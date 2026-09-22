@@ -4,6 +4,18 @@ import { mulberry32 } from '../montecarlo/sampling.js';
 import { SWEEP_SEED } from './physicalInvariantRules.js';
 
 /**
+ * Hands the worker's event loop back between heavy steps. A synchronous test
+ * that runs past a minute on a slow CI runner keeps vitest's worker from
+ * answering its own runner, which reports "Timeout calling onTaskUpdate" as
+ * an unhandled error and fails the run with every test passed (the CI of
+ * da51c86, 23 September 2026).
+ */
+const breathe = (): Promise<void> =>
+  new Promise((resolve) => {
+    setImmediate(resolve);
+  });
+
+/**
  * Two more readings of the lens that found B-084, B-085 and B-086, taken
  * after the audit of rules 548 to 554 closed. Neither is one of that audit's
  * seven questions — rule 549 fixed those and they may not grow — so these
@@ -80,6 +92,7 @@ describe('no wave outruns its water', () => {
       const rng = mulberry32(SWEEP_SEED(hazard.name));
       const u = (): number => rng.next();
       for (let i = 0; i < SLICE; i++) {
+        await breathe();
         let r: Record<string, unknown>;
         try {
           r = hazard.run(hazard.sample(u));

@@ -2,6 +2,18 @@ import { describe, expect, it } from 'vitest';
 import { simulateImpact, type ImpactScenarioInput } from '../simulate.js';
 import { ATAP_AGAIN_HELD_OUT_SEED } from './atapRadiationAgainRules.js';
 
+/**
+ * Hands the worker's event loop back between heavy steps. A synchronous test
+ * that runs past a minute on a slow CI runner keeps vitest's worker from
+ * answering its own runner, which reports "Timeout calling onTaskUpdate" as
+ * an unhandled error and fails the run with every test passed (the CI of
+ * da51c86, 23 September 2026).
+ */
+const breathe = (): Promise<void> =>
+  new Promise((resolve) => {
+    setImmediate(resolve);
+  });
+
 /** Rules 780 to 787: an airburst's flash from the field's model of it, asked
  *  again (B-095). */
 
@@ -41,10 +53,11 @@ describe('rules 780 to 787: an airburst’s flash from the field’s model of it
     expect(ATAP_AGAIN_HELD_OUT_SEED).toBe('benchmark-2026-09-21-heldout-atap-2');
   });
 
-  it('(a) draws no burn or fire ring smaller as a body grows, at shallow entries too', () => {
+  it('(a) draws no burn or fire ring smaller as a body grows, at shallow entries too', async () => {
     for (const speed of [12, 17, 25])
       for (const angleDeg of [8, 20, 45])
         for (const density of [3_000, 7_000]) {
+          await breathe();
           let previous: number[] | null = null;
           for (let d = 10; d < 260; d *= 1.03) {
             const rings = RINGS(
@@ -92,6 +105,7 @@ describe('rules 780 to 787: an airburst’s flash from the field’s model of it
     const run = (input: Record<string, unknown>) =>
       atap(input) as unknown as Record<string, unknown>;
     for (const scenario of STOPPED) {
+      await breathe();
       const lean = { ...impact, run };
       // The causes read from the full run, as rules 772 to 779 read them.
       const full = { ...impact, run, runSource: run };

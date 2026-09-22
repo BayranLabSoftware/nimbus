@@ -11,6 +11,18 @@ import { atmosphericEntry, entryPath } from '../effects/atmosphericEntry.js';
 import { IMPACT_PRESETS, simulateImpact, type ImpactScenarioInput } from '../simulate.js';
 import { ATAP_HELD_OUT_SEED } from './atapRadiationRules.js';
 
+/**
+ * Hands the worker's event loop back between heavy steps. A synchronous test
+ * that runs past a minute on a slow CI runner keeps vitest's worker from
+ * answering its own runner, which reports "Timeout calling onTaskUpdate" as
+ * an unhandled error and fails the run with every test passed (the CI of
+ * da51c86, 23 September 2026).
+ */
+const breathe = (): Promise<void> =>
+  new Promise((resolve) => {
+    setImmediate(resolve);
+  });
+
 /** Rules 772 to 779: an airburst's flash from the field's model of it (B-095). */
 
 type Result = ReturnType<typeof simulateImpact>;
@@ -163,10 +175,11 @@ describe('rules 772 to 779: an airburst’s flash from the field’s model of it
     expect(atap.entry.flashBurnRadii).toEqual(today.entry.flashBurnRadii);
   });
 
-  it('(a) draws no burn or fire ring smaller as a body grows through the fitted range’s edges', () => {
+  it('(a) draws no burn or fire ring smaller as a body grows through the fitted range’s edges', async () => {
     for (const v of [12, 17, 22])
       for (const angle of [30, 60])
         for (const strength of [3e5, 2e6]) {
+          await breathe();
           let previous: number[] | null = null;
           for (let d = 30; d < 260; d *= 1.02) {
             const rings = RINGS(run(body(d, v, angle, 3_000, strength), 'atap'));

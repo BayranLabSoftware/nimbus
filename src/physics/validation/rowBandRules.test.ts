@@ -9,6 +9,18 @@ import { casualtyPlanForResult, type ActiveResult } from '../../store/useAppStor
 import { ROW_BAND_HIGH_Q, ROW_BAND_LOW_Q, quantileOf } from './rowBandRules.js';
 
 /**
+ * Hands the worker's event loop back between heavy steps. A synchronous test
+ * that runs past a minute on a slow CI runner keeps vitest's worker from
+ * answering its own runner, which reports "Timeout calling onTaskUpdate" as
+ * an unhandled error and fails the run with every test passed (the CI of
+ * da51c86, 23 September 2026).
+ */
+const breathe = (): Promise<void> =>
+  new Promise((resolve) => {
+    setImmediate(resolve);
+  });
+
+/**
  * Rules 257 and 258: a row's pair is that row's own percentile, checked over
  * every preset of every family.
  *
@@ -66,11 +78,12 @@ function everyPreset(): ActiveResult[] {
  */
 let memoised: Row[] | null = null;
 
-function rowsOf(): Row[] {
+async function rowsOf(): Promise<Row[]> {
   if (memoised !== null) return memoised;
   const population = uniform(2_000);
   const rows: Row[] = [];
   for (const [i, result] of everyPreset().entries()) {
+    await breathe();
     const plan = planFor(result);
     if (plan === null) continue;
     const plans = sampleScenarioPlans({ result, planFor, seed: `row-band-${i.toString()}` });
@@ -119,8 +132,8 @@ describe('rules 255 to 260 — a pair beside a number is a claim about that numb
     expect(band?.rows.delayedDeaths.high).toBe(quantileOf(deferred, ROW_BAND_HIGH_Q));
   });
 
-  it('rule 257(b): ordered by construction, at every preset of every family', () => {
-    const rows = rowsOf();
+  it('rule 257(b): ordered by construction, at every preset of every family', async () => {
+    const rows = await rowsOf();
     expect(rows.length).toBeGreaterThan(20);
     let wholeBackwards = 0;
     for (const r of rows) {
@@ -135,8 +148,8 @@ describe('rules 255 to 260 — a pair beside a number is a claim about that numb
     );
   }, 240_000);
 
-  it('rule 258: how often the pair contains the figure beside it — recorded, not gated', () => {
-    const rows = rowsOf();
+  it('rule 258: how often the pair contains the figure beside it — recorded, not gated', async () => {
+    const rows = await rowsOf();
     const holds = (r: Row): boolean => r.central >= r.rowLow && r.central <= r.rowHigh;
     const wholeHolds = (r: Row): boolean =>
       r.central >= Math.min(r.wholeLow, r.wholeHigh) &&
