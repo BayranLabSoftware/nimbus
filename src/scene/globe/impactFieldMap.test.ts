@@ -332,8 +332,10 @@ describe('the tsunami’s layer: the wave map, named as the globe draws it (B-11
   });
 
   it('promises nothing while the globe has drawn nothing', () => {
-    for (const waveMap of [undefined, null]) {
-      const layer = buildImpactLayer(neworleans, 'tsunami', { ...ctx, waveMap });
+    for (const layer of [
+      buildImpactLayer(neworleans, 'tsunami', ctx),
+      buildImpactLayer(neworleans, 'tsunami', { ...ctx, waveMap: null }),
+    ]) {
       expect(layer?.colorbar).toBeNull();
       expect(layer?.categories).toEqual([]);
       expect(layer?.notes.map((n) => n.text)).toContain('globe.impactMap.note.tsunamiNothing');
