@@ -72,6 +72,7 @@ import {
   buildCrestFrames,
   extractFrontContour,
   pickRunupPeaks,
+  runupCellsBeyondTile,
   stitchSegmentsIntoChains,
 } from '../tsunamiCrest.js';
 import {
@@ -3673,8 +3674,11 @@ export function Globe(): JSX.Element {
         }
         // ── Impatti costieri globali ────────────────────────────────
         // Run-up Synolakis sul mosaico planetario: pochi picchi, uno
-        // per bacino di 3°, esclusa la zona già coperta dal tile
-        // locale ad alta risoluzione.
+        // per bacino di 3°, esclusa la zona che il tile locale copre
+        // davvero con le sue risalite (B-116: prima si escludeva un
+        // quadrato di 1,5° attorno alla sorgente, e le risalite del
+        // tile si disegnavano solo senza la velatura planetaria — la
+        // costa più vicina restava senza marcatori).
         try {
           const gGridRunup = useAppStore.getState().globalBathymetricGrid;
           if (gGridRunup !== null) {
@@ -3683,10 +3687,9 @@ export function Globe(): JSX.Element {
               grid: gGridRunup,
             });
             const peaks = pickRunupPeaks(
-              gRunup.cells.filter(
-                (c) =>
-                  Math.abs(c.latitude - ringAnchor.latitude) > 1.5 ||
-                  Math.abs(c.longitude - ringAnchor.longitude) > 1.5
+              runupCellsBeyondTile(
+                gRunup.cells,
+                bathymetricTsunami.runup !== undefined ? grid : null
               ),
               { binDeg: 3, minRunupM: 2, maxCount: 14 }
             );
@@ -3881,21 +3884,22 @@ export function Globe(): JSX.Element {
         } catch (err: unknown) {
           console.warn('[Globe] local tsunami arrow render failed:', err);
         }
-        // ── Impatti costieri locali (tile ~150 km, run-up già in
-        // bathymetricTsunami.runup) ─────────────────────────────────
-        try {
-          const runupField = bathymetricTsunami.runup;
-          if (runupField !== undefined) {
-            const peaks = pickRunupPeaks(runupField.cells, {
-              binDeg: 0.25,
-              minRunupM: 2,
-              maxCount: 8,
-            });
-            waveDrawn.runup.push(...addRunupMarkers(peaks, 'tsunami-runup-local'));
-          }
-        } catch (err: unknown) {
-          console.warn('[Globe] local runup markers failed:', err);
+      }
+      // ── Impatti costieri locali (tile ~150 km, run-up già in
+      // bathymetricTsunami.runup), con o senza la velatura planetaria:
+      // è la costa più vicina alla sorgente (B-116).
+      try {
+        const runupField = bathymetricTsunami.runup;
+        if (runupField !== undefined) {
+          const peaks = pickRunupPeaks(runupField.cells, {
+            binDeg: 0.25,
+            minRunupM: 2,
+            maxCount: 8,
+          });
+          waveDrawn.runup.push(...addRunupMarkers(peaks, 'tsunami-runup-local'));
         }
+      } catch (err: unknown) {
+        console.warn('[Globe] local runup markers failed:', err);
       }
     }
     if (

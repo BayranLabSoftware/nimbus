@@ -706,6 +706,7 @@ entry's question. Seen and left to the tsunami's own turn: with the planet's
 veil drawn, the coast within 1.5° of the source gets no run-up marker (the
 local tile that would carry them is drawn only without the planet's veil),
 and the status line says «global + local» when only the global is drawn.
+Both closed the same evening at Andrea's word (B-116, B-117).
 
 #### IMP-7e, 22 September 2026: the water a land impact's wave rises in
 

@@ -901,7 +901,9 @@
       "globalBadge": "globale",
       "uncertaintyNote": "Ogni raggio è una linea netta sulla mappa ma in realtà è una banda. Per gli anelli d'urto di un airburst le linee a puntini sono la banda che Collins et al. (2017) danno ai loro tre modelli dell'onda d'urto: entro tre quote di scoppio discordano di un fattore due in sovrappressione. Altrove la linea tratteggiata è una dispersione 1σ pubblicata: ±15–30 % per anelli d'urto e sismici, fattore 2 per pennacchi e tsunami in campo lontano. Vedi la pagina di metodologia per la banda di ogni grandezza.",
       "tsunamiStatus": {
-        "globalActive": "Mappa tsunami: layer globale + locale attivi — propagazione trans-oceanica renderizzata.",
+        "globalActive": "Mappa tsunami: layer globale attivo — propagazione trans-oceanica disegnata.",
+        "localDrawn": "Mappa tsunami: sul reticolo del pianeta l'onda resta sotto 1 m, quindi è disegnato il riquadro locale (~150 km) attorno alla sorgente.",
+        "nothingDrawn": "Mappa tsunami: calcolata, ma in nessuna cella l'onda supera 1 m — non c'è niente da disegnare.",
         "localOnly": "Mappa tsunami: solo layer locale (~150 km) — il mosaico planetario non era pronto per questa simulazione; verrà completata appena arriva, altrimenti premi di nuovo Avvia simulazione.",
         "globalLoading": "Mappa tsunami: solo layer locale — mosaico globale in caricamento, premi Launch tra un momento."
       },

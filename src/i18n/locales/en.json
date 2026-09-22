@@ -901,7 +901,9 @@
       "globalBadge": "global",
       "uncertaintyNote": "Each radius is a sharp line on the map but a band in reality. For an airburst's blast rings the dotted lines are the band Collins et al. (2017) give their own three models of the blast — within three burst altitudes they disagree by a factor of two in overpressure. Elsewhere the dashed line is a published 1σ scatter: ±15–30 % for blast and seismic rings, factor-2 for plumes and far-field tsunami. See the methodology page for the per-quantity envelope.",
       "tsunamiStatus": {
-        "globalActive": "Tsunami map: global + local layer active — trans-oceanic propagation rendered.",
+        "globalActive": "Tsunami map: global layer active — trans-oceanic propagation drawn.",
+        "localDrawn": "Tsunami map: on the planet's grid the wave stays under 1 m, so the local tile (~150 km) about the source is drawn.",
+        "nothingDrawn": "Tsunami map: computed, but in no cell does the wave pass 1 m — there is nothing to draw.",
         "localOnly": "Tsunami map: local layer only (~150 km) — the planetary mosaic was not ready for this run; it completes as soon as it lands, otherwise press Launch simulation again.",
         "globalLoading": "Tsunami map: local layer only — global mosaic still loading; press Launch again in a moment."
       },

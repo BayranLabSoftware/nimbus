@@ -315,6 +315,25 @@ export interface RunupPeakCell {
 }
 
 /**
+ * The run-up cells of the planet's grid that a tile does not cover (B-116).
+ * Where the fine tile has run-up of its own it is the tile's that is drawn,
+ * and the planet's leaves it that area and no more; with no tile, every
+ * cell stays. A tile may be written past ±180°, so a longitude is read in
+ * the tile's own frame.
+ */
+export function runupCellsBeyondTile<T extends { latitude: number; longitude: number }>(
+  cells: readonly T[],
+  tile: { minLat: number; maxLat: number; minLon: number; maxLon: number } | null
+): T[] {
+  if (tile === null) return [...cells];
+  const span = tile.maxLon - tile.minLon;
+  return cells.filter((c) => {
+    const east = (((c.longitude - tile.minLon) % 360) + 360) % 360;
+    return c.latitude < tile.minLat || c.latitude > tile.maxLat || east > span;
+  });
+}
+
+/**
  * Pick the coastal cells worth a marker: bin the sparse run-up cells
  * on a coarse geographic grid, keep only the strongest cell per bin
  * (a fjord coast yields hundreds of near-identical neighbours), then

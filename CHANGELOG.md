@@ -447,6 +447,13 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Fixed
 
+- **The coast nearest a tsunami's source has its run-up markers (B-116).**
+  With the planet's veil drawn, the markers stopped short of a square of 1.5°
+  about the source and the fine tile's were not drawn; now the tile's are
+  always drawn and the planet's leave it only the area it covers.
+- **The tsunami's status line says what is drawn (B-117).** It no longer
+  claims the global and local layers are both on, and says so when the tile
+  about the source is drawn instead, or nothing passes a metre.
 - **A land impact's wave rises in the water its crater reaches (B-114,
   rules 798 to 804).** The wave of an impact on land comes from the part of
   its transient crater that lies in the sea, but it was capped at the depth

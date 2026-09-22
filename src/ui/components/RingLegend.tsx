@@ -251,6 +251,7 @@ export function RingLegend(): JSX.Element {
   const showAllRings = useAppStore((s) => s.showAllRings);
   const bathymetricTsunami = useAppStore((s) => s.bathymetricTsunami);
   const globalBathymetricGrid = useAppStore((s) => s.globalBathymetricGrid);
+  const waveMap = useAppStore((s) => s.waveMapKey);
   const [collapsed, setCollapsed] = useState(false);
 
   const rows = buildRingRows(result, t, shakingFieldBands !== null);
@@ -270,11 +271,27 @@ export function RingLegend(): JSX.Element {
 
   const tsunamiPresent = bathymetricTsunami !== null;
   const globalAvailable = globalBathymetricGrid !== null;
-  const globalActive = bathymetricTsunami?.global !== undefined;
-  let tsunamiStatusKey: 'globalActive' | 'localOnly' | 'globalLoading' | null = null;
+  const globalComputed = bathymetricTsunami?.global !== undefined;
+  // B-117: once the planet's field is computed, the line says what the globe
+  // drew from it (`waveMapKey`) — the planet's veil, the tile about the source
+  // where the planet's wave stays under a metre, or nothing — and not that
+  // both layers are on, which the globe never draws together.
+  let tsunamiStatusKey:
+    | 'globalActive'
+    | 'localDrawn'
+    | 'nothingDrawn'
+    | 'localOnly'
+    | 'globalLoading'
+    | null = null;
   if (tsunamiPresent) {
-    if (globalActive) tsunamiStatusKey = 'globalActive';
-    else if (!globalAvailable) tsunamiStatusKey = 'globalLoading';
+    if (globalComputed) {
+      tsunamiStatusKey =
+        waveMap === null
+          ? 'nothingDrawn'
+          : waveMap.scope === 'global'
+            ? 'globalActive'
+            : 'localDrawn';
+    } else if (!globalAvailable) tsunamiStatusKey = 'globalLoading';
     else tsunamiStatusKey = 'localOnly';
   }
 

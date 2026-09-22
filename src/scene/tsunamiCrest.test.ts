@@ -4,6 +4,7 @@ import {
   finitePercentile,
   pickRunupPeaks,
   stitchSegmentsIntoChains,
+  runupCellsBeyondTile,
 } from './tsunamiCrest.js';
 
 describe('stitchSegmentsIntoChains', () => {
@@ -182,5 +183,33 @@ describe('pickRunupPeaks', () => {
         maxCount: 5,
       })
     ).toEqual([]);
+  });
+});
+
+describe('runupCellsBeyondTile — the planet leaves the tile its own area (B-116)', () => {
+  // New Orleans' tile, which ends at 90° W, east of which lie Lake Borgne and
+  // the Mississippi coast.
+  const tile = { minLat: 29.535, maxLat: 30.751, minLon: -91.406, maxLon: -90 };
+  const cells = [
+    { latitude: 30, longitude: -90.5, runupM: 5 },
+    { latitude: 30.2, longitude: -89.5, runupM: 6 },
+    { latitude: 29, longitude: -90.5, runupM: 7 },
+  ];
+
+  it('drops the cells the tile covers and keeps the coast beyond it, however near', () => {
+    expect(runupCellsBeyondTile(cells, tile).map((c) => c.runupM)).toEqual([6, 7]);
+  });
+
+  it('keeps every cell where there is no tile run-up to stand in for them', () => {
+    expect(runupCellsBeyondTile(cells, null)).toHaveLength(3);
+  });
+
+  it('reads a tile written past 180° in its own frame', () => {
+    const wrapped = { minLat: -10, maxLat: 10, minLon: 170, maxLon: 200 };
+    const across = [
+      { latitude: 0, longitude: -170, runupM: 1 },
+      { latitude: 0, longitude: 150, runupM: 2 },
+    ];
+    expect(runupCellsBeyondTile(across, wrapped).map((c) => c.runupM)).toEqual([2]);
   });
 });

@@ -2301,6 +2301,41 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     ).toContain('impact-sea-coupling');
   });
 
+  it('B-116 The coast nearest the source has its run-up markers under the planet’s veil', () => {
+    // Pre-fix: the planet's run-up skipped a square of 1.5° about the source,
+    // leaving it to the tile, whose run-up was drawn only without the
+    // planet's veil — so with it, the nearest coast had no marker at all.
+    const globe = readFileSync(
+      fileURLToPath(new URL('../../scene/globe/Globe.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(globe).not.toContain('Math.abs(c.latitude - ringAnchor.latitude) > 1.5');
+    expect(globe).toContain('runupCellsBeyondTile(');
+    // The tile's run-up stands at the tsunami block's own depth, outside the
+    // tile's block that runs only without the planet's veil.
+    expect(globe).toMatch(/\n {6}\/\/ ── Impatti costieri locali/);
+    expect(globe).not.toMatch(/\n {8}\/\/ ── Impatti costieri locali/);
+  });
+
+  it('B-117 The tsunami’s status line says what the globe drew', () => {
+    // Pre-fix: «global + local layer active» whenever the planet's field was
+    // computed, though the globe never draws the two together.
+    for (const locale of [enLocale, itLocale]) {
+      const status = (
+        locale as unknown as { globe: { legend: { tsunamiStatus: Record<string, string> } } }
+      ).globe.legend.tsunamiStatus;
+      expect(status.globalActive).not.toMatch(/\+/);
+      expect(status.localDrawn?.length ?? 0).toBeGreaterThan(0);
+      expect(status.nothingDrawn?.length ?? 0).toBeGreaterThan(0);
+    }
+    const legend = readFileSync(
+      fileURLToPath(new URL('../../ui/components/RingLegend.tsx', import.meta.url)),
+      'utf8'
+    );
+    expect(legend).toContain('useAppStore((s) => s.waveMapKey)');
+    expect(legend).toMatch(/waveMap\.scope === 'global'\s*\?\s*'globalActive'\s*:\s*'localDrawn'/);
+  });
+
   // Bypass guard: the test count below MUST equal the registry row
   // count in BUG_REGISTRY.md. If they diverge, one of them has lost
   // an entry. Bump expectedRows when adding.
