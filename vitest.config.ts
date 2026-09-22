@@ -38,6 +38,18 @@ export default defineConfig({
       {
         extends: true,
         test: {
+          // The seal of a closed module (src/seal/): headless, and its own
+          // project because it reads across the layers on purpose — the
+          // physics, the map the globe draws and the text the report prints.
+          name: 'seal',
+          environment: 'node',
+          include: ['src/seal/**/*.test.ts'],
+          testTimeout: 120_000,
+        },
+      },
+      {
+        extends: true,
+        test: {
           name: 'ui',
           environment: 'jsdom',
           include: [

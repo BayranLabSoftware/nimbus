@@ -27,3 +27,9 @@ benchmark/nimbus/
 benchmark/results/
 benchmark/dart/
 docs/BENCHMARK_REPORT.md
+
+# The seal of the impacts module: written by `scripts/seal-impacts.ts`, one
+# line per reading so a moved digest is one line of the diff. Prettier would
+# pretty-print it back to half a megabyte and rewrite the file on every
+# commit — which is a re-seal nobody asked for (rule 833).
+src/seal/impactSealData.json

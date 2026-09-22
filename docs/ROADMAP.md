@@ -798,10 +798,8 @@ are missing, and why:
   heat, a blast ring's cause read from runs without the integral and a
   watchdog of 10 s — and were adopted: G5 reads 0 on the own seed under both
   laws and the same 8 on a seed no run had used. What the correlation cannot
-  read is drawn at PAIR's nominal, the field's own, by Andrea's decision. The
-  other gap, an impact's air blast read from under the ground as the program
-  reads it, was closed by rules 748 to 755: a body that reaches the ground
-  bursts at the ground. Impacts count 8.0 of 9; G3 waits for the calendar.
+  read is drawn at PAIR's nominal, the field's own, by Andrea's decision.
+  Impacts count 8.0 of 9; G3 waits for the calendar.
 
 Open, and outside the benchmark's draw on which G5 is met: B-091, the
 paper's sharp strength at I_f = 1. By Andrea's order of that evening B-097,
@@ -811,6 +809,54 @@ vanished at the strewn field's cut at 20 m, by rules 764 to 771; and the
 texts that went on describing the day's replaced laws (B-102) and a panel
 that told an airburst no crater forms beside its crater (B-103) with them.
 The work on impacts stops here and waits for Andrea's order.
+
+### Watertight compartments _(Andrea's decision, 22 September 2026)_
+
+The modules are to work as watertight compartments: "we reuse the same
+documents, formulas, whatever is needed, but we keep everything separate",
+so that work on one event can no longer break the simulations of another.
+Measured the night it was asked: twenty-six physics files (~5 600 lines) are
+read by at least two modules, and the globe, the store, the panel, the
+report's generator and the CI are one piece. Two breakages of that single
+night came through the common code — the toll band, and
+`outlinePointAtBearing`, which draws every module's labels.
+
+The order Andrea fixed, and where it stands:
+
+1. **The seal of the impacts, to the bit** — done, 22 September, rules 826 to
+   835 of `physics/validation/impactSealRules.ts`. Three hundred and eight
+   scenarios (the eight presets, and three hundred drawn from a written grid
+   by a fixed seed, a hundred on land, a hundred on a coast, a hundred at
+   sea, alternating bodies that burst in the air with bodies that reach the
+   ground), each carrying four digests: its numbers, its drawing, and its
+   report's text in Italian and in English. `src/seal/` holds the reading and
+   `src/seal/impactSealData.json` the seal; the test runs in five seconds on
+   every commit. One unit in the last place of a density moves eleven digests
+   and names them. The seal is remade only when the module is deliberately
+   opened, with its reason written in the file
+   (`pnpm seal:impacts --opened-by … --moved …`); no workflow ever regenerates
+   it. What it does not cover, and says so: the terrain-given inputs and the
+   search for the shore, which only the running app derives; the population,
+   which comes from the network; the bathymetric solver's wave map; the Monte
+   Carlo.
+2. **The shell and the contract of a module**, written once.
+3. **The impacts moved into their own module** — their physics, their slice of
+   the store, their drawing as a pure description with the common Cesium
+   adapter, their panel, their report, their translations, their tests and
+   their seal. Three to five sessions, and the seal must read the same
+   afterwards: that is what makes the move a move and not a rewrite.
+4. **The boundaries held by the lint**, so a crossing is a build error and not
+   a discovery.
+5. **The other modules, each at its turn.** The common core stays declared:
+   units, spherical geometry, the maps, the population, the casualty engine,
+   the tsunami's propagation, the viewer. Never two versions of the core,
+   never a copied formula — copying has already produced B-053, B-059 and
+   B-086.
+
+A seal is not a validation. It says the answer has not changed, never that it
+is right, and it protects a defect as faithfully as a virtue. What says
+whether an answer is right is the certification the plan of 22 September
+builds on top of it.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

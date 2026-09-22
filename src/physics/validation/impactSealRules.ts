@@ -137,7 +137,44 @@
  */
 
 /**
- * The outcome of the round, written after the candidate was measured.
- * The rules above were pushed before the candidate was written.
+ * The outcome of the round, written after the candidate was measured, on
+ * 22 September 2026. The rules above were pushed in commit 246bfac before the
+ * candidate was written.
+ *
+ * ADOPTED. Rule 832 holds on every clause.
+ *
+ * (a) Read twice on an unchanged tree, all 1 232 digests of the 308 scenarios
+ *     reproduce; the second reading of five scenarios taken apart from the
+ *     first is identical too, so no reading depends on a clock or on what the
+ *     scenario before it left behind.
+ * (b) One unit in the last place of the chondritic density — 3 000 to
+ *     3 000.000 000 000 000 5 kg/m³, tried on a scratch tree and reverted —
+ *     turns the test red on eleven digests of four presets, and the message
+ *     names each: `preset:TUNGUSKA — numbers moved`, energy
+ *     9.122 932 777 513 38 → 9.122 932 777 513 382 Mt. Where the change is
+ *     deeper than rule 830's table the message says so rather than pretending
+ *     to explain it: Chicxulub's numbers move with no key number moving.
+ * (c) The whole seal runs in 5.3 s, a ninth of the sixty seconds allowed, and
+ *     the file is 351 kB, a third under the half megabyte — one line per
+ *     reading, so a moved digest is one line of the diff.
+ * (d) Nothing the browser ships imports `src/seal/`; the bundle-size budget is
+ *     unchanged.
+ * (e) The release gate stays PASS and the validation report was regenerated
+ *     once.
+ * (f) Typecheck, lint, format and the whole suite stay green.
+ *
+ * What the set turned out to cover, which the grid was written to reach but
+ * could not promise: all three entry regimes (161 partial airbursts, 144
+ * complete, 3 intact) and all five origins of a crater (152 dug by the body,
+ * 136 none, 14 a strewn field, 5 an iron swarm, 1 a low burst), across 107
+ * scenarios on land, 100 on a coast and 101 at sea.
+ *
+ * One thing the round found without looking for it: an impact input with no
+ * `surfaceGravity` is refused by the schema, though the field is optional in
+ * the type and `simulateImpact` has a default for it. The first draw of three
+ * hundred scenarios was refused whole. Named here, not changed — it is not
+ * this round's business, and the seal now passes Earth's gravity as the
+ * presets do.
  */
-export const IMPACT_SEAL_OUTCOME = 'PENDING: the candidate has not been measured yet.';
+export const IMPACT_SEAL_OUTCOME =
+  'ADOPTED 22 September 2026: the impacts module is sealed to the bit — 308 scenarios, four digests each (numbers, drawing, report text in Italian and in English), 5.3 s on every commit. One unit in the last place of a density turns it red and names what moved.';

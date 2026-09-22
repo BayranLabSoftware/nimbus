@@ -27,6 +27,7 @@
     "cities:build": "tsx scripts/build-cities.ts",
     "population:build": "tsx scripts/build-population.ts",
     "validation-report": "tsx scripts/generate-validation-report.ts",
+    "seal:impacts": "tsx scripts/seal-impacts.ts",
     "audit:sources": "tsx scripts/audit-sources.ts",
     "audit:invariants": "tsx scripts/benchmark/physical-invariants.ts",
     "audit:tolls": "tsx scripts/benchmark/toll-invariants.ts",
