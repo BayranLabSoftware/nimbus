@@ -6,6 +6,7 @@ import {
   currentEngine,
   readScenario,
   sealTranslators,
+  SEAL_PLATFORM,
   SEAL_SEED,
   type SealFile,
   type SealKeyNumbers,
@@ -43,6 +44,17 @@ interface Mismatch {
   keysNow: SealKeyNumbers;
 }
 
+/**
+ * Rule 837: the digests are compared only on the platform the seal was taken
+ * on. The CI's `seal` job runs there and sets NIMBUS_SEAL_REQUIRED, so a
+ * runner that stops being that platform fails the build instead of skipping
+ * the comparison; everywhere else — the verify job's Linux x64 among them —
+ * the comparison is skipped under a name that says where it is made.
+ */
+const engine = currentEngine();
+const required = process.env.NIMBUS_SEAL_REQUIRED === '1';
+const comparable = engine.platform === file.engine.platform || required;
+
 function movedKeys(a: SealKeyNumbers, b: SealKeyNumbers): string[] {
   const keys = Object.keys(a) as (keyof SealKeyNumbers)[];
   return keys
@@ -64,67 +76,79 @@ describe('the seal of the impacts module', () => {
     expect(now.map((reading) => reading.id)).toEqual(file.readings.map((reading) => reading.id));
   });
 
-  it('was taken on the Node the repository pins', () => {
-    // Rule 836(b): the CI's verify job runs on `.nvmrc`, so a seal taken on
-    // any other Node would be compared on an engine it was never read on.
+  it('was taken on the Node and the platform the repository pins', () => {
+    // Rules 836(b) and 837: the CI runs on `.nvmrc`, and compares on
+    // SEAL_PLATFORM; a seal taken on anything else would be compared on an
+    // engine it was never read on.
     const pinned = `v${readFileSync(new URL('../../.nvmrc', import.meta.url), 'utf8').trim()}`;
     expect(file.engine.node, 'the seal and .nvmrc name different Node versions').toBe(pinned);
+    expect(file.engine.platform, 'the seal was taken on another platform').toBe(SEAL_PLATFORM);
   });
 
-  it('answers to the bit what it answered when it was sealed', () => {
-    // Rule 836(c): on another engine the digests move for reasons that are not
-    // the module's — ICU's formatting, V8's last bit — and listing hundreds of
-    // them would only hide that.
-    const engine = currentEngine();
-    if (engine.node !== file.engine.node || engine.icu !== file.engine.icu) {
-      throw new Error(
-        `The seal was taken on Node ${file.engine.node} (ICU ${file.engine.icu}); ` +
-          `this is Node ${engine.node} (ICU ${engine.icu}).\n` +
-          `A seal holds to the bit only on the engine it was taken on (rule 836): ICU formats ` +
-          `the report's numbers and dates, and V8 gives a Math function its last bit.\n` +
-          `Run the tests on ${file.engine.node}, the version in .nvmrc — or, if the engine is ` +
-          `being moved on purpose, move .nvmrc and re-seal with that as the reason.`
-      );
-    }
+  it.skipIf(!comparable)(
+    `answers to the bit what it answered when it was sealed (compared on ${SEAL_PLATFORM} only)`,
+    () => {
+      // Rules 836(c) and 837: on another engine the digests move for reasons
+      // that are not the module's, and listing hundreds of them would only
+      // hide that.
+      if (
+        engine.node !== file.engine.node ||
+        engine.icu !== file.engine.icu ||
+        engine.platform !== file.engine.platform
+      ) {
+        throw new Error(
+          `The seal was taken on Node ${file.engine.node} (ICU ${file.engine.icu}, ` +
+            `${file.engine.platform}); this is Node ${engine.node} (ICU ${engine.icu}, ` +
+            `${engine.platform}).\n` +
+            `A seal holds to the bit only on the engine and the platform it was taken on ` +
+            `(rules 836 and 837): the same Node gives other last bits on another processor, ` +
+            `and another Node may format and compute differently.\n` +
+            `Compare on ${file.engine.node} and ${file.engine.platform} — or, if the engine is ` +
+            `being moved on purpose, move .nvmrc and re-seal with that as the reason.`
+        );
+      }
 
-    const mismatches: Mismatch[] = [];
-    for (const reading of now) {
-      const was = file.readings.find((r) => r.id === reading.id);
-      expect(was, `${reading.id} is not in the seal`).toBeDefined();
-      if (was === undefined) continue;
-      for (const what of ['numbers', 'drawing', 'textIt', 'textEn'] as const) {
-        if (was.digests[what] !== reading.digests[what]) {
-          mismatches.push({
-            id: reading.id,
-            what,
-            sealed: was.digests[what],
-            now: reading.digests[what],
-            keysSealed: was.keys,
-            keysNow: reading.keys,
-          });
+      const mismatches: Mismatch[] = [];
+      for (const reading of now) {
+        const was = file.readings.find((r) => r.id === reading.id);
+        expect(was, `${reading.id} is not in the seal`).toBeDefined();
+        if (was === undefined) continue;
+        for (const what of ['numbers', 'drawing', 'textIt', 'textEn'] as const) {
+          if (was.digests[what] !== reading.digests[what]) {
+            mismatches.push({
+              id: reading.id,
+              what,
+              sealed: was.digests[what],
+              now: reading.digests[what],
+              keysSealed: was.keys,
+              keysNow: reading.keys,
+            });
+          }
         }
       }
-    }
 
-    if (mismatches.length > 0) {
-      const lines = mismatches.slice(0, 10).map((m) => {
-        const moved = movedKeys(m.keysSealed, m.keysNow);
-        return (
-          `  ${m.id} — ${m.what} moved (${m.sealed.slice(0, 12)} → ${m.now.slice(0, 12)})` +
-          (moved.length > 0 ? `\n      ${moved.join('\n      ')}` : '\n      no key number moved')
+      if (mismatches.length > 0) {
+        const lines = mismatches.slice(0, 10).map((m) => {
+          const moved = movedKeys(m.keysSealed, m.keysNow);
+          return (
+            `  ${m.id} — ${m.what} moved (${m.sealed.slice(0, 12)} → ${m.now.slice(0, 12)})` +
+            (moved.length > 0 ? `\n      ${moved.join('\n      ')}` : '\n      no key number moved')
+          );
+        });
+        throw new Error(
+          `The impacts module answers differently than when it was sealed: ` +
+            `${mismatches.length.toString()} of ${(now.length * 4).toString()} digests moved.\n` +
+            lines.join('\n') +
+            (mismatches.length > 10
+              ? `\n  … and ${(mismatches.length - 10).toString()} more`
+              : '') +
+            `\n\nIf this was meant, re-seal with its reason (rule 833):\n` +
+            `  pnpm seal:impacts --opened-by "<rule or bug>" --moved "<what moved>"`
         );
-      });
-      throw new Error(
-        `The impacts module answers differently than when it was sealed: ` +
-          `${mismatches.length.toString()} of ${(now.length * 4).toString()} digests moved.\n` +
-          lines.join('\n') +
-          (mismatches.length > 10 ? `\n  … and ${(mismatches.length - 10).toString()} more` : '') +
-          `\n\nIf this was meant, re-seal with its reason (rule 833):\n` +
-          `  pnpm seal:impacts --opened-by "<rule or bug>" --moved "<what moved>"`
-      );
+      }
+      expect(mismatches).toEqual([]);
     }
-    expect(mismatches).toEqual([]);
-  });
+  );
 
   it('reads the same scenario the same way twice', () => {
     // Rule 832(a). The whole set is read once above; a second reading of a few

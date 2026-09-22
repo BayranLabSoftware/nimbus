@@ -180,11 +180,13 @@
  * presets do.
  */
 export const IMPACT_SEAL_OUTCOME =
-  'ADOPTED 22 September 2026: the impacts module is sealed to the bit — 308 scenarios, four digests each (numbers, drawing, report text in Italian and in English), 5.3 s on every commit. One unit in the last place of a density turns it red and names what moved. To the bit on one engine: the Node version pinned in .nvmrc (rule 836).';
+  'ADOPTED 22 September 2026: the impacts module is sealed to the bit — 308 scenarios, four digests each (numbers, drawing, report text in Italian and in English), 5.3 s on every commit. One unit in the last place of a density turns it red and names what moved. To the bit on one engine and one platform: the Node pinned in .nvmrc, on macOS arm64 (rules 836 and 837).';
 
 /**
  * 836. The engine. Written on 23 September 2026 after the CI had read the seal
  *      of commit bd01331 red, so written knowing what it answers — and said so.
+ *      [Its diagnosis is corrected by rule 837: neither the Node release nor
+ *      its ICU moved the digests; the platform did. Its clauses stand.]
  *
  *      On the CI runner (Node 20, Linux x64), 782 of the 1 232 digests taken on
  *      Andrea's machine (Node 22.20.0, ICU 77.1, macOS arm64) moved, and not
@@ -220,4 +222,41 @@ export const IMPACT_SEAL_OUTCOME =
  *      A browser runs its own engine, with its own ICU, and the seal says
  *      nothing about the last bit a visitor's browser computes — it guards the
  *      code against change, not the arithmetic of every machine that runs it.
+ */
+
+/**
+ * 837. The platform. Written on 23 September 2026 after the CI had read the
+ *      seal of commit 943336a red as well — so written, like rule 836, knowing
+ *      what it answers.
+ *
+ *      Rule 836 named the wrong cause. The verify job ran on the pinned Node,
+ *      22.20.0 with ICU 77.1 — its check of the engine passed — and the same
+ *      782 digests moved, to the same values, digest for digest, as they had
+ *      on Node 20. So neither the Node release nor its ICU moved them: the
+ *      platform did. The same Node answers with other last bits on the
+ *      runner's Linux x64 than on the arm64 Mac the seal was taken on —
+ *      through the processor or through the system beneath the engine, the
+ *      run does not say. That the report's texts moved with the drawing is no
+ *      second cause: a report's figures carry the drawing's layers, so a moved
+ *      drawing moves both texts.
+ *
+ *      So the seal is compared where it is taken:
+ *      (a) the platform is compared beside the Node and its ICU; the seal
+ *          names it, and `SEAL_PLATFORM` pins it: darwin-arm64;
+ *      (b) the CI compares the digests in a job of its own on GitHub's macOS
+ *          arm64 runner, on the Node `.nvmrc` pins; the job sets
+ *          NIMBUS_SEAL_REQUIRED, so a runner of another platform fails it
+ *          instead of skipping it;
+ *      (c) everywhere else the comparison is skipped under a name that says
+ *          where it is made — on the verify job's Linux x64 among them, where
+ *          the rest of the seal's test still runs: the set, the pins, a
+ *          scenario read twice, the reasons;
+ *      (d) the re-seal script refuses any other platform.
+ *      Pinning the Node stays: a release can move the digests as well, and
+ *      moving the engine stays a decision taken for itself.
+ *
+ *      Whether the runner's macOS reads the same bits as the Mac the seal is
+ *      taken on — the same processor family and the same Node binary, but not
+ *      the same system — is read by the first run of that job. If it does not,
+ *      the seal is taken where the CI compares, and this rule says so.
  */

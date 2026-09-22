@@ -21,6 +21,7 @@ import {
   currentEngine,
   readSeal,
   sealTranslators,
+  SEAL_PLATFORM,
   SEAL_SEED,
   type SealFile,
 } from '../src/seal/impactSeal.js';
@@ -37,6 +38,14 @@ if (engine.node !== pinned) {
     `Refusing to seal on Node ${engine.node}: the repository pins ${pinned} in .nvmrc, ` +
       'and the CI compares on that (rule 836).\n' +
       `  Seal on ${pinned}, or move .nvmrc first and give the move as the reason.`
+  );
+  process.exit(2);
+}
+// Rule 837: and on the platform the CI's seal job compares on.
+if (engine.platform !== SEAL_PLATFORM) {
+  console.error(
+    `Refusing to seal on ${engine.platform}: the seal is taken and compared on ` +
+      `${SEAL_PLATFORM} (rule 837), and the same Node gives other last bits elsewhere.`
   );
   process.exit(2);
 }

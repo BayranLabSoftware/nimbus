@@ -838,12 +838,15 @@ The order Andrea fixed, and where it stands:
    it. What it does not cover, and says so: the terrain-given inputs and the
    search for the shore, which only the running app derives; the population,
    which comes from the network; the bathymetric solver's wave map; the Monte
-   Carlo. **To the bit on one engine** (rule 836, 23 September): the first CI
-   run, on Node 20, read 782 of the 1 232 digests moved and no key number —
-   ICU formats the text differently between Node releases, and one preset's
-   numbers moved in their last bit. The seal now records the Node it was read
-   on, `.nvmrc` pins that Node to the patch (22.20.0), the CI's verify job runs
-   on it, and the test refuses to compare on another engine and says why.
+   Carlo. **To the bit on one engine and one platform** (rules 836 and 837,
+   23 September): the CI read 782 of the 1 232 digests moved and no key
+   number, and the same 782 to the same values on Node 20 and on the pinned
+   22.20.0 — so the cause is the platform, Linux x64 against the arm64 Mac the
+   seal is taken on, not the Node release (rule 836 had guessed ICU; 837
+   corrects it). The seal records its Node, ICU and platform; `.nvmrc` pins
+   the Node to the patch; the CI compares the digests in a job of its own on
+   GitHub's macOS arm64 runner, and elsewhere skips the comparison under a
+   name that says where it is made.
 2. **The shell and the contract of a module**, written once.
 3. **The impacts moved into their own module** — their physics, their slice of
    the store, their drawing as a pure description with the common Cesium

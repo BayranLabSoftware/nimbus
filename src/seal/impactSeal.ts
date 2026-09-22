@@ -447,18 +447,26 @@ export interface SealReason {
 }
 
 /**
- * Rule 836: the engine a seal was read on. A digest to the bit is a digest of
- * what one engine answers: ICU formats the report's numbers and dates, and V8
- * gives a Math function its last bit, and both change between Node versions.
+ * Rules 836 and 837: the engine a seal was read on. A digest to the bit is a
+ * digest of what one engine answers on one platform: the same Node gives
+ * other last bits on Linux x64 than on an arm64 Mac, and a drawing carries
+ * thousands of numbers a last bit can move.
  */
 export interface SealEngine {
   /** `process.version`, which fixes V8 and the ICU Node ships with. */
   node: string;
   /** The ICU the numbers and dates were formatted with. */
   icu: string;
-  /** Recorded, not compared (rule 836). */
+  /** `process.platform-process.arch`, compared since rule 837. */
   platform: string;
 }
+
+/**
+ * Rule 837: the platform the seal is taken on and compared on — the arm64 Mac
+ * it is taken on, and GitHub's macOS arm64 runner, where the CI's `seal` job
+ * compares it. Elsewhere the digests are not compared at all.
+ */
+export const SEAL_PLATFORM = 'darwin-arm64';
 
 /** The engine this process runs on. */
 export function currentEngine(): SealEngine {

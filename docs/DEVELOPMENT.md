@@ -39,7 +39,7 @@ What sets it apart from NUKEMAP and neal.fun's Asteroid Launcher:
 | --------------- | -------------------------------------------------------------------------------------------- |
 | Framework       | React 19 + TypeScript 5.7 strict + `noUncheckedIndexedAccess` + `exactOptionalPropertyTypes` |
 | Bundler         | Vite 6                                                                                       |
-| Runtime         | Node 22.20.0, pinned in `.nvmrc`: the impacts seal is exact only on it (rule 836)            |
+| Runtime         | Node 22.20.0, pinned in `.nvmrc`; the impacts seal compares on it on macOS arm64 (837)       |
 | Package manager | pnpm 9 (via Corepack)                                                                        |
 | Globe rendering | Cesium 1.x (M2+)                                                                             |
 | State           | Zustand                                                                                      |

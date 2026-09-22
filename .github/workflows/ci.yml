@@ -14,6 +14,37 @@ permissions:
   contents: read
 
 jobs:
+  seal:
+    # The impacts seal compared where it is taken (rule 837 of
+    # impactSealRules.ts). Its digests are to the bit, and the bit is the
+    # platform's: the same Node gives other last bits on the verify job's
+    # Linux x64 than on the arm64 Mac the seal is taken on, so the verify job
+    # skips the comparison and this job makes it, on GitHub's macOS arm64
+    # runner. NIMBUS_SEAL_REQUIRED turns a runner that is not that platform
+    # into a failure instead of a skip.
+    name: seal (macOS arm64)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: The impacts seal
+        run: pnpm exec vitest run --project seal
+        env:
+          NIMBUS_SEAL_REQUIRED: '1'
+
   verify:
     name: verify
     runs-on: ubuntu-latest
@@ -26,9 +57,8 @@ jobs:
 
       - name: Setup Node
         # The exact version in .nvmrc, not a major: the impacts seal is a
-        # digest to the bit, and ICU's formatting and V8's last bit move
-        # between Node releases (rule 836 of impactSealRules.ts). Moving it is
-        # a re-seal with that as its reason.
+        # digest to the bit, taken on one Node (rules 836 and 837 of
+        # impactSealRules.ts). Moving it is a re-seal with that as its reason.
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
