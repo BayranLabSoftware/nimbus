@@ -37,10 +37,15 @@ export const EIEP_TARGET_DENSITY: Readonly<Record<EiepRow['target'], number>> = 
 };
 
 /** A row of the grid as the model runs it; `options` names a law other than
- *  the default, for reading two on one commit. */
+ *  the default, for reading two on one commit. The strength is pinned to
+ *  Eq. 9 (rule 885(a)): the reference program uses it, and level A verifies
+ *  Collins et al.'s equations, whatever law the product runs on. */
 export function eiepRowInput(
   row: EiepRow,
-  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary' | 'craterField'> = {}
+  options: Pick<
+    ImpactScenarioInput,
+    'entryEquations' | 'entryBoundary' | 'craterField' | 'strengthLaw'
+  > = {}
 ): ImpactScenarioInput {
   return {
     impactorDiameter: m(row.diameterM),
@@ -48,13 +53,17 @@ export function eiepRowInput(
     impactorDensity: kgPerM3(row.densityKgM3),
     targetDensity: kgPerM3(EIEP_TARGET_DENSITY[row.target]),
     impactAngle: degreesToRadians(deg(row.angleDeg)),
+    strengthLaw: 'density',
     ...options,
   };
 }
 
 export function simulateEiepRow(
   row: EiepRow,
-  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary' | 'craterField'> = {}
+  options: Pick<
+    ImpactScenarioInput,
+    'entryEquations' | 'entryBoundary' | 'craterField' | 'strengthLaw'
+  > = {}
 ): ImpactScenarioResult {
   return simulateImpact(eiepRowInput(row, options));
 }

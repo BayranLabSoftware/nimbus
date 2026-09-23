@@ -25,11 +25,18 @@ import {
   type ClimateTier,
 } from './effects/atmosphere.js';
 import {
+  DEFAULT_STRENGTH_LAW,
+  FIRST_STAGE_MAJOR_SHARE,
+  FIRST_STAGE_STRENGTH,
   IMPACTOR_STRENGTH,
   atmosphericEntry,
+  firstFragmentationAltitude,
+  mainStageStrength,
   swarmSpreadAtBurst,
   swarmSpreadAtGround,
+  twoStageCovers,
   type AtmosphericEntryResult,
+  type StrengthLaw,
 } from './effects/atmosphericEntry.js';
 import {
   craterAsymmetry,
@@ -187,6 +194,11 @@ export interface ImpactScenarioInput {
   /** Impactor tensile strength (Pa) — drives the Chyba/Collins airburst
    *  classifier. Defaults to STONY (1 MPa, ordinary chondrite). */
   impactorStrength?: Pascals;
+  /** Rules 881 to 889: the law the body's strength follows. */
+  strengthLaw?: StrengthLaw;
+  /** Rule 882(c): the first phase's strength, where a draw gives one; the
+   *  source's midpoint otherwise. Read under `twoStage` only. */
+  firstStageStrength?: Pascals;
   /** Compass azimuth (° clockwise from geographic North) the impactor
    *  is travelling toward at the moment of contact. Drives the down-
    *  range orientation of the asymmetric ejecta blanket for oblique
@@ -600,21 +612,50 @@ function airburstBandOf(
   };
 }
 
+/** Rule 882(b): the first fragmentation, beside the entry, under `twoStage`
+ *  and for a body the law covers; the entry unchanged otherwise. */
+function withFirstStage(
+  law: StrengthLaw,
+  input: ImpactScenarioInput,
+  entry: AtmosphericEntryResult
+): AtmosphericEntryResult {
+  if (law !== 'twoStage' || !twoStageCovers(input.impactorDensity)) return entry;
+  return {
+    ...entry,
+    firstFragmentationAltitude: firstFragmentationAltitude({
+      diameter: input.impactorDiameter,
+      velocity: input.impactVelocity,
+      density: input.impactorDensity,
+      angle: input.impactAngle,
+      strength: input.firstStageStrength ?? FIRST_STAGE_STRENGTH,
+    }),
+    firstFragmentationMajorShare: FIRST_STAGE_MAJOR_SHARE,
+  };
+}
+
 export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult {
   const mass = impactorMass(input.impactorDiameter, input.impactorDensity);
   const ke = kineticEnergy(mass, input.impactVelocity);
 
-  const entry = atmosphericEntry(
-    input.impactorDiameter,
-    input.impactVelocity,
-    input.impactorStrength,
-    input.impactorDensity,
-    ke,
-    input.impactAngle,
-    input.entryEquations,
-    undefined,
-    input.entryBoundary,
-    input.airFlash
+  // Rules 881 to 889: the strength the pancake starts at, and under
+  // `twoStage` the first fragmentation beside it.
+  const strengthLaw = input.strengthLaw ?? DEFAULT_STRENGTH_LAW;
+  const strength = mainStageStrength(strengthLaw, input.impactorStrength, input.impactorDensity);
+  const entry = withFirstStage(
+    strengthLaw,
+    input,
+    atmosphericEntry(
+      input.impactorDiameter,
+      input.impactVelocity,
+      strength,
+      input.impactorDensity,
+      ke,
+      input.impactAngle,
+      input.entryEquations,
+      undefined,
+      input.entryBoundary,
+      input.airFlash
+    )
   );
   // Crater and ejecta come from the speed the body or its swarm strikes
   // the ground at, as Collins et al. compute them (their Eq. 21* with
@@ -867,7 +908,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
           entryPath(
             input.impactorDiameter,
             input.impactVelocity,
-            input.impactorStrength,
+            strength,
             input.impactorDensity,
             input.impactAngle,
             {

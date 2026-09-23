@@ -76,6 +76,82 @@ export function collinsStrength(density: KilogramPerCubicMeter): Pascals {
 }
 
 /**
+ * Rules 881 to 889 (validation/strengthTwoStageRules.ts): the law a body's
+ * strength follows. `density`: Eq. 9 above, or the strength the input gives.
+ * `twoStage`: for a stony body, the two phases Borovička, Spurný & Shrbený
+ * (2020) found meteoroids fragment in — the pancake starts at the second's
+ * strength, and the first's altitude is reported apart.
+ */
+export type StrengthLaw = 'density' | 'twoStage';
+export const DEFAULT_STRENGTH_LAW: StrengthLaw = 'density';
+
+/** Rule 882(c): the first phase's and the second's strengths, the geometric
+ *  midpoints of 0.04–0.12 MPa and 0.9–5 MPa, and their intervals. */
+export const FIRST_STAGE_STRENGTH_RANGE = [40_000, 120_000] as const;
+export const MAIN_STAGE_STRENGTH_RANGE = [900_000, 5_000_000] as const;
+export const FIRST_STAGE_STRENGTH = Pa(
+  Math.sqrt(FIRST_STAGE_STRENGTH_RANGE[0] * FIRST_STAGE_STRENGTH_RANGE[1])
+);
+export const MAIN_STAGE_STRENGTH = Pa(
+  Math.sqrt(MAIN_STAGE_STRENGTH_RANGE[0] * MAIN_STAGE_STRENGTH_RANGE[1])
+);
+/** Rule 882(b): two first phases in three take at least 40 % of the mass. */
+export const FIRST_STAGE_MAJOR_SHARE = 2 / 3;
+/** Rule 882: the stony densities the law covers (kg/m³), the lower bound in. */
+export const TWO_STAGE_DENSITIES = [2_500, 5_000] as const;
+
+/** Rule 882: whether `twoStage` covers a body of this density. */
+export function twoStageCovers(density: number): boolean {
+  return density >= TWO_STAGE_DENSITIES[0] && density < TWO_STAGE_DENSITIES[1];
+}
+
+/**
+ * Rule 882(a) and (d): the strength the pancake starts at — under `twoStage`
+ * and for a stony body, the second phase's, or the input's taken as it;
+ * otherwise the input's, or Eq. 9 where there is none (undefined).
+ */
+export function mainStageStrength(
+  law: StrengthLaw,
+  given: Pascals | undefined,
+  density: number
+): Pascals | undefined {
+  if (law === 'twoStage' && twoStageCovers(density)) return given ?? MAIN_STAGE_STRENGTH;
+  return given;
+}
+
+/**
+ * Rule 882(b): the altitude where the whole body's dynamic pressure, ρ(z)
+ * v(z)² with Eq. 8's speed, first reaches `strength`, in the model's own
+ * exponential atmosphere; 0 where it never does. With x = ρ(z), the pressure
+ * is x v₀² e^(−2ax), a = 3 C_D H / (4 ρ_i L₀ sin θ), which grows with x up
+ * to x = 1/(2a): the first crossing is the smallest root below that.
+ */
+export function firstFragmentationAltitude(input: {
+  diameter: number;
+  velocity: number;
+  density: number;
+  angle: number;
+  strength: number;
+}): Meters {
+  const { diameter, velocity, density, angle, strength } = input;
+  const sinTheta = Math.sin(angle);
+  if (![diameter, velocity, density, strength, sinTheta].every((v) => Number.isFinite(v) && v > 0))
+    return m(0);
+  const a = (3 * DRAG_COEFFICIENT * H_SCALE) / (4 * density * diameter * sinTheta);
+  const pressure = (x: number): number => x * velocity * velocity * Math.exp(-2 * a * x);
+  const top = Math.min(RHO_0, 1 / (2 * a));
+  if (pressure(top) < strength) return m(0);
+  let lo = 0;
+  let hi = top;
+  for (let i = 0; i < 200; i++) {
+    const mid = (lo + hi) / 2;
+    if (pressure(mid) < strength) lo = mid;
+    else hi = mid;
+  }
+  return m(Math.max(-H_SCALE * Math.log(hi / RHO_0), 0));
+}
+
+/**
  * Tensile-strength ranges for the main impactor classes. Values from
  * Popova et al. (2011), "Very low strengths of interplanetary
  * meteoroids and small asteroids", M&PS 46 (10), Table 2 / §6.
@@ -301,6 +377,13 @@ export interface AtmosphericEntryResult {
    *  then (Collins et al. 2017); for a swarm that strikes the ground, the
    *  atmospheric yield. 0 for INTACT. */
   blastYieldMegatons: number;
+  /** Rule 882(b), under `twoStage` only: the altitude of the first
+   *  fragmentation, where the whole body's dynamic pressure first reaches
+   *  the first phase's strength; 0 where it never does. */
+  firstFragmentationAltitude?: Meters;
+  /** Rule 882(b), under `twoStage` only: the share of bodies whose first
+   *  phase takes at least 40 % of the mass. */
+  firstFragmentationMajorShare?: number;
 }
 
 /** Ground ranges at which the entry's shock reaches three overpressures. */

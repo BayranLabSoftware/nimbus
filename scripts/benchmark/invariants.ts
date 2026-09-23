@@ -100,6 +100,9 @@ const IRON_CRATER_FIELD = process.env.NIMBUS_IRON_CRATER_FIELD;
 /** Whether a scattered swarm digs a crater field, when the sweep is asked to
  *  read a candidate (rule 842 of validation/craterFieldRules.ts). */
 const CRATER_FIELD = process.env.NIMBUS_CRATER_FIELD;
+/** The law a body's strength follows, when the sweep is asked to read a
+ *  candidate (rule 885(e) of validation/strengthTwoStageRules.ts). */
+const STRENGTH_LAW = process.env.NIMBUS_STRENGTH_LAW;
 /** What an airburst's flash is drawn from, when the sweep is asked to read a
  *  candidate (rule 777 of validation/atapRadiationRules.ts). */
 const AIRBURST_RADIATION = process.env.NIMBUS_AIRBURST_RADIATION;
@@ -252,6 +255,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(LOW_BURST_CRATER === undefined ? {} : { lowBurstCrater: LOW_BURST_CRATER }),
         ...(IRON_CRATER_FIELD === undefined ? {} : { ironCraterField: IRON_CRATER_FIELD }),
         ...(CRATER_FIELD === undefined ? {} : { craterField: CRATER_FIELD }),
+        ...(STRENGTH_LAW === undefined ? {} : { strengthLaw: STRENGTH_LAW }),
         ...(AIRBURST_RADIATION === undefined ? {} : { airburstRadiation: AIRBURST_RADIATION }),
       } as never) as unknown as Json,
     // Rule 780 of validation/atapRadiationAgainRules.ts: the blast source,
@@ -268,6 +272,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(LOW_BURST_CRATER === undefined ? {} : { lowBurstCrater: LOW_BURST_CRATER }),
         ...(IRON_CRATER_FIELD === undefined ? {} : { ironCraterField: IRON_CRATER_FIELD }),
         ...(CRATER_FIELD === undefined ? {} : { craterField: CRATER_FIELD }),
+        ...(STRENGTH_LAW === undefined ? {} : { strengthLaw: STRENGTH_LAW }),
         airburstRadiation: 'efficiency',
       } as never) as unknown as Json,
     // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring

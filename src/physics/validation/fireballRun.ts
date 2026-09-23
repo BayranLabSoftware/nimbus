@@ -1,4 +1,10 @@
-import { atmosphericEntry, type EntryRegime } from '../effects/atmosphericEntry.js';
+import {
+  atmosphericEntry,
+  DEFAULT_STRENGTH_LAW,
+  mainStageStrength,
+  type EntryRegime,
+  type StrengthLaw,
+} from '../effects/atmosphericEntry.js';
 import { J, kgPerM3, m, mps, Pa, rad } from '../units.js';
 import {
   FIREBALL_BODIES,
@@ -35,14 +41,23 @@ export interface FireballRow {
   regime: EntryRegime;
 }
 
-/** Rule 77: one bolide as the model runs it. */
-export function fireballRow(event: FireballEvent, body: FireballBody): FireballRow {
+/** Rule 77: one bolide as the model runs it — under the product's law of
+ *  strength, or the one named (rule 885(b) reads both). */
+export function fireballRow(
+  event: FireballEvent,
+  body: FireballBody,
+  law: StrengthLaw = DEFAULT_STRENGTH_LAW
+): FireballRow {
   const angle = fireballEntryAngle(event);
   const diameter = fireballDiameterM(event.energyKt, event.speedKmS, body.densityKgM3);
   const entry = atmosphericEntry(
     m(diameter),
     mps(event.speedKmS * 1_000),
-    body.strengthPa === null ? undefined : Pa(body.strengthPa),
+    mainStageStrength(
+      law,
+      body.strengthPa === null ? undefined : Pa(body.strengthPa),
+      body.densityKgM3
+    ),
     kgPerM3(body.densityKgM3),
     J(event.energyKt * 4.184e12),
     rad(angle)
@@ -62,9 +77,10 @@ export function fireballRow(event: FireballEvent, body: FireballBody): FireballR
 
 export function fireballRows(
   body: FireballBody,
-  events: readonly FireballEvent[] = FIREBALL_EVENTS
+  events: readonly FireballEvent[] = FIREBALL_EVENTS,
+  law: StrengthLaw = DEFAULT_STRENGTH_LAW
 ): FireballRow[] {
-  return events.map((event) => fireballRow(event, body));
+  return events.map((event) => fireballRow(event, body, law));
 }
 
 const median = (xs: readonly number[]): number | null => {
