@@ -94,6 +94,15 @@ States 2, 3 and 4 are drawn from each layer's edge (step 1), with these choices:
   layer» is shown where the heat reaches its horizon (Chicxulub, Popigai), not on a heat that stops
   short of it.
 
+## The printed report (rule 1037)
+
+The reviewer, approving steps 1 to 3, asked for the report now, before step 4: the globe and the
+PDF are one product. A pass of presentation alone — the flat maps draw the four states, edges and
+labels (the veil grey on paper); the report prints every drawn layer's provenance card and each of
+its marks', and lists the layers not drawn with their reason; it carries the fixed note «La resa
+cartografica non estende il dominio fisico del modello.»; photographs before and after, the seal's
+numbers the same. From here on every step changes the globe and the report together.
+
 ## Tests and the visual suite
 
 Automatic tests: every layer and object has one state and a full card; every edge says what lies

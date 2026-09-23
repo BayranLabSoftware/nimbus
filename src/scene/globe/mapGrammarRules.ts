@@ -127,6 +127,27 @@
  * RULE 1036. WHAT IS NOT IN THIS ROUND: economic damage (Nimbus computes none);
  * the logarithmic ejecta view; any change of the physics behind a layer
  * (Tunguska's heat is a question of physics, for a round of its own).
+ *
+ * RULE 1037. THE PRINTED REPORT, NOW. The reviewer, approving steps 1 to 3 on
+ * 23 September 2026, night, set this before step 4 (Andrea's order: the
+ * report, then steps 4 to 7, then the independent test's charter, then F):
+ * the globe and the PDF are one scientific product, and a reader offline must
+ * not get the reading the grammar corrects. A pass of presentation alone:
+ *   (a) the report's flat maps draw the four states, the edges and the labels
+ *       the globe draws — the band below the threshold as a neutral veil
+ *       (grey on paper, where white does not show), the limit of the model as
+ *       a dash-dot line, the area not computed as a grey hatch, thresholds at a
+ *       limit as one callout, the state labels in italics;
+ *   (b) the report prints, for every layer it draws, its provenance card
+ *       (rule 1029) and the card of each object drawn past its edge, and lists
+ *       the layers it does not draw with their reason (rule 1032 (c));
+ *   (c) the report carries the fixed note «La resa cartografica non estende il
+ *       dominio fisico del modello.» («The map's rendering does not extend the
+ *       model's physical domain.»);
+ *   (d) photographs before and after; the seal re-taken, its numbers the same.
+ * A layer's notes say only what holds for every scenario: what is drawn past
+ * an edge is said by its own key and card, where it is drawn. From here on
+ * every step of rule 1034 changes the globe and the report together.
  */
 
 /** Rule 1030: the four visual states. */
