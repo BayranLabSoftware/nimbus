@@ -25,6 +25,7 @@ import {
   isolinePointAtBearing,
   levelGeometry,
   markGroundField,
+  markLabelRadius,
   rasterizeGround,
   type GeoPoint,
   type GroundField,
@@ -145,15 +146,7 @@ export function drawImpactFieldLayer(
           polyline: { positions, width: 4, material: LIMIT_MATERIAL, clampToGround: true },
         });
     }
-    // The words stand a little way into what they name: on a line, on it; in
-    // a band, just past the field's edge; in an area, just past its own.
-    const labelRadius =
-      mark.state === 'modelLimit'
-        ? mark.fromM
-        : mark.state === 'belowThreshold'
-          ? mark.fromM * Math.pow(mark.toM / mark.fromM, 0.06)
-          : mark.fromM * 1.08;
-    const at = isolinePointAtBearing(anchor, shape, labelRadius, mark.labelBearingDeg);
+    const at = isolinePointAtBearing(anchor, shape, markLabelRadius(mark), mark.labelBearingDeg);
     if (labels)
       viewer.entities.add({
         id: `${base}-label`,

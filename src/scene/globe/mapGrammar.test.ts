@@ -232,6 +232,8 @@ describe('rule 1031 (a): the heat at its horizon', () => {
       if (line.state === 'computed')
         expect(Math.abs(line.radiusM - horizon)).toBeGreaterThan(0.01 * horizon);
     expect(heat?.notes.map((n) => n.text)).toContain('globe.impactMap.note.thermalNotModelled');
+    // The card reads each threshold, not the joined line (rule 1037 (b)).
+    expect(heat?.card.extent).toMatch(/"outer":"5","inner":"20"/);
   });
 
   it('leaves a heat that stops short of its horizon as it was', () => {

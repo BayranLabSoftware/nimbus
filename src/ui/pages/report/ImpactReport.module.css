@@ -343,6 +343,32 @@
   background: repeating-linear-gradient(90deg, #141414 0 1.2px, transparent 1.2px 20px);
 }
 
+/* Rule 1037 (a): the states' keys, as the flat maps draw them. */
+.mark-belowThreshold {
+  background: linear-gradient(90deg, rgba(74, 74, 74, 0.28), transparent);
+}
+
+.mark-modelLimit {
+  height: 2px;
+  border: 0;
+  border-radius: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    #5c5c5c 0 7px,
+    transparent 7px 9.5px,
+    #5c5c5c 9.5px 11px,
+    transparent 11px 13.5px
+  );
+}
+
+.mark-notModelled {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(111, 111, 111, 0.7) 0 1.5px,
+    transparent 1.5px 4.5px
+  );
+}
+
 .notes {
   display: grid;
   grid-template-columns: 62px minmax(0, 1fr);
@@ -459,6 +485,44 @@
   font-size: 9.2px;
   line-height: 1.45;
   color: #4a4741;
+}
+
+/* Rule 1037: the fixed note, the marks' headings and the layers not drawn. */
+.renderingNote {
+  margin: 2px 0 8px;
+  padding: 4px 8px;
+  border-left: 2px solid #5c5c5c;
+  font-size: 9px;
+  font-weight: 600;
+  color: #1b1b19;
+}
+
+.cardTable {
+  font-size: 8.4px;
+  line-height: 1.35;
+}
+
+.cardTable td {
+  vertical-align: top;
+}
+
+.cardTable td:first-child {
+  font-style: italic;
+  width: 18%;
+}
+
+.cardGroup td {
+  padding-top: 7px;
+  font-style: normal !important;
+  background: #f6f4ef;
+}
+
+.absentList {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 9px;
+  line-height: 1.45;
+  color: #3b3833;
 }
 
 .sectionTitle {

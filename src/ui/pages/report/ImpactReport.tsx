@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type JSX, type ReactNode } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState, type JSX, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BUILD_INFO, commitUrl, shortCommit, validationReportUrl } from '../../../buildInfo.js';
 import { buildImpactCascade } from '../../../physics/cascade.js';
@@ -10,6 +10,7 @@ import {
   isolineMembers,
   type ImpactMapLayer,
 } from '../../../scene/globe/impactFieldMap.js';
+import type { ProvenanceCard } from '../../../scene/globe/mapGrammarRules.js';
 import {
   reportMapBox,
   reportMapHalfWidth,
@@ -81,6 +82,20 @@ function Legend({ layer, barHeight }: { layer: ImpactMapLayer; barHeight: number
           ))}
         </ul>
       )}
+      {layer.marks.length > 0 && (
+        // Rule 1037 (a): the keys of what the map draws past its edge.
+        <ul className={styles.cats}>
+          {layer.marks.map((mk) => (
+            <li key={mk.id} className={styles.cat} data-report-mark-key={mk.state}>
+              <span
+                className={[styles.swatch, styles[`mark-${mk.state}`]].join(' ')}
+                aria-hidden="true"
+              />
+              <span>{mk.label.replace(/\s*\n\s*/g, ' ')}</span>
+            </li>
+          ))}
+        </ul>
+      )}
       <dl className={styles.notes}>
         {layer.notes.map((n) => (
           <div key={n.label} style={{ display: 'contents' }}>
@@ -90,6 +105,31 @@ function Legend({ layer, barHeight }: { layer: ImpactMapLayer; barHeight: number
         ))}
       </dl>
     </div>
+  );
+}
+
+/** Rule 1037 (b): a provenance card as a row of the report's table — what is
+ *  drawn, then four of its five fields; the quantity heads the figure's rows. */
+function CardRow({
+  what,
+  card,
+  layer,
+  mark,
+}: {
+  what: string;
+  card: ProvenanceCard;
+  layer: string;
+  mark?: string;
+}): JSX.Element {
+  const { t } = useTranslation();
+  return (
+    <tr data-report-row={layer} data-report-mark={mark}>
+      <td>{what}</td>
+      <td data-card="state">{t(`globe.impactMap.state.${card.state}`)}</td>
+      <td data-card="source">{card.source}</td>
+      <td data-card="extent">{card.extent}</td>
+      <td data-card="beyond">{t(`globe.impactMap.beyond.${card.beyond}`)}</td>
+    </tr>
   );
 }
 
@@ -584,7 +624,9 @@ export function ImpactReport({
               <p className={styles.caption}>
                 <b>{t('report.impact.figure', { n: first.number })}.</b>{' '}
                 {t('report.impact.caption')}
-                {hasShots && ` ${t('report.impact.captionGlobe')}`}
+                {hasShots && ` ${t('report.impact.captionGlobe')}`}{' '}
+                {/* Rule 1037 (c): the fixed note. */}
+                <b data-testid="rendering-note">{t('report.impact.renderingNote')}</b>
               </p>
               <IsolineTable layer={first.layer} language={language} />
             </>
@@ -603,6 +645,64 @@ export function ImpactReport({
             {figures.map(card)}
           </Sheet>
         ))}
+
+        {/* Rule 1037 (b): every drawn layer's card and its marks', and the
+            layers not drawn with their reason. */}
+        <Sheet foot={foot} testId="cards">
+          <h2 className={styles.sectionTitle}>{t('report.impact.cardsTitle')}</h2>
+          <p className={styles.renderingNote}>{t('report.impact.renderingNote')}</p>
+          <table className={[styles.table, styles.cardTable].join(' ')}>
+            <thead>
+              <tr>
+                <th>{t('report.impact.cardWhat')}</th>
+                <th>{t('globe.impactMap.card.state')}</th>
+                <th>{t('globe.impactMap.card.source')}</th>
+                <th>{t('globe.impactMap.card.extent')}</th>
+                <th>{t('globe.impactMap.card.beyond')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {model.figures.map((f) => (
+                <Fragment key={f.layer.id}>
+                  <tr className={styles.cardGroup} data-report-card={f.layer.id}>
+                    <td colSpan={5} data-card="quantity">
+                      <b>
+                        {t('report.impact.figure', { n: f.number })} · {f.layer.card.quantity}
+                      </b>{' '}
+                      · {f.layer.card.unit}
+                    </td>
+                  </tr>
+                  <CardRow
+                    what={t('report.impact.cardField')}
+                    card={f.layer.card}
+                    layer={f.layer.id}
+                  />
+                  {f.layer.marks.map((mk) => (
+                    <CardRow
+                      key={mk.id}
+                      what={mk.label.replace(/\s*\n\s*/g, ' ')}
+                      card={mk.card}
+                      layer={f.layer.id}
+                      mark={mk.state}
+                    />
+                  ))}
+                </Fragment>
+              ))}
+            </tbody>
+          </table>
+          {model.absent.length > 0 && (
+            <>
+              <h3 className={styles.subheading}>{t('globe.impactMap.absentHeading')}</h3>
+              <ul className={styles.absentList} data-testid="report-absent">
+                {model.absent.map((a) => (
+                  <li key={a.id} data-beyond={a.beyond}>
+                    <b>{a.tab}</b> — {a.why}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </Sheet>
 
         <Sheet foot={foot} testId="numbers">
           <h2 className={styles.sectionTitle}>{t('report.impact.numbers')}</h2>

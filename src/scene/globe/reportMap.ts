@@ -14,12 +14,14 @@
 import { EARTH_RADIUS } from '../../physics/constants.js';
 import {
   familyShapes,
+  markGroundField,
   nominalRangeFromPolar,
   type FamilyShape,
   type GeoPoint,
   type GroundField,
   type ImpactMapLayer,
 } from './impactFieldMap.js';
+import type { MapState } from './mapGrammarRules.js';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
 
 const R = EARTH_RADIUS as number;
@@ -83,6 +85,9 @@ export interface ReportIsoline {
   label: string;
   points: PlanePoint[];
   labelAt: PlanePoint;
+  /** Rule 1030: a line at a limit of the model is drawn as no isoline, and
+   *  its callout (`label`) is written instead (rule 1031 (a)). */
+  state: MapState;
 }
 
 export interface GraticuleLine {
@@ -95,6 +100,8 @@ export interface ReportMapDrawing {
   /** Half the side of the square the map shows, metres. */
   halfWidthM: number;
   isolines: ReportIsoline[];
+  /** Rule 1030 (3): the limits of the model, each a dash-dot line. */
+  limits: { id: string; points: PlanePoint[] }[];
   /** The crater's rim, where there is a crater. */
   crater: PlanePoint[] | null;
   graticule: { stepDeg: number; lines: GraticuleLine[] };
@@ -187,18 +194,36 @@ export function reportMapDrawing(
   const halfWidthM = reportMapHalfWidth(result, layer);
   const isolines = layer.isolines.map((line) => ({
     id: line.id,
-    label: line.label,
+    label: line.state === 'modelLimit' ? (line.atLimit ?? line.label) : line.label,
     points: outline(shapes[line.family], line.radiusM),
     labelAt: isolineInPlane(shapes[line.family], line.radiusM, line.labelBearingDeg),
+    state: line.state,
   }));
+  const limits = layer.marks
+    .filter((mk) => mk.state === 'modelLimit')
+    .map((mk) => ({ id: mk.id, points: outline(shapes[mk.family], mk.fromM) }));
   const rim = result.damage.craterRim as number;
   return {
     halfWidthM,
     isolines,
+    limits,
     crater: rim > 0 ? outline(shapes.crater, rim) : null,
     graticule: graticule(anchor, halfWidthM),
     scaleBarM: roundLength(halfWidthM * 0.42),
   };
+}
+
+/** What a layer paints past its edge on paper (rule 1037 (a)): its marks'
+ *  grounds, each in its family's shape. */
+export function reportMapOverlays(
+  result: ImpactScenarioResult,
+  layer: ImpactMapLayer
+): { field: GroundField; shape: FamilyShape }[] {
+  const shapes = familyShapes(result);
+  return layer.marks.flatMap((mk) => {
+    const field = markGroundField(mk, 'paper');
+    return field === null ? [] : [{ field, shape: shapes[mk.family] }];
+  });
 }
 
 /** People and land at a point, from the shipped population raster. */
@@ -273,24 +298,29 @@ export function rasterizeReportMap(
   anchor: GeoPoint,
   halfWidthM: number,
   px: number,
-  ground: GroundSampler | null
+  ground: GroundSampler | null,
+  /** Painted over the field, in order: what the layer draws past its edge
+   *  (rule 1037 (a)). */
+  overlays: readonly { field: GroundField; shape: FamilyShape }[] = []
 ): Uint8ClampedArray<ArrayBuffer> {
   const data = new Uint8ClampedArray(px * px * 4);
   const lutN = 2_048;
-  const lut = new Float64Array(lutN * 4);
-  const hatch = new Uint8Array(lutN);
-  let lo = 0;
-  let hi = 1;
-  if (field !== null) {
-    lo = Math.log(Math.max(field.minRangeM, 1));
-    hi = Math.log(Math.max(field.maxRangeM, field.minRangeM * 1.001, 2));
+  const painters = [
+    ...(field !== null && shape !== null ? [{ field, shape }] : []),
+    ...overlays,
+  ].map(({ field: f, shape: sh }) => {
+    const lut = new Float64Array(lutN * 4);
+    const hatch = new Uint8Array(lutN);
+    const lo = Math.log(Math.max(f.minRangeM, 1));
+    const hi = Math.log(Math.max(f.maxRangeM, f.minRangeM * 1.001, 2));
     for (let i = 0; i < lutN; i++) {
       const r = Math.exp(lo + ((hi - lo) * (i + 0.5)) / lutN);
-      const c = field.colorAt(r);
+      const c = f.colorAt(r);
       if (c !== null) lut.set(c, i * 4);
-      hatch[i] = field.hatchedAt?.(r) === true ? 1 : 0;
+      hatch[i] = f.hatchedAt?.(r) === true ? 1 : 0;
     }
-  }
+    return { field: f, shape: sh, lut, hatch, lo, hi, hole: f.holeM ?? 0 };
+  });
   const P = PAPER_GROUND;
   for (let py = 0; py < px; py++) {
     const y = (1 - ((py + 0.5) / px) * 2) * halfWidthM;
@@ -320,21 +350,20 @@ export function rasterizeReportMap(
         g0 += (P.people[1] - g0) * tone;
         b0 += (P.people[2] - b0) * tone;
       }
-      if (field !== null && shape !== null) {
-        const d = Math.hypot(x, y);
-        const r = nominalRangeFromPolar(shape, d, Math.atan2(x, y));
-        if (r > 0 && r <= field.maxRangeM) {
-          const li = Math.min(
-            lutN - 1,
-            Math.max(0, Math.floor(((Math.log(Math.max(r, 1)) - lo) / (hi - lo)) * lutN))
-          );
-          let a = (lut[li * 4 + 3] ?? 0) / 255;
-          if (a > 0) {
-            if (hatch[li] === 1 && (qx + py) % 7 >= 2) a *= 0.16;
-            r0 = r0 * (1 - a) + (lut[li * 4] ?? 0) * a;
-            g0 = g0 * (1 - a) + (lut[li * 4 + 1] ?? 0) * a;
-            b0 = b0 * (1 - a) + (lut[li * 4 + 2] ?? 0) * a;
-          }
+      const d = Math.hypot(x, y);
+      for (const p of painters) {
+        const r = nominalRangeFromPolar(p.shape, d, Math.atan2(x, y));
+        if (!(r > 0) || r > p.field.maxRangeM || r < p.hole) continue;
+        const li = Math.min(
+          lutN - 1,
+          Math.max(0, Math.floor(((Math.log(Math.max(r, 1)) - p.lo) / (p.hi - p.lo)) * lutN))
+        );
+        let a = (p.lut[li * 4 + 3] ?? 0) / 255;
+        if (a > 0) {
+          if (p.hatch[li] === 1 && (qx + py) % 7 >= 2) a *= 0.16;
+          r0 = r0 * (1 - a) + (p.lut[li * 4] ?? 0) * a;
+          g0 = g0 * (1 - a) + (p.lut[li * 4 + 1] ?? 0) * a;
+          b0 = b0 * (1 - a) + (p.lut[li * 4 + 2] ?? 0) * a;
         }
       }
       data[o] = r0;

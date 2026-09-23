@@ -19,6 +19,14 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The printed report speaks the map's grammar.** Its flat maps draw what the
+  globe draws past each field's edge — the veil below the threshold (grey on
+  paper), the dash-dot limit of the model, the hatch where nothing is computed,
+  the callout at the horizon — with their keys in the legend; a sheet prints
+  every map's provenance card and its marks', and the layers not drawn with
+  their reason; Figure 1's caption carries the fixed note "The map's rendering
+  does not extend the model's physical domain." Rule 1037, asked by the
+  reviewer before step 4.
 - **Chicxulub's heat no longer draws its horizon as a line of damage.** The four
   thresholds pressed against the fireball's direct horizon are one callout on
   the limit of the model, "thresholds 5–20 cal/cm² compressed at the geometric

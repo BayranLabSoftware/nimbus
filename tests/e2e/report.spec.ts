@@ -132,12 +132,44 @@ test.describe('the impact report', () => {
     expect(worst.lowest, worst.where).toBeGreaterThan(3);
   });
 
+  test('rule 1037: prints every map’s provenance card, and the fixed note', async ({ page }) => {
+    await openReport(page, 'it');
+    // Each figure's card: the quantity heading its rows, and four fields on
+    // every row — the field's and each mark's.
+    const ids = await page
+      .locator('[data-report-card]')
+      .evaluateAll((els) => els.map((e) => e.getAttribute('data-report-card') ?? ''));
+    expect(ids.length).toBeGreaterThan(0);
+    for (const id of ids) {
+      await expect(page.locator(`[data-report-card="${id}"] [data-card="quantity"]`)).toHaveCount(
+        1
+      );
+      const rows = page.locator(`tr[data-report-row="${id}"]`);
+      const n = await rows.count();
+      expect(n).toBeGreaterThan(0);
+      for (let i = 0; i < n; i++) await expect(rows.nth(i).locator('[data-card]')).toHaveCount(4);
+    }
+    await expect(page.getByTestId('rendering-note')).toHaveText(
+      'La resa cartografica non estende il dominio fisico del modello.'
+    );
+    // Past the overpressure's last isoline the field goes on below it: the
+    // band's key and card are printed with the map's.
+    await expect(
+      page.locator('tr[data-report-row="overpressure"][data-report-mark="belowThreshold"]')
+    ).toHaveCount(1);
+    await openReport(page, 'en');
+    await expect(page.getByTestId('rendering-note')).toHaveText(
+      "The map's rendering does not extend the model's physical domain."
+    );
+  });
+
   test('prints to A4, a sheet a page', async ({ page, browserName }) => {
     test.skip(browserName !== 'chromium', 'Only Chromium prints to PDF.');
     await openReport(page, 'it');
     const pdf = await page.pdf({ format: 'A4', printBackground: true, preferCSSPageSize: true });
     const pages = (pdf.toString('latin1').match(/\/Type\s*\/Page[^s]/g) ?? []).length;
     expect(pages).toBeGreaterThanOrEqual(7);
-    expect(pages).toBeLessThanOrEqual(11);
+    // Rule 1037 (b): the maps' provenance cards take a sheet of their own.
+    expect(pages).toBeLessThanOrEqual(12);
   });
 });

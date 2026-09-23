@@ -1165,11 +1165,11 @@
         "isolinesMedian": "le soglie del modello, alla mediana",
         "bandSigma": "raggio ±{{sigma}} % (1σ): vista Probabilità",
         "bandAgreement": "entro tre quote di scoppio un fattore 2 in sovrappressione (Collins et al. 2017): vista Accordo del campo",
-        "belowLowestBlast": "sotto 0,5 psi il campo non si colora: una fascia tenue, «continua sotto soglia», lo segue fino a un decimo del valore al bordo; oltre 1 MPa la scala si ferma",
+        "belowLowestBlast": "sotto 0,5 psi il campo non si colora; oltre 1 MPa la scala si ferma",
         "windWhat": "la raffica dell'aria spinta dal fronte d'urto: dura quanto la fase di sovrappressione, poi si inverte",
-        "windLimit": "sotto 0,5 psi non si colora: una fascia tenue, «continua sotto soglia», arriva a un decimo del vento al bordo; oltre 1000 km/h la scala si ferma; dentro il cratere nulla",
+        "windLimit": "sotto 0,5 psi non si colora; oltre 1000 km/h la scala si ferma; dentro il cratere nulla",
         "isolinesThermal": "le soglie del modello per ustioni e incendi, alla mediana",
-        "thermalLimit": "sotto la soglia più bassa non si colora: una fascia tenue, «continua sotto soglia», arriva a un decimo del valore al bordo o all’orizzonte della palla di fuoco; oltre l’orizzonte la radiazione diretta non è calcolata, il che non implica assenza di riscaldamento",
+        "thermalLimit": "sotto la soglia più bassa non si colora; oltre l'orizzonte della palla di fuoco la radiazione diretta non è calcolata, il che non implica assenza di riscaldamento",
         "isolinesEjecta": "spessori della stessa legge che dà il bordo a 1 mm",
         "ejectaInside": "dentro il cratere lo spessore non è riportato",
         "magnitude": "M {{m}}, dal 10⁻⁴ dell'energia al suolo (Collins et al. 2005, Eq. 40*)",
@@ -1177,7 +1177,7 @@
         "magnitudeAir": "M {{m}}, dall'onda nell'aria (Harkrider; regole 730–738), senza forchetta",
         "liquefactionReach": "fino a {{range}} su suolo sabbioso saturo",
         "liquefactionNone": "nessuna: la magnitudo non basta a liquefare un suolo sabbioso saturo",
-        "shakingBelowV": "sotto V solo la linea, come per i terremoti; oltre III una fascia tenue, «continua sotto soglia», arriva alla magnitudo efficace 2, un decennio d’ampiezza sotto",
+        "shakingBelowV": "sotto V solo la linea, come per i terremoti",
         "shakingAirburst": "il programma disegna questi anelli anche per un airburst, ma Collins et al. (2005) non riportano scuotimento per gli airburst; quello di Tunguska arrivò ai sismografi e qui non è confrontato con una registrazione",
         "probabilityFrom": "lo scarto pubblicato del raggio, 1σ = {{sigma}} %, letto come lognormale",
         "probabilityIsolines": "90, 50 e 10 %; il 50 % è la linea della carta del campo",
@@ -1264,6 +1264,7 @@
         "extent": "Estensione disegnata",
         "beyond": "Oltre il bordo",
         "extentValue": "da {{outer}} a {{inner}}, fino a {{reach}}",
+        "extentOne": "{{value}}, fino a {{reach}}",
         "extentWaveMap": "la carta dell’onda che il globo disegna, le sue voci qui sotto",
         "extentNone": "nulla oltre ciò che la legenda elenca"
       },
@@ -1318,11 +1319,11 @@
           "notModelled": {
             "thermal": "radiazione diretta non calcolata oltre l’orizzonte;\nquesto non implica assenza di riscaldamento"
           },
-          "compressed": "soglie {{lo}}–{{hi}} cal/cm² compresse presso il limite geometrico",
-          "compressedOne": "soglia {{value}} cal/cm² compressa presso il limite geometrico"
+          "compressed": "soglie {{lo}}–{{hi}} cal/cm²\ncompresse presso il limite geometrico",
+          "compressedOne": "soglia {{value}} cal/cm²\ncompressa presso il limite geometrico"
         },
         "source": {
-          "below": "lo stesso modello del campo, letto oltre la soglia più bassa disegnata — {{source}}"
+          "below": "lo stesso modello del campo, letto oltre la soglia più bassa disegnata"
         },
         "extent": {
           "below": "da {{from}} a {{to}}, da {{inner}} a {{outer}}: un decennio sotto il valore al bordo, o fino al limite del modello",
@@ -1593,7 +1594,11 @@
         "air": "l'energia che il corpo deposita nell'aria lungo la traiettoria ({{air}}), non un impatto che scava un cratere: la penetrazione lenta non è modellata"
       },
       "craterUnresolved": "sotto i 5 km/s la legge del cratere (Collins et al. 2005, Eq. 21) non vale: è possibile una buca di penetrazione locale (French 1998)",
-      "craterExploratory": "esplorativo: un cratere sotto i ~200 m è fuori dal dominio che Collins et al. (2005, p. 823) dichiarano per la loro legge di scala, valida dove la gravità arresta la crescita del cratere"
+      "craterExploratory": "esplorativo: un cratere sotto i ~200 m è fuori dal dominio che Collins et al. (2005, p. 823) dichiarano per la loro legge di scala, valida dove la gravità arresta la crescita del cratere",
+      "cardsTitle": "Schede di provenienza delle carte",
+      "renderingNote": "La resa cartografica non estende il dominio fisico del modello.",
+      "cardWhat": "Oggetto disegnato",
+      "cardField": "il campo"
     }
   },
   "about": {

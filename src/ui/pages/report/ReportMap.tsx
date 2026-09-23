@@ -3,6 +3,7 @@ import type { ImpactScenarioResult } from '../../../physics/simulate.js';
 import { cityDisplayName, type CityRecord } from '../../../scene/globe/cityLabels.js';
 import {
   familyShapes,
+  markLabelRadius,
   type GeoPoint,
   type ImpactMapLayer,
 } from '../../../scene/globe/impactFieldMap.js';
@@ -13,6 +14,7 @@ import {
   placeCities,
   rasterizeReportMap,
   reportMapDrawing,
+  reportMapOverlays,
   type PlanePoint,
   type PopulationGridLike,
 } from '../../../scene/globe/reportMap.js';
@@ -44,6 +46,9 @@ export interface ReportMapProps {
 const INK = '#141414';
 const HALO = 'rgba(255,255,255,0.96)';
 const FAINT = 'rgba(0,0,0,0.17)';
+/** Rule 1030 (3) on paper: a limit of the model, a neutral dash-dot line. */
+const LIMIT_INK = '#5c5c5c';
+const LIMIT_DASH = '7 2.5 1.5 2.5';
 
 function pathOf(
   points: readonly PlanePoint[],
@@ -75,16 +80,22 @@ function Halo({
   size,
   weight,
   mono,
+  italic,
   anchor = 'middle',
 }: {
   x: number;
   y: number;
+  /** Lines apart at «\n». */
   text: string;
   size: number;
   weight: number;
   mono?: boolean;
+  /** A state's words (rule 1030), set apart from the values. */
+  italic?: boolean;
   anchor?: 'start' | 'middle' | 'end';
 }): JSX.Element {
+  const lines = text.split('\n');
+  const step = size + 2;
   return (
     <text
       x={x}
@@ -94,13 +105,20 @@ function Halo({
       className={mono === true ? styles.mapTextMono : styles.mapText}
       fontSize={size}
       fontWeight={weight}
+      fontStyle={italic === true ? 'italic' : undefined}
       fill={INK}
       stroke={HALO}
       strokeWidth={3}
       strokeLinejoin="round"
       paintOrder="stroke"
     >
-      {text}
+      {lines.length === 1
+        ? text
+        : lines.map((line, i) => (
+            <tspan key={line} x={x} y={y + (i - (lines.length - 1) / 2) * step}>
+              {line}
+            </tspan>
+          ))}
     </text>
   );
 }
@@ -141,7 +159,8 @@ export function ReportMap({
         anchor,
         drawing.halfWidthM,
         resolution,
-        population === null ? null : gridSampler(population)
+        population === null ? null : gridSampler(population),
+        reportMapOverlays(result, layer)
       );
       const canvas = document.createElement('canvas');
       canvas.width = resolution;
@@ -163,53 +182,76 @@ export function ReportMap({
   const Y = (y: number): number => (H - y) * k;
   const labelSize = size > 340 ? 10.5 : 9.5;
 
-  // Each line's value where the globe writes it; where that would print over
-  // a value already placed — the wind's lines crowd the centre — turned along
-  // its own line until it prints clear.
-  const labelPositions = useMemo(() => {
+  // Each line's value, and each state's words (rule 1037 (a)), where the globe
+  // writes them; where that would print over a label already placed — the
+  // wind's lines crowd the centre — turned along its own line until it prints
+  // clear. A state's words that find no clear place are left to the legend's
+  // key; a line's value always prints.
+  const labels = useMemo(() => {
     const shapes = familyShapes(result);
-    const placed: [number, number, number, number][] = [];
-    return layer.isolines.map((line) => {
-      const w = line.label.length * labelSize * 0.62 + 6;
-      const h = labelSize + 4;
+    const stateSize = labelSize - 1;
+    const items = [
+      ...layer.isolines.map((line, i) => ({
+        key: `${line.id}-label`,
+        text: drawing.isolines[i]?.label ?? line.label,
+        family: line.family,
+        radiusM: line.radiusM,
+        bearingDeg: line.labelBearingDeg,
+        state: line.state === 'modelLimit',
+        required: true,
+      })),
+      ...layer.marks.map((mk) => ({
+        key: `mark-${mk.id}-label`,
+        text: mk.label,
+        family: mk.family,
+        radiusM: markLabelRadius(mk),
+        bearingDeg: mk.labelBearingDeg,
+        state: true,
+        required: false,
+      })),
+    ];
+    const placedBoxes: [number, number, number, number][] = [];
+    return items.flatMap((item) => {
+      const fontSize = item.state ? stateSize : labelSize;
+      const lines = item.text.split('\n');
+      const w = Math.max(...lines.map((l) => l.length)) * fontSize * (item.state ? 0.5 : 0.62) + 6;
+      const h = lines.length * (fontSize + 2) + 2;
+      const boxAt = (px: number, py: number): [number, number, number, number] => [
+        px - w / 2,
+        py - h / 2,
+        px + w / 2,
+        py + h / 2,
+      ];
       for (const delta of [0, 28, -28, 56, -56, 84, -84, 112, -112, 140, -140, 180]) {
-        const [x, y] = isolineInPlane(
-          shapes[line.family],
-          line.radiusM,
-          line.labelBearingDeg + delta
-        );
+        const [x, y] = isolineInPlane(shapes[item.family], item.radiusM, item.bearingDeg + delta);
         const px = (x + H) * k;
         const py = (H - y) * k;
-        const box: [number, number, number, number] = [
-          px - w / 2,
-          py - h / 2,
-          px + w / 2,
-          py + h / 2,
-        ];
+        const box = boxAt(px, py);
         const clear =
           box[0] > 2 &&
           box[1] > 12 &&
           box[2] < size - 2 &&
           box[3] < size - 24 &&
-          !placed.some((b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]);
+          !placedBoxes.some(
+            (b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]
+          );
         if (clear) {
-          placed.push(box);
-          return [px, py] as const;
+          placedBoxes.push(box);
+          return [{ ...item, fontSize, x: px, y: py, box }];
         }
       }
-      const fallback = drawing.isolines.find((l) => l.id === line.id)?.labelAt ?? [0, 0];
-      return [(fallback[0] + H) * k, (H - fallback[1]) * k] as const;
+      if (!item.required) return [];
+      const [x, y] = isolineInPlane(shapes[item.family], item.radiusM, item.bearingDeg);
+      const px = (x + H) * k;
+      const py = (H - y) * k;
+      return [{ ...item, fontSize, x: px, y: py, box: boxAt(px, py) }];
     });
   }, [result, layer, drawing, H, k, size, labelSize]);
 
-  // What the cities' names must not print over: the isolines' values, the
-  // north, the scale and the photograph.
+  // What the cities' names must not print over: the labels, the north, the
+  // scale and the photograph.
   const inset = globeShot === null ? null : { w: size * 0.31 };
-  const occupied: [number, number, number, number][] = drawing.isolines.map((l, i) => {
-    const [x, y] = labelPositions[i] ?? [X(l.labelAt[0]), Y(l.labelAt[1])];
-    const w = l.label.length * 6.6 + 6;
-    return [x - w / 2, y - 8, x + w / 2, y + 8];
-  });
+  const occupied: [number, number, number, number][] = labels.map((l) => l.box);
   occupied.push([size - 30, 0, size, 40], [0, size - 30, size * 0.45, size]);
   if (inset !== null) occupied.push([size - inset.w - 10, size - inset.w - 24, size, size]);
 
@@ -342,7 +384,25 @@ export function ReportMap({
         ) : (
           <circle cx={X(0)} cy={Y(0)} r={2.6} fill="#ffd34d" stroke={INK} strokeWidth={1} />
         )}
+        {drawing.limits.map((l) => {
+          const d = pathOf(l.points, X, Y);
+          return (
+            <g key={`limit-${l.id}`} data-map-state="modelLimit">
+              <path d={d} fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth={3.4} />
+              <path
+                d={d}
+                fill="none"
+                stroke={LIMIT_INK}
+                strokeWidth={1.9}
+                strokeDasharray={LIMIT_DASH}
+              />
+            </g>
+          );
+        })}
         {drawing.isolines.map((l) => {
+          // Rule 1031 (a): at a limit of the model, the limit's line and a
+          // callout, no isoline.
+          if (l.state === 'modelLimit') return null;
           const d = pathOf(l.points, X, Y);
           return (
             <g key={l.id}>
@@ -372,15 +432,16 @@ export function ReportMap({
             )}
           </g>
         ))}
-        {drawing.isolines.map((l, i) => (
+        {labels.map((l) => (
           <Halo
-            key={`${l.id}-label`}
-            x={labelPositions[i]?.[0] ?? X(l.labelAt[0])}
-            y={labelPositions[i]?.[1] ?? Y(l.labelAt[1])}
-            text={l.label}
-            size={labelSize}
-            weight={700}
-            mono
+            key={l.key}
+            x={l.x}
+            y={l.y}
+            text={l.text}
+            size={l.fontSize}
+            weight={l.state ? 600 : 700}
+            mono={!l.state}
+            italic={l.state}
           />
         ))}
         {craterLabel !== null && craterPx >= 2.5 && (

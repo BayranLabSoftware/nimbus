@@ -20,6 +20,7 @@ import {
   reportMapBox,
   reportMapDrawing,
   reportMapHalfWidth,
+  reportMapOverlays,
   roundLength,
 } from './reportMap.js';
 
@@ -171,5 +172,61 @@ describe("the report's map of an impact (IMP-7c)", () => {
     expect(placed[0]?.label).not.toBeNull();
     const covered = placed.find((c) => c.name === 'Covered');
     expect(covered?.label === null || (covered?.label?.x ?? 0) < 190).toBe(true);
+  });
+});
+
+describe('rule 1037 (a): the flat map draws the states the globe draws', () => {
+  const chicxulub = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+  const yucatan = { latDeg: 21.3, lonDeg: -89.5 };
+
+  it('draws the limit of the model, and no isoline where the thresholds meet it', () => {
+    const heat = buildImpactLayer(chicxulub, 'thermal', ctx);
+    if (heat === null) throw new Error('no heat');
+    const drawing = reportMapDrawing(chicxulub, heat, yucatan);
+    expect(drawing.limits.map((l) => l.id)).toEqual(['limit']);
+    const atLimit = drawing.isolines.filter((l) => l.state === 'modelLimit');
+    expect(atLimit).toHaveLength(1);
+    expect(atLimit[0]?.label).toContain('globe.impactMap.mark.label.compressed');
+  });
+
+  it('paints the band past the edge and the hatch past the horizon, the field untouched', () => {
+    const blast = buildImpactLayer(meteor, 'overpressure', ctx);
+    if (blast?.field == null) throw new Error('no field');
+    const shape = familyShapes(meteor)[blast.field.family];
+    const half = reportMapHalfWidth(meteor, blast);
+    const px = 96;
+    const bare = rasterizeReportMap(blast.field, shape, anchor, half, px, null);
+    const drawn = rasterizeReportMap(
+      blast.field,
+      shape,
+      anchor,
+      half,
+      px,
+      null,
+      reportMapOverlays(meteor, blast)
+    );
+    let inside = 0;
+    let band = 0;
+    for (let py = 0; py < px; py++)
+      for (let qx = 0; qx < px; qx++) {
+        const x = (((qx + 0.5) / px) * 2 - 1) * half;
+        const y = (1 - ((py + 0.5) / px) * 2) * half;
+        const r = nominalRangeFromPolar(shape, Math.hypot(x, y), Math.atan2(x, y));
+        const o = (py * px + qx) * 4;
+        if (r <= blast.field.maxRangeM) {
+          // Inside the field's edge nothing changes.
+          expect(drawn[o]).toBe(bare[o]);
+          inside += 1;
+        } else if (r < blast.field.maxRangeM * 1.02) {
+          // Just past it the veil darkens the paper a little.
+          expect(drawn[o] ?? 0).toBeLessThan(bare[o] ?? 0);
+          band += 1;
+        }
+      }
+    expect(inside).toBeGreaterThan(0);
+    expect(band).toBeGreaterThan(0);
+    const heat = buildImpactLayer(chicxulub, 'thermal', ctx);
+    const overlays = heat === null ? [] : reportMapOverlays(chicxulub, heat);
+    expect(overlays.map((o) => o.field.hatchedAt?.(o.field.minRangeM * 1.1))).toEqual([true]);
   });
 });

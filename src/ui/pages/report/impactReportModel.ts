@@ -19,6 +19,7 @@ import {
 import { SHORE_DEPTH_CAP_M } from '../../../physics/validation/shoreDepthRules.js';
 import { evidenceText, type EvidenceText } from '../../../scene/globe/evidenceText.js';
 import {
+  absentImpactLayers,
   availableImpactLayers,
   isFieldLayer,
   isolineMembers,
@@ -27,6 +28,7 @@ import {
   WIND_LEVELS_KMH,
   type ImpactLayerId,
   type ImpactMapLayer,
+  type LayerAbsence,
 } from '../../../scene/globe/impactFieldMap.js';
 import type { Citation } from '../methodologyContent.js';
 import { ringSourceText, tntFromKilograms } from '../../components/ringSource.js';
@@ -130,6 +132,8 @@ export interface ImpactReportModel {
   generated: string | null;
   keyFigures: KeyFigure[];
   figures: ReportFigure[];
+  /** Rule 1037 (b): the layers the map does not draw, each with its reason. */
+  absent: LayerAbsence[];
   groups: ReportGroup[];
   /** What each family of numbers rests on, every family, in the table's order. */
   evidence: EvidenceText[];
@@ -655,11 +659,8 @@ export function buildImpactReport(
   const { t, language } = ctx;
   // The tsunami's layer is the globe's wave map, which a flat map of the
   // report does not draw; the wave is in the numbers.
-  const figures = availableImpactLayers(result, {
-    t,
-    language,
-    uncertaintyKey: ctx.uncertaintyKey,
-  })
+  const mapCtx = { t, language, uncertaintyKey: ctx.uncertaintyKey };
+  const figures = availableImpactLayers(result, mapCtx)
     .filter((layer) => isFieldLayer(layer.id))
     .map((layer, i) => ({ number: i + 1, layer }));
   const name = ctx.presetName ?? t('report.impact.custom');
@@ -672,6 +673,7 @@ export function buildImpactReport(
     generated: ctx.evaluatedAt === null ? null : dateTime(ctx.evaluatedAt, language, ctx.timeZone),
     keyFigures: keyFigures(result, ctx),
     figures,
+    absent: absentImpactLayers(result, mapCtx),
     groups: groups(result, ctx, figures),
     evidence: EVIDENCE_QUANTITIES.map((q) => evidenceText(q, ctx.t, ctx.language)),
     sources: sources(result, ctx),

@@ -678,21 +678,36 @@ function cssToRgba(css: string, alphaScale = 1): readonly [number, number, numbe
   ];
 }
 
+/** Where a state's words stand (rule 1030), the globe and the report alike: a
+ *  little way into what they name — on a line, on it; in a band, just past the
+ *  field's edge; in an area, just past its own. */
+export function markLabelRadius(mark: StateMark): number {
+  if (mark.state === 'modelLimit') return mark.fromM;
+  if (mark.state === 'belowThreshold') return mark.fromM * Math.pow(mark.toM / mark.fromM, 0.06);
+  return mark.fromM * 1.08;
+}
+
 /** Rule 1030 (2): the band's shading, one neutral veil on every layer, where
  *  it leaves the field's edge; it fades to nothing a decade out, so that its
- *  end reads as no edge. */
+ *  end reads as no edge. On the globe's dark ground it is white; on paper,
+ *  where white does not show, a grey (rule 1037). */
 export const BELOW_BAND_CSS = '#ffffff';
+export const BELOW_BAND_PAPER_CSS = '#4a4a4a';
 export const BELOW_BAND_ALPHA = 0.12;
 /** Rule 1030 (4): the hatch of an area the model does not compute — a grey,
- *  never the colour of zero, which is no colour. */
+ *  never the colour of zero, which is no colour; darker on paper. */
 export const NOT_MODELLED_CSS = '#cfcfcf';
+export const NOT_MODELLED_PAPER_CSS = '#6f6f6f';
 
 /** The ground a state's mark paints (rule 1030): the band's faint shading,
  *  the not-modelled area's hatch; a line paints none. */
-export function markGroundField(mark: StateMark): GroundField | null {
+export function markGroundField(
+  mark: StateMark,
+  tone: 'globe' | 'paper' = 'globe'
+): GroundField | null {
   if (mark.state === 'modelLimit' || !(mark.toM > mark.fromM)) return null;
   if (mark.state === 'belowThreshold') {
-    const [r, g, b] = cssToRgba(BELOW_BAND_CSS);
+    const [r, g, b] = cssToRgba(tone === 'paper' ? BELOW_BAND_PAPER_CSS : BELOW_BAND_CSS);
     const span = Math.log(mark.toM / mark.fromM);
     return {
       family: mark.family,
@@ -706,7 +721,7 @@ export function markGroundField(mark: StateMark): GroundField | null {
       },
     };
   }
-  const grey = cssToRgba(NOT_MODELLED_CSS, 0.45);
+  const grey = cssToRgba(tone === 'paper' ? NOT_MODELLED_PAPER_CSS : NOT_MODELLED_CSS, 0.45);
   return {
     family: mark.family,
     minRangeM: mark.fromM,
@@ -2019,7 +2034,7 @@ function stateMarks(
         description: past(cut ? 'notModelled' : 'belowThreshold'),
         card: {
           ...card,
-          source: t('globe.impactMap.mark.source.below', { source: card.source }),
+          source: t('globe.impactMap.mark.source.below'),
           extent: t('globe.impactMap.mark.extent.below', {
             from: below.format(atEdge),
             to: below.format(below.valueAt(toM)),
@@ -2084,18 +2099,25 @@ function layerCard(
   const { t, language } = ctx;
   const sourceLabel = t('globe.impactMap.noteLabel.source');
   const source = layer.notes.find((n) => n.label === sourceLabel)?.text ?? evidence.summary;
-  const byRadius = [...layer.isolines].sort((a, b) => b.radiusM - a.radiusM);
+  // Each threshold at its own radius: a line joined for the map's scale
+  // (B-119) stands for several.
+  const byRadius = layer.isolines.flatMap(isolineMembers).sort((a, b) => b.radiusM - a.radiusM);
   const outer = byRadius[0];
   const inner = byRadius[byRadius.length - 1];
   const reach = (m: number): string =>
     `${(m / 1_000).toLocaleString(language, { maximumFractionDigits: m < 10_000 ? 1 : 0 })} km`;
   const extent =
     outer !== undefined && inner !== undefined
-      ? t('globe.impactMap.card.extentValue', {
-          outer: outer.label,
-          inner: inner.label,
-          reach: reach(edge?.atM ?? outer.radiusM),
-        })
+      ? outer.label === inner.label
+        ? t('globe.impactMap.card.extentOne', {
+            value: outer.label,
+            reach: reach(edge?.atM ?? outer.radiusM),
+          })
+        : t('globe.impactMap.card.extentValue', {
+            outer: outer.label,
+            inner: inner.label,
+            reach: reach(edge?.atM ?? outer.radiusM),
+          })
       : layer.id === 'tsunami'
         ? t('globe.impactMap.card.extentWaveMap')
         : layer.categories.length > 0
