@@ -1201,8 +1201,13 @@ diagnostic observables in place of m3, the priors bounded to ordinary
 chondrites, and, with one evaluable metric left, S to run as a study of
 development rather than a contest for adoption, its specification corrected
 (components with their own paths, budgets of mass, energy and momentum,
-convergence at 32, 64 and 128 shares). Next: the reviewer's reading of rules
-1009 to 1022, before any code of S.
+convergence at 32, 64 and 128 shares). The reviewer read them and let S be
+written as a study (rules 1023 to 1027); run once, it is not adopted and gets
+no class B (docs/FRAGMENTATION_STUDY_S.md): it bursts 2022 WJ1 inside its
+flares in every draw and leaves a core in dark flight on metre-sized bodies —
+far heavier than the meteorites found — and its upper edge of 5 MPa weighs
+much. Next, in the reviewer's order: the outputs out of the crater's domain,
+then F.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

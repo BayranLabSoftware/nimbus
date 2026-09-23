@@ -740,5 +740,44 @@ export const S_FIRST_PHASE_LOSS = 0.5;
 export const S_SECOND_PHASE_RANGE = [900_000, 5_000_000] as const;
 export const S_SECOND_PHASE_SHARES = 64;
 
+/**
+ * The outcome of the study of S, written on 23 September 2026, night, after its
+ * one run (rules 1023 to 1026 pushed first, 09261fc; the code and its
+ * verification, d212993; fragmentationStudyS.json and
+ * docs/FRAGMENTATION_STUDY_S.md). In the reviewer's words: "Studio S: la
+ * variante mostra come una cascata di frammentazione a due fasi modifica
+ * quota, deposito di energia, sopravvivenza e regime d'arrivo nel dominio delle
+ * condriti ordinarie. Non viene adottata in questo round e non riceve una
+ * classe B; la decisione resta riservata a un test indipendente successivo."
+ *
+ * What it shows, read after and deciding nothing:
+ * - The budgets close within 3.1 × 10⁻¹⁵ of the entry's energy on every draw.
+ * - In the priors' domain: 2023 CX1 breaks 89 % of its mass in the second phase
+ *   and bursts at 34.2 km (the baseline, 33.6), and a core of 11 % reaches the
+ *   ground in dark flight, at 96 m/s, in every draw, where the baseline leaves
+ *   nothing; Chelyabinsk bursts whole, at 29.2 km (27.1).
+ * - As a sensitivity with those priors: 2022 WJ1 bursts in every draw, at
+ *   36.9 km, inside the interval of its flares (34.0–38.7 km), where the
+ *   baseline burst in 8.2 % of its draws; its core of 67 % reaches the ground at
+ *   92 m/s — some 130 kg of a body of about 200, where the source's main mass
+ *   was 8 to 20 kg;
+ *   2022 EB5 at 32.4 km (flare 33.3; baseline 31.1); Tunguska at 11.9 km (8.2).
+ * - As controls out of the priors' domain: 2024 BX1 at 35.9 km (34.9), 2018 LA
+ *   at 37.6 km (36.8), 2008 TC3 at 31.6 km (48.6); a core of 9 to 17 % reaches
+ *   the ground in dark flight — for TC3, tonnes, where the largest meteorite
+ *   found weighed 283 g.
+ * - Carancas, diagnostic: 99 % broken; a core of 1.6 % in 36 % of the draws.
+ * - m2, the proxy, on its six cases: a mean miss of 3.6 km against the
+ *   baseline's 5.2 — better on 2008 TC3, 2022 EB5 and 2022 WJ1, worse on
+ *   2018 LA, 2023 CX1 and 2024 BX1.
+ * - f1 moves only the largest piece's mass, as rule 1017 says it would.
+ * - The upper edge is influential: at 10 MPa the surviving mass is two to three
+ *   times larger and the release 1 to 2 km lower.
+ * - The energy to the ground stays nil on every case: a surviving core falls at
+ *   its terminal speed.
+ */
+export const STUDY_S_OUTCOME: string | null =
+  "Studio S: la variante mostra come una cascata di frammentazione a due fasi modifica quota, deposito di energia, sopravvivenza e regime d'arrivo nel dominio delle condriti ordinarie. Non viene adottata in questo round e non riceve una classe B; la decisione resta riservata a un test indipendente successivo.";
+
 /** The outcome of the round, written after its last variant. */
 export const FRAGMENTATION_ROUND_OUTCOME: string | null = null;
