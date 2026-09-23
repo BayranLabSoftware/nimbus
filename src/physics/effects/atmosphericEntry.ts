@@ -586,6 +586,35 @@ export function atmosphericEntry(
   };
 }
 
+/**
+ * The swarm's lateral spread as it reaches the ground, L(0): Collins, Melosh &
+ * Marcus (2005) Eq. 15* at z = 0, with Eq. 16*'s dispersion length, for a body
+ * that broke up at `breakupAltitude` and still reaches the ground as a swarm
+ * — the pancake's own spreading, which has not hit the airburst's limit. The
+ * program prints it as the minor axis of the ellipse its fragments land in
+ * (the major is L(0) / sin θ). Rules 838 to 845 of
+ * validation/craterFieldRules.ts compare it with the crater the whole swarm
+ * would dig (B-123).
+ */
+export function swarmSpreadAtGround(input: {
+  impactorDiameter: number;
+  impactorDensity: number;
+  impactAngle: number;
+  breakupAltitude: number;
+}): Meters {
+  const L0 = input.impactorDiameter;
+  const zStar = input.breakupAltitude;
+  const rhoStar = RHO_0 * Math.exp(-zStar / H_SCALE);
+  // Eq. 16*.
+  const l =
+    L0 *
+    Math.sin(input.impactAngle) *
+    Math.sqrt(input.impactorDensity / (DRAG_COEFFICIENT * rhoStar));
+  // Eq. 15* at z = 0.
+  const growth = ((2 * H_SCALE) / l) * (Math.exp(zStar / (2 * H_SCALE)) - 1);
+  return m(L0 * Math.sqrt(1 + growth * growth));
+}
+
 /** A point of an entry's path: what radiates, where, and how fast (B-095). */
 export interface EntryPathSample {
   /** Altitude (m). */

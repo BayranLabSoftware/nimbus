@@ -97,6 +97,9 @@ const LOW_BURST_CRATER = process.env.NIMBUS_LOW_BURST_CRATER;
 /** Where an iron's crater field ends, when the sweep is asked to read a
  *  candidate (rule 769 of validation/ironCraterFieldRules.ts). */
 const IRON_CRATER_FIELD = process.env.NIMBUS_IRON_CRATER_FIELD;
+/** Whether a scattered swarm digs a crater field, when the sweep is asked to
+ *  read a candidate (rule 842 of validation/craterFieldRules.ts). */
+const CRATER_FIELD = process.env.NIMBUS_CRATER_FIELD;
 /** What an airburst's flash is drawn from, when the sweep is asked to read a
  *  candidate (rule 777 of validation/atapRadiationRules.ts). */
 const AIRBURST_RADIATION = process.env.NIMBUS_AIRBURST_RADIATION;
@@ -248,6 +251,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(AIRBURST_SEISMIC === undefined ? {} : { airburstSeismic: AIRBURST_SEISMIC }),
         ...(LOW_BURST_CRATER === undefined ? {} : { lowBurstCrater: LOW_BURST_CRATER }),
         ...(IRON_CRATER_FIELD === undefined ? {} : { ironCraterField: IRON_CRATER_FIELD }),
+        ...(CRATER_FIELD === undefined ? {} : { craterField: CRATER_FIELD }),
         ...(AIRBURST_RADIATION === undefined ? {} : { airburstRadiation: AIRBURST_RADIATION }),
       } as never) as unknown as Json,
     // Rule 780 of validation/atapRadiationAgainRules.ts: the blast source,
@@ -263,6 +267,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(AIRBURST_SEISMIC === undefined ? {} : { airburstSeismic: AIRBURST_SEISMIC }),
         ...(LOW_BURST_CRATER === undefined ? {} : { lowBurstCrater: LOW_BURST_CRATER }),
         ...(IRON_CRATER_FIELD === undefined ? {} : { ironCraterField: IRON_CRATER_FIELD }),
+        ...(CRATER_FIELD === undefined ? {} : { craterField: CRATER_FIELD }),
         airburstRadiation: 'efficiency',
       } as never) as unknown as Json,
     // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring
@@ -303,11 +308,13 @@ export const HAZARDS: readonly Hazard[] = [
       );
     },
     // Rule 623: an impact's regime is its entry regime with its crater's
-    // morphology.
+    // morphology — and, since rule 838, the crater field, where the crater is
+    // one: the reference program's own answer switches there.
     regime: (r) => {
       const entry = r.entry as Json | undefined;
       const crater = r.crater as Json | undefined;
-      return `${String(entry?.regime)}|${String(crater?.morphology)}`;
+      const field = crater?.origin === 'craterField' ? '|field' : '';
+      return `${String(entry?.regime)}|${String(crater?.morphology)}${field}`;
     },
     // Rule 622: the contours, the ranges where a threshold is crossed.
     contours: [

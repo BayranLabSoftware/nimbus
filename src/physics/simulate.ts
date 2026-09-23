@@ -27,6 +27,7 @@ import {
 import {
   IMPACTOR_STRENGTH,
   atmosphericEntry,
+  swarmSpreadAtGround,
   type AtmosphericEntryResult,
 } from './effects/atmosphericEntry.js';
 import {
@@ -95,6 +96,11 @@ import {
   type AirburstRadiation,
   type RadiantHeat,
 } from './effects/atapRadiation.js';
+import {
+  craterFieldShare,
+  DEFAULT_CRATER_FIELD,
+  type CraterField,
+} from './events/impact/craterField.js';
 import {
   DEFAULT_IRON_CRATER_FIELD,
   IRON_DENSITY,
@@ -227,6 +233,9 @@ export interface ImpactScenarioInput {
   /** How the crater of an iron that breaks up is drawn (B-098);
    *  {@link DEFAULT_IRON_CRATER_FIELD} when omitted. */
   ironCraterField?: IronCraterField;
+  /** Whether a swarm spread wider than its crater digs a crater field
+   *  (B-123); {@link DEFAULT_CRATER_FIELD} when omitted. */
+  craterField?: CraterField;
   /** What an airburst's flash is drawn from (B-095);
    *  {@link DEFAULT_AIRBURST_RADIATION} when omitted. */
   airburstRadiation?: AirburstRadiation;
@@ -408,7 +417,7 @@ export interface ImpactScenarioResult {
      *  calls its burst an airburst (`ironSwarm`, B-098), the share of a
      *  complete airburst's kept energy that strikes the ground below its
      *  fireball (`lowBurst`, rules 756 to 763), or nothing (`none`). */
-    origin: 'impact' | 'strewnField' | 'ironSwarm' | 'lowBurst' | 'none';
+    origin: 'impact' | 'strewnField' | 'ironSwarm' | 'lowBurst' | 'craterField' | 'none';
   };
   seismic: {
     /** Seismic magnitude of the energy delivered to the ground (Collins
@@ -710,6 +719,24 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const wholeCrater = (): number =>
     (transientCraterDiameter({ ...input, impactVelocity: entry.endVelocity }) as number) *
     seafloorScale;
+  // B-123 (rules 838 to 845): a swarm that reaches dry ground spread at least
+  // as wide as the crater it would dig makes a crater field, and the crater
+  // is its largest fragment's. Irons keep their own rules (764 to 771); at sea
+  // the program's answer was never read, and nothing changes.
+  const dryGround = onLand || !(waterDepth > 0);
+  const fieldShare =
+    entry.regime === 'PARTIAL_AIRBURST' && !ironDigs && dryGround
+      ? craterFieldShare(
+          input.craterField ?? DEFAULT_CRATER_FIELD,
+          swarmSpreadAtGround({
+            impactorDiameter: diameterM,
+            impactorDensity: input.impactorDensity,
+            impactAngle: input.impactAngle,
+            breakupAltitude: entry.breakupAltitude,
+          }),
+          wholeCrater()
+        )
+      : 1;
   // The largest crater of an iron's strewn field.
   const strewnCrater = (): number =>
     (transientCraterDiameter({ ...input, impactVelocity: input.impactVelocity }) as number) *
@@ -730,7 +757,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
               impactVelocity: entry.endVelocity,
             }) as number) * seafloorScale
           : 0
-        : wholeCrater()
+        : wholeCrater() * fieldShare
   );
   const Dfr = m(finalCraterDiameter(Dtc));
   const depth = m(craterDepth(Dfr));
@@ -745,7 +772,9 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
           ? 'ironSwarm'
           : lowBurstCraterShare > 0
             ? 'lowBurst'
-            : 'impact';
+            : fieldShare < 1
+              ? 'craterField'
+              : 'impact';
 
   // Damage rings = max(ground-coupled surface burst, atmospheric
   // airburst). The two physical components target the same observer

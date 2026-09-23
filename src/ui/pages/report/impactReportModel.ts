@@ -466,10 +466,15 @@ function keyFigures(r: ImpactScenarioResult, ctx: ImpactReportContext): KeyFigur
       'crater',
       crater ? length(r.crater.finalDiameter, l) : NONE,
       crater
-        ? t('report.impact.key.craterDetail', {
-            depth: length(r.crater.depth as number, l),
-            morphology: t(`report.impact.enum.morphology.${r.crater.morphology}`),
-          })
+        ? t(
+            r.crater.origin === 'craterField'
+              ? 'report.impact.key.craterFieldDetail'
+              : 'report.impact.key.craterDetail',
+            {
+              depth: length(r.crater.depth as number, l),
+              morphology: t(`report.impact.enum.morphology.${r.crater.morphology}`),
+            }
+          )
         : t('report.impact.key.craterNone')
     ),
     k(

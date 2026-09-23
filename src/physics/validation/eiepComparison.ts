@@ -40,7 +40,7 @@ export const EIEP_TARGET_DENSITY: Readonly<Record<EiepRow['target'], number>> = 
  *  the default, for reading two on one commit. */
 export function eiepRowInput(
   row: EiepRow,
-  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary'> = {}
+  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary' | 'craterField'> = {}
 ): ImpactScenarioInput {
   return {
     impactorDiameter: m(row.diameterM),
@@ -54,7 +54,7 @@ export function eiepRowInput(
 
 export function simulateEiepRow(
   row: EiepRow,
-  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary'> = {}
+  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary' | 'craterField'> = {}
 ): ImpactScenarioResult {
   return simulateImpact(eiepRowInput(row, options));
 }
@@ -86,7 +86,7 @@ export interface EiepRatio {
 /** Every pair where both sides answer with a number above zero. */
 export function eiepRatios(
   rows: readonly EiepRow[] = EIEP_REFERENCE,
-  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary'> = {}
+  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary' | 'craterField'> = {}
 ): EiepRatio[] {
   const out: EiepRatio[] = [];
   for (const row of rows) {

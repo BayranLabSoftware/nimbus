@@ -250,7 +250,8 @@
       "COMPLETE_AIRBURST": "Il corpo si frammenta e i frammenti si allargano fino a sette volte la sua dimensione prima di arrivare al suolo: l'energia va nell'aria come palla di fuoco e onda d'urto, e non si forma alcun cratere. Tunguska 1908 e Čeljabinsk 2013 sono i casi canonici.",
       "COMPLETE_AIRBURST_LOW": "Il corpo si frammenta e i frammenti si allargano fino a sette volte la sua dimensione appena sopra il suolo, più in basso del raggio della sua palla di fuoco: la maggior parte dell'energia va nell'aria come palla di fuoco e onda d'urto, e la quota di ciò che il corpo trattiene che colpisce il suolo scava un cratere, tanto più grande quanto più basso è lo scoppio (un passo di Nimbus, regole 756–763).",
       "STREWN_FIELD": "Il ferro si frammenta in aria e i frammenti cadono come un campo di crateri, di cui è disegnato il più grande: 0,15 del cratere che il corpo intero scaverebbe alla sua velocità d'ingresso, la quota tarata sulla caduta di Sikhote-Alin del 1947 (il suo cratere più grande misura 26 m, dove un corpo unico ne scaverebbe circa 178). Da 3 × 10⁶ kg i crateri si sovrappongono e crescono fino a uno solo, che i frammenti scavano insieme da 10⁷ kg (Bland & Artemieva 2006; regole 764–771).",
-      "IRON_SWARM": "Il ferro si frammenta, ma i frammenti non si allargano come quelli di un corpo roccioso: colpiscono il suolo vicini e scavano un solo cratere, quello del corpo intero alla velocità che l'aria gli lascia — come trovano Bland & Artemieva (2006) per i ferri frammentati da 10⁷ kg in su, e come mostra il catalogo terrestre, dove nessun cratere da 0,3 a 1,5 km è multiplo."
+      "IRON_SWARM": "Il ferro si frammenta, ma i frammenti non si allargano come quelli di un corpo roccioso: colpiscono il suolo vicini e scavano un solo cratere, quello del corpo intero alla velocità che l'aria gli lascia — come trovano Bland & Artemieva (2006) per i ferri frammentati da 10⁷ kg in su, e come mostra il catalogo terrestre, dove nessun cratere da 0,3 a 1,5 km è multiplo.",
+      "CRATER_FIELD": "Il corpo si frammenta in aria e i frammenti arrivano al suolo sparsi più largo del cratere che lo sciame intero scaverebbe: un campo di crateri, come a Henbury, e il cratere disegnato è quello del frammento più grande — metà di quello dello sciame intero, come lo dà l’Earth Impact Effects Program (Collins et al. 2005; regole 838–845). L’onda d’urto, il calore e lo scuotimento sono quelli dello sciame intero."
     },
     "burstAltitude": "Altezza detonazione",
     "breakupAltitude": "Inizio frammentazione",
@@ -1300,7 +1301,8 @@
         "deaths": "Mortalità modellata (scenario)",
         "deathsBand": "ordine di grandezza · banda 5–95 %: da {{low}} a {{high}} · non validato per stime demografiche",
         "deathsTable": "ordine di grandezza · banda della tabella: da {{low}} a {{high}} · non validato per stime demografiche",
-        "deathsPending": "in calcolo"
+        "deathsPending": "in calcolo",
+        "craterFieldDetail": "del frammento più grande, in un campo di crateri · profondo {{depth}} · {{morphology}}"
       },
       "group": {
         "scenario": "Parametri dello scenario",

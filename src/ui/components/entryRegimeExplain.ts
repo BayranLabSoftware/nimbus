@@ -5,7 +5,8 @@ export type EntryRegimeExplainKey =
   | ImpactScenarioResult['entry']['regime']
   | 'STREWN_FIELD'
   | 'IRON_SWARM'
-  | 'COMPLETE_AIRBURST_LOW';
+  | 'COMPLETE_AIRBURST_LOW'
+  | 'CRATER_FIELD';
 
 /**
  * Which sentence explains an impact's entry. The regime alone told every
@@ -20,5 +21,6 @@ export function entryRegimeExplainKey(
   if (result.crater.origin === 'strewnField') return 'STREWN_FIELD';
   if (result.crater.origin === 'ironSwarm') return 'IRON_SWARM';
   if (result.crater.origin === 'lowBurst') return 'COMPLETE_AIRBURST_LOW';
+  if (result.crater.origin === 'craterField') return 'CRATER_FIELD';
   return result.entry.regime;
 }
