@@ -312,3 +312,25 @@ export const ENTRY_ATMOSPHERE_CRITERION = {
  */
 export const ENTRY_ATMOSPHERE_OUTCOME: string | null =
   "REFUSED 23 September 2026: under the U.S. Standard Atmosphere 1976 the entry's median altitude miss falls from 5.3 to 4.3 km and its bias from +1.7 to −1.6 km, but the share of fireballs inside the band of the strength's prior falls from 45.7 % to 42.6 %, beyond the 2 points rule 914 allowed. The product stays on Collins's exponential; the integrated entry and the standard stay, verified and dormant.";
+
+/**
+ * The reviewer's reply to the outcome, 23 September 2026, afternoon: the
+ * refusal is right and the round is closed for this phase. No further
+ * selection on the same 357 fireballs — a coverage defined anew to let the
+ * standard pass would be fitted after the fact. The exponential branch stays
+ * the operative one: it keeps level A's comparison with the program and passed
+ * the criterion fixed before the run. The two branches left in the code are
+ * named as he named them; in level B's second round the standard may be run
+ * beside the operative branch as a sensitivity, never deciding. A later
+ * atmospheric variant is to be judged by a full predictive band — the inputs,
+ * the strength, the profile and the error of the observable all drawn —
+ * covering 80 % ± 5 points with no systematic bias, on a cohort new to all of
+ * this. And the gap between Eq. 15 and Eq. 14 is a round of its own, after
+ * level B's second round: Collins's pancake kept as the legacy family, Eq. 14's
+ * solution as a new one, judged on a third set of events.
+ */
+export const ENTRY_ATMOSPHERE_BRANCH_LABELS: Readonly<Record<EntryAtmosphere, string>> = {
+  closed: 'Collins, exponential (legacy) — operative',
+  integratedExponential: 'verified numerical alternative',
+  integratedUssa: 'diagnostic physical alternative — not adopted',
+};

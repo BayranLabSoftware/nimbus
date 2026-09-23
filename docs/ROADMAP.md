@@ -1131,6 +1131,12 @@ but the share inside the band of the strength's prior falls from 45.7 % to
 42.6 %, beyond the 2 points fixed before the run: refused by its own
 criterion. The product stays on the exponential; both the integration and
 the standard stay in the code, verified and dormant.
+The reviewer confirmed the refusal and closed the round for this phase:
+no further selection on the same fireballs. The integration is labelled a
+"verified numerical alternative", the standard a "diagnostic physical
+alternative — not adopted"; the gap between Eq. 15 and Eq. 14 becomes a
+round of its own, "the dynamics of fragmentation", after level B's second
+round and on a third set of events.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
