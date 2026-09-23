@@ -592,7 +592,11 @@
     "preparingReport": "Preparo il report… {{done}}/{{total}}",
     "mcShare": "nel {{share}} % dei campioni",
     "mcNever": "in nessun campione",
-    "monteCarloFooterShare": "Dove una grandezza è zero in più di un campione su dieci (niente cratere, niente incendio), la riga dice in quanti campioni si verifica e dà P10–P90 di quei soli campioni."
+    "mcRare_one": "evento raro: in {{count}} campione su {{runs}}",
+    "mcRare_other": "evento raro: in {{count}} campioni su {{runs}}",
+    "mcRareGiven": "condizionato a un evento raro — in quei campioni P10 {{p10}}, P50 {{p50}}, P90 {{p90}}",
+    "monteCarloFooterShare": "Dove una grandezza è zero in più di un campione su dieci (niente cratere, niente incendio), la riga dice in quanti campioni si verifica e dà P10–P90 di quei soli campioni.",
+    "monteCarloFooterRare": "Sotto l'1 % dei campioni un evento è raro: le sue celle restano vuote, e i percentili di quei soli campioni stanno sulla riga sotto, condizionati all'evento."
   },
   "cascade": {
     "label": "Timeline a cascata",

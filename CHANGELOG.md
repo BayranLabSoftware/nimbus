@@ -19,6 +19,12 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **A rare event's percentiles stand under a warning.** Where a crater, an
+  ejecta ring or a firestorm happens in fewer than 1 % of the Monte Carlo's
+  runs, its row leaves the P10, P50 and P90 cells empty, says in how many
+  runs it happened ("rare event: in 2 runs of 1000"), and gives the
+  percentiles of those runs on a line of their own, marked "conditional on a
+  rare event". Nothing the engine computes moves.
 - **A stony body now breaks as meteoroids do.** Its main fragmentation
   starts at the strength measured on meteoroids in the air (0.9–5 MPa,
   Borovička et al. 2020), not at one strength taken from its density. Over

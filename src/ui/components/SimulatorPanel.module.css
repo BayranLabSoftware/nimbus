@@ -1147,3 +1147,10 @@ select.paramInput {
 [data-tone='paper'] .envelopeNote {
   font-size: 9px;
 }
+
+.mcRare td {
+  font-size: 0.85em;
+  font-style: italic;
+  opacity: 0.8;
+  text-align: left;
+}

@@ -592,7 +592,11 @@
     "preparingReport": "Preparing the report… {{done}}/{{total}}",
     "mcShare": "in {{share}} % of the runs",
     "mcNever": "in no run",
-    "monteCarloFooterShare": "Where a quantity is zero in more than one run in ten (no crater, no firestorm), the row says in how many runs it happens and gives P10–P90 of those runs alone."
+    "mcRare_one": "rare event: in {{count}} run of {{runs}}",
+    "mcRare_other": "rare event: in {{count}} runs of {{runs}}",
+    "mcRareGiven": "conditional on a rare event — in those runs P10 {{p10}}, P50 {{p50}}, P90 {{p90}}",
+    "monteCarloFooterShare": "Where a quantity is zero in more than one run in ten (no crater, no firestorm), the row says in how many runs it happens and gives P10–P90 of those runs alone.",
+    "monteCarloFooterRare": "Below 1 % of the runs an event is rare: its cells stay empty, and the percentiles of those runs alone stand on the line under it, conditional on the event."
   },
   "cascade": {
     "label": "Cascade timeline",

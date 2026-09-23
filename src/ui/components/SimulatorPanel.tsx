@@ -1,5 +1,5 @@
 import type { ChangeEvent, JSX } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   EARTHQUAKE_PRESETS,
@@ -47,8 +47,8 @@ import { entryCellSentence } from '../../scene/globe/measuredCellText.js';
 import { entryRegimeExplainKey } from './entryRegimeExplain.js';
 import { CasualtiesPanel } from './CasualtiesPanel.js';
 import { envelopeOf } from '../../physics/validation/calibrationEnvelope.js';
-import { MC_SHARE_SHOWN_WHOLE } from '../../physics/validation/monteCarloShareRules.js';
 import { CitySearch } from './CitySearch.js';
+import { monteCarloRow } from './monteCarloRow.js';
 import { EarthquakeCustomInputs } from './EarthquakeCustomInputs.js';
 import { ExplosionCustomInputs } from './ExplosionCustomInputs.js';
 import { ImpactCustomInputs } from './ImpactCustomInputs.js';
@@ -2107,34 +2107,54 @@ function MonteCarloPanel({ mc }: { mc: ActiveMonteCarlo }): JSX.Element {
         </thead>
         <tbody>
           {Object.entries(mc.data.metrics).map(([key, band]) => {
-            // Rule 890 (validation/monteCarloShareRules.ts): a quantity zero
-            // in more than a tenth of the runs is shown by how often it
-            // happens and how large it is when it does.
-            const whole = band.share > MC_SHARE_SHOWN_WHOLE;
-            const shown = whole ? band : band.given;
+            // Rules 890 and 905 (validation/monteCarloShareRules.ts): a
+            // quantity zero in more than a tenth of the runs is shown by how
+            // often it happens and how large it is when it does; below 1 %,
+            // its percentiles only under a warning.
+            const samples = (mc.data.rawSamples as Record<string, readonly number[] | undefined>)[
+              key
+            ];
+            const row = monteCarloRow(band, samples, mc.data.iterations);
+            const cells = row.kind === 'whole' || row.kind === 'share' ? row.cells : null;
             const name = t(`simulator.mcMetrics.${mc.type}.${key}`, { defaultValue: key });
             return (
-              <tr key={key}>
-                <td>
-                  {name}
-                  {!whole && (
-                    <span className={styles.mcShare}>
-                      {band.share > 0
-                        ? t('simulator.mcShare', { share: formatPercentShare(band.share) })
-                        : t('simulator.mcNever')}
-                    </span>
-                  )}
-                </td>
-                <td>{shown === null ? '—' : formatMcValue(key, shown.p10, t)}</td>
-                <td>{shown === null ? '—' : formatMcValue(key, shown.p50, t)}</td>
-                <td>{shown === null ? '—' : formatMcValue(key, shown.p90, t)}</td>
-              </tr>
+              <Fragment key={key}>
+                <tr>
+                  <td>
+                    {name}
+                    {row.kind !== 'whole' && (
+                      <span className={styles.mcShare}>
+                        {row.kind === 'share'
+                          ? t('simulator.mcShare', { share: formatPercentShare(row.share) })
+                          : row.kind === 'rare'
+                            ? t('simulator.mcRare', { count: row.happened, runs: row.runs })
+                            : t('simulator.mcNever')}
+                      </span>
+                    )}
+                  </td>
+                  <td>{cells === null ? '—' : formatMcValue(key, cells.p10, t)}</td>
+                  <td>{cells === null ? '—' : formatMcValue(key, cells.p50, t)}</td>
+                  <td>{cells === null ? '—' : formatMcValue(key, cells.p90, t)}</td>
+                </tr>
+                {row.kind === 'rare' && row.given !== null && (
+                  <tr className={styles.mcRare}>
+                    <td colSpan={4}>
+                      {t('simulator.mcRareGiven', {
+                        p10: formatMcValue(key, row.given.p10, t),
+                        p50: formatMcValue(key, row.given.p50, t),
+                        p90: formatMcValue(key, row.given.p90, t),
+                      })}
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             );
           })}
         </tbody>
       </table>
       <p className={styles.mcFooter}>
-        {t('simulator.monteCarloFooter')} {t('simulator.monteCarloFooterShare')}
+        {t('simulator.monteCarloFooter')} {t('simulator.monteCarloFooterShare')}{' '}
+        {t('simulator.monteCarloFooterRare')}
       </p>
     </section>
   );

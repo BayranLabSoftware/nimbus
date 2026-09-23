@@ -129,3 +129,24 @@ export const MC_SHARE_SIGMAS = 3;
  */
 export const MC_SHARE_OUTCOME: string | null =
   "ADOPTED 23 September 2026: the Monte Carlo reports how often a quantity happens and how large it is when it does, and the coverage test holds both; nothing outside the Monte Carlo moved. Tunguska's firestorm reads 'in 47 % of the runs' where it read a median of zero.";
+
+/**
+ * The outcome of rules 905 to 907, written on 23 September 2026 after they
+ * were pushed (9b88959) and the change was made.
+ *
+ * ADOPTED: rule 906 holds.
+ *   - Nothing but the panel moved: no file of the engine, the seal or the
+ *     report was touched; typecheck, lint and format pass on every file
+ *     changed, and the whole suite, 3 033 tests, passes.
+ *   - No impact preset has an event below 1 % at a thousand draws on the
+ *     app's own seeds (all of them run), so the rule's own test decides
+ *     (ui/components/monteCarloRow.test.ts, on summaries built with 1, 3, 4
+ *     and 10 of a thousand draws above zero), and passes.
+ *   - Read besides in the running app, on a scenario that has one — Tunguska
+ *     at 35 m, 1 000 draws: "Diametro cratere — evento raro: in 2 campioni su
+ *     1000", its cells empty, and under it "condizionato a un evento raro —
+ *     in quei campioni P10 688 m, P50 748 m, P90 748 m"; the firestorm, in
+ *     3 % of the runs, shown as rule 890 says.
+ */
+export const MC_RARE_OUTCOME: string | null =
+  "ADOPTED 23 September 2026: below 1 % of the runs an event's percentiles are no longer the row's result; they stand on a line of their own, conditional on a rare event.";
