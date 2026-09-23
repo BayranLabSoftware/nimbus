@@ -337,3 +337,59 @@ export const CRATER_TIERS_OUTCOME: string | null =
  */
 export const CRATER_ORIGIN_OUTCOME: string | null =
   "ADOPTED 23 September 2026: out of the crater law's domain no dust, acid, sea coupling or blanket offset of crater origin is given, and the rings say their energy's source.";
+
+/**
+ * Rules 987 to 991 — the audit of what else reads a cratering impact out of
+ * the domain (B-126). Written on 23 September 2026, evening, on the
+ * reviewer's request and Andrea's word («Sì, tutto in ordine»), before any
+ * line of the change.
+ *
+ * RULE 987. THE AUDIT AND ITS FINDINGS. Every output a body out of the domain
+ * still publishes was traced to what it reads. Three read a cratering impact
+ * the model does not resolve there: (i) the flash's ground term — the
+ * program's fireball on the energy that reaches the ground, the thermal
+ * radiation of a hypervelocity impact's vapour plume (Collins et al. 2005) —
+ * in the burn and fire rings and in the field's thermal exposure; (ii) the
+ * rings' oblique-impact envelope and centre offset (Pierazzo & Artemieva 2003:
+ * the downrange plume of a crater-forming oblique impact); (iii) the
+ * timeline's seismic stage, shown where no magnitude is given. Read and
+ * clean: the blast, which under the product's `surface` law reads the energy
+ * ke·max(gf, 1 − gf) — out of the domain always the air's share, since a
+ * body entering at 11 km/s or more and reaching the ground below 5 km/s keeps
+ * gf below 0.21 (0.17 the largest in a sweep of 40 000 bodies, 1 687 out of the
+ * domain) — placed as a point source at the impact point; the casualties and
+ * the Monte Carlo, which read the rings; and the climate tier, which reads the
+ * total kinetic energy alone, as it does for every airburst — out of the domain
+ * it reads REGIONAL or CONTINENTAL for 52 of those 1 687, swarms of 170 to
+ * 450 m reaching the ground below 5 km/s, a question for the reviewer and not a
+ * crater's. Registered as B-126.
+ *
+ * RULE 988. THE CHANGE, out of the domain only: (i) no fireball on the ground
+ * energy — the flash is the air's alone: a partial airburst's flash, the
+ * radiation along the path, a low burst's own fireball; (ii) the rings are
+ * drawn as their source makes them, circles about the impact point, with no
+ * oblique-impact envelope; (iii) no seismic stage in the timeline; (iv) the
+ * rings' source line says it: the energy the body deposits in the air along
+ * its path, a source spread along the trajectory that the model draws as a
+ * point at the impact point — exploratory proxies — and the energy that reaches
+ * the ground drives no ring.
+ *
+ * RULE 989. WHAT DECIDES. (a) The seal moves in the scenarios out of the
+ * domain and nowhere else, each moving scenario listed; (b) level A does not
+ * move; (c) G5 reads nothing new; (d) typecheck, lint, format, the whole
+ * suite, the strict gate, Chromium's end-to-end suite; (e) read in the running
+ * app on a body out of the domain.
+ *
+ * RULE 990. WHAT AN ADOPTION MAY UPDATE: B-124's test that held the effects of
+ * the energy equal on both branches, rewritten to hold the blast equal and the
+ * flash, the fire and the rings' shapes read as rule 988 says; a test that
+ * asserts a ground fireball, an oblique envelope or a seismic stage for a body
+ * out of the domain, rewritten to its absence; the seal, re-taken. Any other
+ * test that fails refuses the change.
+ *
+ * RULE 991. WHAT MAY NOT HAPPEN. Nothing moves inside the domain by a bit; the
+ * blast's law and the climate tier are not touched; one run.
+ */
+
+/** The outcome of rules 987 to 991, written after their one run. */
+export const CRATER_AUDIT_OUTCOME: string | null = null;
