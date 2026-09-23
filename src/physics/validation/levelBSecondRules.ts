@@ -100,6 +100,87 @@
  * independent of the crater is pinned, it stays diagnostic (rule 876(c)).
  */
 
+/**
+ * Rules 919 to 926 — step 2 of the second round, and the model it holds.
+ * Written on 23 September 2026, afternoon, on Andrea's word («Prosegui il
+ * lavoro»), after the reviewer closed the atmosphere's round and asked that
+ * this round be run on the operative branch with no further change to the
+ * model; written before any source of rule 876's events is opened.
+ *
+ * RULE 919. THE MODEL, FROZEN. Phase 4's model is frozen at 5b6b7a5:
+ * `simulateImpact` with its defaults — the two-stage strength of rules 896 to
+ * 902, Collins's closed forms on his exponential atmosphere, the Monte Carlo's
+ * summaries of rules 890 to 895 and 905 to 907 — on Node 22.20.0 and
+ * darwin-arm64. The predictions are computed from a checkout of that commit,
+ * as rule 859 computed the first round's, whatever the repository holds by
+ * then. A change to the model after it is tested by a later round.
+ *
+ * RULE 920. THE AUDIT, REPEATED as rule 903 says, before any source is opened
+ * (23 September 2026, afternoon): the repository searched again by name and by
+ * date for every event of rule 876. The same result: the names stand only in
+ * the ROADMAP, in rules 875 to 880 and 903 to 904 and their test, and
+ * "Sterlitamak" in the list of cities the globe labels; "WJ1" and "XA1" also
+ * match bytes of three map tiles (PNG images of population and Vs30), which
+ * hold no datum of any fall.
+ *
+ * RULE 921. THE OBSERVABLES OF THE ENTRY, as rule 875 reads them, against the
+ * frozen model, with rule 868's bars:
+ *   E1 the outcome, "no crater" (rule 904) — primary — passes if at least 90 %
+ *      of the draws dig no crater of any kind (`crater.origin` is `none`);
+ *   E2 the altitude of the first major fragmentation — primary — read as a
+ *      test of the first stage of the body's strength: against
+ *      `entry.firstFragmentationAltitude` where the two-stage law covers the
+ *      body's density, against `entry.breakupAltitude` elsewhere;
+ *   E3 the flare — secondary — against `entry.burstAltitude`, a joint test of
+ *      the second stage, the cascade of fragments and the light they give.
+ * Reported beside them, never scored: `entry.breakupAltitude` where E2 reads
+ * the first stage, against the later fragmentations the sources report. An
+ * altitude a source derives from an assumed strength or from a model of the
+ * entry, not measured from light curves, video, radar or infrasound, is no
+ * target (rule 904); it is written down as such.
+ *
+ * RULE 922. THE CRATER. Sterlitamak counts only if rule 904's clause is met —
+ * a mass of its body pinned from a constraint independent of the crater; else
+ * it is run and reported as a diagnostic case, never scored: K1 (a crater dug
+ * by a body that reached the ground), K3 (depth over diameter) and K4 (the
+ * morphology) beside its observed values. As in the first round no strength
+ * is an input: the model's own law gives an iron its strength.
+ *
+ * RULE 923. SAMPLING. Rule 863(a) with the seed `level-b2-2026-09-23` and
+ * 1 000 draws per event; an angle a source gives only as representative or
+ * best-fitting is drawn as rule 869 draws Carancas's, uniformly over the range
+ * the source allows, and the range is pinned with its page.
+ *
+ * RULE 924. THE STANDARD ATMOSPHERE AS A SENSITIVITY, as the reviewer allowed:
+ * the same draws, from the same frozen commit, run again with
+ * `entryAtmosphere: 'integratedUssa'` and reported beside the operative
+ * branch's — never scored, never used to earn or refuse a class.
+ *
+ * RULE 925. WHAT STEP 2 COMMITS, before any prediction: the sources of every
+ * candidate in the rows rule 904 asks for; every input with its value, its
+ * interval and its page; every target with its source and page and no value,
+ * as the first round pinned them; each conditional event decided by rule
+ * 876(b)'s clause, with its reason; and the domain a B would claim, stated
+ * from the counted bodies' inputs as rule 871 stated the first round's. Every
+ * download is asked of Andrea first, with its name, source and size. The
+ * summary goes to the reviewer before step 3, as rule 855 sent the first.
+ *
+ * RULE 926. WHAT DECIDES: rule 870 as written, on this round's counted events
+ * alone — the first round's are regression cases, run and reported (rule
+ * 877). With fewer than two counted bodies of the entry the round claims no B
+ * of the entry and reports "compatible in one case" (rule 876(e)); the crater,
+ * if Sterlitamak counts, earns at most "compatible with Sterlitamak in one
+ * reference case", and with Carancas's failure standing, "validated" stays
+ * out of reach.
+ */
+
+/** Rule 919: the model under test. */
+export const LEVEL_B2_FROZEN_MODEL = '5b6b7a5';
+
+/** Rule 923. */
+export const LEVEL_B2_SEED = 'level-b2-2026-09-23';
+export const LEVEL_B2_DRAWS = 1_000;
+
 export type LevelB2Set = 'entry' | 'entry-conditional' | 'crater' | 'excluded';
 
 /** Rule 876. */
