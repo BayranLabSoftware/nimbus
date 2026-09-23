@@ -8,6 +8,7 @@ import {
   TWO_STAGE_S1_PA,
   TWO_STAGE_S2_PA,
 } from '../validation/strengthTwoStageRules.js';
+import { STRENGTH_TWO_STAGE_AGAIN_OUTCOME } from '../validation/strengthTwoStageAgainRules.js';
 import {
   collinsStrength,
   DEFAULT_STRENGTH_LAW,
@@ -30,9 +31,12 @@ describe('a body’s strength in two stages (rules 881 to 889)', () => {
     expect(MAIN_STAGE_STRENGTH as number).toBe(TWO_STAGE_S2_PA);
     expect(FIRST_STAGE_MAJOR_SHARE).toBe(TWO_STAGE_FIRST_MAJOR_SHARE);
     expect(TWO_STAGE_DENSITIES).toEqual(TWO_STAGE_DENSITY_RANGE);
-    // Refused by rule 886(d): the default stays today's.
-    if (STRENGTH_TWO_STAGE_OUTCOME === null || STRENGTH_TWO_STAGE_OUTCOME.startsWith('REFUSED'))
-      expect(DEFAULT_STRENGTH_LAW).toBe('density');
+    // Refused by rule 886(d); asked again by rules 896 to 902, whose outcome
+    // decides the default (the candidate's own test, rule 898(c)).
+    expect(STRENGTH_TWO_STAGE_OUTCOME).toMatch(/^REFUSED/);
+    expect(DEFAULT_STRENGTH_LAW).toBe(
+      STRENGTH_TWO_STAGE_AGAIN_OUTCOME?.startsWith('ADOPTED') === true ? 'twoStage' : 'density'
+    );
   });
 
   it('starts the pancake at S2 for a stony body, and leaves irons and light bodies alone', () => {
@@ -63,7 +67,7 @@ describe('a body’s strength in two stages (rules 881 to 889)', () => {
     expect(firstFragmentationAltitude({ ...body, velocity: 100, strength: 1e5 })).toBe(0);
   });
 
-  it('reports the first stage only under the law, so the default answers as before', () => {
+  it('reports the first stage only under the law, and today’s law answers as before when named', () => {
     const input: ImpactScenarioInput = {
       impactorDiameter: m(1),
       impactVelocity: mps(15_000),
@@ -71,10 +75,7 @@ describe('a body’s strength in two stages (rules 881 to 889)', () => {
       targetDensity: kgPerM3(2_700),
       impactAngle: degreesToRadians(deg(60)),
     };
-    const today = simulateImpact(input);
-    const named = simulateImpact({ ...input, strengthLaw: 'density' });
-    // The same answer; only the echo of the input names the law.
-    expect({ ...named, inputs: input }).toEqual(today);
+    const today = simulateImpact({ ...input, strengthLaw: 'density' });
     expect('firstFragmentationAltitude' in today.entry).toBe(false);
     const two = simulateImpact({ ...input, strengthLaw: 'twoStage' });
     expect(two.entry.firstFragmentationMajorShare).toBe(FIRST_STAGE_MAJOR_SHARE);

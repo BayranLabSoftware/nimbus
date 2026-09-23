@@ -1101,6 +1101,21 @@ percentiles. Nothing outside the Monte Carlo moved. Tunguska's firestorm,
 which the panel gave as a median of zero, reads "in 47 % of the runs",
 4.8 km when it happens.
 
+**The two-stage strength, asked again — adopted** (rules 896 to 902,
+`validation/strengthTwoStageAgainRules.ts`). The same law, the same bars;
+the Monte Carlo now draws both strengths, and the tests an adoption could
+update were listed before the run. A stony body's main fragmentation starts
+at the second phase's strength of meteoroids (0.9–5 MPa, Borovička et al.
+2020), measured on bodies of 0.2 to 1.3 m and extrapolated above. I2's
+median altitude miss over the 357 fireballs: 13.7 → 5.3 km, its mean
++12.8 → +1.7 km — the systematic bias of the entry is gone, the 5 km bar is
+not yet met. Level A does not move (its harness and every check against the
+program stay on Eq. 9); G5 reads nothing. Tunguska bursts at 8.2 km, not
+9.8, and its 1 psi ring reaches 45 km. Next, in the order the reviewer set:
+the entry integrated numerically, proven on the exponential atmosphere, then
+the standard atmosphere; and level B's second round, frozen before this, to
+test it on bodies it has not met.
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this

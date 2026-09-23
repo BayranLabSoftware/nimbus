@@ -2557,9 +2557,9 @@
       "entry": {
         "name": "Ingresso in atmosfera",
         "summary": "L’ingresso del programma di riferimento, caso per caso; entrambi sbagliano di {{error}} km in mediana le quote misurate in cielo.",
-        "domain": "Corpi da 1 m a 30 km, da cometa a ferro, da 12 a 70 km/s e da 15 a 90°, sulle griglie di riferimento: l’esplosione in aria, la frammentazione che arriva comunque al suolo, il corpo che arriva intero. I ferri lenti qui si rompono più in alto che nel programma, che raddoppia l’I_f del paper (BM-13), ed è scritto caso per caso.",
+        "domain": "Corpi da 1 m a 30 km, da cometa a ferro, da 12 a 70 km/s e da 15 a 90°, sulle griglie di riferimento: l’esplosione in aria, la frammentazione che arriva comunque al suolo, il corpo che arriva intero. I ferri lenti qui si rompono più in alto che nel programma, che raddoppia l’I_f del paper (BM-13), ed è scritto caso per caso. Dal 23 settembre 2026 il prodotto fa partire la frammentazione principale di un corpo roccioso alla resistenza misurata sui meteoroidi (0,9–5 MPa, Borovička et al. 2020) e non a quella ricavata dalla densità: misurata su corpi da 0,2 a 1,3 m, estrapolata oltre. Il livello A resta verificato sulla legge del programma.",
         "error": "",
-        "missing": "Una resistenza del corpo incerta e a due stadi al posto di una sola ricavata dalla densità (fase 4); poi un nuovo livello B su corpi visti al telescopio prima dell’ingresso e mai usati, scelti prima della correzione; e la soglia di {{bar}} km sui bolidi."
+        "missing": "L’atmosfera standard al posto di quella esponenziale (fase 4); poi il secondo giro del livello B, su corpi visti al telescopio prima dell’ingresso e mai usati, scelti prima della correzione; e la soglia di {{bar}} km sui bolidi."
       },
       "crater": {
         "name": "Cratere",
@@ -2620,7 +2620,7 @@
     },
     "checkedClean": "Confrontato caso per caso con l’{{program}} su {{impacts}} impatti ({{readings}} letture): il {{excellent}} % entro il 2 %, le altre entro le cifre che il programma stampa, nessuna oltre il 10 % (livello A).",
     "levelB": {
-      "entry": "Livello B non ottenuto (23 settembre 2026): sui due corpi visti al telescopio prima di entrare in atmosfera, 2023 CX1 e 2024 BX1, l’esito «airburst senza cratere» è corretto, ma le quote di frammentazione e di rilascio dell’energia risultano sistematicamente troppo alte. Il modello lega la resistenza alla sola densità e non rappresenta la dispersione osservata della resistenza dei meteoroidi.",
+      "entry": "Livello B non ottenuto (23 settembre 2026): sui due corpi visti al telescopio prima di entrare in atmosfera, 2023 CX1 e 2024 BX1, l’esito «airburst senza cratere» era corretto, ma le quote di frammentazione e di rilascio dell’energia risultavano sistematicamente troppo alte. Il modello legava allora la resistenza alla sola densità; da allora usa le due fasi di frammentazione dei meteoroidi, che il secondo giro del livello B metterà alla prova.",
       "crater": "Livello B non ottenuto (23 settembre 2026): a Carancas, dove una condrite di pochi metri arrivò al suolo e scavò un cratere di 14 m, il modello la rompe in aria in ogni simulazione. A Meteor Crater diametro e profondità osservati stanno dentro le bande del modello sugli intervalli della letteratura: coerente, classe D, non di più."
     }
   }

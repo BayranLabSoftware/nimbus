@@ -34,9 +34,10 @@ describe('rules 739 to 747: the band of an impact’s entry altitude', () => {
 
   it('(a) is frozen at the ten numbers the rows give', () => {
     const rows = bandRows();
-    expect(rows).toHaveLength(356);
+    // Re-taken under rules 896 to 902 (rule 898(c)): 5 fireballs now reach the ground.
+    expect(rows).toHaveLength(351);
     const read = entryBandPercentiles(rows);
-    expect(ENTRY_ALTITUDE_BAND.frozenOn).toBe('2026-09-21');
+    expect(ENTRY_ALTITUDE_BAND.frozenOn).toBe('2026-09-23');
     expect(ENTRY_ALTITUDE_BAND.groups).toHaveLength(ENTRY_BAND_GROUPS.length);
     read.forEach((group, i) => {
       const frozen = ENTRY_ALTITUDE_BAND.groups[i];
@@ -44,7 +45,7 @@ describe('rules 739 to 747: the band of an impact’s entry altitude', () => {
       expect(frozen?.lowKm, group.name).toBeCloseTo(group.lowKm, 9);
       expect(frozen?.highKm, group.name).toBeCloseTo(group.highKm, 9);
     });
-    expect(read.map((g) => g.rows).reduce((a, b) => a + b, 0)).toBe(356);
+    expect(read.map((g) => g.rows).reduce((a, b) => a + b, 0)).toBe(351);
   });
 
   it('(a) bands a burst inside every cell, and nothing else', () => {

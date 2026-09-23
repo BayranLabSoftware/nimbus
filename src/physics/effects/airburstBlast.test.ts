@@ -104,6 +104,9 @@ const burst = (c: ProgramCase) => {
     impactorDensity: kgPerM3(c.densityKgM3),
     targetDensity: kgPerM3(c.targetDensity),
     impactAngle: degreesToRadians(deg(c.angleDeg)),
+    // A check against the program, which computes the entry with Eq. 9:
+    // pinned to it, as level A is (rule 898(a)).
+    strengthLaw: 'density',
   });
   return {
     regime: r.entry.regime,
@@ -370,6 +373,8 @@ describe('airburst blast — an impact that reaches the ground, as the program r
       impactorDensity: kgPerM3(densityKgM3),
       targetDensity: kgPerM3(2_500),
       impactAngle: degreesToRadians(deg(angleDeg)),
+      // Against the program, on Eq. 9 (rule 898(a)).
+      strengthLaw: 'density',
     });
   const ground = (r: ReturnType<typeof body>) => {
     const gf = r.entry.energyFractionToGround;

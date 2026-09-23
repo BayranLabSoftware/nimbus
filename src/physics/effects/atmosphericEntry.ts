@@ -83,7 +83,7 @@ export function collinsStrength(density: KilogramPerCubicMeter): Pascals {
  * strength, and the first's altitude is reported apart.
  */
 export type StrengthLaw = 'density' | 'twoStage';
-export const DEFAULT_STRENGTH_LAW: StrengthLaw = 'density';
+export const DEFAULT_STRENGTH_LAW: StrengthLaw = 'twoStage';
 
 /** Rule 882(c): the first phase's and the second's strengths, the geometric
  *  midpoints of 0.04–0.12 MPa and 0.9–5 MPa, and their intervals. */

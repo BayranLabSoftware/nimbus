@@ -17,6 +17,8 @@ const SWITCH: ImpactScenarioInput = {
   targetDensity: kgPerM3(2544.8118755593896),
   impactAngle: 0.08980449376398124 as ImpactScenarioInput['impactAngle'],
   impactAzimuthDeg: 338.28827671008185,
+  // Rule 847's record, measured under Eq. 9: pinned to it (rule 898(b)).
+  strengthLaw: 'density',
 };
 
 const at = (k: number, craterField: NonNullable<ImpactScenarioInput['craterField']>): number =>

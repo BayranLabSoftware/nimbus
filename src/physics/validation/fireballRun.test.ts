@@ -24,7 +24,9 @@ describe('rule 77: a bolide as a scenario', () => {
       energyKt: 1.7,
     };
     const body = FIREBALL_BODIES[0];
-    const row = fireballRow(event, body);
+    // Pinned to Eq. 9, as rule 898(a) lists it: the entry below is the one
+    // the row must run.
+    const row = fireballRow(event, body, 'density');
     const diameter = fireballDiameterM(event.energyKt, event.speedKmS, body.densityKgM3);
     const entry = atmosphericEntry(
       m(diameter),

@@ -888,6 +888,8 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
         impactorDensity: kgPerM3(3_000),
         targetDensity: kgPerM3(2_750),
         impactAngle: degreesToRadians(deg(angle)),
+        // The program's brackets, on Eq. 9 (rule 898(a)).
+        strengthLaw: 'density',
       });
 
     // Tunguska's body: 42.7 kPa at 3 km, 23.0 at 10, 5.79 at 30, 2.71 at 100.

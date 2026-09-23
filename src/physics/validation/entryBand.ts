@@ -60,23 +60,27 @@ export function entryBandPercentiles(rows: readonly EntryBandRow[]): EntryBandGr
 }
 
 /**
- * Rule 743: the band as frozen, group by group (km), and when — computed on
- * 21 September 2026 after rules 739 to 747 were pushed (`5e9e951`), in the
- * order of {@link ENTRY_BAND_GROUPS}. The error is the record less the model:
- * the model bursts a body higher than the sky does, and the band lies mostly
- * below its burst altitude.
+ * Rule 743: the band as frozen, group by group (km), and when, in the order of
+ * {@link ENTRY_BAND_GROUPS}. The error is the record less the model. First
+ * computed on 21 September 2026 after rules 739 to 747 were pushed
+ * (`5e9e951`), when the model burst a body higher than the sky does and the
+ * band lay mostly below its burst altitude; re-taken on 23 September 2026 as
+ * rule 898(c) lets an adoption of rules 896 to 902 re-take it, computed as
+ * rule 743 computes it: under the two-stage strength five of the fireballs
+ * reach the ground (351 rows, not 356) and the band straddles the burst
+ * altitude.
  */
 export const ENTRY_ALTITUDE_BAND: {
   frozenOn: string;
   groups: readonly { lowKm: number; highKm: number; rows: number }[];
 } = {
-  frozenOn: '2026-09-21',
+  frozenOn: '2026-09-23',
   groups: [
-    { lowKm: -22.143533056914038, highKm: 2.6715073881043967, rows: 96 },
-    { lowKm: -29.488683654276752, highKm: 6.396064463844356, rows: 103 },
-    { lowKm: -22.17150065961419, highKm: 2.1665010341856847, rows: 59 },
-    { lowKm: -23.59965907299627, highKm: -3.441241256541092, rows: 70 },
-    { lowKm: -21.89563385818959, highKm: 3.4213782917982596, rows: 28 },
+    { lowKm: -10.842038234961874, highKm: 14.060752569647434, rows: 94 },
+    { lowKm: -18.94106639990732, highKm: 18.575133332555033, rows: 101 },
+    { lowKm: -10.244869337803781, highKm: 11.477627220245148, rows: 58 },
+    { lowKm: -13.357540628132691, highKm: 5.4022013978429895, rows: 70 },
+    { lowKm: -9.228668762573413, highKm: 10.431569988089112, rows: 28 },
   ],
 };
 

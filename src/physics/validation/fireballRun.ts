@@ -121,12 +121,12 @@ export interface FireballRunResult {
   rows: Record<string, FireballRow[]>;
 }
 
-export function runFireball(): FireballRunResult {
+export function runFireball(law: StrengthLaw = DEFAULT_STRENGTH_LAW): FireballRunResult {
   const rows: Record<string, FireballRow[]> = {};
   const readings: Record<string, FireballReading> = {};
   const cells: FireballRunResult['cells'] = {};
   for (const body of FIREBALL_BODIES) {
-    const all = fireballRows(body);
+    const all = fireballRows(body, undefined, law);
     rows[body.key] = all;
     readings[body.key] = readFireball(all);
     let lower = 0;

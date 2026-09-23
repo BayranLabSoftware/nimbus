@@ -17,7 +17,9 @@ const EIEP = (
 ).rows;
 
 describe('rule 726: I2 read cell by cell', () => {
-  const rows = runFireball().rows.default ?? [];
+  // Read against the program's answers, which run on Eq. 9: pinned to it,
+  // as level A is (rule 898(a)).
+  const rows = runFireball('density').rows.default ?? [];
   const cells = readEntryCells(rows, EIEP);
 
   it('(c) holds every fireball once, in the cells rule 723 counted', () => {

@@ -150,7 +150,7 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
     observed: {
       id: 'bolides',
       events: 357,
-      medianError: 13.7,
+      medianError: 5.3,
       unit: 'km',
       bar: 5,
       meetsBar: false,

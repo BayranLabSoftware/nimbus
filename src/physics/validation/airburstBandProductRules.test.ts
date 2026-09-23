@@ -83,8 +83,10 @@ describe('rules 706 to 713: I3’s band', () => {
 
   it('(a) holds Tunguska’s felled forest over the tree-damage range', () => {
     const b = unionBandKm(IMPACT_PRESETS.TUNGUSKA.input, TREE_DAMAGE_RANGE_KPA);
-    expect(b.low).toBeCloseTo(4.0, 0);
-    expect(b.high).toBeCloseTo(29.4, 0);
+    // Its two numbers re-taken under rules 896 to 902 (rule 898(c)): 4.0 and
+    // 29.4 km under Eq. 9's strength; the claim below must still hold.
+    expect(b.low).toBeCloseTo(7.0, 0);
+    expect(b.high).toBeCloseTo(34.3, 0);
     expect(TUNGUSKA_FELLED.equivalentRadiusKm).toBeGreaterThanOrEqual(b.low);
     expect(TUNGUSKA_FELLED.equivalentRadiusKm).toBeLessThanOrEqual(b.high);
   });

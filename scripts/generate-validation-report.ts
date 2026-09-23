@@ -2439,7 +2439,13 @@ function readEntryCellsFor(run: FireballRunResult): EntryCellReading[] {
 }
 
 /** Rules 722 to 729 (G4): where the entry was measured, cell by cell. */
-function entryCellsSection(cells: readonly EntryCellReading[]): string {
+/** `cells` reads the product's law against the sky; `agreement` reads the
+ *  model on Eq. 9 against the program — a check of the program's equations,
+ *  pinned as level A is (rule 898(a) of validation/strengthTwoStageAgainRules.ts). */
+function entryCellsSection(
+  cells: readonly EntryCellReading[],
+  agreement: readonly EntryCellReading[]
+): string {
   const span = (c: EntryCellReading): string =>
     c.spans.map((x) => `${x.from.toString()}–${x.to.toString()} ${x.unit}`).join(', ');
   const signed = (x: number): string =>
@@ -2466,8 +2472,8 @@ function entryCellsSection(cells: readonly EntryCellReading[]): string {
     '',
     '| Cell | Fireballs | The model | The program | Agreement | G2 | Band of the error | G3 |',
     '|------|----:|----:|----:|:--:|:--|:--|:--|',
-    ...cells.map((c) => {
-      const a = c.anchor;
+    ...cells.map((c, i) => {
+      const a = agreement[i]?.anchor ?? c.anchor;
       const counts = [
         a.counts.within,
         a.counts.bm13,
@@ -2490,19 +2496,22 @@ function entryCellsSection(cells: readonly EntryCellReading[]): string {
         group === undefined
           ? '—'
           : `${signed(group.lowKm)} to ${signed(group.highKm)} km${pooled ? `, pooled (${group.rows.toString()})` : ''}`;
-      return `| ${span(c)} | ${c.rows.toString()} | ${pair(a.nimbus)} | ${pair(a.eiep)} | ${counts} | ${g2} | ${bandText} | not read |`;
+      return `| ${span(c)} | ${c.rows.toString()} | ${pair(c.anchor.nimbus)} | ${pair(a.eiep)} | ${counts} | ${g2} | ${bandText} | not read |`;
     }),
     '',
     `The band of the error is I2's band (rules 739 to 747, \`validation/entryBandRules.ts\`): the 5th and 95th percentiles of the record less the model's burst altitude over the cell's fireballs, the two cells above 3 kT pooled, frozen on ${ENTRY_ALTITUDE_BAND.frozenOn}; the product draws the burst altitude's band as the altitude plus that pair, inside the measured cells only. G3's column is empty until the band is scored on the fireballs the catalogue publishes after the freeze (IMP-6, not before spring 2027): G4 reads that the table exists and where a scenario lies, and G3's figures will fill it.`,
   ].join('\n');
 }
 
-function entryCellsJson(cells: readonly EntryCellReading[]) {
-  return cells.map((c) => ({
+function entryCellsJson(
+  cells: readonly EntryCellReading[],
+  agreement: readonly EntryCellReading[]
+) {
+  return cells.map((c, i) => ({
     spans: c.spans,
     rows: c.rows,
     scored: c.scored,
-    counts: c.anchor.counts,
+    counts: (agreement[i]?.anchor ?? c.anchor).counts,
     model: {
       medianAbsKm: fixed(c.anchor.nimbus.medianAbsKm, 2),
       meanKm: fixed(c.anchor.nimbus.meanKm, 2),
@@ -2511,7 +2520,11 @@ function entryCellsJson(cells: readonly EntryCellReading[]) {
       medianAbsKm: fixed(c.anchor.eiep.medianAbsKm, 2),
       meanKm: fixed(c.anchor.eiep.meanKm, 2),
     },
-    g2: c.scored ? (c.anchor.met ? 'met' : 'not met') : 'read in the whole',
+    g2: c.scored
+      ? (agreement[i]?.anchor ?? c.anchor).met
+        ? 'met'
+        : 'not met'
+      : 'read in the whole',
     g3: 'not read',
   }));
 }
@@ -4110,6 +4123,8 @@ function main(): void {
   const residual = runResidualRules();
   const fireball = runFireball();
   const entryCells = readEntryCellsFor(fireball);
+  // The agreement with the program, on Eq. 9 (rule 898(a)).
+  const entryAgreement = readEntryCellsFor(runFireball('density'));
   const burn = runBurn();
   const dose = runDose();
   const crater = runCrater();
@@ -4251,7 +4266,7 @@ ${fireballSection(fireball)}
 
 ### G4: the cells the entry was measured in
 
-${entryCellsSection(entryCells)}
+${entryCellsSection(entryCells, entryAgreement)}
 
 ### The exposure that burns, from the book's own figure
 
@@ -4606,7 +4621,7 @@ otherwise.
       slab: slabJson(slab),
       residual: residualJson(residual),
       fireball: fireballJson(fireball),
-      entryCells: entryCellsJson(entryCells),
+      entryCells: entryCellsJson(entryCells, entryAgreement),
       burn: burnJson(burn),
       dose: doseJson(dose),
       crater: craterJson(crater),

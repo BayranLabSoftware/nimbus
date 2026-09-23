@@ -114,9 +114,13 @@ describe('rules 730 to 738: an airburst’s magnitude from the air that carries 
   }, 30_000);
 
   it('(c) moves the presets as rule 733 lists them', () => {
+    // Rule 733's record, measured under Eq. 9: pinned to it (rule 898(b)).
     const at = (id: keyof typeof IMPACT_PRESETS): number | null =>
-      simulateImpact({ ...IMPACT_PRESETS[id].input, airburstSeismic: 'harkrider' }).seismic
-        .magnitude;
+      simulateImpact({
+        ...IMPACT_PRESETS[id].input,
+        airburstSeismic: 'harkrider',
+        strengthLaw: 'density',
+      }).seismic.magnitude;
     expect(at('TUNGUSKA')).toBeCloseTo(4.31, 2);
     expect(at('CHELYABINSK')).toBeCloseTo(4.0, 2);
     expect(at('SIKHOTE_ALIN_1947')).toBeCloseTo(2.48, 2);
@@ -127,7 +131,9 @@ describe('rules 730 to 738: an airburst’s magnitude from the air that carries 
       'POPIGAI',
       'BOLTYSH',
     ] as const) {
-      expect(at(id)).toBe(simulateImpact(IMPACT_PRESETS[id].input).seismic.magnitude);
+      expect(at(id)).toBe(
+        simulateImpact({ ...IMPACT_PRESETS[id].input, strengthLaw: 'density' }).seismic.magnitude
+      );
     }
   });
 });

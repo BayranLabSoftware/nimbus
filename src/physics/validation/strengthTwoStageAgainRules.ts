@@ -65,5 +65,50 @@
  * validation report is regenerated once. A refusal records why.
  */
 
-/** The outcome, written after the run. */
-export const STRENGTH_TWO_STAGE_AGAIN_OUTCOME: string | null = null;
+/**
+ * The outcome, written on 23 September 2026 after the one run, on the
+ * candidate of f126d64. The rules were pushed in c06bd44 first.
+ *
+ * ADOPTED: every clause of rule 899 holds. `DEFAULT_STRENGTH_LAW` is
+ * `twoStage`.
+ *
+ * (a) MET. Level A, its harness pinned to `density`, does not move: its test
+ *     passes unchanged with the default switched.
+ * (b) MET. I2, the body with no strength given: median absolute altitude
+ *     miss 13.74 km under `density`, 5.30 km under `twoStage`; mean miss
+ *     +12.8 km → +1.7 km; fireballs within 5 km 49 of 356 → 164 of 351
+ *     (five now reach the ground). The 5 km bar of I2 is still not met.
+ * (c) MET. G5 reads 0 on the benchmark's own draw and on the unseen seed,
+ *     under both laws (invariants-2026-09-23-12 to -15, identical to the
+ *     first run's -8 and -9 on the own draw).
+ * (d) MET, after rule 898's updates and no other: the four airburst-blast
+ *     checks, rule 726(c)'s agreement, B-032 and rule 77's run pinned to
+ *     `density`; rules 733's and 847's records pinned likewise; the seal
+ *     re-taken (numbers of 69 of 308 scenarios; key numbers of 5 — Tunguska's
+ *     burst 9.81 → 8.16 km, 5 psi 5.80 → 8.18 km, 1 psi 26.4 → 45.0 km,
+ *     magnitude 4.31 → 4.37, and Chicxulub, Chicxulub at sea, Popigai and
+ *     Boltysh in their last digits); the entry band re-taken as rule 743
+ *     computes it (351 rows; it now straddles the burst altitude, −10.8 to
+ *     +14.1 km in its first group where it lay at −22.1 to +2.7); I3's band
+ *     for Tunguska 7.0–34.3 km, holding the felled forest's 26.5 km; the
+ *     bolides' figure 13.7 → 5.3 km; the candidate's own test. Then 3 027
+ *     tests pass; the strict gate PASS; Chromium's end-to-end suite, 33
+ *     passed and 14 skipped as before.
+ * (e) MET. The coverage test passes with the default switched and S1 and S2
+ *     drawn in every covered draw.
+ *
+ * Declared: the validation report read I2's cell-by-cell agreement with the
+ * program from the product's rows, so under the new law its agreement
+ * column counted the model against the program on another law (its first
+ * cell's 94 fireballs read "through BM-13"). The same check rule 898(a) pins in its test is
+ * pinned in the report: the model's miss by cell is read under the product's
+ * law, its agreement with the program under Eq. 9. The report was
+ * regenerated for it, once more.
+ *
+ * What moves for a reader: a stony airburst bursts lower and blasts wider —
+ * Tunguska's 1 psi ring reaches 45 km, not 26; the entry's card says what the
+ * law is, where it is measured (bodies of 0.2 to 1.3 m) and that above it is
+ * an extrapolation; its level B text is put in the past.
+ */
+export const STRENGTH_TWO_STAGE_AGAIN_OUTCOME: string | null =
+  "ADOPTED 23 September 2026: a stony body's main fragmentation starts at the second phase's strength of meteoroids (0.9–5 MPa, Borovička et al. 2020), not at one strength per density. I2's median altitude miss falls from 13.7 to 5.3 km and its mean from +12.8 to +1.7 km; level A does not move; G5 reads nothing. Level B's second round is what will test it on bodies it has not met.";

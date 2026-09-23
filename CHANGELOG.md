@@ -19,6 +19,13 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **A stony body now breaks as meteoroids do.** Its main fragmentation
+  starts at the strength measured on meteoroids in the air (0.9–5 MPa,
+  Borovička et al. 2020), not at one strength taken from its density. Over
+  357 measured fireballs the entry's median altitude miss falls from 13.7 to
+  5.3 km, and its systematic bias from +12.8 to +1.7 km. Stony airbursts
+  burst lower and blast wider (Tunguska: 8.2 km, 1 psi at 45 km). The
+  comparison with the reference program stays on its own equations.
 - **The Monte Carlo says how often a quantity happens, and how large it is
   when it does.** A crater, an ejecta ring or a firestorm that appears in
   only part of the runs is no longer summarised by a median that may be

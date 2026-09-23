@@ -3581,11 +3581,11 @@
       "readings": {
         "default": {
           "rows": 357,
-          "burst": 356,
-          "toTheGround": 1,
-          "medianAbsoluteErrorKm": 13.74,
-          "meanErrorKm": 12.75,
-          "withinFiveKm": 49
+          "burst": 351,
+          "toTheGround": 6,
+          "medianAbsoluteErrorKm": 5.3,
+          "meanErrorKm": 1.69,
+          "withinFiveKm": 164
         },
         "stony": {
           "rows": 357,
@@ -3609,47 +3609,47 @@
           {
             "label": "below 0.3 kt",
             "rows": 200,
-            "burst": 199,
-            "toTheGround": 1,
-            "medianAbsoluteErrorKm": 14.26,
-            "meanErrorKm": 13.45,
-            "withinFiveKm": 22
+            "burst": 195,
+            "toTheGround": 5,
+            "medianAbsoluteErrorKm": 5.4,
+            "meanErrorKm": 1.61,
+            "withinFiveKm": 90
           },
           {
             "label": "0.3 to 3 kt",
             "rows": 129,
-            "burst": 129,
-            "toTheGround": 0,
-            "medianAbsoluteErrorKm": 12.99,
-            "meanErrorKm": 12.61,
-            "withinFiveKm": 20
+            "burst": 128,
+            "toTheGround": 1,
+            "medianAbsoluteErrorKm": 5.04,
+            "meanErrorKm": 2.04,
+            "withinFiveKm": 63
           },
           {
             "label": "above 3 kt",
             "rows": 28,
             "burst": 28,
             "toTheGround": 0,
-            "medianAbsoluteErrorKm": 11.28,
-            "meanErrorKm": 8.5,
-            "withinFiveKm": 7
+            "medianAbsoluteErrorKm": 6.42,
+            "meanErrorKm": 0.66,
+            "withinFiveKm": 11
           },
           {
             "label": "below 17 km/s",
             "rows": 168,
-            "burst": 168,
-            "toTheGround": 0,
-            "medianAbsoluteErrorKm": 12.22,
-            "meanErrorKm": 10.62,
-            "withinFiveKm": 30
+            "burst": 165,
+            "toTheGround": 3,
+            "medianAbsoluteErrorKm": 4.59,
+            "meanErrorKm": -0.58,
+            "withinFiveKm": 89
           },
           {
             "label": "from 17 km/s",
             "rows": 189,
-            "burst": 188,
-            "toTheGround": 1,
-            "medianAbsoluteErrorKm": 14.93,
-            "meanErrorKm": 14.66,
-            "withinFiveKm": 19
+            "burst": 186,
+            "toTheGround": 3,
+            "medianAbsoluteErrorKm": 6.42,
+            "meanErrorKm": 3.71,
+            "withinFiveKm": 75
           }
         ],
         "stony": [
@@ -3774,12 +3774,12 @@
           "unanswered": 0
         },
         "model": {
-          "medianAbsKm": 13.4,
-          "meanKm": 11.51
+          "medianAbsKm": 4.57,
+          "meanKm": -0.29
         },
         "program": {
-          "medianAbsKm": 13.28,
-          "meanKm": 11.42
+          "medianAbsKm": 13.47,
+          "meanKm": 11.52
         },
         "g2": "met",
         "g3": "not read"
@@ -3809,12 +3809,12 @@
           "unanswered": 1
         },
         "model": {
-          "medianAbsKm": 16.15,
-          "meanKm": 15.25
+          "medianAbsKm": 6.95,
+          "meanKm": 3.38
         },
         "program": {
-          "medianAbsKm": 16.12,
-          "meanKm": 15.18
+          "medianAbsKm": 15.79,
+          "meanKm": 15.16
         },
         "g2": "met",
         "g3": "not read"
@@ -3844,12 +3844,12 @@
           "unanswered": 0
         },
         "model": {
-          "medianAbsKm": 10.22,
-          "meanKm": 9.93
+          "medianAbsKm": 4.54,
+          "meanKm": -0.86
         },
         "program": {
-          "medianAbsKm": 10.19,
-          "meanKm": 9.86
+          "medianAbsKm": 9.97,
+          "meanKm": 9.82
         },
         "g2": "met",
         "g3": "not read"
@@ -3879,8 +3879,8 @@
           "unanswered": 0
         },
         "model": {
-          "medianAbsKm": 14.99,
-          "meanKm": 14.87
+          "medianAbsKm": 5.27,
+          "meanKm": 4.45
         },
         "program": {
           "medianAbsKm": 14.98,
@@ -3914,8 +3914,8 @@
           "unanswered": 0
         },
         "model": {
-          "medianAbsKm": 12.08,
-          "meanKm": 7.13
+          "medianAbsKm": 5.8,
+          "meanKm": -1.43
         },
         "program": {
           "medianAbsKm": 12.06,
@@ -3949,8 +3949,8 @@
           "unanswered": 0
         },
         "model": {
-          "medianAbsKm": 9.48,
-          "meanKm": 9.69
+          "medianAbsKm": 6.87,
+          "meanKm": 2.47
         },
         "program": {
           "medianAbsKm": 9.48,
