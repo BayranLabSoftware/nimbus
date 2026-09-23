@@ -3600,6 +3600,12 @@ function levelASection(run: LevelARun): string {
       ? 'No reading passes the audit bar.'
       : `Readings past the audit bar: ${run.audits.length.toString()}, ${undocumented.length.toString()} with no documented difference; by the difference that covers them (each recomputed by \`validation/levelA.test.ts\` from \`validation/eiepGrid.json\`):`,
     ...audits,
+    '',
+    `Readings only one side answers — the model a number where the program states none, or the other way round, counted since 23 September 2026: ${run.oneSided.length.toString()}, ${run.oneSided.filter((o) => o.difference === null).length.toString()} with no documented difference; by the difference that covers them:`,
+    ...[...new Set(run.oneSided.map((o) => o.difference ?? 'none'))].map(
+      (id) =>
+        `- ${id}: ${run.oneSided.filter((o) => (o.difference ?? 'none') === id).length.toString()}`
+    ),
     ...(differences.length === 0 ? [] : ['', 'The documented differences:', ...differences]),
     '',
     "The 2–10 % band, by the cause shown at work on each reading (`explainBandCause`): `printed`, inside the interval the program's printed figure stands for; `entry`, back within 2 % or inside that interval on the program's own equations; `unrounded`, a crater within 2 % of the radius the program's own map carries unrounded, or — on the first grid, whose rows keep no map — of the interval its printed figure stands for; a documented difference; or `open`.",
@@ -4819,6 +4825,13 @@ otherwise.
           [...new Set(levelA.audits.map((a) => a.difference ?? 'none'))].map((id) => [
             id,
             levelA.audits.filter((a) => (a.difference ?? 'none') === id).length,
+          ])
+        ),
+        oneSided: levelA.oneSided.length,
+        oneSidedByDifference: Object.fromEntries(
+          [...new Set(levelA.oneSided.map((o) => o.difference ?? 'none'))].map((id) => [
+            id,
+            levelA.oneSided.filter((o) => (o.difference ?? 'none') === id).length,
           ])
         ),
         undocumented: levelA.audits

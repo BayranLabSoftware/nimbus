@@ -24,6 +24,7 @@
 import {
   eiepRatios,
   simulateEiepRow,
+  type EiepOneSided,
   type EiepQuantity,
   type EiepRatio,
 } from './eiepComparison.js';
@@ -185,18 +186,50 @@ export const LEVEL_A_DIFFERENCES: readonly LevelADifference[] = [
   },
   {
     id: 'iron-crater-by-mass',
-    quantities: ['ejectaEdge'],
+    // The crater's own dimensions only where the program prints none («may
+    // create a crater strewn field»): read on one-sided readings.
+    quantities: ['ejectaEdge', 'transientDiameter', 'finalDiameter', 'finalDepth'],
     applies: (pair) => {
       const origin = modelOf(pair.row).crater.origin;
-      return origin === 'strewnField' || origin === 'ironSwarm';
+      const crater = pair.quantity !== 'ejectaEdge';
+      return (
+        (origin === 'strewnField' || origin === 'ironSwarm') && (!crater || pair.reference === 0)
+      );
     },
-    why: "An iron's crater ends by its mass (rules 764 to 771, B-098; Bland & Artemieva 2006): a strewn field of small craters, or a swarm's. The program's map still draws the blanket of one crater of the whole body at its end speed, which is not the crater this model — or the program's own text — says forms.",
+    why: "An iron's crater ends by its mass (rules 764 to 771, B-098; Bland & Artemieva 2006): a strewn field of small craters, or a swarm's. The program's map still draws the blanket of one crater of the whole body at its end speed, which is not the crater this model — or the program's own text — says forms; and where an iron bursts, the program prints «may create a crater strewn field» and no dimensions, where this model gives its field's largest crater.",
   },
   {
     id: 'low-burst-crater',
-    quantities: ['ejectaEdge'],
-    applies: (pair) => modelOf(pair.row).crater.origin === 'lowBurst',
+    quantities: ['ejectaEdge', 'transientDiameter', 'finalDiameter', 'finalDepth'],
+    applies: (pair) =>
+      modelOf(pair.row).crater.origin === 'lowBurst' &&
+      (pair.quantity === 'ejectaEdge' || pair.reference === 0),
     why: 'Below its fireball a low airburst digs with the share 1 − z/R of its mass (rules 756 to 763, B-097); the program draws no such crater, and its map the blanket of another.',
+  },
+  {
+    id: 'program-blanket-without-crater',
+    quantities: ['ejectaEdge'],
+    // One-sided: the program's own text says no crater forms, and its map
+    // still carries a blanket; the model draws none.
+    applies: (pair) => pair.model === 0 && pair.reference > 0 && pair.row.craterType === 'none',
+    why: 'Where a body bursts in the air the program prints «No crater is formed», and its map still carries the rings of an ejecta blanket, from a crater it has just said does not exist. This model draws no blanket without a crater. Written on 23 September 2026 after level A first counted the readings only one side answers.',
+  },
+  {
+    id: 'program-ring-inside-its-crater',
+    quantities: ['ejectaEdge'],
+    // One-sided: the program's ring lies inside the program's own final
+    // crater, where no blanket lies; the model's blanket is thinner than the
+    // ring's thickness at its rim, and it draws none outside the crater.
+    applies: (pair) => {
+      if (!(pair.model === 0 && pair.reference > 0)) return false;
+      const rim =
+        extras(pair.row).craterRadiiM?.[0] ??
+        (pair.row.finalDiameterM === null || pair.row.finalDiameterM === undefined
+          ? undefined
+          : pair.row.finalDiameterM / 2);
+      return rim !== undefined && pair.reference < rim;
+    },
+    why: "The program's map draws a thick blanket ring — ten or a hundred metres — inside the program's own final crater, where the crater is and no blanket lies. This model's blanket at its rim is thinner than that ring, so it draws the ring nowhere. Written on 23 September 2026 after level A first counted the readings only one side answers.",
   },
   {
     id: 'program-map-edge',
@@ -247,6 +280,9 @@ export interface LevelARun {
   summaries: LevelASummary[];
   /** Every pair over the audit bar, with the difference that covers it. */
   audits: { pair: EiepRatio; epsilon: number; difference: string | null }[];
+  /** Every reading only one side answers, with the difference that covers it
+   *  (counted since 23 September 2026; until then dropped without a word). */
+  oneSided: { reading: EiepOneSided; difference: string | null }[];
 }
 
 function quantile(sorted: readonly number[], q: number): number {
@@ -371,18 +407,17 @@ export function summariseLevelA(pairs: readonly EiepRatio[]): LevelASummary[] {
 function finish(
   rows: readonly EiepRow[],
   pairs: EiepRatio[],
+  oneSided: EiepOneSided[],
   modelFailed: { row: EiepRow; error: string }[],
   programFailed: number
 ): LevelARun {
+  const covering = (reading: EiepRatio): string | null =>
+    LEVEL_A_DIFFERENCES.find((d) => d.quantities.includes(reading.quantity) && d.applies(reading))
+      ?.id ?? null;
   const audits = pairs
     .map((pair) => ({ pair, epsilon: epsilonOf(pair) }))
     .filter((a) => bandOf(a.epsilon) === 'audit')
-    .map((a) => ({
-      ...a,
-      difference:
-        LEVEL_A_DIFFERENCES.find((d) => d.quantities.includes(a.pair.quantity) && d.applies(a.pair))
-          ?.id ?? null,
-    }));
+    .map((a) => ({ ...a, difference: covering(a.pair) }));
   return {
     cases: rows.length,
     programFailed,
@@ -390,17 +425,24 @@ function finish(
     pairs,
     summaries: summariseLevelA(pairs),
     audits,
+    // A one-sided reading has a model or a reference of zero, which every
+    // difference's test reads as such.
+    oneSided: oneSided.map((reading) => ({ reading, difference: covering(reading) })),
   };
 }
 
-/** One case: its pairs, or why the simulator could not run it. */
+/** One case: its pairs, its one-sided readings, or why the simulator could
+ *  not run it. */
 function readCase(
   row: EiepRow,
   pairs: EiepRatio[],
+  oneSided: EiepOneSided[],
   modelFailed: { row: EiepRow; error: string }[]
 ): void {
   try {
-    pairs.push(...eiepRatios([row]));
+    const own: EiepOneSided[] = [];
+    pairs.push(...eiepRatios([row], {}, own));
+    oneSided.push(...own);
   } catch (e) {
     modelFailed.push({ row, error: String(e).slice(0, 200) });
   }
@@ -409,13 +451,14 @@ function readCase(
 /** The whole comparison, in one go — for the validation report's generator. */
 export function runLevelASync(rows: readonly EiepRow[]): LevelARun {
   const pairs: EiepRatio[] = [];
+  const oneSided: EiepOneSided[] = [];
   const modelFailed: { row: EiepRow; error: string }[] = [];
   let programFailed = 0;
   for (const row of rows) {
     if (row.error !== null) programFailed++;
-    else readCase(row, pairs, modelFailed);
+    else readCase(row, pairs, oneSided, modelFailed);
   }
-  return finish(rows, pairs, modelFailed, programFailed);
+  return finish(rows, pairs, oneSided, modelFailed, programFailed);
 }
 
 /**
@@ -428,12 +471,13 @@ export async function runLevelA(
   step: () => Promise<void> = () => Promise.resolve()
 ): Promise<LevelARun> {
   const pairs: EiepRatio[] = [];
+  const oneSided: EiepOneSided[] = [];
   const modelFailed: { row: EiepRow; error: string }[] = [];
   let programFailed = 0;
   for (const [i, row] of rows.entries()) {
     if (i % 25 === 0) await step();
     if (row.error !== null) programFailed++;
-    else readCase(row, pairs, modelFailed);
+    else readCase(row, pairs, oneSided, modelFailed);
   }
-  return finish(rows, pairs, modelFailed, programFailed);
+  return finish(rows, pairs, oneSided, modelFailed, programFailed);
 }

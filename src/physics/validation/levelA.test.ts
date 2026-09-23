@@ -48,6 +48,19 @@ describe('level A: the impact pipeline held to its reference implementation, cas
     expect(LEVEL_A_BARS.audit).toBe(0.1);
   });
 
+  it('leaves no reading only one side answers without its documented difference', () => {
+    // Counted since 23 September 2026: until then a reading the model or the
+    // program answered alone was dropped without a word.
+    const open = run.oneSided.filter((o) => o.difference === null);
+    expect(
+      open.map(
+        (o) =>
+          `${o.reading.quantity} ${String(o.reading.detail ?? '')} — ${String(o.reading.row.diameterM)} m, ${String(o.reading.row.densityKgM3)} kg/m³, ${String(o.reading.row.velocityKmS)} km/s, ${String(o.reading.row.angleDeg)}°: model ${String(o.reading.model)}, program ${String(o.reading.reference)}`
+      )
+    ).toEqual([]);
+    expect(run.oneSided.length).toBeGreaterThan(0);
+  });
+
   it('shows no constant sign that no difference explains', () => {
     for (const s of run.summaries) {
       if (s.constantSign) expect(s.unexplained, s.quantity).toBe(0);

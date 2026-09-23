@@ -7564,6 +7564,14 @@
         "low-burst-crater": 8,
         "program-map-edge": 60
       },
+      "oneSided": 3219,
+      "oneSidedByDifference": {
+        "program-blanket-without-crater": 2603,
+        "program-ring-inside-its-crater": 107,
+        "iron-crater-by-mass": 493,
+        "entry-paper-equations": 2,
+        "low-burst-crater": 14
+      },
       "undocumented": []
     }
   },

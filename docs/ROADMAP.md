@@ -1004,7 +1004,11 @@ as wide, and G5 reads 12 against 8 — and five ejecta readings became
 one-sided, the program drawing a 10 m ring inside its own crater where the
 model draws none. The law stays at `single` and B-123 stays open; a second
 round wants a transition monotone in size, as an iron's field is joined by its
-mass. Read after that run: level A counts only pairs both sides answer.
+mass. Read after that run: level A counted only pairs both sides answer.
+Closed the same morning: it now counts the readings only one side answers —
+3 219, every one traced to a cause shown at work on it, two of them the
+program's own: an ejecta blanket its map draws for 2 603 airbursts it has
+just said dig no crater, and 107 thick rings inside its own crater.
 
 The evidence table now states level A on both grids — share within 2 %,
 readings past 10 %, each documented — and the crater's card names the crater

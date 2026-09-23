@@ -83,10 +83,27 @@ export interface EiepRatio {
   reference: number;
 }
 
-/** Every pair where both sides answer with a number above zero. */
+/**
+ * A reading only one side answers: the model a number above zero where the
+ * program states none, or the other way round (level A, since 23 September
+ * 2026 — until then these were dropped without a word).
+ */
+export interface EiepOneSided {
+  row: EiepRow;
+  quantity: EiepQuantity;
+  detail?: number;
+  /** Zero where the model answers none. */
+  model: number;
+  /** Zero where the program states none. */
+  reference: number;
+}
+
+/** Every pair where both sides answer with a number above zero; the readings
+ *  only one side answers go to `oneSided`, where a caller asks for them. */
 export function eiepRatios(
   rows: readonly EiepRow[] = EIEP_REFERENCE,
-  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary' | 'craterField'> = {}
+  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary' | 'craterField'> = {},
+  oneSided?: EiepOneSided[]
 ): EiepRatio[] {
   const out: EiepRatio[] = [];
   for (const row of rows) {
@@ -99,8 +116,24 @@ export function eiepRatios(
       reference: number | null | undefined,
       detail?: number
     ): void => {
-      if (reference === null || reference === undefined || !(reference > 0) || !(model > 0)) return;
-      out.push({ row, quantity, model, reference, ...(detail === undefined ? {} : { detail }) });
+      const ref = reference ?? 0;
+      if (ref > 0 && model > 0) {
+        out.push({
+          row,
+          quantity,
+          model,
+          reference: ref,
+          ...(detail === undefined ? {} : { detail }),
+        });
+      } else if (ref > 0 !== model > 0 && oneSided !== undefined) {
+        oneSided.push({
+          row,
+          quantity,
+          model: model > 0 ? model : 0,
+          reference: ref > 0 ? ref : 0,
+          ...(detail === undefined ? {} : { detail }),
+        });
+      }
     };
     pair('energy', r.impactor.kineticEnergy, row.energyJ);
     pair('breakupAltitude', r.entry.breakupAltitude, row.breakupAltitudeM);

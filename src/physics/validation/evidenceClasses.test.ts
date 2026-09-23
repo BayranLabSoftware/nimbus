@@ -85,6 +85,11 @@ describe('the evidence behind each number an impact prints', () => {
         (a) => names.includes(a.pair.quantity) && a.difference === null
       );
       expect(open, q).toEqual([]);
+      // And every reading only one side answers.
+      const oneSided = levelA.oneSided.filter(
+        (o) => names.includes(o.reading.quantity) && o.difference === null
+      );
+      expect(oneSided, q).toEqual([]);
     }
   });
 
