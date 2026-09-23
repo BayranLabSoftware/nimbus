@@ -79,5 +79,29 @@ export const MC_QUANTILE_Z = 2.576;
 /** Rule 892(a): standard deviations of the share. */
 export const MC_SHARE_SIGMAS = 3;
 
-/** The outcome, written after the run. */
-export const MC_SHARE_OUTCOME: string | null = null;
+/**
+ * The outcome, written on 23 September 2026 after the one run, on the
+ * candidate of 106378e. The rules were pushed in 8a0d5d7 first.
+ *
+ * ADOPTED: every clause of rule 893 holds.
+ *
+ * (a) MET. Under the default laws the coverage test passes whole: kinetic
+ *     energy (share 1) by its three old claims word for word; the final
+ *     crater, the ejecta's edge and the firestorm's ignition — each zero in
+ *     more than a tenth of Tunguska's draws — by their share and by the
+ *     percentiles of their draws above zero, each with ten draws or more.
+ * (b) MET. The whole suite passes, the seal to the bit and level A with it.
+ * (c) MET. The globe's probability view's tests pass unchanged.
+ * (d) MET. Typecheck, lint, format; 3 026 tests; the validation report,
+ *     regenerated once, identical, and its strict gate PASS; Chromium's
+ *     end-to-end suite, 33 passed and 14 skipped as before. The panel's row
+ *     read in the running app, Tunguska at 1 000 draws: "Innesco firestorm —
+ *     nel 47 % dei campioni: 2,4 km, 4,8 km, 7,5 km" where it printed a median
+ *     of zero; the crater and the ejecta ring "nel 17 % dei campioni".
+ *
+ * Reported, not deciding: with the strength law of rules 881 to 889 the same
+ * test passes too — the firestorm in 52.6 % of the 2 000 draws against
+ * 52.0 % of the 200, its median above zero 4.6 km.
+ */
+export const MC_SHARE_OUTCOME: string | null =
+  "ADOPTED 23 September 2026: the Monte Carlo reports how often a quantity happens and how large it is when it does, and the coverage test holds both; nothing outside the Monte Carlo moved. Tunguska's firestorm reads 'in 47 % of the runs' where it read a median of zero.";

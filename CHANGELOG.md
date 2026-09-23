@@ -19,6 +19,11 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The Monte Carlo says how often a quantity happens, and how large it is
+  when it does.** A crater, an ejecta ring or a firestorm that appears in
+  only part of the runs is no longer summarised by a median that may be
+  zero: the panel shows the share of runs where it happens and its P10–P90
+  in those runs (Tunguska's firestorm: in 47 % of the runs, 2.4–7.5 km).
 - **A body's strength in two stages, measured and refused by the letter.**
   The candidate law — the pancake starting at the second fragmentation
   phase's strength of meteoroids, 0.9–5 MPa, not one strength per density —

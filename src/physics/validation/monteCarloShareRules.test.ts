@@ -15,7 +15,7 @@ describe('rules 890 to 895: how often, and how large when it happens', () => {
     expect(MC_SHARE_SIGMAS).toBe(3);
   });
 
-  it('has no outcome before its run', () => {
-    expect(MC_SHARE_OUTCOME).toBeNull();
+  it('records its adoption', () => {
+    expect(MC_SHARE_OUTCOME).toMatch(/^ADOPTED 23 September 2026/);
   });
 });

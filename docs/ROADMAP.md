@@ -1092,6 +1092,15 @@ a firestorm and its size when there is one are the right ones), and the
 model's exponential atmosphere is 1.5–1.9 times too dense between 40 and
 60 km, lifting every altitude by 4–5 km.
 
+**The Monte Carlo says how often, and how large when it happens — adopted**
+(rules 890 to 895, `validation/monteCarloShareRules.ts`). Every summary
+gains the share of draws above zero and the percentiles of those draws; the
+panel shows a quantity zero in more than a tenth of its runs as "in N % of
+the runs" with them; the coverage test holds the share and those
+percentiles. Nothing outside the Monte Carlo moved. Tunguska's firestorm,
+which the panel gave as a median of zero, reads "in 47 % of the runs",
+4.8 km when it happens.
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this
