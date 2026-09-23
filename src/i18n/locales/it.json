@@ -2576,9 +2576,9 @@
       "crater": {
         "name": "Cratere",
         "summary": "Le leggi di scala del cratere del programma di riferimento, caso per caso, con il campo di crateri di un corpo disperso unito dove il programma fa uno scatto; non ancora confrontate con un cratere misurato.",
-        "domain": "Crateri semplici e complessi in roccia sedimentaria e cristallina, dai corpi delle griglie di riferimento che arrivano al suolo; dove i frammenti cadono sparsi più largo del cratere, un campo di crateri, unito al cratere singolo senza lo scatto del programma (regole 846–853).",
+        "domain": "Crateri semplici e complessi in roccia sedimentaria e cristallina, dai corpi delle griglie di riferimento che arrivano al suolo; dove i frammenti cadono sparsi più largo del cratere, un campo di crateri, unito al cratere singolo senza lo scatto del programma (regole 846–853). Solo dove il corpo arriva al suolo a 5 km/s o più (French 1998): sotto, il cratere non è risolto ed è possibile una buca di penetrazione locale (regole 945–952).",
         "error": "",
-        "missing": "Livello B: un ingresso che lasci arrivare al suolo i corpi resistenti, come a Carancas, e un secondo cratere osservato il cui corpo sia noto indipendentemente dal cratere; livello C: risultati di hydrocode (iSALE, CTH) su angoli e bersagli diversi."
+        "missing": "Livello B: un ingresso che lasci arrivare al suolo i corpi resistenti, come a Carancas, e un secondo cratere osservato il cui corpo sia noto indipendentemente dal cratere; livello C: risultati di hydrocode (iSALE, CTH) su angoli e bersagli diversi. Una legge per i corpi che arrivano al suolo sotto i 5 km/s, dove oggi il cratere non è risolto."
       },
       "blast": {
         "name": "Onda d’urto",

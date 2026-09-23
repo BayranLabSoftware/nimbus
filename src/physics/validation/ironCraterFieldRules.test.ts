@@ -4,7 +4,16 @@ import {
   IRON_FIELD_SINGLE_KG,
   type IronCraterField,
 } from '../events/impact/ironCraterField.js';
-import { IMPACT_PRESETS, simulateImpact, type ImpactScenarioInput } from '../simulate.js';
+import {
+  IMPACT_PRESETS,
+  simulateImpact as simulateModel,
+  type ImpactScenarioInput,
+} from '../simulate.js';
+/** Rule 951: a record of an earlier round, read on the crater it was measured
+ *  on — Eq. 21 at any speed; under the domain of rules 945 to 952 its slow
+ *  swarms are not resolved. */
+const simulateImpact = (input: ImpactScenarioInput): ReturnType<typeof simulateModel> =>
+  simulateModel({ ...input, craterDomain: 'legacy' });
 import { IRON_FIELD_HELD_OUT_SEED } from './ironCraterFieldRules.js';
 
 /** Rules 764 to 771: an iron's crater field ends where its fragments dig as

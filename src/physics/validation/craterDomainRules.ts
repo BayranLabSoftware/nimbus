@@ -106,5 +106,55 @@ export type CraterDomain = 'legacy' | 'hypervelocity';
 /** Rule 947: the crater's three states. */
 export type CraterState = 'computed' | 'none' | 'outOfDomain';
 
-/** The outcome, written after the one run of rule 951. */
-export const CRATER_DOMAIN_OUTCOME: string | null = null;
+/**
+ * The outcome, written on 23 September 2026 after the one run of rule 951, on
+ * the candidate of b93c887 (the rules pushed first, 818bfda).
+ *
+ * ADOPTED: every clause of rule 951 holds. `DEFAULT_CRATER_DOMAIN` is
+ * `hypervelocity`.
+ * (a) MET. Of the 308 sealed scenarios, the numbers and the drawing moved in
+ *     four — drawn:048, 136, 150 and 166 — and in those only: each reaches the
+ *     ground below 5 km/s (3.90, 1.86, 0.20 and 4.20 km/s), its crater now not
+ *     resolved where Eq. 21 gave 413, 52, 6 and 345 m. The texts of every
+ *     scenario moved by the crater card's sentence on its domain (rule 949).
+ *     The seal is re-taken.
+ * (b) MET. In the four, the entry, the rings but the rim, the seismic
+ *     magnitude, the firestorm, the atmosphere and the tsunami are the same to
+ *     the bit; level A passes unchanged, its harness and the program's rows
+ *     on the legacy crater.
+ * (c) MET. G5 reads the same under both branches, on the benchmark's own draw
+ *     and on the held-out seed benchmark-2026-09-23-heldout-crater-domain
+ *     (invariants-2026-09-23-16 to -19), once its finite invariant no longer
+ *     reads the crater's fields where rule 947 makes them not numbers.
+ * (d) MET. On the second round's frozen draws of 2022 WJ1, the 918 that reach
+ *     the ground move from `computed` to `outOfDomain` (at about 98 m/s) and
+ *     the 82 that burst stay `none`: no draw became "no crater". B-124's test
+ *     passes.
+ * (e) MET. Typecheck, lint, format; the whole suite; the validation report
+ *     regenerated once, identical, its strict gate PASS; Chromium's
+ *     end-to-end suite, 33 passed and 14 skipped as before; the panel read in
+ *     the running app for a 0.5 m stone at 14 km/s and 22.5°: "non risolto:
+ *     possibile buca di penetrazione locale".
+ * Updated as rule 951 allows, each for its reason: the finite invariants of
+ * the custom scenarios, of B-030 and of G5, rewritten to the three states;
+ * the records of rules 764 to 771, 838 to 845 and 846 to 853 and the iron's
+ * monotony, read on the legacy crater they were measured on (under the
+ * domain their slow swarms — a 25 m iron at 4.8 km/s among them — are not
+ * resolved).
+ *
+ * Rule 950's diagnostics, never deciding: Sterlitamak's draws reach the
+ * ground at about 0.88 km/s and are out of the domain on every ground, where
+ * a penetration crater of about 10 m was observed; Carancas still bursts in
+ * the air in every draw; Ådalen, from its CNEOS row with an iron's density
+ * (a body of 1.24 m at 73°, its CNEOS altitude of 22.3 km not counted),
+ * reaches the ground whole at 4.6 km/s and is out of the domain — where a
+ * 13.8 kg iron was found, and no crater.
+ *
+ * What stays open: a law for the pits below 5 km/s (French's "penetration
+ * craters"), and Collins et al.'s own statement that Eq. 21 holds where
+ * gravity ends the crater's growth, "larger than a couple of hundred meters"
+ * (p. 823) — a crater of 20 m at 15 km/s is inside this round's domain and
+ * outside that one.
+ */
+export const CRATER_DOMAIN_OUTCOME: string | null =
+  'ADOPTED 23 September 2026: below 5 km/s at the ground the crater is not resolved — a local penetration pit is possible — where the model gave a hypervelocity crater. Four sealed scenarios move, nothing else of the model does; 2022 WJ1 reads "out of the domain", never "no crater".';

@@ -19,6 +19,13 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **A body that reaches the ground too slowly no longer digs a crater it
+  cannot dig.** Below 5 km/s at the ground — slower than sound in rock
+  (French 1998) — the crater law does not hold, and the model no longer
+  applies it: the crater is "not resolved", a local penetration pit
+  possible. The panel, the report, the globe and the Monte Carlo say so,
+  and never count it as "no crater". Everything the body does in the air,
+  and every effect of its energy, is unchanged. (B-124)
 - **A rare event's percentiles stand under a warning.** Where a crater, an
   ejecta ring or a firestorm happens in fewer than 1 % of the Monte Carlo's
   runs, its row leaves the P10, P50 and P90 cells empty, says in how many

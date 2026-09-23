@@ -8,7 +8,7 @@ import type { CraterDomain } from '../../validation/craterDomainRules.js';
  * at any speed (`legacy`, as Collins et al.'s program reads it) or only inside
  * the hypervelocity domain, the crater being "not resolved" below it.
  */
-export const DEFAULT_CRATER_DOMAIN: CraterDomain = 'legacy';
+export const DEFAULT_CRATER_DOMAIN: CraterDomain = 'hypervelocity';
 
 /**
  * Crater morphology pipeline (Collins, Melosh & Marcus 2005, "Earth Impact

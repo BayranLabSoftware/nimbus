@@ -239,6 +239,10 @@ describe('P-MONO-IMPACT — impact crater monotone in impactor diameter (fixed v
           targetDensity: CRUSTAL_ROCK_DENSITY,
           impactAngle: degreesToRadians(deg(45)),
           surfaceGravity: STANDARD_GRAVITY,
+          // Rule 951: the law's own monotony, read at any speed; under the
+          // domain of rules 945 to 952 the 25 m swarm, at 4.8 km/s, is not
+          // resolved.
+          craterDomain: 'legacy',
         }).crater.finalDiameter as number
     );
     assertMonotoneIncreasing(craters, 'final crater diameter vs impactor diameter (iron, D≥20 m)');

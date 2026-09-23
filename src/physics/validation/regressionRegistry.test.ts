@@ -855,9 +855,14 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
         targetDensity: kgPerM3(1_800),
         impactAngle: degreesToRadians(deg(80)),
       });
-      for (const radius of Object.values(r.damage)) {
-        expect(Number.isFinite(radius as number)).toBe(true);
-        expect(radius as number).toBeGreaterThanOrEqual(0);
+      // Rule 947: a body reaching the ground below 5 km/s has no crater rim.
+      if (r.crater.state === 'outOfDomain') expect(r.damage.craterRim).toBeNaN();
+      const rings: number[] = Object.entries(r.damage)
+        .filter(([key]) => !(key === 'craterRim' && r.crater.state === 'outOfDomain'))
+        .map(([, radius]) => radius as number);
+      for (const radius of rings) {
+        expect(Number.isFinite(radius)).toBe(true);
+        expect(radius).toBeGreaterThanOrEqual(0);
       }
     }
   });

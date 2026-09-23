@@ -71,7 +71,25 @@ describe('a custom scenario produces numbers, never NaN', () => {
             targetDensity: kgPerM3(2_700),
             impactAngle: rad((angleDeg * Math.PI) / 180),
           });
-          const bad = numbersIn(r).filter((n) => !Number.isFinite(n));
+          // Rule 947: out of the crater law's domain the crater, its rim and
+          // its ejecta are not numbers, by definition — and nothing else.
+          const read =
+            r.crater.state === 'outOfDomain'
+              ? {
+                  ...r,
+                  crater: { ...r.crater, transientDiameter: 0, finalDiameter: 0, depth: 0 },
+                  damage: { ...r.damage, craterRim: 0 },
+                  ejecta: {
+                    ...r.ejecta,
+                    blanketEdge1mm: 0,
+                    blanketEdge1m: 0,
+                    thicknessAt2R: 0,
+                    thicknessAt10R: 0,
+                    downrangeOffset: 0,
+                  },
+                }
+              : r;
+          const bad = numbersIn(read).filter((n) => !Number.isFinite(n));
           expect(
             bad,
             `d=${d.toString()} v=${v.toString()} angle=${angleDeg.toString()}`

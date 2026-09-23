@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { swarmSpreadAtGround } from '../effects/atmosphericEntry.js';
 import { DEFAULT_CRATER_FIELD } from '../events/impact/craterField.js';
-import { simulateImpact, type ImpactScenarioInput } from '../simulate.js';
+import { simulateImpact as simulateModel, type ImpactScenarioInput } from '../simulate.js';
+/** Rule 951: a record of an earlier round, read on the crater it was measured
+ *  on — Eq. 21 at any speed; under the domain of rules 945 to 952 its slow
+ *  swarms are not resolved. */
+const simulateImpact = (input: ImpactScenarioInput): ReturnType<typeof simulateModel> =>
+  simulateModel({ ...input, craterDomain: 'legacy' });
 import { deg, degreesToRadians, kgPerM3, m, mps } from '../units.js';
 import { CRATER_FIELD_LARGEST_FRAGMENT } from './craterFieldRules.js';
 import { eiepRowInput, simulateEiepRow } from './eiepComparison.js';

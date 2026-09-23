@@ -2323,9 +2323,9 @@
       "crater": {
         "name": "Crater",
         "summary": "The reference program’s crater scaling, case by case, with a scattered body’s crater field joined where the program steps; not yet held to a measured crater.",
-        "domain": "Simple and complex craters in sedimentary and crystalline rock, from the bodies of the reference grids that reach the ground; where the fragments land spread wider than the crater, a crater field, joined to the single crater without the program’s step (rules 846 to 853).",
+        "domain": "Simple and complex craters in sedimentary and crystalline rock, from the bodies of the reference grids that reach the ground; where the fragments land spread wider than the crater, a crater field, joined to the single crater without the program’s step (rules 846 to 853). Only where the body reaches the ground at 5 km/s or more (French 1998): below, the crater is not resolved and a local penetration pit is possible (rules 945 to 952).",
         "error": "",
-        "missing": "Level B: an entry that lets strong bodies reach the ground, as at Carancas, and a second observed crater whose body is known apart from the crater; level C: hydrocode results (iSALE, CTH) across angles and targets."
+        "missing": "Level B: an entry that lets strong bodies reach the ground, as at Carancas, and a second observed crater whose body is known apart from the crater; level C: hydrocode results (iSALE, CTH) across angles and targets. A law for bodies that reach the ground below 5 km/s, where the crater is not resolved today."
       },
       "blast": {
         "name": "Air blast",

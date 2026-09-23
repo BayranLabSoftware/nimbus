@@ -103,6 +103,22 @@ const CRATER_FIELD = process.env.NIMBUS_CRATER_FIELD;
 /** The law a body's strength follows, when the sweep is asked to read a
  *  candidate (rule 885(e) of validation/strengthTwoStageRules.ts). */
 const STRENGTH_LAW = process.env.NIMBUS_STRENGTH_LAW;
+/** Rules 945 to 952 of validation/craterDomainRules.ts: the crater's domain,
+ *  when the sweep is asked to read one branch or the other. */
+const CRATER_DOMAIN = process.env.NIMBUS_CRATER_DOMAIN;
+/** Rule 947: the fields that are not numbers where the crater is out of its
+ *  law's domain — by definition, so the finite invariant does not read them. */
+const OUT_OF_DOMAIN_FIELDS = new Set([
+  'crater.transientDiameter',
+  'crater.finalDiameter',
+  'crater.depth',
+  'damage.craterRim',
+  'ejecta.blanketEdge1mm',
+  'ejecta.blanketEdge1m',
+  'ejecta.thicknessAt2R',
+  'ejecta.thicknessAt10R',
+  'ejecta.downrangeOffset',
+]);
 /** What an airburst's flash is drawn from, when the sweep is asked to read a
  *  candidate (rule 777 of validation/atapRadiationRules.ts). */
 const AIRBURST_RADIATION = process.env.NIMBUS_AIRBURST_RADIATION;
@@ -256,6 +272,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(IRON_CRATER_FIELD === undefined ? {} : { ironCraterField: IRON_CRATER_FIELD }),
         ...(CRATER_FIELD === undefined ? {} : { craterField: CRATER_FIELD }),
         ...(STRENGTH_LAW === undefined ? {} : { strengthLaw: STRENGTH_LAW }),
+        ...(CRATER_DOMAIN === undefined ? {} : { craterDomain: CRATER_DOMAIN }),
         ...(AIRBURST_RADIATION === undefined ? {} : { airburstRadiation: AIRBURST_RADIATION }),
       } as never) as unknown as Json,
     // Rule 780 of validation/atapRadiationAgainRules.ts: the blast source,
@@ -273,6 +290,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(IRON_CRATER_FIELD === undefined ? {} : { ironCraterField: IRON_CRATER_FIELD }),
         ...(CRATER_FIELD === undefined ? {} : { craterField: CRATER_FIELD }),
         ...(STRENGTH_LAW === undefined ? {} : { strengthLaw: STRENGTH_LAW }),
+        ...(CRATER_DOMAIN === undefined ? {} : { craterDomain: CRATER_DOMAIN }),
         airburstRadiation: 'efficiency',
       } as never) as unknown as Json,
     // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring
@@ -585,8 +603,11 @@ export function checkScenario(hazard: Hazard, input: Json): Finding[] {
     fail('finite: the run throws', input, String(e).slice(0, 200));
     return found;
   }
+  const outOfDomain =
+    (baseResult.crater as { state?: string } | undefined)?.state === 'outOfDomain';
   for (const [path, v] of base) {
     const field = path.replace(/\[\d+\]/g, '[]');
+    if (Number.isNaN(v) && outOfDomain && OUT_OF_DOMAIN_FIELDS.has(path)) continue;
     if (Number.isNaN(v)) fail(`finite: NaN at ${field}`, input, `${path} = NaN`);
     else if (!Number.isFinite(v))
       fail(`finite: infinite at ${field}`, input, `${path} = ${v.toString()}`);

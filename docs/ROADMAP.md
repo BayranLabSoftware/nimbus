@@ -1155,6 +1155,19 @@ and a first stage at 61–66 km for every body. The third set that round is
 judged on needs three new bodies with measured altitudes and one
 non-circular crater (rule 932).
 
+**The third set, frozen** (rules 933 to 944, `validation/levelBThirdSetRules.ts`):
+Winchcombe, Golden, Madura Cave, Hamburg (Michigan), Traspena and Cavezzo,
+none in any data, their sources unopened until the model they judge is
+frozen; no admissible ground case yet (Ådalen is a CNEOS row), which the
+reviewer allows as a versioned appendix closed before that round's
+predictions.
+
+**The crater below the hypervelocity domain — adopted** (rules 945 to 952,
+`validation/craterDomainRules.ts`, B-124). Below 5 km/s at the ground the
+crater is not resolved, a third state that is neither a crater nor "no
+crater"; four sealed scenarios move and nothing of the entry or the energy.
+Next, in the reviewer's order: the round on the dynamics of fragmentation.
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this
