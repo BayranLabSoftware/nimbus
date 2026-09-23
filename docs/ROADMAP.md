@@ -846,7 +846,16 @@ The order Andrea fixed, and where it stands:
    corrects it). The seal records its Node, ICU and platform; `.nvmrc` pins
    the Node to the patch; the CI compares the digests in a job of its own on
    GitHub's macOS arm64 runner, and elsewhere skips the comparison under a
-   name that says where it is made.
+   name that says where it is made. **Node 24 asked and refused** (rule 854,
+   23 September, written before Node 24 ran a line): of the 32 911 sealed
+   numbers Node 24.21.0 moves, all but one stay within the bound of one part
+   in 10¹²; the first-degree flash radius of one drawn scenario moves by
+   3.0 × 10⁻¹². The cause is V8 13.6's `Math.pow`, one unit in the last place
+   for about one argument in eleven, carried ×23 by a log-log interpolation
+   between two close exposures. No word or format of the report moved. The
+   engine stays at 22.20.0 (maintained until April 2027); the next move, to
+   Node 26 once it is a long-term release, sets its bound per number from
+   the conditioning this run measured.
 2. **The shell and the contract of a module**, written once.
 3. **The impacts moved into their own module** — their physics, their slice of
    the store, their drawing as a pure description with the common Cesium

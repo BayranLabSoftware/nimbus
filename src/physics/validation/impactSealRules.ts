@@ -311,4 +311,43 @@ export const IMPACT_SEAL_OUTCOME =
  *      What it does not change: the site. A visitor's browser runs its own
  *      engine; this moves only the one the tests, the seal and the scripts
  *      run on.
+ *
+ *      Read the same morning, on commit 7e6fd61, once: REFUSED by clause (a),
+ *      by its letter. `.nvmrc` stays at 22.20.0.
+ *
+ *      (a) NOT MET. Node 22.20.0 reproduced all 1 232 digests of the seal. On
+ *          Node 24.21.0 the number digests of 300 of the 308 scenarios moved:
+ *          32 911 numbers, of which 32 910 within one part in 10¹² — the
+ *          largest 1.3 × 10⁻¹³, the exposures of a flash in the air. One did
+ *          not: the first-degree flash radius of `drawn:014`, 1 128.403 157 199 8 m
+ *          on Node 22 and 1 128.403 157 196 4 m on Node 24, 3.0 × 10⁻¹².
+ *          The cause, found. Of V8's Math routines only `Math.pow` (and `**`)
+ *          answers differently between V8 12.4 and 13.6 — by one unit in the
+ *          last place, for about one argument in eleven; exp, log, the
+ *          trigonometric and hyperbolic functions, cbrt, hypot and sqrt answer
+ *          alike to the bit on 200 000 arguments each. The flash radius is
+ *          read between two tabulated exposures by a log-log interpolation
+ *          whose denominator is the logarithm of their ratio; where the two
+ *          are close, it multiplies the exposures' 1.3 × 10⁻¹³ by about 23.
+ *          That is the conditioning of a radius read where the exposure is
+ *          nearly flat, not a defect of the physics — but the clause was
+ *          written as a bound, and a number past it.
+ *      (b) MET, read for the record. No word and no format moved: ICU 78.3
+ *          writes every number and date of the report as 77.1 did. The 232
+ *          drawings and report texts that moved did so only through the
+ *          colours a field paints along its ladder of ranges: 10 851 colour
+ *          channels by at most 2.1 × 10⁻¹² of 255, and in 25 ejecta fields
+ *          the outermost rung — sampled exactly at the field's edge, where the
+ *          thickness equals its threshold — painted on one engine and not on
+ *          the other.
+ *      (c), (d) Not run: the engine does not move. (e) Both engines stay on
+ *          the Mac; nothing links to Node 24.
+ *
+ *      What was learned, for the next move: an engine moves the last bits of
+ *      one routine, and a model's conditioning decides how far they travel. A
+ *      bound for the next move should be set per number from that — not a
+ *      single figure written before the conditioning was known, as this one
+ *      was. Node 22 is maintained until the end of April 2027, and Node 26
+ *      becomes a long-term release in October 2026: one move, to 26, can
+ *      replace this one.
  */
