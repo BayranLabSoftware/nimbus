@@ -71,6 +71,33 @@
  *
  * RULE 880. WHAT AN OUTCOME DOES. The same as the first round's (rules 864
  * and 870): a family earns a B limited to its domain, or names what failed.
+ *
+ * RULE 903. THE AUDIT, 23 September 2026, afternoon, as the reviewer asked
+ * that day (every candidate absent from all the development data, not only
+ * from I2's 357 fireballs). The whole repository was searched, by name and by
+ * date, for 2022 WJ1 (2022-11-19), 2024 XA1 (2024-12-03), 2024 UQ
+ * (2024-10-22), 2026 RW1 (2026-09-06) and Sterlitamak: none is in the CNEOS
+ * set or any fireball file, in any test, preset, fixture, benchmark result,
+ * threshold table or script. Each name appears only in the ROADMAP's lines
+ * that froze this round; "Sterlitamak" also as a town in the list of cities
+ * the globe labels, which holds no datum of the fall. None is in the sample
+ * of Borovička, Spurný & Shrbený (2020) — falls and fireballs of 2009 to
+ * 2018 — from which the strength law of rules 896 to 902 took its priors.
+ * The audit is repeated at step 2, before any source is pinned.
+ *
+ * RULE 904. WHAT STEP 2 OF THIS ROUND MUST PIN, as the reviewer asked (23
+ * September), before the model is run on any of its events: for each
+ * candidate, one row — its primary source and the date it was published; how
+ * each altitude was measured, and whether it was measured or derived from a
+ * model; its uncertainty; the definition of the observable; its presence or
+ * absence in the CNEOS set and in the literature the priors came from. The
+ * outcome E1 of 2022 WJ1 is "no crater" — not "no fragment reached the
+ * ground", for radar followed fragments down to about a kilometre over Lake
+ * Ontario. 2024 UQ's altitude, which ESA attributes to CNEOS, counts only if
+ * it is an independent observation with its definition and uncertainty.
+ * Sterlitamak's mass: its recovered 315 kg is a fragment, and an estimate of
+ * the whole from the crater is circular (rule 860(c)); unless a constraint
+ * independent of the crater is pinned, it stays diagnostic (rule 876(c)).
  */
 
 export type LevelB2Set = 'entry' | 'entry-conditional' | 'crater' | 'excluded';
