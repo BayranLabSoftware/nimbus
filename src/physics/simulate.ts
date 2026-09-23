@@ -172,7 +172,7 @@ import type {
   Seconds,
   SquareMeters,
 } from './units.js';
-import { deg, degreesToRadians, J, joulesToMegatons, kgPerM3, m, mps, sqm } from './units.js';
+import { deg, degreesToRadians, J, joulesToMegatons, kg, kgPerM3, m, mps, sqm } from './units.js';
 
 /** Default basin depth used to propagate impact-generated tsunamis when
  *  the caller doesn't override it. 4 km is the rough global-ocean mean. */
@@ -1109,7 +1109,8 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'overpressure', couplesToGround),
       centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, lightDamageNominal, couplesToGround),
     },
-    ejectaBlanket: ejectaButterflyAsymmetry(asymmetryFactor, azimuthDeg, blanketEdge1mm),
+    // Rule 969 (iv): out of the domain the drawn offset reads no blanket.
+    ejectaBlanket: ejectaButterflyAsymmetry(asymmetryFactor, azimuthDeg, shown(blanketEdge1mm)),
   };
 
   const firestormInputs = {
@@ -1159,12 +1160,15 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const atmosphere = {
     // Dust comes from the target rock the crater pulverizes; the NO
     // behind the acid mostly from the ejecta plume of what reached the
-    // ground (see effects/atmosphere.ts).
-    stratosphericDust: stratosphericDustMass(
-      J((Dtc as number) > 0 ? (ke as number) * gf * fSeafloor : 0),
-      input.impactVelocity
-    ),
-    acidRainMass: shockAcidRainMass(groundCoupledKe),
+    // ground (see effects/atmosphere.ts). Rule 969: neither is given out of
+    // the crater's domain.
+    stratosphericDust: resolved
+      ? stratosphericDustMass(
+          J((Dtc as number) > 0 ? (ke as number) * gf * fSeafloor : 0),
+          input.impactVelocity
+        )
+      : kg(Number.NaN),
+    acidRainMass: resolved ? shockAcidRainMass(groundCoupledKe) : kg(Number.NaN),
     climateTier: climateTier(ke),
   };
 
@@ -1325,14 +1329,16 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // the water's edge, nothing when the crater stops short, never more than a
   // half. In the sea it is the water fraction of the column the body fell
   // through, which is what it always was. Rule 268.
-  const transientRadiusM = (Dtc as number) / 2;
+  // Rule 969 (iii): out of the crater's domain the sea's coupling reads no
+  // crater — no cavity on land, no rim and no ejecta reach at sea.
+  const transientRadiusM = resolved ? (Dtc as number) / 2 : 0;
   const segmentFraction = onLand ? shoreSegmentFraction(transientRadiusM, shoreDistanceM) : 0;
   const seaCoupling = computeSeaCoupling({
     shoreDistanceM,
     // On dry ground the hole that displaces water is the transient cavity, not
     // the rim left after it collapses: by the time the rim exists the wave is
     // made. Rule 268.
-    craterRimRadiusM: onLand ? m(transientRadiusM) : craterRimRadius,
+    craterRimRadiusM: onLand ? m(transientRadiusM) : shown(craterRimRadius),
     // The crater that is actually dug, not the water cavity the impact would
     // have opened if it had happened at sea: until this round a land impact's
     // wave was justified by a hole in water that is not there.
@@ -1341,7 +1347,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       : programWave
         ? m((programCraterDiameter as number) / 2)
         : impactCavityRadius({ kineticEnergy: fullCouplingKe }),
-    ejectaReachM: ejecta.blanketEdge1m,
+    ejectaReachM: shown(ejecta.blanketEdge1m),
   });
   // Rule 269: where the crater does not reach the sea the model raises no
   // wave. The ejecta do reach it and a curtain of rock falling into water

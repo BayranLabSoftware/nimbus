@@ -118,6 +118,9 @@ const OUT_OF_DOMAIN_FIELDS = new Set([
   'ejecta.thicknessAt2R',
   'ejecta.thicknessAt10R',
   'ejecta.downrangeOffset',
+  // Rule 971: the dust and the acid, of crater origin, are not given either.
+  'atmosphere.stratosphericDust',
+  'atmosphere.acidRainMass',
 ]);
 /** What an airburst's flash is drawn from, when the sweep is asked to read a
  *  candidate (rule 777 of validation/atapRadiationRules.ts). */

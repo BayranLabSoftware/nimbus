@@ -50,6 +50,7 @@ import { envelopeOf } from '../../physics/validation/calibrationEnvelope.js';
 import { CitySearch } from './CitySearch.js';
 import { monteCarloRow } from './monteCarloRow.js';
 import { COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M } from '../../physics/validation/craterDomainRules.js';
+import { ringSourceText, tntFromKilograms } from './ringSource.js';
 import { EarthquakeCustomInputs } from './EarthquakeCustomInputs.js';
 import { ExplosionCustomInputs } from './ExplosionCustomInputs.js';
 import { ImpactCustomInputs } from './ImpactCustomInputs.js';
@@ -964,6 +965,20 @@ export function SimulatorPanel(): JSX.Element {
                       <RangeValue meters={result.data.damage.overpressure1psi} />
                     </CitationTooltip>
                   </dd>
+                  {/* Rule 969: out of the crater's domain the rings say their source. */}
+                  {result.data.crater.state === 'outOfDomain' && (
+                    <>
+                      <dt className={styles.resultLabel}>{t('simulator.ringSourceLabel')}</dt>
+                      <dd className={styles.resultValue} data-testid="ring-source">
+                        {ringSourceText(
+                          result.data,
+                          t,
+                          tntFromKilograms(formatMegatons, i18n.language),
+                          'simulator'
+                        )}
+                      </dd>
+                    </>
+                  )}
                 </dl>
                 <SectionHeading labelKey="simulator.entryLabel" evidence="entry" />
                 <dl className={styles.result} aria-label={t('simulator.entryLabel')}>
@@ -1152,13 +1167,18 @@ export function SimulatorPanel(): JSX.Element {
                   <dt className={styles.resultLabel}>{t('simulator.stratosphericDust')}</dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.atmosphere')}>
-                      {formatMass(result.data.atmosphere.stratosphericDust)}
+                      {/* Rule 969: neither is given out of the crater's domain. */}
+                      {result.data.crater.state === 'outOfDomain'
+                        ? t('simulator.notResolved')
+                        : formatMass(result.data.atmosphere.stratosphericDust)}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.acidRainMass')}</dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.atmosphere')}>
-                      {formatMass(result.data.atmosphere.acidRainMass)}
+                      {result.data.crater.state === 'outOfDomain'
+                        ? t('simulator.notResolved')
+                        : formatMass(result.data.atmosphere.acidRainMass)}
                     </CitationTooltip>
                   </dd>
                 </dl>

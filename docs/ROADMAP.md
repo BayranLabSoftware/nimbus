@@ -1166,7 +1166,22 @@ predictions.
 `validation/craterDomainRules.ts`, B-124). Below 5 km/s at the ground the
 crater is not resolved, a third state that is neither a crater nor "no
 crater"; four sealed scenarios move and nothing of the entry or the energy.
-Next, in the reviewer's order: the round on the dynamics of fragmentation.
+Refined by rules 953 to 958 (no seismic magnitude out of the domain; a
+crater under 200 m labelled exploratory, outside Collins et al.'s declared
+domain) and by rules 968 to 972 (B-125: no dust, acid, sea coupling or
+blanket offset of crater origin out of the domain, and the rings' energy
+source said).
+
+**The round on the dynamics of fragmentation — its frame** (rules 959 to
+967, amended by the reviewer's answers in rules 973 to 977,
+`validation/fragmentationRoundRules.ts`). Three axes against today's model,
+one at a time — Eq. 14 against Eq. 15, mass lost by stages between S1 and
+S2, fragments slowed by their own size — on development cases with the
+reviewer's roles; four metrics (first stage, release altitude as a proxy,
+gain in probability of the observed outcome, energy to the ground where a
+fraction with its uncertainty is observed); adopted only if two improve, no
+right outcome is lost and no band widens by more than 50 %. Next: step 2,
+the development table, fixed once for the round.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

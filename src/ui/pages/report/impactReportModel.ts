@@ -29,6 +29,7 @@ import {
   type ImpactMapLayer,
 } from '../../../scene/globe/impactFieldMap.js';
 import type { Citation } from '../methodologyContent.js';
+import { ringSourceText, tntFromKilograms } from '../../components/ringSource.js';
 import { collectImpactCitations } from '../reportCitations.js';
 import { impactFormulaBlocks, type ImpactFormulaExtras } from './impactFormulas.js';
 import {
@@ -344,6 +345,21 @@ function groups(
     row(t, 'overpressure1psi', length(r.damage.overpressure1psi, l), blastFigure),
     row(t, 'lightDamage', length(r.damage.lightDamage, l), blastFigure),
   ];
+  // Rule 969: out of the crater's domain the rings say their source.
+  if (unresolved) {
+    blastRows.push(
+      row(
+        t,
+        'ringSource',
+        ringSourceText(
+          r,
+          t,
+          tntFromKilograms((mt) => tnt(mt, l), l),
+          'report.impact'
+        )
+      )
+    );
+  }
   if (windFigure !== undefined) {
     for (const kmh of WIND_LEVELS_KMH) {
       const reach = windReachM(r, kmh);
@@ -423,8 +439,16 @@ function groups(
   const atmosphere = group(
     'atmosphere',
     [
-      row(t, 'stratDust', mass(r.atmosphere.stratosphericDust, l)),
-      row(t, 'acidRain', mass(r.atmosphere.acidRainMass, l)),
+      row(
+        t,
+        'stratDust',
+        unresolved ? t('report.impact.notResolved') : mass(r.atmosphere.stratosphericDust, l)
+      ),
+      row(
+        t,
+        'acidRain',
+        unresolved ? t('report.impact.notResolved') : mass(r.atmosphere.acidRainMass, l)
+      ),
       row(t, 'climateTier', t(`report.impact.enum.climate.${r.atmosphere.climateTier}`)),
     ],
     'atmosphere'

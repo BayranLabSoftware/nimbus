@@ -236,6 +236,12 @@
     "craterUnresolved": "non risolto: possibile buca di penetrazione locale (sotto i 5 km/s la legge del cratere non vale)",
     "craterExploratory": "esplorativo: sotto i ~200 m la legge di Collins è fuori dal suo dominio dichiarato (regime di gravità)",
     "notResolved": "non risolto",
+    "ringSourceLabel": "Sorgente degli anelli",
+    "ringSource": {
+      "both": "l'energia che il corpo deposita nell'aria lungo la traiettoria ({{air}}) e quella che porta al suolo ({{ground}}), non un impatto che scava un cratere: la penetrazione lenta non è modellata",
+      "ground": "l'energia che il corpo porta al suolo ({{ground}}), non un impatto che scava un cratere: la penetrazione lenta non è modellata",
+      "air": "l'energia che il corpo deposita nell'aria lungo la traiettoria ({{air}}), non un impatto che scava un cratere: la penetrazione lenta non è modellata"
+    },
     "mcOutOfDomain": "fuori dal dominio del cratere nel {{share}} % dei campioni",
     "damageLabel": "Anelli di danno",
     "thirdDegreeBurn": "Raggio ustioni 3°",
@@ -1351,6 +1357,7 @@
         "overpressure5psi": "Raggio della sovrappressione di 5 psi",
         "overpressure1psi": "Raggio della sovrappressione di 1 psi",
         "lightDamage": "Raggio di 0,5 psi · danni lievi",
+        "ringSource": "Sorgente degli anelli",
         "windOutTo": "Vento di {{speed}} fino a",
         "thirdDegreeBurn": "Raggio delle ustioni di terzo grado",
         "secondDegreeBurn": "Raggio delle ustioni di secondo grado",
@@ -1497,6 +1504,11 @@
       "page": "Pagina",
       "pageOf": "di",
       "notResolved": "non risolto",
+      "ringSource": {
+        "both": "l'energia che il corpo deposita nell'aria lungo la traiettoria ({{air}}) e quella che porta al suolo ({{ground}}), non un impatto che scava un cratere: la penetrazione lenta non è modellata",
+        "ground": "l'energia che il corpo porta al suolo ({{ground}}), non un impatto che scava un cratere: la penetrazione lenta non è modellata",
+        "air": "l'energia che il corpo deposita nell'aria lungo la traiettoria ({{air}}), non un impatto che scava un cratere: la penetrazione lenta non è modellata"
+      },
       "craterUnresolved": "sotto i 5 km/s la legge del cratere (Collins et al. 2005, Eq. 21) non vale: è possibile una buca di penetrazione locale (French 1998)",
       "craterExploratory": "esplorativo: un cratere sotto i ~200 m è fuori dal dominio che Collins et al. (2005, p. 823) dichiarano per la loro legge di scala, valida dove la gravità arresta la crescita del cratere"
     }

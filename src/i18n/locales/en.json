@@ -236,6 +236,12 @@
     "craterUnresolved": "not resolved: a local penetration pit is possible (below 5 km/s the crater law does not hold)",
     "craterExploratory": "exploratory: under ~200 m Collins’s law is outside its declared domain (gravity regime)",
     "notResolved": "not resolved",
+    "ringSourceLabel": "Source of the rings",
+    "ringSource": {
+      "both": "the energy the body deposits in the air along its path ({{air}}) and the energy it brings to the ground ({{ground}}), not an impact that digs a crater: a slow penetration is not modelled",
+      "ground": "the energy the body brings to the ground ({{ground}}), not an impact that digs a crater: a slow penetration is not modelled",
+      "air": "the energy the body deposits in the air along its path ({{air}}), not an impact that digs a crater: a slow penetration is not modelled"
+    },
     "mcOutOfDomain": "outside the crater law's domain in {{share}} % of the runs",
     "damageLabel": "Damage rings",
     "thirdDegreeBurn": "3rd-degree burn radius",
@@ -1351,6 +1357,7 @@
         "overpressure5psi": "5 psi overpressure radius",
         "overpressure1psi": "1 psi overpressure radius",
         "lightDamage": "0.5 psi · light-damage radius",
+        "ringSource": "Source of the rings",
         "windOutTo": "Wind of {{speed}} out to",
         "thirdDegreeBurn": "3rd-degree burn radius",
         "secondDegreeBurn": "2nd-degree burn radius",
@@ -1497,6 +1504,11 @@
       "page": "Page",
       "pageOf": "of",
       "notResolved": "not resolved",
+      "ringSource": {
+        "both": "the energy the body deposits in the air along its path ({{air}}) and the energy it brings to the ground ({{ground}}), not an impact that digs a crater: a slow penetration is not modelled",
+        "ground": "the energy the body brings to the ground ({{ground}}), not an impact that digs a crater: a slow penetration is not modelled",
+        "air": "the energy the body deposits in the air along its path ({{air}}), not an impact that digs a crater: a slow penetration is not modelled"
+      },
       "craterUnresolved": "below 5 km/s the crater law (Collins et al. 2005, Eq. 21) does not hold: a local penetration pit is possible (French 1998)",
       "craterExploratory": "exploratory: a crater under ~200 m is outside the domain Collins et al. (2005, p. 823) declare for their scaling law, which holds where gravity ends the crater’s growth"
     }

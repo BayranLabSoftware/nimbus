@@ -55,12 +55,30 @@ describe('rules 945 to 952: the crater’s domain', () => {
     expect(domainRings).toEqual(legacyRings);
   });
 
+  it('B-125: out of the domain nothing of crater origin is given', () => {
+    const { legacy, domain } = both(slowStone);
+    expect(legacy.atmosphere.stratosphericDust).toBeGreaterThan(0);
+    expect(legacy.atmosphere.acidRainMass).toBeGreaterThan(0);
+    expect(domain.atmosphere.stratosphericDust).toBeNaN();
+    expect(domain.atmosphere.acidRainMass).toBeNaN();
+    expect(domain.atmosphere.climateTier).toBe(legacy.atmosphere.climateTier);
+    expect(legacy.damageAsymmetry.ejectaBlanket.centerOffsetMeters).toBeGreaterThan(0);
+    expect(domain.damageAsymmetry.ejectaBlanket.centerOffsetMeters).toBe(0);
+    // Rule 969 (iii): on land no wave is raised through a crater the model
+    // does not resolve, where the legacy crater reaches the sea.
+    const coast = both({ ...slowStone, shoreDistance: m(0.5), waterDepth: m(50) });
+    expect(coast.legacy.tsunami?.seaCoupling.mechanism).toBe('crater');
+    expect(coast.domain.tsunami).toBeUndefined();
+  });
+
   it('rule 948: a crater computed at 5 km/s or more is the same to the bit', () => {
     for (const id of ['METEOR_CRATER', 'CHICXULUB'] as const) {
       const { legacy, domain } = both(IMPACT_PRESETS[id].input);
       expect(domain.crater.state, id).toBe('computed');
       expect(domain.crater, id).toEqual({ ...legacy.crater, state: 'computed' });
       expect(domain.ejecta, id).toEqual(legacy.ejecta);
+      expect(domain.atmosphere, id).toEqual(legacy.atmosphere);
+      expect(domain.damageAsymmetry, id).toEqual(legacy.damageAsymmetry);
     }
   });
 

@@ -72,7 +72,8 @@ describe('a custom scenario produces numbers, never NaN', () => {
             impactAngle: rad((angleDeg * Math.PI) / 180),
           });
           // Rule 947: out of the crater law's domain the crater, its rim and
-          // its ejecta are not numbers, by definition — and nothing else.
+          // its ejecta are not numbers, by definition — nor, by rule 969, the
+          // dust and the acid of crater origin; and nothing else.
           const read =
             r.crater.state === 'outOfDomain'
               ? {
@@ -87,6 +88,7 @@ describe('a custom scenario produces numbers, never NaN', () => {
                     thicknessAt10R: 0,
                     downrangeOffset: 0,
                   },
+                  atmosphere: { ...r.atmosphere, stratosphericDust: 0, acidRainMass: 0 },
                 }
               : r;
           const bad = numbersIn(read).filter((n) => !Number.isFinite(n));

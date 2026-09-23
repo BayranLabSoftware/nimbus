@@ -303,5 +303,37 @@ export const CRATER_TIERS_OUTCOME: string | null =
  * untouched; one run.
  */
 
-/** The outcome of rules 968 to 972, written after their one run. */
-export const CRATER_ORIGIN_OUTCOME: string | null = null;
+/**
+ * The outcome of rules 968 to 972, written on 23 September 2026 after their
+ * one run (the rules pushed first, e32a3cf).
+ *
+ * ADOPTED: every clause of rule 970 holds.
+ * (a) MET. The seal's numbers moved in drawn:048, 136, 150 and 166, out of the
+ *     domain, and nowhere else — their dust and acid now none, and in 136 and
+ *     150 the drawn offset of a blanket that is not drawn (31 and 4.5 m, now
+ *     0); none raises a wave. The drawing moved nowhere. The texts moved in
+ *     the same four: the unresolved dust and acid, and one report row more,
+ *     the rings' source. The seal is re-taken.
+ * (b) MET. Level A unchanged.
+ * (c) MET. G5 reads what it read before, on the benchmark's own draw and the
+ *     held-out seed (invariants-2026-09-23-22 and -23, identical to -20 and
+ *     -21).
+ * (d) MET. Typecheck, lint, format; 3 065 tests; the validation report
+ *     regenerated, identical, its strict gate PASS; Chromium's end-to-end
+ *     suite, 33 passed and 14 skipped.
+ * (e) MET, and read: in the running app the 0.5 m stone at 14 km/s and 22.5°
+ *     shows its dust and acid "non risolto" and its rings' source. The first
+ *     reading of that source was wrong: it read the air's share as the burst
+ *     yield, which is none for a body kept whole, and said the rings came
+ *     from the 0.23 kg of TNT the stone brings to the ground, when its 73 m
+ *     5 psi ring comes from the 5 t it deposits in the air on its way down —
+ *     the energy the program's ground blast is read from. The sentence now
+ *     reads the air's share as all the body loses before the ground, and
+ *     writes energies below a tonne in kilograms; the seal was re-taken after
+ *     it, once.
+ * Updated as rule 971 allows: the custom-scenario sweep, which held every
+ * number finite, now exempts the dust and the acid out of the domain, as it
+ * exempted the crater.
+ */
+export const CRATER_ORIGIN_OUTCOME: string | null =
+  "ADOPTED 23 September 2026: out of the crater law's domain no dust, acid, sea coupling or blanket offset of crater origin is given, and the rings say their energy's source.";

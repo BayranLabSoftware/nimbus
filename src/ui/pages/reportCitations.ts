@@ -68,7 +68,8 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
     cite('brittConsolmagno2003', 'Impactor taxonomy density classes.', 'britt'),
   ];
 
-  if (result.crater.morphology === 'complex') {
+  // Rule 969: out of the crater's domain its morphology is cited nowhere.
+  if (result.crater.morphology === 'complex' && result.crater.state !== 'outOfDomain') {
     triggers.push(
       cite('herrick1997', 'Complex crater depth (Collins et al. 2005 Eq. 28).', 'herrick')
     );

@@ -28,6 +28,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
   and every effect of its energy, is unchanged; nor is a seismic magnitude
   given for it. A crater under about 200 m is labelled exploratory: Collins
   et al. declare their law for larger, gravity-dominated craters. (B-124)
+- **Nothing of crater origin is given where the crater is not resolved.**
+  For a body that reaches the ground below 5 km/s the stratospheric dust
+  (the rock a crater pulverizes), the shock-made nitric acid (mostly from
+  the ejecta plume), the sea's coupling through the crater and the drawn
+  offset of an ejecta blanket are no longer computed from a crater the
+  model does not resolve. The blast and the flash stay, and the panel and
+  the report now say where they come from: the energy the body deposits in
+  the air along its path and the energy it brings to the ground, not an
+  impact that digs a crater. (B-125)
 - **A rare event's percentiles stand under a warning.** Where a crater, an
   ejecta ring or a firestorm happens in fewer than 1 % of the Monte Carlo's
   runs, its row leaves the P10, P50 and P90 cells empty, says in how many
