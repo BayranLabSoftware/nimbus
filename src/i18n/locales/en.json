@@ -225,6 +225,7 @@
     "crater": "Final crater",
     "magnitude": "Seismic magnitude",
     "magnitudeNone": "— none: no relation this simulator verifies covers this airburst",
+    "magnitudeOutOfDomain": "— none: the body reaches the ground below 5 km/s, and how it couples to the ground as it penetrates is not modelled",
     "magnitudeRange": "Range, seismic efficiency 10⁻⁵–10⁻³",
     "impactLiquefaction": "Impact-induced liquefaction radius",
     "morphology": "Morphology",
@@ -233,6 +234,7 @@
     "transientCrater": "Transient crater",
     "craterDepth": "Crater depth",
     "craterUnresolved": "not resolved: a local penetration pit is possible (below 5 km/s the crater law does not hold)",
+    "craterExploratory": "exploratory: under ~200 m Collins’s law is outside its declared domain (gravity regime)",
     "notResolved": "not resolved",
     "mcOutOfDomain": "outside the crater law's domain in {{share}} % of the runs",
     "damageLabel": "Damage rings",
@@ -1383,7 +1385,8 @@
         "tsunamiAt5000Dispersed": "Tsunami A @ 5,000 km (dispersion-corrected)",
         "runupAt1000": "Coastal run-up @ 1,000 km (Synolakis 1:100)",
         "travelTo1000": "Tsunami travel to 1,000 km",
-        "craterUnresolved": "Crater"
+        "craterUnresolved": "Crater",
+        "craterExploratory": "Domain of the law"
       },
       "value": {
         "nearestSea": "{{distance}} away, {{depth}} deep",
@@ -1494,7 +1497,8 @@
       "page": "Page",
       "pageOf": "of",
       "notResolved": "not resolved",
-      "craterUnresolved": "below 5 km/s the crater law (Collins et al. 2005, Eq. 21) does not hold: a local penetration pit is possible (French 1998)"
+      "craterUnresolved": "below 5 km/s the crater law (Collins et al. 2005, Eq. 21) does not hold: a local penetration pit is possible (French 1998)",
+      "craterExploratory": "exploratory: a crater under ~200 m is outside the domain Collins et al. (2005, p. 823) declare for their scaling law, which holds where gravity ends the crater’s growth"
     }
   },
   "about": {
@@ -2323,7 +2327,7 @@
       "crater": {
         "name": "Crater",
         "summary": "The reference program’s crater scaling, case by case, with a scattered body’s crater field joined where the program steps; not yet held to a measured crater.",
-        "domain": "Simple and complex craters in sedimentary and crystalline rock, from the bodies of the reference grids that reach the ground; where the fragments land spread wider than the crater, a crater field, joined to the single crater without the program’s step (rules 846 to 853). Only where the body reaches the ground at 5 km/s or more (French 1998): below, the crater is not resolved and a local penetration pit is possible (rules 945 to 952).",
+        "domain": "Simple and complex craters in sedimentary and crystalline rock, from the bodies of the reference grids that reach the ground; where the fragments land spread wider than the crater, a crater field, joined to the single crater without the program’s step (rules 846 to 853). Only where the body reaches the ground at 5 km/s or more (French 1998): below, the crater is not resolved and a local penetration pit is possible (rules 945 to 952). A crater computed under ~200 m is exploratory: Collins et al. (2005, p. 823) declare their law for gravity-dominated craters, larger than a couple of hundred meters.",
         "error": "",
         "missing": "Level B: an entry that lets strong bodies reach the ground, as at Carancas, and a second observed crater whose body is known apart from the crater; level C: hydrocode results (iSALE, CTH) across angles and targets. A law for bodies that reach the ground below 5 km/s, where the crater is not resolved today."
       },

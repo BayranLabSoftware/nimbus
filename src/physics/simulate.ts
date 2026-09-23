@@ -1183,20 +1183,24 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       origin: craterOrigin,
       state: craterState,
     },
-    seismic: {
-      magnitude: seismicM,
-      magnitudeRange:
-        airburstM === undefined
-          ? {
-              low: seismicMagnitude(seismicEnergy, SEISMIC_EFFICIENCY_RANGE.low),
-              high: seismicMagnitude(seismicEnergy, SEISMIC_EFFICIENCY_RANGE.high),
-            }
-          : airburstM === null
-            ? null
-            : { low: airburstM.low, high: airburstM.high },
-      magnitudeSource: airburstM === undefined ? 'program' : (airburstM?.term ?? null),
-      liquefactionRadius: seismicM === null ? m(0) : liquefactionRadius(seismicM),
-    },
+    // Rule 954: out of the crater law's domain no relation covers how the
+    // body couples to the ground, and no magnitude is given.
+    seismic: resolved
+      ? {
+          magnitude: seismicM,
+          magnitudeRange:
+            airburstM === undefined
+              ? {
+                  low: seismicMagnitude(seismicEnergy, SEISMIC_EFFICIENCY_RANGE.low),
+                  high: seismicMagnitude(seismicEnergy, SEISMIC_EFFICIENCY_RANGE.high),
+                }
+              : airburstM === null
+                ? null
+                : { low: airburstM.low, high: airburstM.high },
+          magnitudeSource: airburstM === undefined ? 'program' : (airburstM?.term ?? null),
+          liquefactionRadius: seismicM === null ? m(0) : liquefactionRadius(seismicM),
+        }
+      : { magnitude: null, magnitudeRange: null, magnitudeSource: null, liquefactionRadius: m(0) },
     damage,
     damageAsymmetry,
     // Rule 947: out of the domain no ejecta blanket is given; the sea's

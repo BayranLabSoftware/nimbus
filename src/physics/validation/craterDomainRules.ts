@@ -214,5 +214,35 @@ export const CRATER_DOMAIN_OUTCOME: string | null =
  *  declared domain (m). */
 export const COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M = 200;
 
-/** The outcome of rules 953 to 958, written after their one run. */
-export const CRATER_TIERS_OUTCOME: string | null = null;
+/**
+ * The outcome of rules 953 to 958, written on 23 September 2026 after their one
+ * run (the rules pushed first, 6aa794d).
+ *
+ * ADOPTED: every clause of rule 956 holds.
+ * (a) MET. The seal's numbers moved in the four scenarios out of the domain
+ *     and nowhere else — their magnitude, its range and its source now none;
+ *     the drawing moved in two of them, drawn:048 and drawn:166, whose
+ *     magnitudes of 3.6 and 4.0 drew shaking levels that are no longer drawn
+ *     (the other two had none); the texts of every scenario moved by the
+ *     crater card's sentence on the second tier and the label of craters
+ *     under 200 m. The seal is re-taken.
+ * (b) MET. Level A unchanged.
+ * (c) MET. G5 reads what it read before, on the benchmark's own draw and the
+ *     held-out seed (invariants-2026-09-23-20 and -21, identical to -17 and
+ *     -19).
+ * (d) MET. Typecheck, lint, format; 3 064 tests; the validation report
+ *     regenerated, identical, its strict gate PASS; Chromium's end-to-end
+ *     suite, 33 passed and 14 skipped.
+ * (e) MET, and read: in the running app Sikhote-Alin's crater carries
+ *     "esplorativo: sotto i ~200 m la legge di Collins è fuori dal suo dominio
+ *     dichiarato (regime di gravità)". A 0.5 m stone at 14 km/s and 22.5° showed
+ *     no magnitude, but under the words written for an airburst ("nessuna
+ *     relazione verificata dal simulatore copre questo airburst"), which it is
+ *     not; the panel now says the body reaches the ground below 5 km/s and how
+ *     it couples to the ground as it penetrates is not modelled. That sentence
+ *     is in no sealed text.
+ * Updated as rule 957 allows: B-124's test, which held the magnitude of a body
+ * out of the domain equal on both branches, now holds its absence.
+ */
+export const CRATER_TIERS_OUTCOME: string | null =
+  "ADOPTED 23 September 2026: out of the crater law's domain no seismic magnitude is given; a crater computed under 200 m is labelled exploratory, outside the domain Collins et al. declare, its numbers kept.";

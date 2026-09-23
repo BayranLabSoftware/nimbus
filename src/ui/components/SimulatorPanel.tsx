@@ -49,6 +49,7 @@ import { CasualtiesPanel } from './CasualtiesPanel.js';
 import { envelopeOf } from '../../physics/validation/calibrationEnvelope.js';
 import { CitySearch } from './CitySearch.js';
 import { monteCarloRow } from './monteCarloRow.js';
+import { COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M } from '../../physics/validation/craterDomainRules.js';
 import { EarthquakeCustomInputs } from './EarthquakeCustomInputs.js';
 import { ExplosionCustomInputs } from './ExplosionCustomInputs.js';
 import { ImpactCustomInputs } from './ImpactCustomInputs.js';
@@ -844,6 +845,14 @@ export function SimulatorPanel(): JSX.Element {
                       ) : (
                         formatKilometres(result.data.crater.finalDiameter)
                       )}
+                      {/* Rule 955: under 200 m, outside Collins et al.'s declared domain. */}
+                      {result.data.crater.state === 'computed' &&
+                        (result.data.crater.finalDiameter as number) <
+                          COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M && (
+                          <span className={styles.mcShare} data-testid="crater-exploratory">
+                            {t('simulator.craterExploratory')}
+                          </span>
+                        )}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>
@@ -882,7 +891,12 @@ export function SimulatorPanel(): JSX.Element {
                       )}
                     >
                       {result.data.seismic.magnitude === null
-                        ? t('simulator.magnitudeNone')
+                        ? t(
+                            // Rule 954: out of the crater law's domain.
+                            result.data.crater.state === 'outOfDomain'
+                              ? 'simulator.magnitudeOutOfDomain'
+                              : 'simulator.magnitudeNone'
+                          )
                         : `M ${formatDecimal(result.data.seismic.magnitude, 1)}`}
                     </CitationTooltip>
                   </dd>

@@ -7,6 +7,7 @@
  * cannot tell a scenario differently from the globe, nor in two languages at
  * once (B-110). Pure — the tests run it in both languages.
  */
+import { COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M } from '../../../physics/validation/craterDomainRules.js';
 import type { TFunction } from 'i18next';
 import type { CasualtyEstimate } from '../../../physics/casualties.js';
 import type { ImpactScenarioResult } from '../../../physics/simulate.js';
@@ -321,6 +322,13 @@ function groups(
     row(t, 'craterDepth', craterLength(r.crater.depth)),
   ];
   if (unresolved) craterRows.push(row(t, 'craterUnresolved', t('report.impact.craterUnresolved')));
+  // Rule 955: a crater computed under 200 m is outside Collins et al.'s domain.
+  if (
+    r.crater.state === 'computed' &&
+    (r.crater.finalDiameter as number) < COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M
+  ) {
+    craterRows.push(row(t, 'craterExploratory', t('report.impact.craterExploratory')));
+  }
   // A morphology is a fact about a crater, and an airburst leaves none (B-045).
   if (crater) {
     craterRows.push(

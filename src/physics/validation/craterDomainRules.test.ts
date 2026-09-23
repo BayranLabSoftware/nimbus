@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { IMPACT_PRESETS, simulateImpact, type ImpactScenarioInput } from '../simulate.js';
 import { degreesToRadians, deg, kgPerM3, m, mps } from '../units.js';
-import { CRATER_DOMAIN_MIN_SPEED_MS } from './craterDomainRules.js';
+import {
+  COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M,
+  CRATER_DOMAIN_MIN_SPEED_MS,
+} from './craterDomainRules.js';
 
 /**
  * Rules 945 to 952: the crater below the hypervelocity domain. Each case runs
@@ -39,7 +42,13 @@ describe('rules 945 to 952: the crater’s domain', () => {
   it('rule 948: nothing of the entry, and no effect of the energy, moves', () => {
     const { legacy, domain } = both(slowStone);
     expect(domain.entry).toEqual(legacy.entry);
-    expect(domain.seismic).toEqual(legacy.seismic);
+    // Rule 954: out of the domain no magnitude is given.
+    expect(domain.seismic).toEqual({
+      magnitude: null,
+      magnitudeRange: null,
+      magnitudeSource: null,
+      liquefactionRadius: 0,
+    });
     expect(domain.firestorm).toEqual(legacy.firestorm);
     const { craterRim: _a, ...legacyRings } = legacy.damage;
     const { craterRim: _b, ...domainRings } = domain.damage;
@@ -53,6 +62,19 @@ describe('rules 945 to 952: the crater’s domain', () => {
       expect(domain.crater, id).toEqual({ ...legacy.crater, state: 'computed' });
       expect(domain.ejecta, id).toEqual(legacy.ejecta);
     }
+  });
+
+  it('rule 955: a crater computed under 200 m is labelled, its numbers kept', () => {
+    // Meteor Crater's 1.2 km is inside the declared domain; Sikhote-Alin's
+    // largest crater, computed at the entry speed, is under 200 m.
+    const meteor = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    expect(meteor.crater.finalDiameter).toBeGreaterThanOrEqual(
+      COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M
+    );
+    const sikhote = simulateImpact(IMPACT_PRESETS.SIKHOTE_ALIN_1947.input);
+    expect(sikhote.crater.state).toBe('computed');
+    expect(sikhote.crater.finalDiameter).toBeLessThan(COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M);
+    expect(Number.isFinite(sikhote.crater.finalDiameter)).toBe(true);
   });
 
   it('rule 947: an airburst stays "none", and an iron’s strewn field keeps its own law', () => {

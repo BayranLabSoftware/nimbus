@@ -225,6 +225,7 @@
     "crater": "Cratere finale",
     "magnitude": "Magnitudo sismica",
     "magnitudeNone": "— nessuna: nessuna relazione verificata dal simulatore copre questo airburst",
+    "magnitudeOutOfDomain": "— nessuna: il corpo arriva al suolo sotto i 5 km/s, e come si accoppi al terreno penetrando non è modellato",
     "magnitudeRange": "Intervallo, efficienza sismica 10⁻⁵–10⁻³",
     "impactLiquefaction": "Raggio liquefazione da impatto",
     "morphology": "Morfologia",
@@ -233,6 +234,7 @@
     "transientCrater": "Cratere transiente",
     "craterDepth": "Profondità cratere",
     "craterUnresolved": "non risolto: possibile buca di penetrazione locale (sotto i 5 km/s la legge del cratere non vale)",
+    "craterExploratory": "esplorativo: sotto i ~200 m la legge di Collins è fuori dal suo dominio dichiarato (regime di gravità)",
     "notResolved": "non risolto",
     "mcOutOfDomain": "fuori dal dominio del cratere nel {{share}} % dei campioni",
     "damageLabel": "Anelli di danno",
@@ -1383,7 +1385,8 @@
         "tsunamiAt5000Dispersed": "Ampiezza a 5000 km (corretta per la dispersione)",
         "runupAt1000": "Risalita sulla costa a 1000 km (Synolakis 1:100)",
         "travelTo1000": "Tempo di viaggio dello tsunami fino a 1000 km",
-        "craterUnresolved": "Cratere"
+        "craterUnresolved": "Cratere",
+        "craterExploratory": "Dominio della legge"
       },
       "value": {
         "nearestSea": "a {{distance}}, profondo {{depth}}",
@@ -1494,7 +1497,8 @@
       "page": "Pagina",
       "pageOf": "di",
       "notResolved": "non risolto",
-      "craterUnresolved": "sotto i 5 km/s la legge del cratere (Collins et al. 2005, Eq. 21) non vale: è possibile una buca di penetrazione locale (French 1998)"
+      "craterUnresolved": "sotto i 5 km/s la legge del cratere (Collins et al. 2005, Eq. 21) non vale: è possibile una buca di penetrazione locale (French 1998)",
+      "craterExploratory": "esplorativo: un cratere sotto i ~200 m è fuori dal dominio che Collins et al. (2005, p. 823) dichiarano per la loro legge di scala, valida dove la gravità arresta la crescita del cratere"
     }
   },
   "about": {
@@ -2576,7 +2580,7 @@
       "crater": {
         "name": "Cratere",
         "summary": "Le leggi di scala del cratere del programma di riferimento, caso per caso, con il campo di crateri di un corpo disperso unito dove il programma fa uno scatto; non ancora confrontate con un cratere misurato.",
-        "domain": "Crateri semplici e complessi in roccia sedimentaria e cristallina, dai corpi delle griglie di riferimento che arrivano al suolo; dove i frammenti cadono sparsi più largo del cratere, un campo di crateri, unito al cratere singolo senza lo scatto del programma (regole 846–853). Solo dove il corpo arriva al suolo a 5 km/s o più (French 1998): sotto, il cratere non è risolto ed è possibile una buca di penetrazione locale (regole 945–952).",
+        "domain": "Crateri semplici e complessi in roccia sedimentaria e cristallina, dai corpi delle griglie di riferimento che arrivano al suolo; dove i frammenti cadono sparsi più largo del cratere, un campo di crateri, unito al cratere singolo senza lo scatto del programma (regole 846–853). Solo dove il corpo arriva al suolo a 5 km/s o più (French 1998): sotto, il cratere non è risolto ed è possibile una buca di penetrazione locale (regole 945–952). Un cratere calcolato sotto i ~200 m è esplorativo: Collins et al. (2005, p. 823) dichiarano la loro legge per i crateri dominati dalla gravità, più larghi di un paio di centinaia di metri.",
         "error": "",
         "missing": "Livello B: un ingresso che lasci arrivare al suolo i corpi resistenti, come a Carancas, e un secondo cratere osservato il cui corpo sia noto indipendentemente dal cratere; livello C: risultati di hydrocode (iSALE, CTH) su angoli e bersagli diversi. Una legge per i corpi che arrivano al suolo sotto i 5 km/s, dove oggi il cratere non è risolto."
       },
