@@ -1,0 +1,354 @@
+{
+  "protocol": "rules 875 to 880, 903, 904 and 919 to 932, src/physics/validation/levelBSecondRules.ts",
+  "frozenModel": "5b6b7a5",
+  "engine": {
+    "node": "v22.20.0",
+    "platform": "darwin-arm64"
+  },
+  "seed": "level-b2-2026-09-23",
+  "draws": 1000,
+  "events": {
+    "2022 WJ1": {
+      "role": "counted",
+      "operative": {
+        "regime": {
+          "COMPLETE_AIRBURST": 0.082,
+          "INTACT": 0.918
+        },
+        "craterOrigin": {
+          "impact": 0.918,
+          "none": 0.082
+        },
+        "morphology": {
+          "simple": 1
+        },
+        "firstFragmentationAltitudeM": {
+          "n": 1000,
+          "p5": 63427.774813772594,
+          "median": 63464.27727695981,
+          "p95": 63491.49289418212
+        },
+        "breakupAltitudeM": {
+          "n": 82,
+          "p5": 29030.962295913003,
+          "median": 30197.308869540855,
+          "p95": 31297.958469649693
+        },
+        "burstAltitudeM": {
+          "n": 82,
+          "p5": 28654.93551087195,
+          "median": 29789.488712243896,
+          "p95": 30843.372011877684
+        },
+        "noCraterDraws": 82,
+        "burstAltitudeNoCraterM": {
+          "n": 82,
+          "p5": 28654.93551087195,
+          "median": 29789.488712243896,
+          "p95": 30843.372011877684
+        },
+        "finalDiameterM": {
+          "n": 918,
+          "p5": 2.3103209655230112,
+          "median": 2.8504509213728797,
+          "p95": 3.361107952340054
+        },
+        "depthM": {
+          "n": 918,
+          "p5": 0.4917099689866994,
+          "median": 0.6066668463224,
+          "p95": 0.7153509454613548
+        },
+        "depthOverDiameter": {
+          "n": 918,
+          "p5": 0.212831886272298,
+          "median": 0.21283188627229804,
+          "p95": 0.2128318862722981
+        }
+      },
+      "standardAtmosphere": {
+        "regime": {
+          "COMPLETE_AIRBURST": 0.434,
+          "INTACT": 0.566
+        },
+        "craterOrigin": {
+          "impact": 0.566,
+          "none": 0.434
+        },
+        "morphology": {
+          "simple": 1
+        },
+        "firstFragmentationAltitudeM": {
+          "n": 1000,
+          "p5": 58786.35324432734,
+          "median": 58821.33472006803,
+          "p95": 58847.100073704394
+        },
+        "breakupAltitudeM": {
+          "n": 434,
+          "p5": 27684.703673772376,
+          "median": 29325.05313053313,
+          "p95": 30489.457044386545
+        },
+        "burstAltitudeM": {
+          "n": 434,
+          "p5": 27374.5520157768,
+          "median": 28938.509514542566,
+          "p95": 30015.6103462105
+        },
+        "noCraterDraws": 434,
+        "burstAltitudeNoCraterM": {
+          "n": 434,
+          "p5": 27374.5520157768,
+          "median": 28938.509514542566,
+          "p95": 30015.6103462105
+        },
+        "finalDiameterM": {
+          "n": 566,
+          "p5": 2.173436779640527,
+          "median": 2.555852054884266,
+          "p95": 2.905817713196353
+        },
+        "depthM": {
+          "n": 566,
+          "p5": 0.46257664950448235,
+          "median": 0.5439668138739474,
+          "p95": 0.6184506650630353
+        },
+        "depthOverDiameter": {
+          "n": 566,
+          "p5": 0.212831886272298,
+          "median": 0.21283188627229804,
+          "p95": 0.2128318862722981
+        }
+      }
+    },
+    "Sterlitamak": {
+      "role": "diagnostic",
+      "grounds": {
+        "1800": {
+          "regime": {
+            "INTACT": 1
+          },
+          "craterOrigin": {
+            "impact": 1
+          },
+          "morphology": {
+            "simple": 1
+          },
+          "firstFragmentationAltitudeM": null,
+          "breakupAltitudeM": null,
+          "burstAltitudeM": null,
+          "noCraterDraws": 0,
+          "burstAltitudeNoCraterM": null,
+          "finalDiameterM": {
+            "n": 1000,
+            "p5": 11.558770998983567,
+            "median": 20.54719439270857,
+            "p95": 29.975898420047887
+          },
+          "depthM": {
+            "n": 1000,
+            "p5": 2.460075034703207,
+            "median": 4.37309814020375,
+            "p95": 6.379827003445592
+          },
+          "depthOverDiameter": {
+            "n": 1000,
+            "p5": 0.212831886272298,
+            "median": 0.21283188627229804,
+            "p95": 0.2128318862722981
+          }
+        },
+        "2200": {
+          "regime": {
+            "INTACT": 1
+          },
+          "craterOrigin": {
+            "impact": 1
+          },
+          "morphology": {
+            "simple": 1
+          },
+          "firstFragmentationAltitudeM": null,
+          "breakupAltitudeM": null,
+          "burstAltitudeM": null,
+          "noCraterDraws": 0,
+          "burstAltitudeNoCraterM": null,
+          "finalDiameterM": {
+            "n": 1000,
+            "p5": 10.81089379860069,
+            "median": 19.21774697831712,
+            "p95": 28.036393693176997
+          },
+          "depthM": {
+            "n": 1000,
+            "p5": 2.3009029194456745,
+            "median": 4.090149339298989,
+            "p95": 5.96703855399162
+          },
+          "depthOverDiameter": {
+            "n": 1000,
+            "p5": 0.212831886272298,
+            "median": 0.21283188627229804,
+            "p95": 0.2128318862722981
+          }
+        },
+        "2700": {
+          "regime": {
+            "INTACT": 1
+          },
+          "craterOrigin": {
+            "impact": 1
+          },
+          "morphology": {
+            "simple": 1
+          },
+          "firstFragmentationAltitudeM": null,
+          "breakupAltitudeM": null,
+          "burstAltitudeM": null,
+          "noCraterDraws": 0,
+          "burstAltitudeNoCraterM": null,
+          "finalDiameterM": {
+            "n": 1000,
+            "p5": 10.097516541072519,
+            "median": 17.949627626609427,
+            "p95": 26.186359272673524
+          },
+          "depthM": {
+            "n": 1000,
+            "p5": 2.1490734921021946,
+            "median": 3.820253105656637,
+            "p95": 5.5732922386071895
+          },
+          "depthOverDiameter": {
+            "n": 1000,
+            "p5": 0.212831886272298,
+            "median": 0.21283188627229804,
+            "p95": 0.2128318862722981
+          }
+        }
+      }
+    },
+    "2024 BX1": {
+      "role": "regression",
+      "operative": {
+        "regime": {
+          "COMPLETE_AIRBURST": 1
+        },
+        "craterOrigin": {
+          "none": 1
+        },
+        "morphology": {},
+        "firstFragmentationAltitudeM": {
+          "n": 1000,
+          "p5": 64843.49539327976,
+          "median": 64858.462040930186,
+          "p95": 64873.04204544584
+        },
+        "breakupAltitudeM": {
+          "n": 1000,
+          "p5": 35941.39285303209,
+          "median": 36190.05635586327,
+          "p95": 36395.04425505237
+        },
+        "burstAltitudeM": {
+          "n": 1000,
+          "p5": 34821.13017879876,
+          "median": 34936.17671232778,
+          "p95": 35000.4241765424
+        },
+        "noCraterDraws": 1000,
+        "burstAltitudeNoCraterM": {
+          "n": 1000,
+          "p5": 34821.13017879876,
+          "median": 34936.17671232778,
+          "p95": 35000.4241765424
+        },
+        "finalDiameterM": null,
+        "depthM": null,
+        "depthOverDiameter": null
+      }
+    },
+    "2023 CX1": {
+      "role": "regression",
+      "operative": {
+        "regime": {
+          "COMPLETE_AIRBURST": 1
+        },
+        "craterOrigin": {
+          "none": 1
+        },
+        "morphology": {},
+        "firstFragmentationAltitudeM": {
+          "n": 1000,
+          "p5": 63543.0062024756,
+          "median": 63597.33979149931,
+          "p95": 63651.51798748781
+        },
+        "breakupAltitudeM": {
+          "n": 1000,
+          "p5": 34913.92110369869,
+          "median": 35206.483317841936,
+          "p95": 35431.43474177992
+        },
+        "burstAltitudeM": {
+          "n": 1000,
+          "p5": 33432.25172471864,
+          "median": 33572.586830548185,
+          "p95": 33657.4653607724
+        },
+        "noCraterDraws": 1000,
+        "burstAltitudeNoCraterM": {
+          "n": 1000,
+          "p5": 33432.25172471864,
+          "median": 33572.586830548185,
+          "p95": 33657.4653607724
+        },
+        "finalDiameterM": null,
+        "depthM": null,
+        "depthOverDiameter": null
+      }
+    },
+    "Carancas": {
+      "role": "regression",
+      "operative": {
+        "regime": {
+          "COMPLETE_AIRBURST": 1
+        },
+        "craterOrigin": {
+          "none": 1
+        },
+        "morphology": {},
+        "firstFragmentationAltitudeM": {
+          "n": 1000,
+          "p5": 60984.664127683565,
+          "median": 63869.446287006635,
+          "p95": 66304.07791033448
+        },
+        "breakupAltitudeM": {
+          "n": 1000,
+          "p5": 32866.583451474704,
+          "median": 35981.85606846993,
+          "p95": 38570.5449244478
+        },
+        "burstAltitudeM": {
+          "n": 1000,
+          "p5": 30335.139033546064,
+          "median": 32938.497462125786,
+          "p95": 35073.303523320435
+        },
+        "noCraterDraws": 1000,
+        "burstAltitudeNoCraterM": {
+          "n": 1000,
+          "p5": 30335.139033546064,
+          "median": 32938.497462125786,
+          "p95": 35073.303523320435
+        },
+        "finalDiameterM": null,
+        "depthM": null,
+        "depthOverDiameter": null
+      }
+    }
+  }
+}
