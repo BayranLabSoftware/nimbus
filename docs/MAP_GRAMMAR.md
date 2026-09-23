@@ -84,6 +84,16 @@ States 2, 3 and 4 are drawn from each layer's edge (step 1), with these choices:
 - **The words** stand south of the point of impact, clear of the values and of the screen's side
   panels; the report's photographs carry none (IMP-7c).
 
+## Step 3, as built
+
+- Thresholds within 1 % of the fireball's direct horizon (B-119's test for lines on the horizon)
+  are no isoline of damage: the limit's dash-dot line stands there, and they are written as one
+  callout on it, «soglie 5–20 cal/cm² compresse presso il limite geometrico» (a single one,
+  «soglia … compressa …»). The legend's colour bar still lists each threshold at its own radius.
+- The row «Rientro globale degli ejecta e riscaldamento atmosferico: non modellati in questo
+  layer» is shown where the heat reaches its horizon (Chicxulub, Popigai), not on a heat that stops
+  short of it.
+
 ## Tests and the visual suite
 
 Automatic tests: every layer and object has one state and a full card; every edge says what lies

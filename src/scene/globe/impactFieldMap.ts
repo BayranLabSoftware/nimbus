@@ -278,6 +278,9 @@ export interface MapIsoline {
   /** The thresholds a drawn line stands for when they coincide at the
    *  map's scale (B-119), each at its own radius. */
   members?: readonly { label: string; title: string; description: string; radiusM: number }[];
+  /** Rule 1031 (a): a line that stands on a limit of the model is no isoline
+   *  of damage — the globe writes this callout on the limit instead. */
+  atLimit?: string;
 }
 
 /** The thresholds a drawn line stands for, each with its own radius: the
@@ -1764,16 +1767,25 @@ function settleIsolines(layer: RawLayer, ctx: ImpactMapContext, horizonM: number
     const outer = group[group.length - 1];
     const inner = group[0];
     if (outer === undefined || inner === undefined) continue;
-    if (group.length === 1) {
-      drawnFor.set(outer, outer);
-      continue;
-    }
-    // A title may hold a «·» of its own; thresholds are told apart by «;».
-    const titles = group.map((l) => l.title).join('; ');
     const onHorizon =
       horizonM !== null &&
       horizonM > 0 &&
       Math.abs(outer.radiusM - horizonM) <= 2 * COINCIDENT_SHARE * horizonM;
+    if (group.length === 1) {
+      // Rule 1031 (a): a threshold pressed against the horizon is a callout.
+      drawnFor.set(
+        outer,
+        onHorizon
+          ? {
+              ...outer,
+              atLimit: t('globe.impactMap.mark.label.compressedOne', { value: outer.label }),
+            }
+          : outer
+      );
+      continue;
+    }
+    // A title may hold a «·» of its own; thresholds are told apart by «;».
+    const titles = group.map((l) => l.title).join('; ');
     notes.push({
       label: t('globe.impactMap.noteLabel.coincide'),
       text: onHorizon
@@ -1800,6 +1812,16 @@ function settleIsolines(layer: RawLayer, ctx: ImpactMapContext, horizonM: number
         description: l.description,
         radiusM: l.radiusM,
       })),
+      // Rule 1031 (a): thresholds merged at the horizon are one callout,
+      // from the lowest (the outermost) to the highest.
+      ...(onHorizon
+        ? {
+            atLimit: t('globe.impactMap.mark.label.compressed', {
+              lo: outer.label,
+              hi: inner.label,
+            }),
+          }
+        : {}),
     };
     for (const l of group) drawnFor.set(l, joined);
   }
@@ -1899,14 +1921,31 @@ export function buildImpactLayer(
   const evidence = layerEvidence(settled, ctx);
   const edge = layerEdge(settled, horizon, beyond);
   const card = layerCard(settled, evidence, edge, ctx);
+  const marks = stateMarks(settled, below, edge, horizon, card, ctx);
+  // Rule 1031 (a): where the heat stops at its horizon, what else heats the
+  // ground beyond it is named, and said not to be in this layer.
+  const notes =
+    id === 'thermal' && marks.some((mk) => mk.state === 'notModelled')
+      ? [
+          ...settled.notes,
+          {
+            label: ctx.t('globe.impactMap.noteLabel.notModelled'),
+            text: ctx.t('globe.impactMap.note.thermalNotModelled'),
+          },
+        ]
+      : settled.notes;
   return {
     ...settled,
-    isolines: settled.isolines.map((l) => ({ ...l, state: 'computed' as const })),
+    notes,
+    isolines: settled.isolines.map((l) => ({
+      ...l,
+      state: l.atLimit !== undefined ? ('modelLimit' as const) : ('computed' as const),
+    })),
     evidence,
     state: 'computed',
     card,
     edge,
-    marks: stateMarks(settled, below, edge, horizon, card, ctx),
+    marks,
   };
 }
 

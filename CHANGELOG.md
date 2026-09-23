@@ -19,6 +19,12 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Chicxulub's heat no longer draws its horizon as a line of damage.** The four
+  thresholds pressed against the fireball's direct horizon are one callout on
+  the limit of the model, "thresholds 5–20 cal/cm² compressed at the geometric
+  limit", and the legend says that the global re-entry of the ejecta and the
+  atmospheric heating are not modelled in the layer. Step 3 of the map's
+  grammar.
 - **The impact map draws what lies past each field's edge.** Where the model
   goes on below the lowest threshold drawn, a faint neutral veil fades out to a
   decade below the edge's value, labelled on the globe "continues below

@@ -228,19 +228,24 @@ export function drawImpactFieldLayer(
     const positions = ringOutlinePositions(g);
     if (positions.length < 3) continue;
     const base = `${IMPACT_FIELD_PREFIX}isoline-${line.id}`;
-    viewer.entities.add({
-      id: `${base}-line`,
-      polyline: { positions, width: 3, material: ISOLINE_MATERIAL, clampToGround: true },
-    });
+    // Rule 1031 (a): thresholds pressed against a limit of the model are no
+    // isoline of damage: the limit's own line stands there, and they are
+    // written as one callout on it.
+    const atLimit = line.state === 'modelLimit';
+    if (!atLimit)
+      viewer.entities.add({
+        id: `${base}-line`,
+        polyline: { positions, width: 3, material: ISOLINE_MATERIAL, clampToGround: true },
+      });
     const at = isolinePointAtBearing(anchor, shape, line.radiusM, line.labelBearingDeg);
     if (labels)
       viewer.entities.add({
         id: `${base}-label`,
         position: Cartesian3.fromDegrees(at.lonDeg, at.latDeg),
         label: {
-          text: line.label,
-          font: 'bold 13px "JetBrains Mono", monospace',
-          fillColor: Color.WHITE.withAlpha(0.95),
+          text: atLimit ? (line.atLimit ?? line.label) : line.label,
+          font: atLimit ? STATE_LABEL_FONT : 'bold 13px "JetBrains Mono", monospace',
+          fillColor: atLimit ? STATE_LABEL_COLOR : Color.WHITE.withAlpha(0.95),
           outlineColor: LABEL_OUTLINE,
           outlineWidth: 3,
           style: LabelStyle.FILL_AND_OUTLINE,

@@ -1158,7 +1158,8 @@
         "not": "Non è",
         "coincide": "Linee unite",
         "wholeEarth": "Tutta la Terra",
-        "why": "Perché"
+        "why": "Perché",
+        "notModelled": "Non modellati"
       },
       "note": {
         "isolinesMedian": "le soglie del modello, alla mediana",
@@ -1186,7 +1187,7 @@
         "tsunamiSourceProgram": "alla sorgente {{amplitude}}, a un diametro del cratere d'acqua dal punto d'impatto, mai più alta dell'acqua in cui nasce ({{depth}}): la legge dell'Earth Impact Effects Program (Collins et al. 2005, regole 150–153)",
         "depthWithinCrater": "in media {{depth}} dentro il cratere, regole 798–804",
         "coincide": "{{lines}} cadono entro {{gap}} l'una dall'altra, a {{range}}: a questa scala sono una linea sola e così sono disegnate; il tooltip della linea dà il raggio di ciascuna",
-        "coincideHorizon": "{{lines}} cadono entro {{gap}} l'una dall'altra, sull'orizzonte della palla di fuoco ({{horizon}}): fin lì il calore supera tutte queste soglie, oltre la palla di fuoco è sotto l'orizzonte e il calore diretto non arriva. Disegnate come una linea sola",
+        "coincideHorizon": "{{lines}} cadono entro {{gap}} l'una dall'altra, sull'orizzonte della palla di fuoco ({{horizon}}): fin lì il calore supera tutte queste soglie; oltre, la palla di fuoco è sotto l'orizzonte e il modello non calcola la radiazione diretta. Sul globo un solo richiamo sul limite del modello, non un'isolinea di danno",
         "wholeEarth": "{{lines}}: su tutta la Terra, fino all'antipodo, quindi nessuna linea da disegnare",
         "tsunamiWhyNone": "il cratere transitorio ({{crater}}) si ferma prima del mare più vicino ({{shore}}), e Nimbus solleva l'onda solo con la parte di cratere che cade in mare (regole 267–273)",
         "unsizedResurge": "il cratere finale ({{rim}}) racchiude la costa e il mare vi rientra",
@@ -1200,7 +1201,8 @@
         "tsunamiLinesOnly": "nessuna cella della velatura supera 1 m; restano le linee e i segni elencati sopra",
         "tsunamiNothing": "sul globo non c'è ancora nulla: nessuna cella supera 1 m, o il calcolo sul fondale non è finito",
         "tsunamiLimitLand": "un impatto sulla terraferma solleva l'onda solo con il segmento di cratere che cade in mare; gli ejecta che ricadono in acqua non sono contati, perché nessuno ha pubblicato quanto sollevano (regole 267–273)",
-        "tsunamiLimitSea": "la risalita sulla costa è una stima su spiaggia piana (Synolakis 1987), non una mappa d'inondazione"
+        "tsunamiLimitSea": "la risalita sulla costa è una stima su spiaggia piana (Synolakis 1987), non una mappa d'inondazione",
+        "thermalNotModelled": "Rientro globale degli ejecta e riscaldamento atmosferico: non modellati in questo layer"
       },
       "source": {
         "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 al suolo (regole 748–755), verificata contro l'Earth Impact Effects Program (I1)",
@@ -1315,7 +1317,9 @@
           "modelLimit": "limite del modello",
           "notModelled": {
             "thermal": "radiazione diretta non calcolata oltre l’orizzonte;\nquesto non implica assenza di riscaldamento"
-          }
+          },
+          "compressed": "soglie {{lo}}–{{hi}} cal/cm² compresse presso il limite geometrico",
+          "compressedOne": "soglia {{value}} cal/cm² compressa presso il limite geometrico"
         },
         "source": {
           "below": "lo stesso modello del campo, letto oltre la soglia più bassa disegnata — {{source}}"

@@ -216,3 +216,27 @@ describe('rule 1030: what the globe draws past a field’s edge', () => {
     expect(hatch?.holeM).toBe(area.fromM);
   });
 });
+
+describe('rule 1031 (a): the heat at its horizon', () => {
+  it('writes the thresholds pressed against the horizon as one callout, not an isoline', () => {
+    const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+    const horizon = thermalHorizonRadius(impactFireballRadius(J(r.impactor.kineticEnergy)));
+    const heat = availableImpactLayers(r, ctx).find((l) => l.id === 'thermal');
+    const atLimit = heat?.isolines.filter((l) => l.state === 'modelLimit') ?? [];
+    expect(atLimit).toHaveLength(1);
+    const callout = atLimit[0];
+    expect(callout?.members?.length).toBe(4);
+    expect(callout?.atLimit).toBe('globe.impactMap.mark.label.compressed{"lo":"5","hi":"20"}');
+    // No isoline of damage is left within 1 % of the horizon.
+    for (const line of heat?.isolines ?? [])
+      if (line.state === 'computed')
+        expect(Math.abs(line.radiusM - horizon)).toBeGreaterThan(0.01 * horizon);
+    expect(heat?.notes.map((n) => n.text)).toContain('globe.impactMap.note.thermalNotModelled');
+  });
+
+  it('leaves a heat that stops short of its horizon as it was', () => {
+    const heat = layersOf('METEOR_CRATER').find((l) => l.id === 'thermal');
+    expect(heat?.isolines.every((l) => l.state === 'computed')).toBe(true);
+    expect(heat?.notes.map((n) => n.text)).not.toContain('globe.impactMap.note.thermalNotModelled');
+  });
+});
