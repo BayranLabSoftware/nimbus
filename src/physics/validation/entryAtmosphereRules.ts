@@ -241,5 +241,35 @@ export const ENTRY_ATMOSPHERE_CRITERION = {
  * integrated, 0.008 ms closed (Apple M-series, Node 22).
  */
 
+/**
+ * Step 3, 23 September 2026: the USSA profile (effects/ussa1976Entry.ts),
+ * from the standard downloaded on Andrea's word that day (NTRS 19770009539,
+ * 18.1 MB, the scanned 1976 printing): its defining constants from Tables 2
+ * and 4 and §§1.2.4–1.2.6 (pp. 2–3, 9–11); above 86 km the densities and
+ * pressures Table I prints (pp. 68–69), every 500 m to 100 km and every
+ * kilometre to 150 km, read from the scans by hand, and the kinetic
+ * temperature from §1.2.6's four functions.
+ *   Rule 910(d) and rule 912 hold: the profile gives the 25 printed rows of
+ *   Table I held in its test (−5 km, every 5 km from 0 to 85, and 86, 90, 100,
+ *   110, 120, 150 km) within their last printed digit — temperature within
+ *   0.003 K, pressure within 7e-5, density within 2.5e-5 of their value; its
+ *   two parts join at 86 km within the fourth printed digit (6.9578e-6 against
+ *   6.958e-6); and the rows read by hand above 86 km hold a mean molecular
+ *   weight M = ρ R* T / P falling smoothly from 28.95 to 24.11 kg/kmol, no
+ *   step beyond the four printed digits' noise — a figure misread would show
+ *   as tenths.
+ *   Rule 910(b) holds on the USSA profile too: every quantity of rule 910(a)
+ *   moves by less than its tolerance at a 5 m grid, on all 4 068 cases.
+ *   Rule 913's table is published (docs/ATMOSPHERE_TABLE.md): Collins's
+ *   exponential is 1.49 to 1.88 times the standard's density between 35 and
+ *   60 km, 2.46 at 80 km, 0.92 at 20 km; the dynamic pressure of S2 is
+ *   reached 1.7 to 5.0 km lower in the standard, that of S1 4.6 to 5.9 km —
+ *   the motivation of rule 916, now a table.
+ *   An entry costs 0.17 ms on the USSA profile (0.085 exponential, 0.008
+ *   closed).
+ * No fireball's recorded altitude has been read under any branch: rule 914
+ * is run next, once.
+ */
+
 /** The outcome, written after the one run of rule 914. */
 export const ENTRY_ATMOSPHERE_OUTCOME: string | null = null;

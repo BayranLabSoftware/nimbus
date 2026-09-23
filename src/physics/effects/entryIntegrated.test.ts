@@ -22,6 +22,7 @@ import {
   integratedSpreadAtGround,
   type EntryBody,
 } from './entryIntegrated.js';
+import { USSA_1976_PROFILE } from './ussa1976Entry.js';
 import {
   ENTRY_ATMOSPHERE_ALTITUDE_TOLERANCE_M,
   ENTRY_ATMOSPHERE_FINE_STEP_M,
@@ -305,46 +306,50 @@ describe('rule 910: the integrated entry on Collins’s exponential', () => {
     expect(failures).toHaveLength(0);
   }, 300_000);
 
-  it('(b) converges: the grid at 5 m moves nothing by the tolerance', async () => {
-    const coarse = entryTable(COLLINS_EXPONENTIAL_PROFILE, ENTRY_ATMOSPHERE_STEP_M);
-    const fine = entryTable(COLLINS_EXPONENTIAL_PROFILE, ENTRY_ATMOSPHERE_FINE_STEP_M);
-    const failures: string[] = [];
-    const altitudes: number[] = [];
-    for (let z = ATAP_TOP_KM * 1_000; z > 0; z -= ATAP_PATH_STEP) altitudes.push(z);
-    altitudes.push(0);
-    for (const [index, c] of all.entries()) {
-      if (index % 200 === 0) await breathe();
-      const b = bodyOf(c);
-      const x = integratedBreakup(coarse, b, c.strength);
-      const y = integratedBreakup(fine, b, c.strength);
-      if ((x.breakup === null) !== (y.breakup === null)) {
-        failures.push(`${c.name}: breaks under one grid only`);
-        continue;
-      }
-      if (x.breakup !== null && y.breakup !== null) {
-        if (!altitudeClose(x.breakup, y.breakup)) failures.push(`${c.name}: breakup`);
-        if (!altitudeClose(x.burst, y.burst)) failures.push(`${c.name}: burst`);
-        const sx = integratedSpreadAtGround(coarse, b, x.breakup);
-        const sy = integratedSpreadAtGround(fine, b, y.breakup);
-        if (Math.abs(sx - sy) > ENTRY_ATMOSPHERE_RELATIVE_TOLERANCE * sy)
-          failures.push(`${c.name}: spread`);
-      }
-      if (!speedClose(x.endVelocity, y.endVelocity)) failures.push(`${c.name}: speed`);
-      const fx = integratedFirstCrossing(coarse, b, FIRST_STAGE_STRENGTH) ?? 0;
-      const fy = integratedFirstCrossing(fine, b, FIRST_STAGE_STRENGTH) ?? 0;
-      if (!altitudeClose(fx, fy)) failures.push(`${c.name}: first fragmentation`);
-      const px = integratedPath(coarse, b, c.strength, altitudes);
-      const py = integratedPath(fine, b, c.strength, altitudes);
-      for (const [i, p] of px.entries()) {
-        const q = py[i];
-        if (q === undefined || !speedClose(p.velocity, q.velocity)) {
-          failures.push(`${c.name}: path at ${String(p.altitude)} m`);
-          break;
+  it.each([COLLINS_EXPONENTIAL_PROFILE, USSA_1976_PROFILE])(
+    '(b) converges on $name: the grid at 5 m moves nothing by the tolerance',
+    async (profile) => {
+      const coarse = entryTable(profile, ENTRY_ATMOSPHERE_STEP_M);
+      const fine = entryTable(profile, ENTRY_ATMOSPHERE_FINE_STEP_M);
+      const failures: string[] = [];
+      const altitudes: number[] = [];
+      for (let z = ATAP_TOP_KM * 1_000; z > 0; z -= ATAP_PATH_STEP) altitudes.push(z);
+      altitudes.push(0);
+      for (const [index, c] of all.entries()) {
+        if (index % 200 === 0) await breathe();
+        const b = bodyOf(c);
+        const x = integratedBreakup(coarse, b, c.strength);
+        const y = integratedBreakup(fine, b, c.strength);
+        if ((x.breakup === null) !== (y.breakup === null)) {
+          failures.push(`${c.name}: breaks under one grid only`);
+          continue;
+        }
+        if (x.breakup !== null && y.breakup !== null) {
+          if (!altitudeClose(x.breakup, y.breakup)) failures.push(`${c.name}: breakup`);
+          if (!altitudeClose(x.burst, y.burst)) failures.push(`${c.name}: burst`);
+          const sx = integratedSpreadAtGround(coarse, b, x.breakup);
+          const sy = integratedSpreadAtGround(fine, b, y.breakup);
+          if (Math.abs(sx - sy) > ENTRY_ATMOSPHERE_RELATIVE_TOLERANCE * sy)
+            failures.push(`${c.name}: spread`);
+        }
+        if (!speedClose(x.endVelocity, y.endVelocity)) failures.push(`${c.name}: speed`);
+        const fx = integratedFirstCrossing(coarse, b, FIRST_STAGE_STRENGTH) ?? 0;
+        const fy = integratedFirstCrossing(fine, b, FIRST_STAGE_STRENGTH) ?? 0;
+        if (!altitudeClose(fx, fy)) failures.push(`${c.name}: first fragmentation`);
+        const px = integratedPath(coarse, b, c.strength, altitudes);
+        const py = integratedPath(fine, b, c.strength, altitudes);
+        for (const [i, p] of px.entries()) {
+          const q = py[i];
+          if (q === undefined || !speedClose(p.velocity, q.velocity)) {
+            failures.push(`${c.name}: path at ${String(p.altitude)} m`);
+            break;
+          }
         }
       }
-    }
-    expect(failures.slice(0, 20)).toEqual([]);
-  }, 300_000);
+      expect(failures.slice(0, 20)).toEqual([]);
+    },
+    300_000
+  );
 
   it('(c) the speed after the breakup, by Runge–Kutta apart from the tables', async () => {
     const table = entryTable(COLLINS_EXPONENTIAL_PROFILE);

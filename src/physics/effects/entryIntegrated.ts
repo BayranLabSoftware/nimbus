@@ -5,6 +5,7 @@ import {
   type EntryAtmosphere,
 } from '../validation/entryAtmosphereRules.js';
 import { DRAG_COEFFICIENT, H_SCALE, PANCAKE_FACTOR, RHO_0 } from './entryConstants.js';
+import { USSA_1976_PROFILE } from './ussa1976Entry.js';
 
 /**
  * Collins, Melosh & Marcus (2005)'s atmospheric entry integrated on a profile
@@ -93,9 +94,7 @@ export function entryTable(profile: EntryProfile, step = ENTRY_ATMOSPHERE_STEP_M
 /** The profile a branch of rule 908 integrates on; null for the closed forms. */
 export function entryProfileOf(atmosphere: EntryAtmosphere): EntryProfile | null {
   if (atmosphere === 'integratedExponential') return COLLINS_EXPONENTIAL_PROFILE;
-  if (atmosphere === 'integratedUssa') {
-    throw new Error('The USSA 1976 profile is step 3 of rules 908 to 918, not yet written.');
-  }
+  if (atmosphere === 'integratedUssa') return USSA_1976_PROFILE;
   return null;
 }
 

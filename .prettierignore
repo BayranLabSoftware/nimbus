@@ -27,6 +27,8 @@ benchmark/nimbus/
 benchmark/results/
 benchmark/dart/
 docs/BENCHMARK_REPORT.md
+# Written by scripts/atmosphere-table.ts (rule 913), held to the code by its test.
+docs/ATMOSPHERE_TABLE.md
 
 # The seal of the impacts module: written by `scripts/seal-impacts.ts`, one
 # line per reading so a moved digest is one line of the diff. Prettier would
