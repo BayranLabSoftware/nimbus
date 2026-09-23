@@ -75,3 +75,98 @@ export const THIRD_SET_MIN_GROUND_CASES = 1;
 
 /** Rule 934(c): the stress run of a mass that leans on the light curve. */
 export const THIRD_SET_MASS_STRESS_FACTOR = 3;
+
+/**
+ * Rules 941 to 944 — the third set, frozen. Written on 23 September 2026,
+ * evening, after rules 933 to 940 were pushed (11e3062), from search results
+ * and abstracts only: no source of these events has been opened.
+ *
+ * RULE 941. THE SET.
+ *   (a) Entry bodies, each admitted or dropped by rule 934 when its sources
+ *       are pinned: Winchcombe (28 February 2021, CM2; McMullan et al. 2024,
+ *       MAPS), Golden (4 October 2021, L/LL5; Brown et al. 2023, MAPS), Madura
+ *       Cave (19 June 2020, L5; Devillepoix et al. 2022, MAPS), Hamburg,
+ *       Michigan (17 January 2018, H4; Brown et al. 2019, MAPS), Traspena
+ *       (18 January 2021, L5; Andrade et al. 2023, MNRAS) and Cavezzo (1
+ *       January 2020, L5; Gardiol et al. 2021, MNRAS).
+ *   (b) Conditional entry bodies: Arpu Kuilpu (1 June 2019, H5; Shober et
+ *       al. 2022, MAPS), whose fireball the abstract says fragmented very
+ *       little — admitted only if an altitude was measured; Kindberg (19
+ *       November 2020, L6), admitted only if a peer-reviewed analysis of its
+ *       fireball exists when the sources are pinned.
+ *   (c) Ground cases: none admissible was found. Ådalen (7 November 2020, the
+ *       first instrumentally documented fall of an iron) is the row
+ *       2020-11-07T21:27:04Z of I2's CNEOS set; Carancas and Sterlitamak
+ *       belong to the earlier rounds, Sikhote-Alin to development. As rule 939
+ *       stands, no request of level B can rest on this set until a ground case
+ *       is admitted; the reviewer is asked whether one may be added later by
+ *       rules of its own, pinned before its model is run, as rule 867 allowed
+ *       a further body of the entry. Until he answers, nothing is added.
+ *   (d) Excluded by rule 936, found while searching: Flensburg (12 September
+ *       2019; CNEOS row 12:49:47), Novo Mesto (28 February 2020; 09:30:34),
+ *       Ozerki (21 June 2018; 01:16:20) and Viñales (1 February 2019;
+ *       18:17:09); and every fall of Borovička et al. 2020 — Jesenice,
+ *       Renchen, Hradec Králové, Košice, Stubenberg, Žďár nad Sázavou, Maribo,
+ *       Križevci, Benešov, Morávka and Ejby among them.
+ *
+ * RULE 942. THE AUDIT (rule 938), 23 September 2026, evening: the repository
+ * searched by each candidate's date and name. None is in any data. The hits
+ * are other things: 2020-01-01, a placeholder date in the fireball tests and
+ * the shaking-field script; 2021-10-04 and 2019-06-01, earthquakes; "Madura",
+ * the island's earthquakes off Java; "Hamburg", the firestorm of 1943;
+ * "Cavezzo", the Emilia earthquake of 2012; "Golden", the golden dataset.
+ *
+ * RULE 943. WHAT WAS SEEN, declared as rule 878 declared the second round's:
+ * the search results quoted, for Winchcombe, fragmentation from 0.08 to
+ * 0.1 MPa and a last flare near 35 km under about 0.6 MPa; for Golden, a 54°
+ * entry at 18 km/s, a mass of about 70 to 78 kg and a major flare near 31 km
+ * under 3.3 MPa; for Madura Cave, 14.00 km/s at 58° and fragmentations at 36
+ * and about 26 km; for Hamburg, 15.83 km/s and two flares at 24.1 and
+ * 21.7 km under 5 to 7 MPa; for Traspena, 76.7°, about 1.15 m and 2 620 kg,
+ * and three flares under 1.5 to 4.2 MPa; for Cavezzo, 68°, 12.8 km/s and
+ * fragmentations at 32.6 and 30.7 km; for Arpu Kuilpu, very little
+ * fragmentation. These pressures bear on the physics the round on
+ * fragmentation will write: they are written here so that its priors can be
+ * seen to come from elsewhere. The compilation "Bolide light curve
+ * systematics from 75 recovered meteorites" (Jenniskens 2026, MAPS) may hold
+ * several of them; it is not read while the model is developed.
+ *
+ * RULE 944. FROM THIS COMMIT no event is added to the set, save a ground case
+ * by the reviewer's leave (rule 941(c)); none of its sources is opened until
+ * the model it judges is frozen; an event read for development leaves it for
+ * good (rule 937).
+ */
+
+export type ThirdSetRole = 'entry' | 'entry-conditional' | 'excluded';
+
+/** Rule 941: every candidate named, with its role. */
+export const THIRD_SET_EVENTS: Readonly<Record<string, ThirdSetRole>> = {
+  Winchcombe: 'entry',
+  Golden: 'entry',
+  'Madura Cave': 'entry',
+  Hamburg: 'entry',
+  Traspena: 'entry',
+  Cavezzo: 'entry',
+  'Arpu Kuilpu': 'entry-conditional',
+  Kindberg: 'entry-conditional',
+  Ådalen: 'excluded',
+  Flensburg: 'excluded',
+  'Novo Mesto': 'excluded',
+  Ozerki: 'excluded',
+  Viñales: 'excluded',
+};
+
+/** Rule 941(c): the ground cases admitted — none yet. */
+export const THIRD_SET_GROUND_CASES: readonly string[] = [];
+
+/** Rule 942: each candidate's date (UTC), as the audit searched it. */
+export const THIRD_SET_DATES: Readonly<Record<string, string>> = {
+  Winchcombe: '2021-02-28',
+  Golden: '2021-10-04',
+  'Madura Cave': '2020-06-19',
+  Hamburg: '2018-01-17',
+  Traspena: '2021-01-18',
+  Cavezzo: '2020-01-01',
+  'Arpu Kuilpu': '2019-06-01',
+  Kindberg: '2020-11-19',
+};
