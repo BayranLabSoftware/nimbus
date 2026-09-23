@@ -42,12 +42,11 @@ for (const c of CASES) {
   const legend = page.getByTestId('impact-field-legend');
   await legend.waitFor({ timeout: 120_000 }).catch(() => undefined);
   await page.waitForTimeout(6_000);
+  // The tabs are buttons; the legend's other `impact-layer-` rows are not.
   const tabs = await page
-    .locator('[data-testid^="impact-layer-"]')
+    .locator('button[data-testid^="impact-layer-"]')
     .evaluateAll((els) =>
-      els
-        .map((e) => e.getAttribute('data-testid'))
-        .filter((id): id is string => id !== null && id !== 'impact-layer-evidence')
+      els.map((e) => e.getAttribute('data-testid')).filter((id): id is string => id !== null)
     );
   const entry: { layers: Record<string, string>; legend?: string | null } = { layers: {} };
   manifest[c.id] = entry;

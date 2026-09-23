@@ -19,6 +19,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The impact map draws what lies past each field's edge.** Where the model
+  goes on below the lowest threshold drawn, a faint neutral veil fades out to a
+  decade below the edge's value, labelled on the globe "continues below
+  threshold"; where the model stops — the fireball's direct horizon — a thick
+  dash-dot line, "limit of the model", never an isoline of damage; past it a
+  grey hatch, labelled with what is not computed ("direct radiation not
+  computed beyond the horizon; this does not imply no heating"). Each has its
+  provenance card in the legend. Step 2 of the map's grammar
+  (docs/MAP_GRAMMAR.md); no physical number moves.
 - **The impact map says what it does not draw, and where each layer comes
   from.** A layer the model computes but does not draw — Chelyabinsk's blast,
   below the lowest drawn threshold; Tunguska's heat, below the main one; the

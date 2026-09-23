@@ -619,6 +619,12 @@ test.describe('calibration envelope', () => {
     const card = legend.getByTestId('impact-layer-card');
     await expect(card).toHaveAttribute('data-state', 'computed');
     await expect(card.locator('[data-card]')).toHaveCount(5);
+    // Rule 1030 (2): past III the shaking goes on below the threshold, and
+    // the legend keys the band the globe draws there, with its own card.
+    const band = legend.getByTestId('impact-mark-below');
+    await expect(band).toHaveAttribute('data-state', 'belowThreshold');
+    await expect(band).toContainText('continues below threshold');
+    await expect(band.locator('[data-card]')).toHaveCount(5);
   });
 
   test('every number of an impact’s results carries its class of evidence', async ({ page }) => {

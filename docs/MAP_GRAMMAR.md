@@ -64,6 +64,26 @@ quantity, threshold, unit and reach stay in the legend.
   onde sismiche» only where a coupling to the ground is computed inside the domain. B-128 — the
   out-of-domain crater's stage printing its raw keys — is mended first.
 
+## Step 2, as built
+
+States 2, 3 and 4 are drawn from each layer's edge (step 1), with these choices:
+
+- **One veil for state 2 on every layer**: white, 12 % opaque at the field's edge, fading to
+  nothing where the value has fallen a decade (or at the model's limit), so that its end reads as
+  no edge. A layer's own palette was tried first and dropped: on the shaking it made the weaker
+  ground beyond III look stronger than the unfilled III–IV zone inside it.
+- **A decade of the shaking** is one unit of the program's effective magnitude (a decade of
+  amplitude): the band runs from III's line to effective magnitude 2.
+- **The probability view's edge** is where it stops painting, 2 %, and its band runs to 0.2 %.
+  **I3's agreement** draws no band: past the band's upper edge not even that edge passes the
+  threshold, a computed no, and its card says "computed zero".
+- **The ejecta** draw no band yet: their band has its own words (rule 1031 (b)) and comes in
+  step 4.
+- **Past the fireball's horizon** the not-modelled hatch runs to the antipode; where a band meets
+  the horizon first (Popigai), it stops there and the limit and the hatch follow.
+- **The words** stand south of the point of impact, clear of the values and of the screen's side
+  panels; the report's photographs carry none (IMP-7c).
+
 ## Tests and the visual suite
 
 Automatic tests: every layer and object has one state and a full card; every edge says what lies

@@ -2069,7 +2069,12 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       'utf8'
     );
     expect(renderer).toContain('const g = levelGeometry(anchor, shape, line.radiusM);');
-    expect(renderer).toContain('rasterizeGround(layer.field, shapes[layer.field.family], anchor)');
+    // The ground is painted in the family's own shape (step 2 of the map's
+    // grammar moved the painting into `addGround`).
+    expect(renderer).toContain(
+      "addGround(viewer, 'ground', layer.field, shapes[layer.field.family], anchor)"
+    );
+    expect(renderer).toContain('rasterizeGround(field, shape, anchor, texelsAcross)');
   });
 
   it('B-107 The globe draws every quantity an impact computes', () => {

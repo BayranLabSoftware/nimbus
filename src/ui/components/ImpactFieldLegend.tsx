@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import type { JSX } from 'react';
 import { useId, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -5,11 +6,14 @@ import type { ImpactScenarioResult } from '../../physics/simulate.js';
 import {
   absentImpactLayers,
   availableImpactLayers,
+  BELOW_BAND_CSS,
   layoutColorbar,
+  NOT_MODELLED_CSS,
   rampColor,
   resolveImpactLayer,
   type ColorbarSpec,
 } from '../../scene/globe/impactFieldMap.js';
+import type { ProvenanceCard } from '../../scene/globe/mapGrammarRules.js';
 import { useAppStore } from '../../store/index.js';
 import styles from './ImpactFieldLegend.module.css';
 
@@ -97,22 +101,7 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
           {/* Rule 1029: the layer's provenance card, five fixed fields. */}
           <details className={styles.card} data-testid="impact-layer-card" data-state={layer.state}>
             <summary>{t('globe.impactMap.card.heading')}</summary>
-            <dl className={styles.notes} data-beyond={layer.card.beyond}>
-              {(
-                [
-                  ['quantity', `${layer.card.quantity} · ${layer.card.unit}`],
-                  ['state', t(`globe.impactMap.state.${layer.card.state}`)],
-                  ['source', layer.card.source],
-                  ['extent', layer.card.extent],
-                  ['beyond', t(`globe.impactMap.beyond.${layer.card.beyond}`)],
-                ] as const
-              ).map(([key, value]) => (
-                <div key={key} className={styles.note} data-card={key}>
-                  <dt>{t(`globe.impactMap.card.${key}`)}</dt>
-                  <dd>{value}</dd>
-                </div>
-              ))}
-            </dl>
+            <CardFields card={layer.card} t={t} />
           </details>
           {layer.uncertainty !== undefined && (
             <div
@@ -163,6 +152,32 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
               ))}
             </ul>
           )}
+          {layer.marks.length > 0 && (
+            // Rule 1030: what the globe draws past the field's edge, each
+            // with its own card (rule 1029).
+            <ul className={styles.categories} data-testid="impact-layer-marks">
+              {layer.marks.map((m) => (
+                <li
+                  key={m.id}
+                  className={styles.category}
+                  data-testid={`impact-mark-${m.id}`}
+                  data-state={m.state}
+                >
+                  <span
+                    className={[styles.swatch, styles[`mark-${m.state}`]].join(' ')}
+                    style={{
+                      color: m.state === 'notModelled' ? NOT_MODELLED_CSS : BELOW_BAND_CSS,
+                    }}
+                    aria-hidden="true"
+                  />
+                  <details className={styles.markCard}>
+                    <summary>{m.label}</summary>
+                    <CardFields card={m.card} t={t} />
+                  </details>
+                </li>
+              ))}
+            </ul>
+          )}
           <dl className={styles.notes}>
             {layer.notes.map((n) => (
               <div key={n.label} className={styles.note}>
@@ -182,6 +197,28 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
         </p>
       )}
     </section>
+  );
+}
+
+/** Rule 1029: a card's five fixed fields. */
+function CardFields({ card, t }: { card: ProvenanceCard; t: TFunction }): JSX.Element {
+  return (
+    <dl className={styles.notes} data-beyond={card.beyond}>
+      {(
+        [
+          ['quantity', `${card.quantity} · ${card.unit}`],
+          ['state', t(`globe.impactMap.state.${card.state}`)],
+          ['source', card.source],
+          ['extent', card.extent],
+          ['beyond', t(`globe.impactMap.beyond.${card.beyond}`)],
+        ] as const
+      ).map(([key, value]) => (
+        <div key={key} className={styles.note} data-card={key}>
+          <dt>{t(`globe.impactMap.card.${key}`)}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 

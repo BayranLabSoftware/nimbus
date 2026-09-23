@@ -5,8 +5,18 @@ import {
   simulateImpact,
   type ImpactScenarioResult,
 } from '../../physics/simulate.js';
-import { degreesToRadians, deg, kgPerM3, m, mps } from '../../physics/units.js';
-import { absentImpactLayers, availableImpactLayers, IMPACT_LAYER_ORDER } from './impactFieldMap.js';
+import { thermalHorizonRadius } from '../../physics/casualties.js';
+import { impactFireballRadius } from '../../physics/effects/blastWave.js';
+import {
+  fieldSourceOf,
+  absentImpactLayers,
+  availableImpactLayers,
+  IMPACT_LAYER_ORDER,
+  markGroundField,
+} from './impactFieldMap.js';
+import { impactOverpressureAt } from '../../physics/events/impact/impactField.js';
+import { programSeismicAttenuation } from '../../physics/events/impact/seismic.js';
+import { degreesToRadians, deg, J, kgPerM3, m, mps } from '../../physics/units.js';
 import type { BeyondEdge, EpistemicState, MapState } from './mapGrammarRules.js';
 
 /** Rule 1032: the grammar's tests, on the presets and a body out of the
@@ -44,6 +54,19 @@ describe('rule 1032: the grammar of the impact map', () => {
           expect(text.length, `${name} ${layer.id}`).toBeGreaterThan(0);
         expect(EPISTEMIC).toContain(c.state);
         expect(BEYOND).toContain(c.beyond);
+        for (const mark of layer.marks) {
+          expect(STATES, `${name} ${layer.id} ${mark.id}`).toContain(mark.state);
+          expect(mark.state).not.toBe('computed');
+          for (const text of [
+            mark.card.quantity,
+            mark.card.unit,
+            mark.card.source,
+            mark.card.extent,
+          ])
+            expect(text.length, `${name} ${layer.id} ${mark.id}`).toBeGreaterThan(0);
+          expect(EPISTEMIC).toContain(mark.card.state);
+          expect(BEYOND).toContain(mark.card.beyond);
+        }
       }
   });
 
@@ -101,5 +124,95 @@ describe('rule 1032: the grammar of the impact map', () => {
     const absent = absentImpactLayers(slowStone, ctx);
     expect(absent.find((a) => a.id === 'ejecta')?.beyond).toBe('notModelled');
     expect(absent.find((a) => a.id === 'shaking')?.beyond).toBe('notModelled');
+  });
+});
+
+const layersOf = (key: keyof typeof IMPACT_PRESETS) =>
+  availableImpactLayers(simulateImpact(IMPACT_PRESETS[key].input), ctx);
+
+describe('rule 1030: what the globe draws past a field’s edge', () => {
+  it('draws only past the edge, and writes only a state’s words', () => {
+    for (const [name, r] of CASES)
+      for (const layer of availableImpactLayers(r, ctx))
+        for (const mark of layer.marks) {
+          expect(mark.fromM, `${name} ${layer.id}`).toBeGreaterThanOrEqual(
+            (layer.edge?.atM ?? 0) * (1 - 1e-9)
+          );
+          expect(mark.toM).toBeGreaterThanOrEqual(mark.fromM);
+          const words =
+            mark.state === 'notModelled'
+              ? `globe.impactMap.mark.label.notModelled.${layer.id}`
+              : `globe.impactMap.mark.label.${mark.state}`;
+          expect(mark.label).toBe(words);
+        }
+  });
+
+  it('(2) a band below the threshold runs one decade below the edge’s value', () => {
+    const meteor = simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input);
+    const source = fieldSourceOf(meteor);
+    const blast = availableImpactLayers(meteor, ctx).find((l) => l.id === 'overpressure');
+    const band = blast?.marks.find((mk) => mk.state === 'belowThreshold');
+    expect(band).toBeDefined();
+    if (blast?.edge == null || band === undefined) return;
+    expect(band.fromM).toBe(blast.edge.atM);
+    const atEdge = impactOverpressureAt(source, band.fromM);
+    expect(impactOverpressureAt(source, band.toM) / atEdge).toBeCloseTo(0.1, 6);
+    // A magnitude falls a decade of amplitude by one unit.
+    const shaking = availableImpactLayers(meteor, ctx).find((l) => l.id === 'shaking');
+    const shake = shaking?.marks.find((mk) => mk.state === 'belowThreshold');
+    const M = meteor.seismic.magnitude ?? 0;
+    if (shake === undefined) throw new Error('no band on the shaking');
+    expect(M - programSeismicAttenuation(shake.fromM / 1_000)).toBeCloseTo(3, 6);
+    expect(M - programSeismicAttenuation(shake.toM / 1_000)).toBeCloseTo(2, 6);
+  });
+
+  it('(3)–(4) at the fireball’s horizon, a limit and an area not computed — no band past it', () => {
+    const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+    const horizon = thermalHorizonRadius(impactFireballRadius(J(r.impactor.kineticEnergy)));
+    const heat = availableImpactLayers(r, ctx).find((l) => l.id === 'thermal');
+    expect(heat?.marks.map((mk) => mk.state)).toEqual(['modelLimit', 'notModelled']);
+    const [line, area] = heat?.marks ?? [];
+    expect(line?.fromM).toBe(horizon);
+    expect(area?.fromM).toBe(horizon);
+    expect(area?.toM).toBeCloseTo(Math.PI * 6_371_000, -4);
+    expect(area?.card.state).toBe('outOfDomain');
+    // Popigai's band meets the horizon first: it stops there, and the limit
+    // and the area follow.
+    const popigai = layersOf('POPIGAI').find((l) => l.id === 'thermal');
+    expect(popigai?.marks.map((mk) => mk.state)).toEqual([
+      'belowThreshold',
+      'modelLimit',
+      'notModelled',
+    ]);
+    const [band, limit] = popigai?.marks ?? [];
+    expect(band?.toM).toBeCloseTo(limit?.fromM ?? 0, 3);
+    expect(band?.card.beyond).toBe('notModelled');
+  });
+
+  it('draws no band where the field is not a quantity that goes on falling', () => {
+    // I3's agreement: past the band's upper edge a computed no.
+    const agreement = layersOf('TUNGUSKA').find((l) => l.id === 'uncertainty');
+    expect(agreement?.edge?.beyond).toBe('computedZero');
+    expect(agreement?.marks).toEqual([]);
+    // The ejecta's band has words of its own, in its own step (rule 1031 (b)).
+    for (const key of ['CHICXULUB', 'METEOR_CRATER'] as const)
+      expect(layersOf(key).find((l) => l.id === 'ejecta')?.marks).toEqual([]);
+  });
+
+  it('paints the band fading to nothing, the area hatched, the line nothing', () => {
+    const marks = layersOf('POPIGAI').find((l) => l.id === 'thermal')?.marks ?? [];
+    const [band, line, area] = marks;
+    if (band === undefined || line === undefined || area === undefined) throw new Error('marks');
+    const shade = markGroundField(band);
+    const alphas = [0, 0.25, 0.5, 0.75, 0.999].map(
+      (u) => shade?.colorAt(band.fromM * Math.pow(band.toM / band.fromM, u))?.[3] ?? 0
+    );
+    for (let i = 1; i < alphas.length; i++) expect(alphas[i] ?? 0).toBeLessThan(alphas[i - 1] ?? 0);
+    expect(alphas[alphas.length - 1] ?? 1).toBeLessThanOrEqual(1);
+    expect(shade?.holeM).toBe(band.fromM);
+    expect(markGroundField(line)).toBeNull();
+    const hatch = markGroundField(area);
+    expect(hatch?.hatchedAt?.(area.fromM * 2)).toBe(true);
+    expect(hatch?.holeM).toBe(area.fromM);
   });
 });

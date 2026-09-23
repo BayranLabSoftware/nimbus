@@ -43,6 +43,7 @@ import {
 } from '../../physics/events/impact/impactField.js';
 import {
   PROGRAM_SHAKING_LEVELS,
+  programSeismicAttenuation,
   programShakingRadiusKm,
 } from '../../physics/events/impact/seismic.js';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
@@ -61,7 +62,13 @@ import type { EvidenceQuantity } from '../../physics/validation/evidenceClasses.
 import { evidenceText, type EvidenceText } from './evidenceText.js';
 import { RING_RADIUS_SIGMA } from './ringSigma.js';
 import { INTENSITY_BANDS } from './shakingOverlay.js';
-import type { BeyondEdge, EpistemicState, MapState, ProvenanceCard } from './mapGrammarRules.js';
+import {
+  BELOW_THRESHOLD_DECADES,
+  type BeyondEdge,
+  type EpistemicState,
+  type MapState,
+  type ProvenanceCard,
+} from './mapGrammarRules.js';
 
 // ---------------------------------------------------------------------------
 // Geometry
@@ -349,6 +356,9 @@ export interface GroundField {
   colorAt: (rangeM: number) => readonly [number, number, number, number] | null;
   /** True where the colour is hatched rather than filled (the field's band). */
   hatchedAt?: (rangeM: number) => boolean;
+  /** Nothing is painted inside this nominal radius: a band or an area that
+   *  starts at another's edge (rule 1030). */
+  holeM?: number;
 }
 
 export interface UncertaintyChoice {
@@ -378,6 +388,25 @@ export interface LayerEdge {
   kind: 'lastIsoline' | 'modelLimit';
 }
 
+/** Rule 1030 (2)–(4): an object drawn for a state other than computed — the
+ *  faint band below the display threshold, a limit of the model, an area the
+ *  model does not compute — each with its card (rule 1029). */
+export interface StateMark {
+  /** Stable suffix of the entity id. */
+  id: string;
+  state: Exclude<MapState, 'computed'>;
+  family: FamilyId;
+  /** The nominal radii it spans (m); a line stands at `fromM`, `toM` equal. */
+  fromM: number;
+  toM: number;
+  /** What the globe writes on it (rule 1030): its state, never a value. */
+  label: string;
+  labelBearingDeg: number;
+  /** What lies past it, in words, for its tooltip. */
+  description: string;
+  card: ProvenanceCard;
+}
+
 export interface ImpactMapLayer {
   id: ImpactLayerId;
   tab: string;
@@ -398,12 +427,35 @@ export interface ImpactMapLayer {
   card: ProvenanceCard;
   /** Rule 1032 (b): its field's edge, null for a layer with no field. */
   edge: LayerEdge | null;
+  /** Rule 1030 (2)–(4): what it draws past its edge, in the order drawn. */
+  marks: StateMark[];
 }
 
-/** A layer as its builder makes it, before its evidence, state, card and edge
- *  are attached. */
-type RawLayer = Omit<ImpactMapLayer, 'evidence' | 'state' | 'card' | 'edge' | 'isolines'> & {
+/** Rule 1030 (2): how a layer's field goes on past its painted edge. */
+interface BelowField {
+  /** The field at a nominal radius, in the unit its thresholds are written in. */
+  valueAt: (rangeM: number) => number;
+  /** A magnitude falls a decade of amplitude by one unit; anything else by
+   *  ten times. */
+  scale: 'ratio' | 'magnitude';
+  /** A value as the legend writes it. */
+  format: (value: number) => string;
+}
+
+/** A layer as its builder makes it, before its evidence, state, card, edge
+ *  and marks are attached. */
+type RawLayer = Omit<
+  ImpactMapLayer,
+  'evidence' | 'state' | 'card' | 'edge' | 'marks' | 'isolines'
+> & {
   isolines: MapIsoline[];
+  /** Rule 1030 (2): the field below its display threshold, where the layer's
+   *  quantity goes on falling; absent where it does not (a zone, an
+   *  agreement) or where its own step draws it (the ejecta, rule 1031 (b)). */
+  below?: BelowField;
+  /** What lies past an ordinary last edge, where it is not the field going on
+   *  below its threshold. */
+  beyond?: BeyondEdge;
 };
 
 export type LayerEvidence = Pick<
@@ -507,6 +559,13 @@ function twoFigures(value: number, language: string): string {
   return Number(value.toPrecision(2)).toLocaleString(localeOf(language), {
     maximumFractionDigits: value >= 10 ? 0 : 1,
   });
+}
+
+/** Two significant figures, however small: the values below a display
+ *  threshold (rule 1030 (2)). */
+function sigFigures(value: number, language: string): string {
+  if (!(value > 0)) return '0';
+  return value.toLocaleString(localeOf(language), { maximumSignificantDigits: 2 });
 }
 
 // ---------------------------------------------------------------------------
@@ -614,6 +673,47 @@ function cssToRgba(css: string, alphaScale = 1): readonly [number, number, numbe
     parts[2] ?? 0,
     Math.round(255 * (parts[3] ?? 1) * alphaScale),
   ];
+}
+
+/** Rule 1030 (2): the band's shading, one neutral veil on every layer, where
+ *  it leaves the field's edge; it fades to nothing a decade out, so that its
+ *  end reads as no edge. */
+export const BELOW_BAND_CSS = '#ffffff';
+export const BELOW_BAND_ALPHA = 0.12;
+/** Rule 1030 (4): the hatch of an area the model does not compute — a grey,
+ *  never the colour of zero, which is no colour. */
+export const NOT_MODELLED_CSS = '#cfcfcf';
+
+/** The ground a state's mark paints (rule 1030): the band's faint shading,
+ *  the not-modelled area's hatch; a line paints none. */
+export function markGroundField(mark: StateMark): GroundField | null {
+  if (mark.state === 'modelLimit' || !(mark.toM > mark.fromM)) return null;
+  if (mark.state === 'belowThreshold') {
+    const [r, g, b] = cssToRgba(BELOW_BAND_CSS);
+    const span = Math.log(mark.toM / mark.fromM);
+    return {
+      family: mark.family,
+      minRangeM: mark.fromM,
+      maxRangeM: mark.toM,
+      holeM: mark.fromM,
+      colorAt: (x) => {
+        const u = Math.log(x / mark.fromM) / span;
+        if (!(u >= 0 && u <= 1)) return null;
+        return [r, g, b, Math.round(255 * BELOW_BAND_ALPHA * (1 - u))];
+      },
+    };
+  }
+  const grey = cssToRgba(NOT_MODELLED_CSS, 0.45);
+  return {
+    family: mark.family,
+    minRangeM: mark.fromM,
+    // An oblique family's nominal radius can pass the antipode's distance:
+    // the area runs on to cover it.
+    maxRangeM: mark.toM * 1.5,
+    holeM: mark.fromM,
+    colorAt: () => grey,
+    hatchedAt: () => true,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -729,6 +829,11 @@ function overpressureLayer(result: ImpactScenarioResult, ctx: ImpactMapContext):
           OVERPRESSURE_SCALE_TOP_KPA
         ),
     },
+    below: {
+      valueAt: (r) => impactOverpressureAt(source, r) / 1_000,
+      scale: 'ratio',
+      format: (v) => `${sigFigures(v, language)} kPa`,
+    },
     isolines,
     colorbar: {
       palette: OVERPRESSURE_PALETTE,
@@ -816,6 +921,11 @@ function windLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLaye
       colorAt: (r) =>
         logColor(WIND_PALETTE, impactPeakWindAt(source, r) * 3.6, loKmh, WIND_SCALE_TOP_KMH),
     },
+    below: {
+      valueAt: (r) => impactPeakWindAt(source, r) * 3.6,
+      scale: 'ratio',
+      format: (v) => `${sigFigures(v, language)} km/h`,
+    },
     isolines: withBearings(
       levels.map((x) => ({
         id: `wind-${x.kmh.toString()}`,
@@ -892,6 +1002,11 @@ function thermalLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawL
         horizon > 0 && r > horizon
           ? null
           : logColor(THERMAL_PALETTE, impactThermalExposureAt(source, r), lowest, top),
+    },
+    below: {
+      valueAt: (r) => impactThermalExposureAt(source, r) / CAL_PER_CM2,
+      scale: 'ratio',
+      format: (v) => `${sigFigures(v, language)} cal/cm²`,
     },
     isolines: withBearings(
       withValue.map((x) => ({
@@ -1160,6 +1275,14 @@ function shakingLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawL
       maxRangeM: Math.max(...levels.map((x) => x.radiusM)),
       colorAt: colorOfZone,
     },
+    // Past III the program's effective magnitude goes on falling: a decade of
+    // ground motion is one unit of it.
+    below: {
+      valueAt: (r) => M - programSeismicAttenuation(r / 1_000),
+      scale: 'magnitude',
+      format: (v) =>
+        t('globe.impactMap.mark.effectiveMagnitude', { m: formatNumber(v, 1, language) }),
+    },
     isolines: withBearings(lines),
     colorbar: null,
     categories,
@@ -1256,6 +1379,10 @@ export function uncertaintyChoices(
 }
 
 const Z90 = 1.2815515655446004;
+/** The probability the uncertainty view paints down to, and the standard
+ *  normal's quantile at 98 %, where a lognormal radius falls to it. */
+const PROBABILITY_FLOOR = 0.02;
+const Z98 = 2.053748910631823;
 
 /** The standard normal distribution function (Abramowitz & Stegun 7.1.26). */
 function normalCdf(z: number): number {
@@ -1306,10 +1433,11 @@ function uncertaintyLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): 
       field: {
         family: selected.family,
         minRangeM: 1,
-        maxRangeM: selected.medianM * Math.exp(3.5 * sl),
+        // Painted down to 2 %: there is the field's edge (rule 1032 (b)).
+        maxRangeM: selected.medianM * Math.exp(Z98 * sl),
         colorAt: (r) => {
           const p = normalCdf(-Math.log(r / selected.medianM) / sl);
-          if (p < 0.02) return null;
+          if (p < PROBABILITY_FLOOR) return null;
           const [cr, cg, cb] = rampColor(PROBABILITY_PALETTE, p);
           return [cr, cg, cb, Math.round(255 * 0.74 * Math.pow(p, 0.55))];
         },
@@ -1330,6 +1458,11 @@ function uncertaintyLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): 
           source: t('globe.impactMap.source.probability'),
         }))
       ),
+      below: {
+        valueAt: (r) => normalCdf(-Math.log(r / selected.medianM) / sl),
+        scale: 'ratio',
+        format: (v) => `${sigFigures(v * 100, language)} %`,
+      },
       colorbar: {
         palette: PROBABILITY_PALETTE,
         lo: 0,
@@ -1380,6 +1513,9 @@ function uncertaintyLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): 
       colorAt: (r) => (r <= low ? allColor : r <= high ? someColor : null),
       hatchedAt: (r) => r > low && r <= high,
     },
+    // Past the band's upper edge not even that edge passes the threshold: a
+    // computed no.
+    beyond: 'computedZero',
     isolines: withBearings([
       {
         id: 'agreement-median',
@@ -1753,24 +1889,24 @@ export function buildImpactLayer(
 ): ImpactMapLayer | null {
   const layer = buildRawLayer(result, id, ctx);
   if (layer === null) return null;
-  const horizon =
+  const fireballHorizon =
     id === 'thermal'
       ? thermalHorizonRadius(impactFireballRadius(J(result.impactor.kineticEnergy)))
       : null;
-  const settled = settleIsolines(
-    layer,
-    ctx,
-    horizon !== null && Number.isFinite(horizon) ? horizon : null
-  );
+  const horizon =
+    fireballHorizon !== null && Number.isFinite(fireballHorizon) ? fireballHorizon : null;
+  const { below, beyond, ...settled } = settleIsolines(layer, ctx, horizon);
   const evidence = layerEvidence(settled, ctx);
-  const edge = layerEdge(settled, horizon !== null && Number.isFinite(horizon) ? horizon : null);
+  const edge = layerEdge(settled, horizon, beyond);
+  const card = layerCard(settled, evidence, edge, ctx);
   return {
     ...settled,
     isolines: settled.isolines.map((l) => ({ ...l, state: 'computed' as const })),
     evidence,
     state: 'computed',
-    card: layerCard(settled, evidence, edge, ctx),
+    card,
     edge,
+    marks: stateMarks(settled, below, edge, horizon, card, ctx),
   };
 }
 
@@ -1779,14 +1915,124 @@ const ANTIPODE_M = Math.PI * (EARTH_RADIUS as number);
 /** Rule 1032 (b): a field's edge — at the fireball's horizon a limit of the
  *  model, beyond which nothing is computed; at the antipode nothing lies
  *  beyond; otherwise the last isoline, below which the model goes on. */
-function layerEdge(layer: RawLayer, horizon: number | null): LayerEdge | null {
+function layerEdge(
+  layer: RawLayer,
+  horizon: number | null,
+  beyond: BeyondEdge | undefined
+): LayerEdge | null {
   const field = layer.field;
   if (field === null || !(field.maxRangeM > 0)) return null;
   const atM = field.maxRangeM;
   if (atM >= ANTIPODE_M * 0.999) return { atM, beyond: 'notApplicable', kind: 'modelLimit' };
   if (horizon !== null && horizon > 0 && atM >= horizon * 0.995)
     return { atM, beyond: 'notModelled', kind: 'modelLimit' };
-  return { atM, beyond: 'belowThreshold', kind: 'lastIsoline' };
+  return { atM, beyond: beyond ?? 'belowThreshold', kind: 'lastIsoline' };
+}
+
+/** Where the globe writes each state's words: south, clear of the values,
+ *  which stand between 19° west of north and 109° (`spreadBearings`), and of
+ *  the legend and the panel at the screen's sides. */
+const MARK_BEARING_DEG = { below: 150, limit: 195, notModelled: 170 } as const;
+
+/**
+ * Rule 1030 (2)–(4): what a layer draws past its edge. Past an ordinary last
+ * edge, where the field goes on below its threshold, a faint band out to one
+ * decade below the edge's value (`BELOW_THRESHOLD_DECADES`) or to the model's
+ * limit, whichever comes first. Where the model stops — the fireball's direct
+ * horizon — a line of the limit, and past it, to the antipode, an area it
+ * does not compute. Each with its card; nothing here reads a number the layer
+ * does not already give.
+ */
+function stateMarks(
+  layer: RawLayer,
+  below: BelowField | undefined,
+  edge: LayerEdge | null,
+  horizon: number | null,
+  card: ProvenanceCard,
+  ctx: ImpactMapContext
+): StateMark[] {
+  const field = layer.field;
+  if (field === null || edge === null) return [];
+  const { t, language } = ctx;
+  const marks: StateMark[] = [];
+  const past = (beyond: BeyondEdge): string =>
+    `${t('globe.impactMap.card.beyond')}: ${t(`globe.impactMap.beyond.${beyond}`)}`;
+  let limitM: number | null =
+    edge.kind === 'modelLimit' && edge.beyond === 'notModelled' ? horizon : null;
+  if (edge.kind === 'lastIsoline' && edge.beyond === 'belowThreshold' && below !== undefined) {
+    const cap = horizon !== null && horizon > edge.atM ? Math.min(horizon, ANTIPODE_M) : ANTIPODE_M;
+    const atEdge = below.valueAt(edge.atM);
+    const floor =
+      below.scale === 'magnitude'
+        ? atEdge - BELOW_THRESHOLD_DECADES
+        : atEdge / 10 ** BELOW_THRESHOLD_DECADES;
+    const toM = atEdge > 0 && floor > 0 ? impactFieldReach(below.valueAt, floor, edge.atM, cap) : 0;
+    if (toM > edge.atM * 1.001) {
+      const cut = horizon !== null && cap === horizon && toM >= cap * (1 - 1e-6);
+      marks.push({
+        id: 'below',
+        state: 'belowThreshold',
+        family: field.family,
+        fromM: edge.atM,
+        toM,
+        label: t('globe.impactMap.mark.label.belowThreshold'),
+        labelBearingDeg: MARK_BEARING_DEG.below,
+        description: past(cut ? 'notModelled' : 'belowThreshold'),
+        card: {
+          ...card,
+          source: t('globe.impactMap.mark.source.below', { source: card.source }),
+          extent: t('globe.impactMap.mark.extent.below', {
+            from: below.format(atEdge),
+            to: below.format(below.valueAt(toM)),
+            inner: formatRange(edge.atM, language),
+            outer: formatRange(toM, language),
+          }),
+          beyond: cut ? 'notModelled' : 'belowThreshold',
+        },
+      });
+      if (cut) limitM = horizon;
+    }
+  }
+  if (limitM !== null) {
+    const range = formatRange(limitM, language);
+    const source = t(`globe.impactMap.mark.limitSource.${layer.id}`, { range });
+    marks.push(
+      {
+        id: 'limit',
+        state: 'modelLimit',
+        family: field.family,
+        fromM: limitM,
+        toM: limitM,
+        label: t('globe.impactMap.mark.label.modelLimit'),
+        labelBearingDeg: MARK_BEARING_DEG.limit,
+        description: past('notModelled'),
+        card: {
+          ...card,
+          source,
+          extent: t('globe.impactMap.mark.extent.limit', { range }),
+          beyond: 'notModelled',
+        },
+      },
+      {
+        id: 'not-modelled',
+        state: 'notModelled',
+        family: field.family,
+        fromM: limitM,
+        toM: ANTIPODE_M,
+        label: t(`globe.impactMap.mark.label.notModelled.${layer.id}`),
+        labelBearingDeg: MARK_BEARING_DEG.notModelled,
+        description: past('notApplicable'),
+        card: {
+          ...card,
+          state: 'outOfDomain',
+          source,
+          extent: t('globe.impactMap.mark.extent.notModelled', { range }),
+          beyond: 'notApplicable',
+        },
+      }
+    );
+  }
+  return marks;
 }
 
 /** Rule 1029: a layer's provenance card. */
@@ -1974,6 +2220,7 @@ export function rasterizeGround(
     if (c !== null) lut.set(c, i * 4);
     hatch[i] = field.hatchedAt?.(r) === true ? 1 : 0;
   }
+  const hole = field.holeM ?? 0;
   const reachM =
     field.maxRangeM *
     (Math.max(shape.majorMult, shape.minorMult) + Math.abs(shape.offsetPerMeter)) *
@@ -2050,7 +2297,7 @@ export function rasterizeGround(
           cosF1 * sinF2 - sinF1 * cosF2 * (lonCos[x] ?? 1)
         );
         const r = nominalRangeFromPolar(shape, d, bearing);
-        if (!(r > 0) || r > field.maxRangeM) continue;
+        if (!(r > 0) || r > field.maxRangeM || r < hole) continue;
         const li = Math.min(
           lutN - 1,
           Math.max(0, Math.floor(((Math.log(Math.max(r, 1)) - lo) / (hi - lo)) * lutN))

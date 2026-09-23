@@ -1164,11 +1164,11 @@
         "isolinesMedian": "the model's thresholds, at the median",
         "bandSigma": "radius ±{{sigma}} % (1σ): the Probability view",
         "bandAgreement": "within three burst altitudes a factor of two in overpressure (Collins et al. 2017): the Field agreement view",
-        "belowLowestBlast": "below 0.5 psi the field is not painted; past 1 MPa the scale stops",
+        "belowLowestBlast": "below 0.5 psi the field is not coloured: a faint band, «continues below threshold», follows it to a tenth of the value at its edge; past 1 MPa the scale stops",
         "windWhat": "the gust of air the shock front pushes: it lasts as long as the overpressure phase, then reverses",
-        "windLimit": "below 0.5 psi not painted; past 1,000 km/h the scale stops; inside the crater nothing",
+        "windLimit": "below 0.5 psi not coloured: a faint band, «continues below threshold», reaches a tenth of the wind at the edge; past 1,000 km/h the scale stops; inside the crater nothing",
         "isolinesThermal": "the model's burn and fire thresholds, at the median",
-        "thermalLimit": "below the lowest threshold not painted; past the fireball's horizon nothing",
+        "thermalLimit": "below the lowest threshold not coloured: a faint band, «continues below threshold», reaches a tenth of the value at the edge or the fireball’s horizon; beyond the horizon the direct radiation is not computed, which does not imply no heating",
         "isolinesEjecta": "thicknesses of the same law that gives the 1 mm edge",
         "ejectaInside": "inside the crater the thickness is not reported",
         "magnitude": "M {{m}}, from 10⁻⁴ of the energy at the ground (Collins et al. 2005, Eq. 40*)",
@@ -1176,7 +1176,7 @@
         "magnitudeAir": "M {{m}}, from the wave in the air (Harkrider; rules 730 to 738), with no spread",
         "liquefactionReach": "out to {{range}} on saturated sandy ground",
         "liquefactionNone": "none: the magnitude is too low to liquefy saturated sandy ground",
-        "shakingBelowV": "below V only a line, as the earthquakes are drawn",
+        "shakingBelowV": "below V only a line, as the earthquakes are drawn; past III a faint band, «continues below threshold», reaches effective magnitude 2, a decade of amplitude lower",
         "shakingAirburst": "the program draws these rings for an airburst too, but Collins et al. (2005) report no seismic effects for airbursts; Tunguska's shaking reached seismographs and is not compared here with a record",
         "probabilityFrom": "the published scatter of the radius, 1σ = {{sigma}} %, read as lognormal",
         "probabilityIsolines": "90, 50 and 10 %; 50 % is the line of the map of the field",
@@ -1308,6 +1308,27 @@
         "uncertainty": {
           "notApplicable": "not applicable: no threshold drawn"
         }
+      },
+      "mark": {
+        "label": {
+          "belowThreshold": "continues below threshold",
+          "modelLimit": "limit of the model",
+          "notModelled": {
+            "thermal": "direct radiation not computed beyond the horizon;\nthis does not imply no heating"
+          }
+        },
+        "source": {
+          "below": "the same model as the field, read past the lowest threshold drawn — {{source}}"
+        },
+        "extent": {
+          "below": "from {{from}} to {{to}}, from {{inner}} to {{outer}}: a decade below the value at the edge, or to the model’s limit",
+          "limit": "at {{range}}",
+          "notModelled": "beyond {{range}}, to the antipode"
+        },
+        "limitSource": {
+          "thermal": "the fireball’s direct horizon, at {{range}}: beyond it the fireball’s top is below the horizon and the model does not compute the direct radiation (Collins et al. 2005)"
+        },
+        "effectiveMagnitude": "effective magnitude {{m}}"
       }
     }
   },

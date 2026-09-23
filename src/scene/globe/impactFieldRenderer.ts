@@ -12,6 +12,7 @@ import {
   HeightReference,
   ImageMaterialProperty,
   LabelStyle,
+  PolylineDashMaterialProperty,
   PolylineOutlineMaterialProperty,
   Rectangle,
   type ImageryLayer,
@@ -23,8 +24,11 @@ import {
   formatRange,
   isolinePointAtBearing,
   levelGeometry,
+  markGroundField,
   rasterizeGround,
   type GeoPoint,
+  type GroundField,
+  type FamilyShape,
   type ImpactMapLayer,
 } from './impactFieldMap.js';
 import { ringOutlinePositions } from './ringPresentation.js';
@@ -41,6 +45,18 @@ const ISOLINE_MATERIAL = new PolylineOutlineMaterialProperty({
   outlineWidth: 1,
 });
 const LABEL_OUTLINE = Color.fromCssColorString('#0A0E16').withAlpha(0.9);
+/** Rule 1030 (3): a limit of the model — a thick dash-dot line of a neutral
+ *  colour, never an isoline's black. */
+const LIMIT_MATERIAL = new PolylineDashMaterialProperty({
+  color: Color.fromCssColorString('#E4E4E4').withAlpha(0.95),
+  gapColor: Color.TRANSPARENT,
+  dashLength: 36,
+  // A dash, a gap, a dot, a gap.
+  dashPattern: 0b1111111100011000,
+});
+/** The words of a state (rule 1030): set apart from the values, in italics. */
+const STATE_LABEL_FONT = 'italic 600 12px Inter, system-ui, sans-serif';
+const STATE_LABEL_COLOR = Color.fromCssColorString('#ECECEC').withAlpha(0.95);
 const CRATER_FILL = Color.fromCssColorString('#050505').withAlpha(0.88);
 const CRATER_RIM = Color.fromCssColorString('#F4F1EA').withAlpha(0.9);
 
@@ -101,23 +117,67 @@ export function drawImpactFieldLayer(
   const shapes = familyShapes(result);
 
   if (layer.field !== null) {
-    const tiles = rasterizeGround(layer.field, shapes[layer.field.family], anchor);
-    tiles.forEach((tile, i) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = tile.width;
-      canvas.height = tile.height;
-      const ctx = canvas.getContext('2d');
-      if (ctx === null) return;
-      ctx.putImageData(new ImageData(tile.data, tile.width, tile.height), 0, 0);
+    addGround(viewer, 'ground', layer.field, shapes[layer.field.family], anchor);
+  }
+
+  // Rule 1030 (2)–(4): past the field's edge, what the model says there — a
+  // faint band where it goes on below the threshold, a dash-dot line where it
+  // stops, a hatch where it computes nothing — each with its state's words.
+  for (const mark of layer.marks) {
+    const shape = shapes[mark.family];
+    const base = `${IMPACT_FIELD_PREFIX}mark-${mark.id}`;
+    const ground = markGroundField(mark);
+    if (ground !== null)
+      addGround(
+        viewer,
+        `mark-${mark.id}-ground`,
+        ground,
+        shape,
+        anchor,
+        // An area can reach the antipode: its hatch as fine as a tile holds.
+        mark.state === 'notModelled' ? 4_096 : undefined
+      );
+    if (mark.state === 'modelLimit') {
+      const positions = ringOutlinePositions(levelGeometry(anchor, shape, mark.fromM));
+      if (positions.length >= 3)
+        viewer.entities.add({
+          id: `${base}-line`,
+          polyline: { positions, width: 4, material: LIMIT_MATERIAL, clampToGround: true },
+        });
+    }
+    // The words stand a little way into what they name: on a line, on it; in
+    // a band, just past the field's edge; in an area, just past its own.
+    const labelRadius =
+      mark.state === 'modelLimit'
+        ? mark.fromM
+        : mark.state === 'belowThreshold'
+          ? mark.fromM * Math.pow(mark.toM / mark.fromM, 0.06)
+          : mark.fromM * 1.08;
+    const at = isolinePointAtBearing(anchor, shape, labelRadius, mark.labelBearingDeg);
+    if (labels)
       viewer.entities.add({
-        id: `${IMPACT_FIELD_PREFIX}ground-${i.toString()}`,
-        rectangle: {
-          coordinates: Rectangle.fromDegrees(tile.west, tile.south, tile.east, tile.north),
-          material: new ImageMaterialProperty({ image: canvas, transparent: true }),
+        id: `${base}-label`,
+        position: Cartesian3.fromDegrees(at.lonDeg, at.latDeg),
+        label: {
+          text: mark.label,
+          font: STATE_LABEL_FONT,
+          fillColor: STATE_LABEL_COLOR,
+          outlineColor: LABEL_OUTLINE,
+          outlineWidth: 3,
+          style: LabelStyle.FILL_AND_OUTLINE,
           heightReference: HeightReference.CLAMP_TO_GROUND,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
         },
       });
-    });
+    const info: IsolineHoverInfo = {
+      type: 'isoline',
+      title: mark.label.replace(/\s*\n\s*/g, ' '),
+      meta: mark.card.extent,
+      description: mark.description,
+      source: mark.card.source,
+      color: '#E4E4E4',
+    };
+    for (const suffix of ['-line', '-label']) hover.set(`${base}${suffix}`, info);
   }
 
   // The crater, where there is one: the hole itself, on every layer.
@@ -200,6 +260,34 @@ export function drawImpactFieldLayer(
   }
   viewer.scene.requestRender();
   return hover;
+}
+
+/** A field painted on the ground as one or two textured rectangles. */
+function addGround(
+  viewer: Viewer,
+  name: string,
+  field: GroundField,
+  shape: FamilyShape,
+  anchor: GeoPoint,
+  texelsAcross?: number
+): void {
+  const tiles = rasterizeGround(field, shape, anchor, texelsAcross);
+  tiles.forEach((tile, i) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = tile.width;
+    canvas.height = tile.height;
+    const ctx = canvas.getContext('2d');
+    if (ctx === null) return;
+    ctx.putImageData(new ImageData(tile.data, tile.width, tile.height), 0, 0);
+    viewer.entities.add({
+      id: `${IMPACT_FIELD_PREFIX}${name}-${i.toString()}`,
+      rectangle: {
+        coordinates: Rectangle.fromDegrees(tile.west, tile.south, tile.east, tile.north),
+        material: new ImageMaterialProperty({ image: canvas, transparent: true }),
+        heightReference: HeightReference.CLAMP_TO_GROUND,
+      },
+    });
+  });
 }
 
 /** Wait until the imagery under the camera has loaded and every entity has
