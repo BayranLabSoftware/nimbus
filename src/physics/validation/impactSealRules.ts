@@ -266,3 +266,49 @@ export const IMPACT_SEAL_OUTCOME =
  *      the comparison as clause (c) says. The seal holds across two machines of
  *      one platform — which is what rule 832(a) had claimed for every machine.
  */
+
+/**
+ * 854. Node 24. Written on 23 September 2026, before Node 24 has run a line of
+ *      this repository, on Andrea's word of that morning («node24 se dici che
+ *      è ora di passarci lo facciamo»): a move of the engine taken for itself,
+ *      as rule 836(e) asks, and nothing else in the same commit.
+ *
+ *      Why now. Node 22 leaves maintenance at the end of April 2027, Node 24
+ *      at the end of April 2028. The blind tests of the plan's phase 3 must
+ *      run on the engine the rest of the plan keeps, so the engine moves before
+ *      they are asked and not between them. The release is 24.21.0 (7
+ *      September 2026, V8 13.6), the newest of the long-term line 24 when this
+ *      is written — not 26, which is not yet a long-term release.
+ *
+ *      What moves: `.nvmrc`, from 22.20.0 to 24.21.0, which every workflow
+ *      reads; the guides that name the Node to install; and the seal, re-taken
+ *      under rule 833 with the move as its reason. No line of the model, of
+ *      the drawing or of the report is touched.
+ *
+ *      What decides — every clause, or `.nvmrc` stays at 22.20.0:
+ *      (a) Before the seal is re-taken, the 308 scenarios are read on Node
+ *          24.21.0, on the Mac, and compared with what Node 22.20.0 answers on
+ *          the same commit. Every number digest that moves is explained number
+ *          by number: no number of a scenario's result or toll differs between
+ *          the two engines by more than one part in 10¹² (or 10⁻¹² where one
+ *          of the two is zero). A number that moves by more is a defect to be
+ *          found before the engine moves.
+ *      (b) Every drawing and text digest that moves is explained: the two
+ *          engines' drawings and texts differ only in what ICU formats (the
+ *          separators and spaces of numbers and dates) or in the last digits
+ *          of a number (a) let move. Each kind of difference is listed in the
+ *          outcome with one example.
+ *      (c) Level A reads the same: the evidence table's figures do not move,
+ *          and the validation report, regenerated once, moves nowhere but
+ *          where it names the engine.
+ *      (d) On Node 24.21.0: typecheck, lint, format, the whole suite with
+ *          coverage, the strict gate PASS, and Chromium's end-to-end suite;
+ *          then, on the commit that moves `.nvmrc`, every job of the CI green,
+ *          the `seal` job on macOS arm64 comparing the new seal.
+ *      (e) Node 22.20.0 stays installed on the Mac beside it until (d)'s CI
+ *          is green, so (a) can be read again.
+ *
+ *      What it does not change: the site. A visitor's browser runs its own
+ *      engine; this moves only the one the tests, the seal and the scripts
+ *      run on.
+ */
