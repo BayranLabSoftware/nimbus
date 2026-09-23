@@ -19,6 +19,14 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **A body's strength in two stages, measured and refused by the letter.**
+  The candidate law — the pancake starting at the second fragmentation
+  phase's strength of meteoroids, 0.9–5 MPa, not one strength per density —
+  cuts the entry's median altitude miss over 357 fireballs from 13.7 to
+  5.3 km and moves nothing level A or G5 reads, but it makes the Monte
+  Carlo's median firestorm at Tunguska unstable at 200 draws, and a test
+  that holds it cannot be weakened. The default stays as it was; the
+  candidate stays in the code, off.
 - **Level B, preregistered: the impact model against observed events.**
   Rules 855 to 874, sources pinned before the model ran, the reviewer's
   corrections adopted before the predictions, the predictions of the model

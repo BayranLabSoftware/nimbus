@@ -1078,6 +1078,20 @@ recovered meteorite rather than the crater. Phase 4 may learn only from the
 development and seen sets and from published statistics of other falls;
 2023 CX1, 2024 BX1 and Carancas are regression cases, never fitted to.
 
+**Phase 4, first item: a body's strength in two stages — refused, by the
+letter** (rules 881 to 889, `validation/strengthTwoStageRules.ts`). Under the
+candidate law the pancake starts at the second fragmentation phase's
+strength (Borovička, Spurný & Shrbený 2020, 0.9–5 MPa) instead of Eq. 9's.
+I2's median altitude miss over the 357 CNEOS fireballs falls from 13.7 to
+5.3 km; level A does not move; G5 reads nothing on either seed. But one test
+the adoption would have had to weaken fails: 200 Monte Carlo draws no longer
+hold Tunguska's median firestorm ignition within 10 % — a median of a
+quantity that is now zero in about half the draws. The default stays
+`density`. Read after: the median is the wrong summary there (the chance of
+a firestorm and its size when there is one are the right ones), and the
+model's exponential atmosphere is 1.5–1.9 times too dense between 40 and
+60 km, lifting every altitude by 4–5 km.
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this

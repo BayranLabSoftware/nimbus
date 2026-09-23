@@ -19,7 +19,7 @@ describe('rules 881 to 889: a body’s strength in two stages', () => {
     expect(TWO_STAGE_DENSITY_RANGE).toEqual([2_500, 5_000]);
   });
 
-  it('has no outcome before its run', () => {
-    expect(STRENGTH_TWO_STAGE_OUTCOME).toBeNull();
+  it('records its refusal (rule 886(d))', () => {
+    expect(STRENGTH_TWO_STAGE_OUTCOME).toMatch(/^REFUSED 23 September 2026/);
   });
 });

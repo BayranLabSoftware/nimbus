@@ -30,7 +30,9 @@ describe('a body’s strength in two stages (rules 881 to 889)', () => {
     expect(MAIN_STAGE_STRENGTH as number).toBe(TWO_STAGE_S2_PA);
     expect(FIRST_STAGE_MAJOR_SHARE).toBe(TWO_STAGE_FIRST_MAJOR_SHARE);
     expect(TWO_STAGE_DENSITIES).toEqual(TWO_STAGE_DENSITY_RANGE);
-    if (STRENGTH_TWO_STAGE_OUTCOME === null) expect(DEFAULT_STRENGTH_LAW).toBe('density');
+    // Refused by rule 886(d): the default stays today's.
+    if (STRENGTH_TWO_STAGE_OUTCOME === null || STRENGTH_TWO_STAGE_OUTCOME.startsWith('REFUSED'))
+      expect(DEFAULT_STRENGTH_LAW).toBe('density');
   });
 
   it('starts the pancake at S2 for a stony body, and leaves irons and light bodies alone', () => {

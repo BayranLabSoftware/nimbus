@@ -122,5 +122,64 @@ export const TWO_STAGE_DENSITY_RANGE = [2_500, 5_000] as const;
 /** Rule 885(e). */
 export const STRENGTH_HELD_OUT_SEED = 'benchmark-2026-09-23-heldout-strength';
 
-/** The outcome, written after the run. */
-export const STRENGTH_TWO_STAGE_OUTCOME: string | null = null;
+/**
+ * The outcome, written on 23 September 2026 after the one run of rule 885, on
+ * the candidate of 887fc48. The rules were pushed in 6bcf346 first.
+ *
+ * REFUSED, by clause (d) of rule 886 alone. The default stays `density`.
+ *
+ * (a) MET. With the default set to `twoStage`, level A — its harness pinned to
+ *     `density` — answers as before: its test passes unchanged.
+ * (b) MET. I2's median absolute altitude miss over the 357 CNEOS fireballs,
+ *     the body the evidence table reads (3 000 kg/m³, no strength given):
+ *     13.74 km under `density`, 5.30 km under `twoStage`; 356 and 351 of 357
+ *     burst in the air. The bodies given a strength do not move (8.29 km for
+ *     1 MPa; 20.68 km for the iron). The 5 km bar of I2 is still not met.
+ * (c) MET. G5 reads 0 on the benchmark's own draw and 0 on the unseen seed
+ *     `benchmark-2026-09-23-heldout-strength`, under both laws
+ *     (benchmark/results/invariants-2026-09-23-8 to -11).
+ * (d) NOT MET. With the default set to `twoStage`, 15 tests fail. Fourteen
+ *     are records of what the old law answered, or checks against the
+ *     reference program, which runs on Eq. 9 and would be pinned to it as
+ *     level A is: four of the airburst blast against the program, I2's
+ *     cell-by-cell agreement with it, B-032's registry entry, rule 77's run,
+ *     rule 733's and rule 847's own rounds, the entry band's ten numbers (5
+ *     fireballs now reach the ground: 351 rows, not 356), I3's band for
+ *     Tunguska — which moves from 4.0–29.4 km to 7.0–34.3 km and still holds
+ *     the felled forest's 26.5 km — the seal, and this candidate's own two.
+ *     One is not a record: the Monte Carlo's coverage test holds that 200
+ *     draws give the median firestorm ignition radius at Tunguska within
+ *     10 % of 2 000 draws. Under `twoStage` they give 2 290 m against
+ *     1 983 m, 15.5 % off. Rule 888 forbids weakening it.
+ *
+ * Read after the run, and declared so. The test held under `density` only
+ * vacuously: more than half of Tunguska's draws lit no firestorm, so both
+ * medians were zero. Under `twoStage` about half do, and the median of a
+ * quantity that is zero in half its draws jumps between zero and a
+ * kilometre: over 40 seeds, 4 of 40 medians of 200 draws fall within 10 %
+ * (median error 40 %). A median is the wrong summary for it; the chance of
+ * a firestorm and its size when there is one are the right ones. That is a
+ * defect of the Monte Carlo's summary, revealed by the law, not of the law.
+ *
+ * (f) Not read: the refusal comes from (d), and a seal re-taken for a law the
+ *     default does not run would record nothing.
+ *
+ * Reported, never deciding (rule 885(c), (d)): the regression cases, on the
+ * first round's inputs and draws, S1 and S2 drawn log-uniform — the main
+ * breakup and the burst fall to 27–43 km and 26–41 km for 2024 BX1 (flares
+ * observed at 34–35 km), 26–39 km for 2023 CX1 (27–28 km), 29–43 km for
+ * 2018 LA (28 km); the first fragmentation lands at 59–71 km, above every
+ * observed one; Carancas still digs no crater in any draw. 2008 TC3 is
+ * outside the law (2 100–2 500 kg/m³): the run first passed it a drawn
+ * strength by a fault of the measuring script, corrected and declared.
+ * Tunguska's preset bursts at 8.2 km, not 9.8; Chelyabinsk's and
+ * Sikhote-Alin's do not move (a strength given, an iron).
+ *
+ * Also read after, for phase 4's next item: the model's exponential
+ * atmosphere (ρ₀ = 1 kg/m³, H = 8 km) is 1.5 to 1.9 times denser than the
+ * standard atmosphere between 40 and 60 km, which lifts every altitude a
+ * dynamic pressure is reached at by some 4 to 5 km — the first
+ * fragmentation's among them.
+ */
+export const STRENGTH_TWO_STAGE_OUTCOME: string | null =
+  "REFUSED 23 September 2026 by rule 886(d): I2's miss falls from 13.7 to 5.3 km and G5 reads nothing, but the Monte Carlo's median firestorm ignition at Tunguska, zero in half its draws under the new law, no longer holds within 10 % at 200 draws. The default stays `density`.";
