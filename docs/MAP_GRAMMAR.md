@@ -125,6 +125,19 @@ States 2, 3 and 4 are drawn from each layer's edge (step 1), with these choices:
   vicino all'epicentro; il meccanismo e la distribuzione non sono validati da questo layer».
 - A heat with no first-degree reach either stays in «Non disegnati», with its reason.
 
+## Step 7, as built
+
+- Out of the crater's domain every family is a circle about the point of impact — never an oblique
+  crater's envelope. Every field is drawn under a light grey hatch, a state-4 object with the fixed
+  words «Effetti esplorativi: accoppiamento al suolo non modellato», and every card's state is «out
+  of domain». The hatch covers every ring: the model couples nothing to the ground there, so every
+  ring about the point of impact reads energy it cannot say reaches the ground.
+- No seismic stage, no magnitude, no liquefaction; the climate tier reads «non valutabile»; the toll
+  reads «non valutabile», with no number — in the panel, the counter and the report.
+- The timeline: «Rilascio onde sismiche» only where a crater is computed inside its domain; a
+  complete airburst's ground gets «Onda atmosferica al suolo», at the burst altitude over the speed
+  of sound (Chelyabinsk: 79 s).
+
 ## The printed report (rule 1037)
 
 The reviewer, approving steps 1 to 3, asked for the report now, before step 4: the globe and the

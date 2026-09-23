@@ -627,6 +627,22 @@ test.describe('calibration envelope', () => {
     await expect(band.locator('[data-card]')).toHaveCount(5);
   });
 
+  test('rule 1031 (e): out of the crater’s domain the toll is not assessable', async ({ page }) => {
+    await page.goto(
+      '/?lng=en&m=globe&t=impact&p=CUSTOM&d=0.5&s=14000&a=22.5&rho=3000&trho=2700&g=9.80665&lat=43.19&lon=-79.42'
+    );
+    await expandSimulatorPanelIfCollapsed(page);
+    const launch = page.getByRole('button', { name: 'Launch simulation' });
+    await expect(launch).toBeEnabled();
+    await launch.click({ timeout: 60_000 });
+    await expect(page.getByTestId('casualty-counter')).toHaveAttribute(
+      'data-state',
+      'notAssessable',
+      { timeout: 90_000 }
+    );
+    await expect(page.getByTestId('casualties-not-assessable')).toBeAttached();
+  });
+
   test('every number of an impact’s results carries its class of evidence', async ({ page }) => {
     // Phase 1 of the plan of 22 September 2026: no figure without the class
     // of what it rests on — its own, or its section's where the section's

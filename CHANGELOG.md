@@ -19,6 +19,13 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Out of the crater's domain, the map and the numbers say so.** Every ring is
+  concentric about the point of impact, lightly hatched and labelled
+  "exploratory effects: ground coupling not modelled"; the climate tier and
+  the toll read "not assessable", with no number. The timeline releases
+  seismic waves only where a crater is computed: a complete airburst's ground
+  gets "Atmospheric wave at the ground" (Chelyabinsk). Step 7, the last of
+  the map's grammar.
 - **Tunguska's heat is no longer hidden.** A heat whose drawn thresholds are all
   zero while the model still gives first-degree burns keeps its tab: a faint
   halo "below the main threshold" out to the first degree's reach (Tunguska,

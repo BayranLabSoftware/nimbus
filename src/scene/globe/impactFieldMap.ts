@@ -716,8 +716,9 @@ function cssToRgba(css: string, alphaScale = 1): readonly [number, number, numbe
  *  field's edge; in an area, just past its own. */
 export function markLabelRadius(mark: StateMark): number {
   if (mark.state === 'modelLimit') return mark.fromM;
-  // A halo from the centre: its words inside it, near its edge.
-  if (!(mark.fromM > 0)) return mark.toM * 0.7;
+  // A halo, or a hatch over a whole field, from the centre: its words inside
+  // it — a halo's near its edge, a hatch's halfway.
+  if (!(mark.fromM > 0)) return mark.toM * (mark.state === 'notModelled' ? 0.5 : 0.7);
   if (mark.state === 'belowThreshold') return mark.fromM * Math.pow(mark.toM / mark.fromM, 0.06);
   return mark.fromM * 1.08;
 }
@@ -770,6 +771,17 @@ export function markGroundField(
       },
     };
   }
+  if (!(mark.fromM > 0)) {
+    // Rule 1031 (e): a light hatch over a field drawn out of its domain.
+    const light = cssToRgba(tone === 'paper' ? NOT_MODELLED_PAPER_CSS : NOT_MODELLED_CSS, 0.3);
+    return {
+      family: mark.family,
+      minRangeM: 1,
+      maxRangeM: mark.toM,
+      colorAt: () => light,
+      hatchedAt: () => true,
+    };
+  }
   const grey = cssToRgba(tone === 'paper' ? NOT_MODELLED_PAPER_CSS : NOT_MODELLED_CSS, 0.45);
   return {
     family: mark.family,
@@ -798,6 +810,16 @@ export function fieldSourceOf(result: ImpactScenarioResult): ImpactFieldSource {
 
 /** Every family of the result, as the model's own asymmetry records give it. */
 export function familyShapes(result: ImpactScenarioResult): Record<FamilyId, FamilyShape> {
+  // Rule 1031 (e): out of the crater's domain every ring is concentric about
+  // the source, never an oblique crater's envelope.
+  if (result.crater.state === 'outOfDomain')
+    return {
+      blast: CIRCLE_SHAPE,
+      heat: CIRCLE_SHAPE,
+      ejecta: CIRCLE_SHAPE,
+      crater: CIRCLE_SHAPE,
+      circle: CIRCLE_SHAPE,
+    };
   const a = result.damageAsymmetry;
   const d = result.damage;
   const heatRadius = Math.max(d.thirdDegreeBurn, d.secondDegreeBurn);
@@ -2129,14 +2151,38 @@ export function buildImpactLayer(
   const evidence = layerEvidence(settled, ctx);
   const edge = layerEdge(settled, horizon, beyond);
   const drawnCard = layerCard(settled, evidence, edge, ctx);
-  // Rule 1031 (d): a layer drawn only as a halo below its main threshold.
+  // Rule 1031 (d): a layer drawn only as a halo below its main threshold;
+  // (e): out of the crater's domain, every layer's state is out of domain.
+  const outOfDomain = result.crater.state === 'outOfDomain';
   const card: ProvenanceCard =
     halo === undefined
-      ? drawnCard
+      ? outOfDomain
+        ? { ...drawnCard, state: 'outOfDomain' }
+        : drawnCard
       : { ...drawnCard, extent: halo.extent, beyond: 'belowThreshold' };
+  const field = settled.field;
   const marks =
     halo === undefined
-      ? stateMarks(settled, below, edge, horizon, card, ctx)
+      ? [
+          // Rule 1031 (e): out of the crater's domain, a light hatch over
+          // every ring and the fixed words, under whatever lies past the edge.
+          ...(outOfDomain && field !== null
+            ? [
+                {
+                  id: 'out-of-domain',
+                  state: 'notModelled' as const,
+                  family: field.family,
+                  fromM: 0,
+                  toM: field.maxRangeM,
+                  label: ctx.t('globe.impactMap.mark.label.outOfDomain'),
+                  labelBearingDeg: MARK_BEARING_DEG.notModelled,
+                  description: `${ctx.t('globe.impactMap.card.beyond')}: ${ctx.t(`globe.impactMap.beyond.${card.beyond}`)}`,
+                  card: { ...card, source: ctx.t('globe.impactMap.mark.source.outOfDomain') },
+                },
+              ]
+            : []),
+          ...stateMarks(settled, below, edge, horizon, card, ctx),
+        ]
       : [
           {
             id: 'halo',

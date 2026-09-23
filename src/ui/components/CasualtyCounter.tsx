@@ -90,6 +90,14 @@ export function CasualtyCounter(): JSX.Element | null {
   }, [timeline, startedAt]);
 
   if (mode !== 'globe' || result === null || status === 'unsupported') return null;
+  // Rule 1031 (e): out of the crater's domain, no number.
+  if (status === 'notAssessable')
+    return (
+      <div className={styles.counter} data-testid="casualty-counter" data-state="notAssessable">
+        <span className={styles.label}>{t('appBar.casualties')}</span>
+        <span className={styles.pending}>{t('appBar.casualtiesNotAssessable')}</span>
+      </div>
+    );
   if (frame === null || casualties === null) {
     if (status !== 'fetching') return null;
     return (

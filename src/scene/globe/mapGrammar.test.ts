@@ -7,7 +7,9 @@ import {
 } from '../../physics/simulate.js';
 import { thermalHorizonRadius } from '../../physics/casualties.js';
 import { impactFireballRadius } from '../../physics/effects/blastWave.js';
+import { buildImpactCascade } from '../../physics/cascade.js';
 import {
+  familyShapes,
   fieldSourceOf,
   absentImpactLayers,
   availableImpactLayers,
@@ -133,21 +135,29 @@ const layersOf = (key: keyof typeof IMPACT_PRESETS) =>
 
 describe('rule 1030: what the globe draws past a field’s edge', () => {
   it('draws only past the edge, and writes only a state’s words', () => {
+    // A halo (rule 1031 (d)) and the hatch out of the crater's domain
+    // (rule 1031 (e)) cover the field from its centre; everything else stands
+    // past its edge.
+    const fromCentre = new Set(['halo', 'out-of-domain']);
     for (const [name, r] of CASES)
       for (const layer of availableImpactLayers(r, ctx))
         for (const mark of layer.marks) {
-          expect(mark.fromM, `${name} ${layer.id}`).toBeGreaterThanOrEqual(
-            (layer.edge?.atM ?? 0) * (1 - 1e-9)
-          );
+          if (fromCentre.has(mark.id)) expect(mark.fromM, `${name} ${layer.id}`).toBe(0);
+          else
+            expect(mark.fromM, `${name} ${layer.id}`).toBeGreaterThanOrEqual(
+              (layer.edge?.atM ?? 0) * (1 - 1e-9)
+            );
           expect(mark.toM).toBeGreaterThanOrEqual(mark.fromM);
           const words =
-            mark.state === 'notModelled'
-              ? `globe.impactMap.mark.label.notModelled.${layer.id}`
-              : layer.id === 'ejecta'
-                ? 'globe.impactMap.mark.label.belowThresholdEjecta'
-                : mark.id === 'halo'
-                  ? 'globe.impactMap.mark.label.belowMain'
-                  : `globe.impactMap.mark.label.${mark.state}`;
+            mark.id === 'out-of-domain'
+              ? 'globe.impactMap.mark.label.outOfDomain'
+              : mark.state === 'notModelled'
+                ? `globe.impactMap.mark.label.notModelled.${layer.id}`
+                : layer.id === 'ejecta'
+                  ? 'globe.impactMap.mark.label.belowThresholdEjecta'
+                  : mark.id === 'halo'
+                    ? 'globe.impactMap.mark.label.belowMain'
+                    : `globe.impactMap.mark.label.${mark.state}`;
           expect(mark.label).toBe(words);
         }
   });
@@ -312,5 +322,45 @@ describe('rule 1031 (d): below the main threshold', () => {
         ?.notes.map((n) => n.text) ?? [];
     expect(noted('TUNGUSKA')).toContain('globe.impactMap.observed.tunguskaThermal');
     expect(noted(null)).not.toContain('globe.impactMap.observed.tunguskaThermal');
+  });
+});
+
+describe('rule 1031 (e)–(f): out of the crater’s domain, and the timeline', () => {
+  it('draws every ring concentric, hatched, with the fixed words, every card out of domain', () => {
+    for (const shape of Object.values(familyShapes(slowStone))) {
+      expect(shape.offsetPerMeter).toBe(0);
+      expect(shape.majorMult).toBe(shape.minorMult);
+    }
+    const layers = availableImpactLayers(slowStone, ctx);
+    expect(layers.length).toBeGreaterThan(0);
+    for (const layer of layers) {
+      expect(layer.card.state, layer.id).toBe('outOfDomain');
+      if (layer.field === null) continue;
+      const hatch = layer.marks.find((mk) => mk.id === 'out-of-domain');
+      expect(hatch?.state, layer.id).toBe('notModelled');
+      expect(hatch?.toM).toBe(layer.field.maxRangeM);
+      const ground = hatch === undefined ? null : markGroundField(hatch);
+      expect(ground?.hatchedAt?.(1)).toBe(true);
+    }
+    // In the domain nothing of this is drawn.
+    for (const layer of availableImpactLayers(
+      simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input),
+      ctx
+    ))
+      expect(layer.marks.some((mk) => mk.id === 'out-of-domain')).toBe(false);
+  });
+
+  it('releases seismic waves only where a crater couples to the ground', () => {
+    const keys = (r: ImpactScenarioResult): string[] => buildImpactCascade(r).map((st) => st.key);
+    const chelyabinsk = keys(simulateImpact(IMPACT_PRESETS.CHELYABINSK.input));
+    expect(chelyabinsk).toContain('cascade.impact.groundAirWave');
+    expect(chelyabinsk).not.toContain('cascade.impact.seismic');
+    expect(keys(simulateImpact(IMPACT_PRESETS.METEOR_CRATER.input))).toContain(
+      'cascade.impact.seismic'
+    );
+    const stone = keys(slowStone);
+    expect(stone).not.toContain('cascade.impact.seismic');
+    expect(stone).not.toContain('cascade.impact.groundAirWave');
+    expect(stone).toContain('cascade.impact.craterUnresolved');
   });
 });

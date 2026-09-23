@@ -607,7 +607,8 @@
     "mcRare_other": "rare event: in {{count}} runs of {{runs}}",
     "mcRareGiven": "conditional on a rare event — in those runs P10 {{p10}}, P50 {{p50}}, P90 {{p90}}",
     "monteCarloFooterShare": "Where a quantity is zero in more than one run in ten (no crater, no firestorm), the row says in how many runs it happens and gives P10–P90 of those runs alone.",
-    "monteCarloFooterRare": "Below 1 % of the runs an event is rare: its cells stay empty, and the percentiles of those runs alone stand on the line under it, conditional on the event."
+    "monteCarloFooterRare": "Below 1 % of the runs an event is rare: its cells stay empty, and the percentiles of those runs alone stand on the line under it, conditional on the event.",
+    "notAssessable": "not assessable"
   },
   "cascade": {
     "label": "Cascade timeline",
@@ -697,6 +698,10 @@
       "craterUnresolved": {
         "name": "Crater not resolved",
         "desc": "The body reaches the ground below 5 km/s: a local penetration pit is possible, outside the crater law's domain."
+      },
+      "groundAirWave": {
+        "name": "Atmospheric wave at the ground",
+        "desc": "The shock of the burst aloft reaches the ground: overpressure and wind, with no seismic coupling computed by the model."
       }
     },
     "explosion": {
@@ -1347,10 +1352,12 @@
           "compressed": "thresholds {{lo}}–{{hi}} cal/cm²\ncompressed at the geometric limit",
           "compressedOne": "threshold {{value}} cal/cm²\ncompressed at the geometric limit",
           "belowThresholdEjecta": "deposit < 1 mm or\nnot resolved at the current scale",
-          "belowMain": "below the main threshold"
+          "belowMain": "below the main threshold",
+          "outOfDomain": "Exploratory effects:\nground coupling not modelled"
         },
         "source": {
-          "below": "the same model as the field, read past the lowest threshold drawn"
+          "below": "the same model as the field, read past the lowest threshold drawn",
+          "outOfDomain": "the body reaches the ground below 5 km/s: its coupling to the ground is out of the crater law's domain (French 1998); the rings read the energy deposited, with no coupling, concentric about the source"
         },
         "extent": {
           "below": "from {{from}} to {{to}}, from {{inner}} to {{outer}}: a decade below the value at the edge, or to the model’s limit",
@@ -1436,7 +1443,8 @@
         "deathsTable": "order of magnitude · the table’s band: {{low}} to {{high}} · not validated for demographic estimates",
         "deathsPending": "being counted",
         "craterFieldDetail": "a crater field’s, joined · {{depth}} deep · {{morphology}}",
-        "craterUnresolved": "the body reaches the ground below 5 km/s: a local penetration pit is possible, outside the crater law's domain"
+        "craterUnresolved": "the body reaches the ground below 5 km/s: a local penetration pit is possible, outside the crater law's domain",
+        "deathsNotAssessable": "out of the crater’s domain: no number"
       },
       "group": {
         "scenario": "Scenario inputs",
@@ -1628,7 +1636,8 @@
       "cardsTitle": "Provenance cards of the maps",
       "renderingNote": "The map's rendering does not extend the model's physical domain.",
       "cardWhat": "Object drawn",
-      "cardField": "the field"
+      "cardField": "the field",
+      "notAssessable": "not assessable"
     }
   },
   "about": {
@@ -1913,7 +1922,8 @@
     "casualtiesBand": "{{low}} – {{high}}",
     "casualtiesProvisional": "provisional",
     "casualtiesTitle": "Modelled deaths as the event unfolds — an exposure scenario, not validated for demographic estimates. The figure rises with the shock front, the burns, the mass fire, over the hours the wave landing on the coasts and, over the weeks, the injured without care. An order of magnitude with its 5–95 % band: the details are in the panel.",
-    "casualtiesFinal": "Modelled deaths: {{deaths}}, from {{low}} to {{high}}, {{time}} after the event."
+    "casualtiesFinal": "Modelled deaths: {{deaths}}, from {{low}} to {{high}}, {{time}} after the event.",
+    "casualtiesNotAssessable": "not assessable"
   },
   "impactView": {
     "title": "Close-up",
@@ -2032,7 +2042,8 @@
     },
     "bandNote": "The pair in brackets is the 5–95 % band: run the same event again with the published scatter on its inputs and nine times in ten the count lands inside it. For an earthquake it also carries the scatter USGS PAGER publishes for the country’s fatality curve; for a blast or an eruption it does not carry the death rates’ own uncertainty, and for no event does it carry the census’s.",
     "bandNoteWave": "The wave row still carries the range of parameters rather than the 5–95 % band.",
-    "notValidated": "Not validated for demographic estimates. No impact in recorded history has left a death toll: the mortality is taken from explosions of the same energy and extrapolated. An order of magnitude, never a count."
+    "notValidated": "Not validated for demographic estimates. No impact in recorded history has left a death toll: the mortality is taken from explosions of the same energy and extrapolated. An order of magnitude, never a count.",
+    "notAssessable": "Not assessable: out of the crater’s domain the model gives no toll."
   },
   "validation": {
     "back": "Back to home",

@@ -607,7 +607,8 @@
     "mcRare_other": "evento raro: in {{count}} campioni su {{runs}}",
     "mcRareGiven": "condizionato a un evento raro — in quei campioni P10 {{p10}}, P50 {{p50}}, P90 {{p90}}",
     "monteCarloFooterShare": "Dove una grandezza è zero in più di un campione su dieci (niente cratere, niente incendio), la riga dice in quanti campioni si verifica e dà P10–P90 di quei soli campioni.",
-    "monteCarloFooterRare": "Sotto l'1 % dei campioni un evento è raro: le sue celle restano vuote, e i percentili di quei soli campioni stanno sulla riga sotto, condizionati all'evento."
+    "monteCarloFooterRare": "Sotto l'1 % dei campioni un evento è raro: le sue celle restano vuote, e i percentili di quei soli campioni stanno sulla riga sotto, condizionati all'evento.",
+    "notAssessable": "non valutabile"
   },
   "cascade": {
     "label": "Timeline a cascata",
@@ -697,6 +698,10 @@
       "craterUnresolved": {
         "name": "Cratere non risolto",
         "desc": "Il corpo arriva al suolo sotto i 5 km/s: è possibile una buca di penetrazione locale, fuori dal dominio della legge del cratere."
+      },
+      "groundAirWave": {
+        "name": "Onda atmosferica al suolo",
+        "desc": "L'onda d'urto dell'esplosione in quota raggiunge il suolo: sovrappressione e vento, senza accoppiamento sismico calcolato dal modello."
       }
     },
     "explosion": {
@@ -1347,10 +1352,12 @@
           "compressed": "soglie {{lo}}–{{hi}} cal/cm²\ncompresse presso il limite geometrico",
           "compressedOne": "soglia {{value}} cal/cm²\ncompressa presso il limite geometrico",
           "belowThresholdEjecta": "deposito < 1 mm oppure\nnon risolto dalla scala corrente",
-          "belowMain": "sotto la soglia principale"
+          "belowMain": "sotto la soglia principale",
+          "outOfDomain": "Effetti esplorativi:\naccoppiamento al suolo non modellato"
         },
         "source": {
-          "below": "lo stesso modello del campo, letto oltre la soglia più bassa disegnata"
+          "below": "lo stesso modello del campo, letto oltre la soglia più bassa disegnata",
+          "outOfDomain": "il corpo arriva al suolo sotto i 5 km/s: l'accoppiamento al suolo è fuori dal dominio della legge del cratere (French 1998); gli anelli leggono l'energia depositata, senza accoppiamento, concentrici sulla sorgente"
         },
         "extent": {
           "below": "da {{from}} a {{to}}, da {{inner}} a {{outer}}: un decennio sotto il valore al bordo, o fino al limite del modello",
@@ -1436,7 +1443,8 @@
         "deathsTable": "ordine di grandezza · banda della tabella: da {{low}} a {{high}} · non validato per stime demografiche",
         "deathsPending": "in calcolo",
         "craterFieldDetail": "di un campo di crateri, unito · profondo {{depth}} · {{morphology}}",
-        "craterUnresolved": "il corpo arriva al suolo sotto i 5 km/s: possibile buca di penetrazione locale, fuori dal dominio della legge del cratere"
+        "craterUnresolved": "il corpo arriva al suolo sotto i 5 km/s: possibile buca di penetrazione locale, fuori dal dominio della legge del cratere",
+        "deathsNotAssessable": "fuori dal dominio del cratere: nessun numero"
       },
       "group": {
         "scenario": "Parametri dello scenario",
@@ -1628,7 +1636,8 @@
       "cardsTitle": "Schede di provenienza delle carte",
       "renderingNote": "La resa cartografica non estende il dominio fisico del modello.",
       "cardWhat": "Oggetto disegnato",
-      "cardField": "il campo"
+      "cardField": "il campo",
+      "notAssessable": "non valutabile"
     }
   },
   "about": {
@@ -2000,7 +2009,8 @@
     "casualtiesBand": "{{low}} – {{high}}",
     "casualtiesProvisional": "provvisoria",
     "casualtiesTitle": "Morti modellati mentre l’evento si svolge — uno scenario di esposizione, non validato per stime demografiche. Il numero sale con il fronte d’urto, le ustioni, la tempesta di fuoco, nelle ore l’onda che tocca le coste e, nelle settimane, i feriti senza cure. Un ordine di grandezza con la sua banda 5–95 %: i dettagli sono nel pannello.",
-    "casualtiesFinal": "Morti modellati: {{deaths}}, da {{low}} a {{high}}, a {{time}} dall’evento."
+    "casualtiesFinal": "Morti modellati: {{deaths}}, da {{low}} a {{high}}, a {{time}} dall’evento.",
+    "casualtiesNotAssessable": "non valutabile"
   },
   "impactView": {
     "title": "Vista ravvicinata",
@@ -2119,7 +2129,8 @@
     },
     "bandNote": "La coppia fra parentesi è la banda 5–95 %: rifacendo lo stesso evento con la dispersione pubblicata dei suoi ingressi, nove volte su dieci il conto cade lì dentro. Per un terremoto porta anche la dispersione che USGS PAGER pubblica per la curva di mortalità del Paese; per un’esplosione o un’eruzione non porta l’incertezza dei tassi di mortalità, e per nessun evento quella del censimento.",
     "bandNoteWave": "La riga dell’onda porta ancora l’intervallo dei parametri, non la banda 5–95 %.",
-    "notValidated": "Non validato per stime demografiche. Nessun impatto nella storia ha lasciato un bilancio di vittime: la mortalità è presa da esplosioni di pari energia ed estrapolata. Un ordine di grandezza, mai un conteggio."
+    "notValidated": "Non validato per stime demografiche. Nessun impatto nella storia ha lasciato un bilancio di vittime: la mortalità è presa da esplosioni di pari energia ed estrapolata. Un ordine di grandezza, mai un conteggio.",
+    "notAssessable": "Non valutabile: fuori dal dominio del cratere il modello non dà un bilancio di vittime."
   },
   "validation": {
     "back": "Torna alla home",

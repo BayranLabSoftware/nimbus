@@ -164,6 +164,12 @@ export function CasualtiesPanel({
       {status === 'unsupported' && casualties === null && (
         <p className={styles.presetNote}>{t('casualties.unsupported')}</p>
       )}
+      {status === 'notAssessable' && (
+        // Rule 1031 (e): no number where the model gives none.
+        <p className={styles.presetNote} data-testid="casualties-not-assessable">
+          {t('casualties.notAssessable')}
+        </p>
+      )}
       {casualties !== null && (
         <>
           <dl className={styles.result}>

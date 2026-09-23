@@ -7,6 +7,7 @@ import {
   simulateImpact,
   type ImpactScenarioResult,
 } from '../../../physics/simulate.js';
+import { degreesToRadians, deg, kgPerM3, m, mps } from '../../../physics/units.js';
 import { CITATIONS } from '../methodologyContent.js';
 import {
   buildImpactReport,
@@ -275,5 +276,24 @@ describe("an impact's report, in the reader's language (IMP-7c)", () => {
     const crater = model.keyFigures.find((k) => k.id === 'crater');
     expect(crater?.value).toBe('—');
     expect(crater?.detail).toBe('report.impact.key.craterNone');
+  });
+});
+
+describe('rule 1031 (e): out of the crater’s domain the report gives no number', () => {
+  it('says the toll and the climate tier are not assessable', () => {
+    const stone = simulateImpact({
+      impactorDiameter: m(0.5),
+      impactVelocity: mps(14_000),
+      impactorDensity: kgPerM3(3_000),
+      targetDensity: kgPerM3(2_700),
+      impactAngle: degreesToRadians(deg(22.5)),
+      surfaceGravity: 9.806_65,
+    });
+    expect(stone.crater.state).toBe('outOfDomain');
+    const model = buildImpactReport(stone, context(keyOnly, 'en', { presetName: null }));
+    const deaths = model.keyFigures.find((k) => k.id === 'deaths');
+    expect(deaths?.value).toBe('report.impact.notAssessable');
+    const rows = model.groups.flatMap((g) => g.rows);
+    expect(rows.find((r) => r.id === 'climateTier')?.value).toBe('report.impact.notAssessable');
   });
 });

@@ -69,7 +69,23 @@ export function buildImpactCascade(result: ImpactScenarioResult): CascadeStage[]
     // Rule 947: the body reaches the ground, too slowly for the crater's law.
     stages.push(stage('cascade.impact.craterUnresolved', s(0), 'primary'));
   }
-  stages.push(stage('cascade.impact.seismic', s(0), 'secondary'));
+  // Rule 1031 (f): seismic waves only where the model couples the impact to
+  // the ground inside its domain — a crater it computes. A complete airburst's
+  // ground feels the atmospheric wave of the burst aloft, which reaches it
+  // after the burst altitude at the speed of sound; out of the crater's domain
+  // there is no seismic stage at all.
+  if (result.crater.state === 'computed' && (result.crater.finalDiameter as number) > 0) {
+    stages.push(stage('cascade.impact.seismic', s(0), 'secondary'));
+  } else if (result.entry.regime === 'COMPLETE_AIRBURST') {
+    const altitude = result.entry.burstAltitude;
+    stages.push(
+      stage(
+        'cascade.impact.groundAirWave',
+        s(Number.isFinite(altitude) && altitude > 0 ? altitude / 343 : 0),
+        'secondary'
+      )
+    );
+  }
 
   // Air blast: sound takes ~3 s/km at sea level. Use 1 psi ring as
   // the far-field anchor; "≈ 1 psi distance / 343 m/s" seconds.

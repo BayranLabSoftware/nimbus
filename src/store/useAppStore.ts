@@ -438,7 +438,9 @@ export type ActiveMonteCarlo =
 
 export type ActiveLandslidePreset = LandslidePresetId | 'CUSTOM';
 
-export type CasualtyStatus = 'idle' | 'fetching' | 'error' | 'unsupported';
+/** 'notAssessable': rule 1031 (e) — out of the crater's domain the model
+ *  gives no toll, and says so with no number. */
+export type CasualtyStatus = 'idle' | 'fetching' | 'error' | 'unsupported' | 'notAssessable';
 
 export interface CasualtyResult extends CasualtyEstimate {
   /** Human-readable population source. */
@@ -3500,17 +3502,23 @@ export const useAppStore = create<AppStore>((set, get) => ({
       // already in the store; WorldPop takes 15–45 s per band and the
       // UI shows the estimate when (and if) it lands. A failure writes
       // 'error'; nothing here ever blocks the simulator.
-      const plan = state.location !== null ? casualtyPlanForResult(result, state.location) : null;
+      // Rule 1031 (e): out of the crater's domain no toll is assessed.
+      const notAssessable = result.type === 'impact' && result.data.crater.state === 'outOfDomain';
+      const plan =
+        state.location !== null && !notAssessable
+          ? casualtyPlanForResult(result, state.location)
+          : null;
       const headline = headlineRingForResult(result);
+      const noPlan = notAssessable ? ('notAssessable' as const) : ('unsupported' as const);
       if (state.location === null || (plan === null && headline === null)) {
         set({
           populationStatus: 'idle',
-          casualtyStatus: plan === null ? 'unsupported' : 'idle',
+          casualtyStatus: plan === null ? noPlan : 'idle',
         });
       } else {
         set({
           populationStatus: headline !== null ? 'fetching' : 'idle',
-          casualtyStatus: plan === null ? 'unsupported' : 'fetching',
+          casualtyStatus: plan === null ? noPlan : 'fetching',
         });
         void runCasualtyLookup(result, plan, headline, state.location, get, set);
       }

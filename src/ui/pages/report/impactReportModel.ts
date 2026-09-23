@@ -455,7 +455,14 @@ function groups(
         'acidRain',
         unresolved ? t('report.impact.notResolved') : mass(r.atmosphere.acidRainMass, l)
       ),
-      row(t, 'climateTier', t(`report.impact.enum.climate.${r.atmosphere.climateTier}`)),
+      row(
+        t,
+        'climateTier',
+        // Rule 1031 (e): no climate tier out of the crater's domain.
+        unresolved
+          ? t('report.impact.notAssessable')
+          : t(`report.impact.enum.climate.${r.atmosphere.climateTier}`)
+      ),
     ],
     'atmosphere'
   );
@@ -546,18 +553,25 @@ function keyFigures(r: ImpactScenarioResult, ctx: ImpactReportContext): KeyFigur
     ),
     k(
       'deaths',
-      toll === null ? NONE : peopleOrder(toll.deaths, l),
-      toll === null
-        ? t('report.impact.key.deathsPending')
-        : t(
-            toll.predictiveBand === true
-              ? 'report.impact.key.deathsBand'
-              : 'report.impact.key.deathsTable',
-            {
-              low: people(Math.min(toll.deathsLow, toll.deathsHigh), l),
-              high: people(Math.max(toll.deathsLow, toll.deathsHigh), l),
-            }
-          )
+      // Rule 1031 (e): out of the crater's domain the toll is not assessable.
+      r.crater.state === 'outOfDomain'
+        ? t('report.impact.notAssessable')
+        : toll === null
+          ? NONE
+          : peopleOrder(toll.deaths, l),
+      r.crater.state === 'outOfDomain'
+        ? t('report.impact.key.deathsNotAssessable')
+        : toll === null
+          ? t('report.impact.key.deathsPending')
+          : t(
+              toll.predictiveBand === true
+                ? 'report.impact.key.deathsBand'
+                : 'report.impact.key.deathsTable',
+              {
+                low: people(Math.min(toll.deathsLow, toll.deathsHigh), l),
+                high: people(Math.max(toll.deathsLow, toll.deathsHigh), l),
+              }
+            )
     ),
   ];
 }

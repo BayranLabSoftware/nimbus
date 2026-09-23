@@ -1162,7 +1162,10 @@ export function SimulatorPanel(): JSX.Element {
                 <dl className={styles.result} aria-label={t('simulator.atmosphereLabel')}>
                   <dt className={styles.resultLabel}>{t('simulator.climateTier')}</dt>
                   <dd className={styles.resultValue}>
-                    {t(`simulator.tier.${result.data.atmosphere.climateTier}`)}
+                    {/* Rule 1031 (e): no climate tier out of the crater's domain. */}
+                    {result.data.crater.state === 'outOfDomain'
+                      ? t('simulator.notAssessable')
+                      : t(`simulator.tier.${result.data.atmosphere.climateTier}`)}
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.stratosphericDust')}</dt>
                   <dd className={styles.resultValue}>
