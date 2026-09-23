@@ -31,8 +31,8 @@
  * fragmentation altitudes of 2024 BX1 and 2023 CX1 and Carancas's crater
  * diameter. 2008 TC3's paper refuses automated access: Andrea opened it and
  * gave its text on 23 September. Brown et al. 2008 and Kenkmann et al. 2009
- * he downloaded the same day. Meteor Crater, class D, is pinned in a later
- * commit of this step, still before step 3.
+ * he downloaded the same day. Meteor Crater, class D, from chapters 4, 10 and
+ * 11 of Kring's guidebook, downloaded with Andrea's leave the same day.
  *
  * Carancas, declared at pinning: every estimate of its body's mass or energy
  * uses the crater's diameter (Brown et al. 2008, Sect. 6, "we use the diameter
@@ -61,7 +61,7 @@ export interface LevelBInput {
 }
 
 export interface LevelBTarget {
-  readonly id: 'E1' | 'E2' | 'E3' | 'K1' | 'K2' | 'K3' | 'K4' | 'K5';
+  readonly id: 'E1' | 'E2' | 'E3' | 'K1' | 'K2' | 'K3' | 'K4' | 'K5' | 'D1' | 'D2' | 'D3';
   readonly measures: string;
   readonly source: string;
   readonly where: string;
@@ -110,6 +110,12 @@ export const LEVEL_B_SOURCES: readonly LevelBSource[] = [
     citation:
       'Kenkmann T., Artemieva N. A., et al. (2009), The Carancas meteorite impact crater, Peru: geologic surveying and modeling of crater formation and atmospheric passage, Meteoritics & Planetary Science 44, 985–1000',
     copy: 'University of Arizona repository PDF (pages cited as printed in the journal), supplied by Andrea on 23 September 2026',
+  },
+  {
+    id: 'kring2017',
+    citation:
+      'Kring D. A. (2017), Guidebook to the Geology of Barringer Meteorite Crater, Arizona (a.k.a. Meteor Crater), 2nd ed., LPI Contribution 2040, chapters 4, 10 and 11',
+    copy: 'LPI chapter PDFs',
   },
   {
     id: 'jenniskens2021',
@@ -412,6 +418,76 @@ export const LEVEL_B_CRATER_EVENTS: readonly LevelBEvent[] = [
         measures: 'the morphology: a simple, bowl- or cone-shaped crater',
         source: 'kenkmann2009',
         where: 'pp. 989–990 and Fig. 2',
+        scored: true,
+      },
+    ],
+  },
+];
+
+/**
+ * Rule 857(d): consistency only, class D. Its inputs are the ranges the
+ * literature "usually" assumes (Kring 2017, p. 119), not the best fit of
+ * Collins et al. 2016 that the guidebook reports (p. 39), which is fitted to
+ * the crater. The observed crater is today's: eroded, its floor partly filled
+ * (p. 36); the model's is fresh. Rim height, the ejecta's thickness on the
+ * rim, the breccia lens and the gravity anomaly are not computed, so not
+ * scored.
+ */
+export const LEVEL_B_CONSISTENCY_EVENTS: readonly LevelBEvent[] = [
+  {
+    event: 'Meteor Crater',
+    inputs: {
+      velocity: {
+        value: { kind: 'uniform', low: 11, high: 20 },
+        unit: 'km/s',
+        source: 'kring2017',
+        where:
+          'Ch. 11, p. 119: "The impact velocity is usually assumed to be between 11 and 20 km/s"',
+        note: 'An impact velocity, taken as the speed of entry: an iron of 10 to 50 m keeps most of it.',
+      },
+      angle: {
+        value: { kind: 'uniform', low: 44.5, high: 45.5 },
+        unit: 'deg',
+        source: 'kring2017',
+        where:
+          'Ch. 10, p. 116: "a 45° impact angle, the most probable impact angle and consistent with the symmetrical shape of the crater" (rule 866(b))',
+      },
+      diameter: {
+        value: { kind: 'uniform', low: 10, high: 50 },
+        unit: 'm',
+        source: 'kring2017',
+        where:
+          'Ch. 11, p. 119: "the projectile is usually assumed to have a pre-collisional diameter of roughly 10 to 50 m"',
+      },
+      density: {
+        value: { kind: 'uniform', low: 7_750, high: 7_850 },
+        unit: 'kg/m3',
+        source: 'kring2017',
+        where:
+          'Ch. 11, Table 11.1 note, p. 120: "I assume a projectile density of 7.8 g/cm3" (rule 866(b))',
+      },
+    },
+    targets: [
+      {
+        id: 'D1',
+        measures: "the crater's diameter",
+        source: 'kring2017',
+        where: 'Ch. 4, p. 35: "has a diameter of …"',
+        scored: true,
+      },
+      {
+        id: 'D2',
+        measures: 'the depth of the bowl-shaped depression, today',
+        source: 'kring2017',
+        where: 'Ch. 4, p. 35: "a bowl-shaped depression that is … deep"',
+        scored: true,
+        note: 'Eroded and partly filled since (p. 36): the fresh crater the model gives was deeper.',
+      },
+      {
+        id: 'D3',
+        measures: 'the morphology: simple',
+        source: 'kring2017',
+        where: 'Ch. 4, p. 35: "The crater has a simple bowl-shaped morphology"',
         scored: true,
       },
     ],

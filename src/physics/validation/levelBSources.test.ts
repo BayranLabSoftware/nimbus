@@ -1,8 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { LEVEL_B_EVENTS } from './levelBProtocolRules.js';
-import { LEVEL_B_CRATER_EVENTS, LEVEL_B_ENTRY_EVENTS, LEVEL_B_SOURCES } from './levelBSources.js';
+import {
+  LEVEL_B_CONSISTENCY_EVENTS,
+  LEVEL_B_CRATER_EVENTS,
+  LEVEL_B_ENTRY_EVENTS,
+  LEVEL_B_SOURCES,
+} from './levelBSources.js';
 
-const ALL = [...LEVEL_B_ENTRY_EVENTS, ...LEVEL_B_CRATER_EVENTS];
+const ALL = [...LEVEL_B_ENTRY_EVENTS, ...LEVEL_B_CRATER_EVENTS, ...LEVEL_B_CONSISTENCY_EVENTS];
 
 /**
  * Step 2 of level B pins the sources. Nothing here runs the model: the
@@ -13,6 +18,8 @@ describe('level B, step 2: the sources pinned (rule 866)', () => {
     const ids = new Set(LEVEL_B_SOURCES.map((s) => s.id));
     for (const e of LEVEL_B_ENTRY_EVENTS) expect(LEVEL_B_EVENTS[e.event], e.event).toBe('entry');
     for (const e of LEVEL_B_CRATER_EVENTS) expect(LEVEL_B_EVENTS[e.event], e.event).toBe('crater');
+    for (const e of LEVEL_B_CONSISTENCY_EVENTS)
+      expect(LEVEL_B_EVENTS[e.event], e.event).toBe('consistency');
     for (const e of ALL) {
       for (const input of Object.values(e.inputs))
         expect(ids.has(input.source), e.event).toBe(true);
@@ -52,10 +59,10 @@ describe('level B, step 2: the sources pinned (rule 866)', () => {
     expect(carancas?.targets.find((t) => t.id === 'K2')?.scored).toBe(false);
   });
 
-  it('pins every event of the entry and crater sets', () => {
+  it('pins every event but the development set', () => {
     const pinned = ALL.map((e) => e.event).sort();
     const wanted = Object.entries(LEVEL_B_EVENTS)
-      .filter(([, set]) => set === 'entry' || set === 'crater')
+      .filter(([, set]) => set !== 'development')
       .map(([name]) => name)
       .sort();
     expect(pinned).toEqual(wanted);
