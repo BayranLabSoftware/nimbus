@@ -615,6 +615,16 @@ export function swarmSpreadAtGround(input: {
   return m(L0 * Math.sqrt(1 + growth * growth));
 }
 
+/**
+ * The swarm's spread where a complete airburst bursts: the pancake's limit,
+ * f_p · L0, which is how Eq. 18 places the burst (rule 846 (ii) of
+ * validation/craterFieldJoinedRules.ts reads a low burst's crater field
+ * against it).
+ */
+export function swarmSpreadAtBurst(impactorDiameter: number): Meters {
+  return m(PANCAKE_FACTOR * impactorDiameter);
+}
+
 /** A point of an entry's path: what radiates, where, and how fast (B-095). */
 export interface EntryPathSample {
   /** Altitude (m). */

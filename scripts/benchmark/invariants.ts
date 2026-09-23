@@ -308,13 +308,12 @@ export const HAZARDS: readonly Hazard[] = [
       );
     },
     // Rule 623: an impact's regime is its entry regime with its crater's
-    // morphology — and, since rule 838, the crater field, where the crater is
-    // one: the reference program's own answer switches there.
+    // morphology. Rule 838 added the crater field to it and was refused; rule
+    // 846 (iv) withdraws it — the joined crater has no step to excuse.
     regime: (r) => {
       const entry = r.entry as Json | undefined;
       const crater = r.crater as Json | undefined;
-      const field = crater?.origin === 'craterField' ? '|field' : '';
-      return `${String(entry?.regime)}|${String(crater?.morphology)}${field}`;
+      return `${String(entry?.regime)}|${String(crater?.morphology)}`;
     },
     // Rule 622: the contours, the ranges where a threshold is crossed.
     contours: [

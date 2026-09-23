@@ -91,7 +91,7 @@ describe('rules 838 to 845: a scattered body digs a crater field', () => {
     }
   }, 60_000);
 
-  it('is read by the harness as a regime switch, and nothing else is', async () => {
+  it('is no longer read by the harness as a regime switch (rule 846 (iv))', async () => {
     const { HAZARDS } = await import('../../../scripts/benchmark/invariants.js');
     const impact = HAZARDS.find((h) => h.name === 'impact');
     const regime = impact?.regime;
@@ -101,6 +101,7 @@ describe('rules 838 to 845: a scattered body digs a crater field', () => {
     const single = simulateImpact({ ...SCATTERED, craterField: 'single' });
     const json = (r: unknown): Record<string, unknown> =>
       JSON.parse(JSON.stringify(r)) as Record<string, unknown>;
-    expect(regime(json(field))).toBe(`${regime(json(single))}|field`);
+    // Rule 838 added `|field` to the regime; rule 846 (iv) withdrew it.
+    expect(regime(json(field))).toBe(regime(json(single)));
   });
 });

@@ -27,6 +27,7 @@ import {
 import {
   IMPACTOR_STRENGTH,
   atmosphericEntry,
+  swarmSpreadAtBurst,
   swarmSpreadAtGround,
   type AtmosphericEntryResult,
 } from './effects/atmosphericEntry.js';
@@ -737,6 +738,20 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
           wholeCrater()
         )
       : 1;
+  // Rule 846 (ii): under `joined`, a low burst's crater is read by the same
+  // test, its swarm spread at the pancake's limit where it bursts — so that at
+  // a burst on the ground it is the partial airburst's field.
+  const craterLaw = input.craterField ?? DEFAULT_CRATER_FIELD;
+  const lowBurstWhole = (): number =>
+    (transientCraterDiameter({
+      ...input,
+      impactorDiameter: m(diameterM * Math.cbrt(lowBurstCraterShare)),
+      impactVelocity: entry.endVelocity,
+    }) as number) * seafloorScale;
+  const lowBurstFieldShare =
+    craterLaw === 'joined' && lowBurstCraterShare > 0 && !ironDigs && dryGround
+      ? craterFieldShare(craterLaw, swarmSpreadAtBurst(diameterM), lowBurstWhole())
+      : 1;
   // The largest crater of an iron's strewn field.
   const strewnCrater = (): number =>
     (transientCraterDiameter({ ...input, impactVelocity: input.impactVelocity }) as number) *
@@ -751,11 +766,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
           : strewnCrater() ** strewnShare * wholeCrater() ** (1 - strewnShare)
       : airburst
         ? lowBurstCraterShare > 0
-          ? (transientCraterDiameter({
-              ...input,
-              impactorDiameter: m(diameterM * Math.cbrt(lowBurstCraterShare)),
-              impactVelocity: entry.endVelocity,
-            }) as number) * seafloorScale
+          ? lowBurstWhole() * lowBurstFieldShare
           : 0
         : wholeCrater() * fieldShare
   );
