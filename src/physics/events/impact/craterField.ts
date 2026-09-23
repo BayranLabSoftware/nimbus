@@ -22,8 +22,9 @@ import {
 
 export type CraterField = 'single' | 'field' | 'joined';
 
-/** What an impact that names no crater field uses. */
-export const DEFAULT_CRATER_FIELD: CraterField = 'single';
+/** What an impact that names no crater field uses: `joined`, since rules 846
+ *  to 853 of validation/craterFieldJoinedRules.ts (23 September 2026). */
+export const DEFAULT_CRATER_FIELD: CraterField = 'joined';
 
 /**
  * The share of the whole swarm's transient crater the crater keeps: one for a

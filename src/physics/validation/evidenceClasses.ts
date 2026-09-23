@@ -143,7 +143,7 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
     quantity: 'crater',
     klass: 'A',
     // Transient and final diameter, final depth.
-    reference: { impacts: 960, readings: 2880, excellentPercent: 82.2, pastTen: 42 },
+    reference: { impacts: 960, readings: 2880, excellentPercent: 82.4, pastTen: 36 },
     observed: null,
   },
   blast: {
@@ -165,7 +165,7 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
   ejecta: {
     quantity: 'ejecta',
     klass: 'A',
-    reference: { impacts: 1103, readings: 5081, excellentPercent: 92.2, pastTen: 340 },
+    reference: { impacts: 1103, readings: 5078, excellentPercent: 92.4, pastTen: 331 },
     observed: null,
   },
   seismic: { quantity: 'seismic', klass: 'exploratory', reference: null, observed: null },

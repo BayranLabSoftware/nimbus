@@ -97,5 +97,36 @@
 /** The seed no run has used, for rule 850(c). */
 export const CRATER_FIELD_JOINED_HELD_OUT_SEED = 'benchmark-2026-09-23-heldout-crater-field-2';
 
-/** The outcome, written after the candidate was measured. */
-export const CRATER_FIELD_JOINED_OUTCOME = 'PENDING: the rules are written; the candidate is not.';
+/**
+ * The outcome, written on 23 September 2026 after the candidate (ac9258e) was
+ * measured once, on one commit. The rules were pushed in 5d70c4b first.
+ *
+ * ADOPTED. Rule 850 holds on every clause.
+ *
+ * (a) Level A under `joined`: of the 98 readings `crater-field` covered, 12
+ *     agree with the program within 2 % or its printing (the fields with
+ *     s ≥ 2), 83 are the join's own — the model's crater D_tc² / L within one
+ *     part in 10⁹, where 1 < s < 2 — and 3 became one-sided readings that
+ *     `program-ring-inside-its-crater` covers. The craters of 16 impacts
+ *     change (14 fields, 2 low bursts) and no other reading of level A moves.
+ *     Adopted, `crater-field` gives way to `crater-field-joined`, and no
+ *     reading past 10 % or one-sided is left without its cause.
+ * (b) No preset moves.
+ * (c) G5 under `joined`, with rule 623's regime as written: 0 on the
+ *     benchmark's own draw, identical line for line to `single`'s
+ *     (benchmark/results/invariants-2026-09-23-4 against the morning's);
+ *     on the new seed 4 under both laws, identical line for line (-6 against
+ *     -5); on rule 842(c)'s seed 8, as `single`'s 8 (-7 against -3): the
+ *     crater that shrank as its body grew under the sharp law is gone, and
+ *     what differs is only the example values of rows G5 does not read.
+ * (d) No scenario of the seal changes its numbers or its drawing; its report
+ *     text moved in all 308, the evidence table's crater card losing its
+ *     exception, and it was re-taken under rule 833.
+ * (e) Typecheck, lint, format, the whole suite, the strict gate with the
+ *     validation report regenerated once, and Chromium's end-to-end suite —
+ *     run on the adoption's own commit, before it was pushed.
+ *
+ * B-123 is closed as a join documented against the program's step.
+ */
+export const CRATER_FIELD_JOINED_OUTCOME =
+  "ADOPTED 23 September 2026: a scattered body's crater field, joined — whole up to a spread equal to its crater, the program's half from twice it, D_tc² / L between; level A's 98 crater-field readings agree, follow the join exactly, or are documented one-sided; G5 unchanged on three draws; no preset and no sealed number moves. B-123 closed.";

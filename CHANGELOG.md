@@ -19,6 +19,16 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **A body that reaches the ground scattered digs a crater field.** Where the
+  fragments of a stony or porous body that breaks up land spread wider than
+  the crater the whole swarm would dig, the simulator now draws a crater
+  field, as the Earth Impact Effects Program reports one: the crater shrinks
+  from the whole swarm's towards its largest fragment's, half of it, as the
+  spread grows from once to twice the crater — joined, so that a slightly
+  larger body never digs a crater half as wide, where the program halves at
+  once. The panel and the report say so. Found by the level A comparison
+  (B-123); no preset changes.
+
 - **The impact pipeline is held to its reference implementation on 1 865
   impacts, case by case, at every commit.** Level A of the certification plan:
   a wide grid of bodies from 1 m to 30 km, comet to iron, 12 to 70 km/s, 15 to

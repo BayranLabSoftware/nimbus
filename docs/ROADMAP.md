@@ -1004,7 +1004,14 @@ as wide, and G5 reads 12 against 8 — and five ejecta readings became
 one-sided, the program drawing a 10 m ring inside its own crater where the
 model draws none. The law stays at `single` and B-123 stays open; a second
 round wants a transition monotone in size, as an iron's field is joined by its
-mass. Read after that run: level A counted only pairs both sides answer.
+mass. **Asked again and adopted** (rules 846 to 853, by Andrea's choice of a
+monotone transition): the crater keeps the whole swarm's up to a spread equal
+to it, the program's half from twice it, and D_tc² / L between, with no step,
+and a low burst below its fireball is tested the same way, so the crater rule
+756 joins across the burst-to-ground switch stays joined. Of the 98 readings,
+12 agree with the program, 83 follow the join to one part in 10⁹, 3 are
+documented one-sided; G5 unchanged on three draws; no preset and no sealed
+number moves. B-123 closed. Read after that run: level A counted only pairs both sides answer.
 Closed the same morning: it now counts the readings only one side answers —
 3 219, every one traced to a cause shown at work on it, two of them the
 program's own: an ejecta blanket its map draws for 2 603 airbursts it has

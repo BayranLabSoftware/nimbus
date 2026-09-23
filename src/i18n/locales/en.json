@@ -251,7 +251,7 @@
       "COMPLETE_AIRBURST_LOW": "The body breaks up and its fragments spread to seven times its size just above the ground, lower than the radius of its own fireball: most of the energy goes into the air as a fireball and a shock wave, and the share of what the body keeps that strikes the ground digs a crater, the larger the lower the burst (a Nimbus step, rules 756 to 763).",
       "STREWN_FIELD": "The iron breaks up in the air and its fragments fall as a strewn field of craters, of which the largest is drawn: 0.15 of the crater the whole body would dig at its entry speed, the share Sikhote-Alin's fall of 1947 calibrates (its largest crater 26 m, where one body would dig about 178 m). From 3 × 10⁶ kg the craters overlap and grow into one, which the fragments dig together from 10⁷ kg (Bland & Artemieva 2006; rules 764 to 771).",
       "IRON_SWARM": "The iron breaks up, but its fragments do not spread as a stony body's do: they strike the ground close together and dig one crater, the whole body's at the speed the air leaves it — as Bland & Artemieva (2006) find for fragmented irons from 10⁷ kg, and the terrestrial record shows, where no crater of 0.3 to 1.5 km is multiple.",
-      "CRATER_FIELD": "The body breaks up in the air and its fragments reach the ground spread wider than the crater the whole swarm would dig: a crater field, as at Henbury, and the crater drawn is the largest fragment’s — half the whole swarm’s, as the Earth Impact Effects Program gives it (Collins et al. 2005; rules 838 to 845). The blast, the heat and the shaking are the whole swarm’s."
+      "CRATER_FIELD": "The body breaks up in the air and its fragments reach the ground spread wider than the crater the whole swarm would dig: a crater field, as at Henbury. The crater drawn shrinks from the whole swarm’s towards its largest fragment’s — half of it, as the Earth Impact Effects Program gives it once the spread is twice the crater — without the program’s step, so a slightly larger body never digs a crater half as wide (Collins et al. 2005; rules 846 to 853). The blast, the heat and the shaking are the whole swarm’s."
     },
     "burstAltitude": "Burst altitude",
     "breakupAltitude": "Fragmentation onset",
@@ -1302,7 +1302,7 @@
         "deathsBand": "order of magnitude · 5–95 % band: {{low}} to {{high}} · not validated for demographic estimates",
         "deathsTable": "order of magnitude · the table’s band: {{low}} to {{high}} · not validated for demographic estimates",
         "deathsPending": "being counted",
-        "craterFieldDetail": "the largest fragment’s, in a crater field · {{depth}} deep · {{morphology}}"
+        "craterFieldDetail": "a crater field’s, joined · {{depth}} deep · {{morphology}}"
       },
       "group": {
         "scenario": "Scenario inputs",
@@ -2307,10 +2307,10 @@
       },
       "crater": {
         "name": "Crater",
-        "summary": "The reference program’s crater scaling, case by case, but for the crater field of a scattered body; not yet held to a measured crater.",
-        "domain": "Simple and complex craters in sedimentary and crystalline rock, from the bodies of the reference grids that reach the ground — except a body whose fragments land spread wider than its crater: a crater field in the program, one crater here (B-123, open).",
+        "summary": "The reference program’s crater scaling, case by case, with a scattered body’s crater field joined where the program steps; not yet held to a measured crater.",
+        "domain": "Simple and complex craters in sedimentary and crystalline rock, from the bodies of the reference grids that reach the ground; where the fragments land spread wider than the crater, a crater field, joined to the single crater without the program’s step (rules 846 to 853).",
         "error": "",
-        "missing": "The crater field of a scattered body (B-123); level B: Meteor Crater in the blind test; level C: hydrocode results (iSALE, CTH) across angles and targets."
+        "missing": "Level B: Meteor Crater in the blind test; level C: hydrocode results (iSALE, CTH) across angles and targets."
       },
       "blast": {
         "name": "Air blast",

@@ -38,8 +38,8 @@ describe('rules 846 to 853: the crater field, joined', () => {
     expect(craterFieldShare('single', 9_000, 1_000)).toBe(1);
   });
 
-  it('leaves the default alone', () => {
-    expect(DEFAULT_CRATER_FIELD).toBe('single');
+  it('is the default since its adoption (rule 853)', () => {
+    expect(DEFAULT_CRATER_FIELD).toBe('joined');
   });
 
   it('keeps rule 847’s crater joined across the switch where the burst reaches the ground', () => {

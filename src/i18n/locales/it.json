@@ -251,7 +251,7 @@
       "COMPLETE_AIRBURST_LOW": "Il corpo si frammenta e i frammenti si allargano fino a sette volte la sua dimensione appena sopra il suolo, più in basso del raggio della sua palla di fuoco: la maggior parte dell'energia va nell'aria come palla di fuoco e onda d'urto, e la quota di ciò che il corpo trattiene che colpisce il suolo scava un cratere, tanto più grande quanto più basso è lo scoppio (un passo di Nimbus, regole 756–763).",
       "STREWN_FIELD": "Il ferro si frammenta in aria e i frammenti cadono come un campo di crateri, di cui è disegnato il più grande: 0,15 del cratere che il corpo intero scaverebbe alla sua velocità d'ingresso, la quota tarata sulla caduta di Sikhote-Alin del 1947 (il suo cratere più grande misura 26 m, dove un corpo unico ne scaverebbe circa 178). Da 3 × 10⁶ kg i crateri si sovrappongono e crescono fino a uno solo, che i frammenti scavano insieme da 10⁷ kg (Bland & Artemieva 2006; regole 764–771).",
       "IRON_SWARM": "Il ferro si frammenta, ma i frammenti non si allargano come quelli di un corpo roccioso: colpiscono il suolo vicini e scavano un solo cratere, quello del corpo intero alla velocità che l'aria gli lascia — come trovano Bland & Artemieva (2006) per i ferri frammentati da 10⁷ kg in su, e come mostra il catalogo terrestre, dove nessun cratere da 0,3 a 1,5 km è multiplo.",
-      "CRATER_FIELD": "Il corpo si frammenta in aria e i frammenti arrivano al suolo sparsi più largo del cratere che lo sciame intero scaverebbe: un campo di crateri, come a Henbury, e il cratere disegnato è quello del frammento più grande — metà di quello dello sciame intero, come lo dà l’Earth Impact Effects Program (Collins et al. 2005; regole 838–845). L’onda d’urto, il calore e lo scuotimento sono quelli dello sciame intero."
+      "CRATER_FIELD": "Il corpo si frammenta in aria e i frammenti arrivano al suolo sparsi più largo del cratere che lo sciame intero scaverebbe: un campo di crateri, come a Henbury. Il cratere disegnato si restringe da quello dello sciame intero verso quello del frammento più grande — la metà, come lo dà l’Earth Impact Effects Program quando la dispersione è il doppio del cratere — senza lo scatto del programma, così un corpo appena più grande non scava mai un cratere largo la metà (Collins et al. 2005; regole 846–853). L’onda d’urto, il calore e lo scuotimento sono quelli dello sciame intero."
     },
     "burstAltitude": "Altezza detonazione",
     "breakupAltitude": "Inizio frammentazione",
@@ -1302,7 +1302,7 @@
         "deathsBand": "ordine di grandezza · banda 5–95 %: da {{low}} a {{high}} · non validato per stime demografiche",
         "deathsTable": "ordine di grandezza · banda della tabella: da {{low}} a {{high}} · non validato per stime demografiche",
         "deathsPending": "in calcolo",
-        "craterFieldDetail": "del frammento più grande, in un campo di crateri · profondo {{depth}} · {{morphology}}"
+        "craterFieldDetail": "di un campo di crateri, unito · profondo {{depth}} · {{morphology}}"
       },
       "group": {
         "scenario": "Parametri dello scenario",
@@ -2560,10 +2560,10 @@
       },
       "crater": {
         "name": "Cratere",
-        "summary": "Le leggi di scala del cratere del programma di riferimento, caso per caso, salvo il campo di crateri di un corpo disperso; non ancora confrontate con un cratere misurato.",
-        "domain": "Crateri semplici e complessi in roccia sedimentaria e cristallina, dai corpi delle griglie di riferimento che arrivano al suolo — salvo un corpo i cui frammenti cadono sparsi più largo del suo cratere: un campo di crateri nel programma, un cratere solo qui (B-123, aperto).",
+        "summary": "Le leggi di scala del cratere del programma di riferimento, caso per caso, con il campo di crateri di un corpo disperso unito dove il programma fa uno scatto; non ancora confrontate con un cratere misurato.",
+        "domain": "Crateri semplici e complessi in roccia sedimentaria e cristallina, dai corpi delle griglie di riferimento che arrivano al suolo; dove i frammenti cadono sparsi più largo del cratere, un campo di crateri, unito al cratere singolo senza lo scatto del programma (regole 846–853).",
         "error": "",
-        "missing": "Il campo di crateri di un corpo disperso (B-123); livello B: Meteor Crater nel test in cieco; livello C: risultati di hydrocode (iSALE, CTH) su angoli e bersagli diversi."
+        "missing": "Livello B: Meteor Crater nel test in cieco; livello C: risultati di hydrocode (iSALE, CTH) su angoli e bersagli diversi."
       },
       "blast": {
         "name": "Onda d’urto",

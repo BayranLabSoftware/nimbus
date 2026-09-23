@@ -29,6 +29,7 @@ import {
   type EiepRatio,
 } from './eiepComparison.js';
 import type { EiepRow } from './eiepReference.js';
+import { swarmSpreadAtGround } from '../effects/atmosphericEntry.js';
 import type { ImpactScenarioResult } from '../simulate.js';
 
 export const LEVEL_A_BARS = { excellent: 0.02, audit: 0.1 } as const;
@@ -169,20 +170,27 @@ export const LEVEL_A_DIFFERENCES: readonly LevelADifference[] = [
     why: "The program prints the peak wind to three decimals of a metre per second («0.003 m/s»); a thousand kilometres and more from a small burst the whole answer is a digit or two, and every pair here is inside 10 % of the interval its printed figure stands for — for two irons at 12 and 20 km/s only once the entry runs on the program's equations too.",
   },
   {
-    id: 'crater-field',
+    id: 'crater-field-joined',
     quantities: ['transientDiameter', 'finalDiameter', 'finalDepth', 'ejectaEdge'],
+    // Shown at work: the model's crater is the whole swarm's times D_tc / L,
+    // with the swarm's spread L between once and twice that crater, and the
+    // pair parts from the program's half by exactly that — 2 / s for the
+    // crater, (2 / s)^(4/3) for the blanket's edge.
     applies: (pair) => {
-      const ellipse = extras(pair.row).fragmentEllipseM?.[0];
-      const transient = pair.row.transientDiameterM;
-      if (ellipse === undefined || transient === null || transient === undefined) return false;
-      const ratio = pair.model / pair.reference;
-      // The program's crater is its largest fragment's: half the whole body's
-      // in diameter and depth, 2^(4/3) closer in for the ejecta's edge.
-      const expected = pair.quantity === 'ejectaEdge' ? 2 ** (4 / 3) : 2;
-      return ellipse > 2 * transient && Math.abs(ratio / expected - 1) < 0.1;
+      const whole = simulateEiepRow(pair.row, { craterField: 'single' });
+      if (whole.entry.regime !== 'PARTIAL_AIRBURST') return false;
+      const spread = swarmSpreadAtGround({
+        impactorDiameter: pair.row.diameterM,
+        impactorDensity: pair.row.densityKgM3,
+        impactAngle: (pair.row.angleDeg * Math.PI) / 180,
+        breakupAltitude: whole.entry.breakupAltitude,
+      }) as number;
+      const s = spread / (whole.crater.transientDiameter as number);
+      if (!(s > 1 && s < 2)) return false;
+      const expected = pair.quantity === 'ejectaEdge' ? (2 / s) ** (4 / 3) : 2 / s;
+      return Math.abs(pair.model / pair.reference / expected - 1) < 0.1;
     },
-    why: 'Where the fragments of a body that reaches the ground broken land spread wider than the crater it would dig, the program answers «a crater field, not a single crater» and gives the crater of the largest fragment — half the diameter. This model digs one crater of the whole body there, and its ejecta blanket with it. The program is right to call it a field; this model has no crater field for a stony or porous body.',
-    bug: 'B-123',
+    why: "Where the fragments of a body that reaches the ground broken land spread wider than the crater it would dig, the program answers «a crater field, not a single crater» and gives its largest fragment's crater, half the whole swarm's, at once. This model joins the two (rules 846 to 853, B-123): the whole crater up to a spread equal to it, the program's half from twice it, and between them the whole swarm's crater times D_tc / L — no step, so a body a little larger never digs a crater half as wide. Between once and twice the crater the model is larger than the program by 2 / s, and that is a difference of design.",
   },
   {
     id: 'iron-crater-by-mass',

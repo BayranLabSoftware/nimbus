@@ -46,12 +46,10 @@ describe('rules 838 to 845: a scattered body digs a crater field', () => {
     expect(read).toBeGreaterThan(800);
   }, 120_000);
 
-  it('does nothing unless asked: the default is a single crater', () => {
-    expect(DEFAULT_CRATER_FIELD).toBe('single');
-    const { inputs: _none, ...none } = simulateImpact(SCATTERED);
-    const { inputs: _single, ...single } = simulateImpact({ ...SCATTERED, craterField: 'single' });
-    expect(single).toEqual(none);
-    expect(none.crater.origin).toBe('impact');
+  it('does nothing when asked for a single crater (the default until rules 846 to 853)', () => {
+    expect(DEFAULT_CRATER_FIELD).toBe('joined');
+    const single = simulateImpact({ ...SCATTERED, craterField: 'single' });
+    expect(single.crater.origin).toBe('impact');
   });
 
   it('under `field`, halves the scattered swarm’s crater and names it', () => {
