@@ -94,6 +94,13 @@ States 2, 3 and 4 are drawn from each layer's edge (step 1), with these choices:
   layer» is shown where the heat reaches its horizon (Chicxulub, Popigai), not on a heat that stops
   short of it.
 
+## Step 4, as built
+
+- Past the 1 mm isopach the ejecta draw the same veil, out to where the r⁻³ law has thinned the
+  blanket to 0.1 mm (10^⅓ times farther), labelled «deposito < 1 mm oppure non risolto dalla scala
+  corrente» — never «continua». The legend states the cut: «Mappa visualizzata: spessore ≥ 1 mm».
+- The globe and the report change together (rule 1037).
+
 ## The printed report (rule 1037)
 
 The reviewer, approving steps 1 to 3, asked for the report now, before step 4: the globe and the

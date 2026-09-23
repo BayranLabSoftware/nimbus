@@ -19,6 +19,10 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The ejecta's map says where its cut is.** Past the 1 mm isopach a veil fades
+  out to 0.1 mm, labelled "deposit < 1 mm or not resolved at the current scale"
+  — never "continues" — and the legend says "Map shown: thickness ≥ 1 mm", on
+  the globe and in the report. Step 4 of the map's grammar.
 - **The printed report speaks the map's grammar.** Its flat maps draw what the
   globe draws past each field's edge — the veil below the threshold (grey on
   paper), the dash-dot limit of the model, the hatch where nothing is computed,

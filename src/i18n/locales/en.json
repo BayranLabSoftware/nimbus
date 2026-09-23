@@ -1159,7 +1159,8 @@
         "coincide": "Lines joined",
         "wholeEarth": "Whole Earth",
         "why": "Why",
-        "notModelled": "Not modelled"
+        "notModelled": "Not modelled",
+        "shown": "Map shown"
       },
       "note": {
         "isolinesMedian": "the model's thresholds, at the median",
@@ -1202,7 +1203,8 @@
         "tsunamiNothing": "nothing on the globe yet: no cell passes 1 m, or the computation over the sea floor has not finished",
         "tsunamiLimitLand": "an impact on land raises the wave only with the segment of its crater that lies in the sea; ejecta falling into the water are not counted, for nobody has published how much they raise (rules 267 to 273)",
         "tsunamiLimitSea": "the run-up on the coast is a plane-beach estimate (Synolakis 1987), not a map of the flooding",
-        "thermalNotModelled": "Global re-entry of the ejecta and atmospheric heating: not modelled in this layer"
+        "thermalNotModelled": "Global re-entry of the ejecta and atmospheric heating: not modelled in this layer",
+        "ejectaShown": "thickness ≥ 1 mm"
       },
       "source": {
         "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 at the ground (rules 748 to 755), verified against the Earth Impact Effects Program (I1)",
@@ -1320,7 +1322,8 @@
             "thermal": "direct radiation not computed beyond the horizon;\nthis does not imply no heating"
           },
           "compressed": "thresholds {{lo}}–{{hi}} cal/cm²\ncompressed at the geometric limit",
-          "compressedOne": "threshold {{value}} cal/cm²\ncompressed at the geometric limit"
+          "compressedOne": "threshold {{value}} cal/cm²\ncompressed at the geometric limit",
+          "belowThresholdEjecta": "deposit < 1 mm or\nnot resolved at the current scale"
         },
         "source": {
           "below": "the same model as the field, read past the lowest threshold drawn"

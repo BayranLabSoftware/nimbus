@@ -142,7 +142,9 @@ describe('rule 1030: what the globe draws past a field’s edge', () => {
           const words =
             mark.state === 'notModelled'
               ? `globe.impactMap.mark.label.notModelled.${layer.id}`
-              : `globe.impactMap.mark.label.${mark.state}`;
+              : layer.id === 'ejecta'
+                ? 'globe.impactMap.mark.label.belowThresholdEjecta'
+                : `globe.impactMap.mark.label.${mark.state}`;
           expect(mark.label).toBe(words);
         }
   });
@@ -194,9 +196,6 @@ describe('rule 1030: what the globe draws past a field’s edge', () => {
     const agreement = layersOf('TUNGUSKA').find((l) => l.id === 'uncertainty');
     expect(agreement?.edge?.beyond).toBe('computedZero');
     expect(agreement?.marks).toEqual([]);
-    // The ejecta's band has words of its own, in its own step (rule 1031 (b)).
-    for (const key of ['CHICXULUB', 'METEOR_CRATER'] as const)
-      expect(layersOf(key).find((l) => l.id === 'ejecta')?.marks).toEqual([]);
   });
 
   it('paints the band fading to nothing, the area hatched, the line nothing', () => {
@@ -240,5 +239,20 @@ describe('rule 1031 (a): the heat at its horizon', () => {
     const heat = layersOf('METEOR_CRATER').find((l) => l.id === 'thermal');
     expect(heat?.isolines.every((l) => l.state === 'computed')).toBe(true);
     expect(heat?.notes.map((n) => n.text)).not.toContain('globe.impactMap.note.thermalNotModelled');
+  });
+});
+
+describe('rule 1031 (b): the ejecta past the 1 mm isopach', () => {
+  it('fades out a decade thinner, never said to continue, and the legend states the cut', () => {
+    for (const key of ['CHICXULUB', 'METEOR_CRATER'] as const) {
+      const r = simulateImpact(IMPACT_PRESETS[key].input);
+      const ejecta = availableImpactLayers(r, ctx).find((l) => l.id === 'ejecta');
+      const band = ejecta?.marks.find((mk) => mk.state === 'belowThreshold');
+      expect(band?.label, key).toBe('globe.impactMap.mark.label.belowThresholdEjecta');
+      expect(band?.fromM).toBe(r.ejecta.blanketEdge1mm);
+      // The r⁻³ law: a tenth of the thickness is 10^(1/3) times as far.
+      expect((band?.toM ?? 0) / (band?.fromM ?? 1)).toBeCloseTo(Math.cbrt(10), 3);
+      expect(ejecta?.notes.map((n) => n.text)).toContain('globe.impactMap.note.ejectaShown');
+    }
   });
 });

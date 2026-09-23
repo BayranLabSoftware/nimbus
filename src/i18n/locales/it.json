@@ -1159,7 +1159,8 @@
         "coincide": "Linee unite",
         "wholeEarth": "Tutta la Terra",
         "why": "Perché",
-        "notModelled": "Non modellati"
+        "notModelled": "Non modellati",
+        "shown": "Mappa visualizzata"
       },
       "note": {
         "isolinesMedian": "le soglie del modello, alla mediana",
@@ -1202,7 +1203,8 @@
         "tsunamiNothing": "sul globo non c'è ancora nulla: nessuna cella supera 1 m, o il calcolo sul fondale non è finito",
         "tsunamiLimitLand": "un impatto sulla terraferma solleva l'onda solo con il segmento di cratere che cade in mare; gli ejecta che ricadono in acqua non sono contati, perché nessuno ha pubblicato quanto sollevano (regole 267–273)",
         "tsunamiLimitSea": "la risalita sulla costa è una stima su spiaggia piana (Synolakis 1987), non una mappa d'inondazione",
-        "thermalNotModelled": "Rientro globale degli ejecta e riscaldamento atmosferico: non modellati in questo layer"
+        "thermalNotModelled": "Rientro globale degli ejecta e riscaldamento atmosferico: non modellati in questo layer",
+        "ejectaShown": "spessore ≥ 1 mm"
       },
       "source": {
         "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 al suolo (regole 748–755), verificata contro l'Earth Impact Effects Program (I1)",
@@ -1320,7 +1322,8 @@
             "thermal": "radiazione diretta non calcolata oltre l’orizzonte;\nquesto non implica assenza di riscaldamento"
           },
           "compressed": "soglie {{lo}}–{{hi}} cal/cm²\ncompresse presso il limite geometrico",
-          "compressedOne": "soglia {{value}} cal/cm²\ncompressa presso il limite geometrico"
+          "compressedOne": "soglia {{value}} cal/cm²\ncompressa presso il limite geometrico",
+          "belowThresholdEjecta": "deposito < 1 mm oppure\nnon risolto dalla scala corrente"
         },
         "source": {
           "below": "lo stesso modello del campo, letto oltre la soglia più bassa disegnata"

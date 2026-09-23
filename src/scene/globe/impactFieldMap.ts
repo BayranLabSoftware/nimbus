@@ -443,6 +443,9 @@ interface BelowField {
   scale: 'ratio' | 'magnitude';
   /** A value as the legend writes it. */
   format: (value: number) => string;
+  /** The band's words, where the layer's own are not «continua sotto
+   *  soglia» (the ejecta, rule 1031 (b)). */
+  label?: string;
 }
 
 /** A layer as its builder makes it, before its evidence, state, card, edge
@@ -1105,6 +1108,15 @@ function ejectaLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLa
       maxRangeM: edge,
       colorAt: (r) => logColor(EJECTA_PALETTE, ejectaThickness(m(r), dtc, rim), 0.001, 10),
     },
+    // Rule 1031 (b): past the 1 mm isopach the law goes on thinning, but a
+    // deposit there may be under a millimetre or beyond what this scale
+    // resolves — never said to "continue".
+    below: {
+      valueAt: (r) => ejectaThickness(m(r), dtc, rim),
+      scale: 'ratio',
+      format: (v) => `${sigFigures(v * 1_000, language)} mm`,
+      label: t('globe.impactMap.mark.label.belowThresholdEjecta'),
+    },
     isolines: withBearings(
       levels.map((x) => ({
         id: `ejecta-${x.th.toString()}`,
@@ -1141,6 +1153,7 @@ function ejectaLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLa
         }),
       },
       { label: t('globe.impactMap.noteLabel.source'), text: ejectaSource },
+      { label: t('globe.impactMap.noteLabel.shown'), text: t('globe.impactMap.note.ejectaShown') },
       { label: t('globe.impactMap.noteLabel.limit'), text: t('globe.impactMap.note.ejectaInside') },
     ],
   };
@@ -2029,7 +2042,7 @@ function stateMarks(
         family: field.family,
         fromM: edge.atM,
         toM,
-        label: t('globe.impactMap.mark.label.belowThreshold'),
+        label: below.label ?? t('globe.impactMap.mark.label.belowThreshold'),
         labelBearingDeg: MARK_BEARING_DEG.below,
         description: past(cut ? 'notModelled' : 'belowThreshold'),
         card: {
