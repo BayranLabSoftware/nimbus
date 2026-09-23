@@ -391,5 +391,33 @@ export const CRATER_ORIGIN_OUTCOME: string | null =
  * blast's law and the climate tier are not touched; one run.
  */
 
-/** The outcome of rules 987 to 991, written after their one run. */
-export const CRATER_AUDIT_OUTCOME: string | null = null;
+/**
+ * The outcome of rules 987 to 991, written on 23 September 2026 after their
+ * one run (the rules pushed first, b188467).
+ *
+ * REFUSED by rule 990: three tests beyond those it lets an adoption update
+ * failed, and the change was taken out.
+ * - Two hold that no burn or fire ring shrinks as a body grows (rules 772 to
+ *   779 and 780 to 787). They failed where a body, out of the domain on both
+ *   sides, passes from a complete to a partial airburst: at 12 km/s and 8°, a
+ *   body of 7 000 kg/m³ growing from 243.5 to 250.8 m saw its third-degree
+ *   ring fall from 53.4 to 51.4 km (3.9 %); at 12 km/s and 30°, one of
+ *   3 000 kg/m³ and 0.3 MPa growing from 113.1 to 115.3 m, from 10.914 to
+ *   10.908 km. The cause is in rule 988, not in the code: B-093 made that passage
+ *   continuous — a low burst's fireball on the ground becomes the partial
+ *   airburst's fireball on the ground energy — and rule 988 took the second out
+ *   and kept the first, which reopens the step B-093 closed.
+ * - One holds that the field is the one the rings are drawn from (rule 626). It
+ *   failed because the change told the field of the crater's state only through
+ *   the field source the globe builds, not through a result read directly — a
+ *   fault of the implementation, which would have been mended had the change
+ *   stood.
+ * Nothing else was read: the seal moved, as it had to, and G5 was not run.
+ * What stands open, for the reviewer: whether a low burst's fireball on the
+ * ground is of crater origin too when what reaches the ground travels below
+ * 5 km/s, or whether the ground energy's fireball stays as the continuation
+ * of it; and whether the three other parts of rule 988 — the rings' shapes, the
+ * seismic stage, the source line — should be asked alone.
+ */
+export const CRATER_AUDIT_OUTCOME: string | null =
+  'REFUSED 23 September 2026 by rule 990: taking the ground fireball out of the domain, while a low burst keeps its own, reopens the step B-093 closed between a complete and a partial airburst — two tests of rings that must not shrink as a body grows failed, by up to 3.9 %.';
