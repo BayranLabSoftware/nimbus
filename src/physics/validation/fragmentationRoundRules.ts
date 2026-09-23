@@ -190,6 +190,57 @@
  * 981 changes (rule 977); before it, only by the reviewer's answer.
  */
 
+/**
+ * Rules 982 to 986 — a versioned rectification of step 2, on the reviewer's
+ * reply of 23 September 2026, evening, and Andrea's word («Sì, tutto in
+ * ordine»). Written before the baseline is recomputed.
+ *
+ * RULE 982. WHAT THIS IS. Rule 979 read two absences as altitudes: a first
+ * stage the model does not produce as 0 km, and the release of a body that
+ * reaches the ground as a burst at 0 km. Zero is not an altitude; averaging it
+ * mixes a frequency of outcomes with a height (the reviewer). The first
+ * version of the table and its baseline (b1bf097) are kept as they were, in
+ * fragmentationBaseline.v1.json and docs/FRAGMENTATION_DEV_TABLE.v1.md; the
+ * second is written beside them. No case, no threshold and no draw is added.
+ *
+ * RULE 983. m1, REDEFINED (amends rule 979). On each case, two results: p₁,
+ * the share of draws in which the model produces a first stage (the two-stage
+ * law covers the body and its dynamic pressure reaches S1), and the altitude
+ * of that stage over those draws only. The miss is the distance from that
+ * conditional median to the observed interval. Where the model produces a first
+ * stage in no draw, m1 is not applicable: 2008 TC3, whose density lies below
+ * the law's range — its one breakup (Eq. 11) is shown in a diagnostic column,
+ * "the altitude of the single breakup", and enters no mean.
+ *
+ * RULE 984. m2, REDEFINED (amends rule 979). On each case, p_b, the share of
+ * draws that burst in the air (a complete airburst), and the burst altitude
+ * over those draws only; the miss is the distance from that conditional median
+ * to the observed interval. A case with no burst in any draw has no m2 miss.
+ *
+ * RULE 985. THE CREDIT (amends rule 964 (a) for m1 and m2). A variant's gain
+ * on m1 or m2 is read case by case, over the counted cases where both the
+ * baseline and the variant give a conditional altitude: on a case, a gain
+ * counts only if the variant does not lower the probability of the event the
+ * altitude belongs to — p₁ for m1, and for m2 the probability it gives the
+ * observed outcome (m3) — otherwise the better altitude is diagnostic and
+ * only a loss is kept. m1 or m2 improves when the mean over those cases of
+ * the credited change of the miss is 1 km or more. So no variant looks better
+ * by moving cases between the ground and the air, which changes which
+ * altitudes enter the mean. The bands of rule 976 are the conditional
+ * altitudes' 5 %–95 % widths.
+ *
+ * RULE 986. THE CASES (amends rule 980). Carancas is not counted for adoption
+ * in this round: its entry is computed down to sea level, where the site lies
+ * at about 3 800 m, a boundary condition that can change the very survival m3
+ * judges; it stays in the table as a diagnostic, the limit written beside it,
+ * until the site's altitude is mended apart. Chelyabinsk and Tunguska stay
+ * controls of m3 alone, and m4 counted nowhere. Counted: m1 on 2018 LA,
+ * 2023 CX1 and 2024 BX1; m2 on 2008 TC3, 2018 LA, 2022 EB5, 2023 CX1,
+ * 2024 BX1 and 2022 WJ1; m3 on Chelyabinsk, Tunguska, 2008 TC3, 2018 LA,
+ * 2023 CX1, 2024 BX1 and 2022 WJ1. The baseline is recomputed on the draws of
+ * rule 978, once.
+ */
+
 /** The axes of rule 960. */
 export type FragmentationAxis = 'pancake' | 'strength' | 'fragments';
 
