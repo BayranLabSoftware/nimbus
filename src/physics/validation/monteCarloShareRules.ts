@@ -67,6 +67,30 @@
  * refusal records why.
  */
 
+/**
+ * Rules 905 to 907 — a rare event's percentiles, shown under a warning.
+ * Written on 23 September 2026, after rules 890 to 895 were adopted, on the
+ * reviewer's word of that day: «se la probabilità d'accadimento è sotto
+ * l'1 %, non mostrare percentili condizionati come risultato principale;
+ * mostrali sotto un avviso del tipo "condizionato a un evento raro"».
+ *
+ * RULE 905. WHAT THIS IS. A row whose share of runs above zero is above 0 and
+ * below 0.01 shows no percentile in its P10, P50 and P90 cells; under its
+ * name it says the event is rare and in how many runs it happened, and on a
+ * line of its own, marked "conditional on a rare event", the P10, P50 and P90
+ * of those runs. Every other row is shown as rule 890 says.
+ *
+ * RULE 906. WHAT DECIDES. The panel as rule 905 writes it, and nothing else:
+ * no number of the engine, the seal or the report moves; typecheck, lint,
+ * format and the whole suite pass; the row read in the running app for a
+ * scenario with such an event, or, where none of the presets has one at a
+ * thousand draws, the rule's own test on a summary built to have one.
+ *
+ * RULE 907. WHAT AN ADOPTION DOES. The panel and its texts in both
+ * languages; the CHANGELOG records it.
+ */
+export const MC_RARE_SHARE = 0.01;
+
 /** Rule 890: the share above which a row is shown over all its draws. */
 export const MC_SHARE_SHOWN_WHOLE = 0.9;
 
