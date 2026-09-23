@@ -1188,7 +1188,10 @@ applicable, Carancas diagnostic until its site's altitude is mended.
 Today's model misses the first stage by 27.2 km on average over three
 cases, the burst — a proxy — by 5.2 km over six, and gives the observed
 outcome 86.9 % over seven, wrong on 2022 WJ1 (docs/FRAGMENTATION_DEV_TABLE.md).
-Next: the reviewer's leave for P.
+Variant P — Eq. 14 solved in place of Eq. 15\* (rules 992 to 1000) — REFUSED
+after its one run: no metric improves; every body bursts 0.1 to 2.3 km higher,
+above flares the model already overshot (docs/FRAGMENTATION_VARIANT_P.md).
+Next, in the round's order: S, mass lost by stages between S1 and S2.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

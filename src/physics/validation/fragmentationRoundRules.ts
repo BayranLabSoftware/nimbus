@@ -383,5 +383,32 @@ export const FRAGMENTATION_CLAUSE = {
 /** Rule 977: the quality of a target in the development table. */
 export type TargetQuality = 'direct' | 'reconstructed' | 'modelDependent';
 
+/**
+ * The outcome of variant P, written on 23 September 2026, night, after its one
+ * run (rules pushed first, f735c70; the dormant candidate and the score,
+ * e71c7d0; fragmentationVariantP.json and docs/FRAGMENTATION_VARIANT_P.md).
+ *
+ * REFUSED by rule 964 (a): no metric improves.
+ * - m1 reads the same on every case, as rule 996 said it would.
+ * - m2 worsens by 0.15 km on average. Eq. 14 solved spreads the pancake faster
+ *   than Eq. 15* and every body bursts higher, by 0.1 to 2.3 km: 0.4 to 0.5 km on 2018 LA,
+ *   2023 CX1 and 2024 BX1, 1.9 km on 2008 TC3 and 2022 EB5; Chelyabinsk from
+ *   27.1 to 29.4 km and Tunguska from 8.2 to 9.2 km, uncounted. The model
+ *   already burst above the flares it is read against, so higher is worse
+ *   everywhere but on EB5 (31.1 to 33.0 km, the flare at 33.3). One case, 2018
+ *   LA, saw its band widen by more than half; it lost, and a loss counts.
+ * - m3 does not move: no case changes its outcome, and 2022 WJ1 stays wrong —
+ *   its body stays whole below S2 and never reaches the pancake P changes.
+ * - Every outcome already right is kept. Rule 964 (d) was not run.
+ * Read after, not decided by: Collins et al.'s approximation is not what holds
+ * the altitudes wrong — it errs, but on the side that helps — and the largest
+ * misses sit before the pancake, in the first stage (27 km) and in a body that
+ * does not break at all (WJ1). The code stays in the product, off, as the
+ * record of this run. Next, in rule 967's order: S, mass lost by stages
+ * between S1 and S2, by rules of its own.
+ */
+export const VARIANT_P_OUTCOME: string | null =
+  'REFUSED 23 September 2026 by rule 964 (a): the solution of Eq. 14 improves no metric — m1 unchanged, m2 worse by 0.15 km on average (every body bursts higher, by 0.1 to 2.3 km, above flares it already overshot), m3 unchanged.';
+
 /** The outcome of the round, written after its last variant. */
 export const FRAGMENTATION_ROUND_OUTCOME: string | null = null;
