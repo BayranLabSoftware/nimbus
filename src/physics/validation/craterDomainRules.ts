@@ -158,3 +158,61 @@ export type CraterState = 'computed' | 'none' | 'outOfDomain';
  */
 export const CRATER_DOMAIN_OUTCOME: string | null =
   'ADOPTED 23 September 2026: below 5 km/s at the ground the crater is not resolved — a local penetration pit is possible — where the model gave a hypervelocity crater. Four sealed scenarios move, nothing else of the model does; 2022 WJ1 reads "out of the domain", never "no crater".';
+
+/**
+ * Rules 953 to 958 — two refinements of B-124, as the reviewer asked on 23
+ * September 2026, evening, on approving it. Written on Andrea's word («Entrambi,
+ * in ordine») before any line of the change.
+ *
+ * RULE 953. WHAT THIS IS. (a) Where the crater is out of its law's domain, the
+ * model gives no seismic magnitude either: how a body that penetrates at a
+ * few hundred metres a second couples to the ground is not modelled. (b) The
+ * crater's domain is said in three tiers, the reviewer's: below 5 km/s at the
+ * ground, out of the domain of hypervelocity cratering, a local penetration
+ * possible and not modelled; at 5 km/s or more with a crater under about
+ * 200 m, exploratory — outside the domain Collins et al. declare for their
+ * scaling law; at 5 km/s or more and 200 m or more, inside it.
+ *
+ * RULE 954. THE MAGNITUDE. In the state `outOfDomain` the seismic magnitude
+ * and its range are null and its source is null, as where no relation covers
+ * a scenario (rule 730); the liquefaction radius, read from the magnitude, is
+ * none. Nothing else moves: the blast and the flash of the energy released at
+ * the ground are the energy's, not the crater's — the rings "of crater origin"
+ * the reviewer names, the rim and the ejecta, are already not given (rule
+ * 947). This reading is written to the reviewer with the outcome.
+ *
+ * RULE 955. THE SECOND TIER. Collins, Melosh & Marcus (2005, p. 823): Eq. 21
+ * "applies for impacts into solid rock targets where gravity is the
+ * predominant arresting influence in crater growth, which is the case for all
+ * terrestrial impacts larger than a couple of hundred meters in diameter". A
+ * crater computed (`computed`) whose final diameter is under 200 m is labelled
+ * "exploratory: outside the declared domain of Collins et al.'s scaling law"
+ * in the panel, the report and the crater's evidence card — its numbers kept
+ * and shown, as the reviewer asked, for the round that will read them. The
+ * label is a word, not a switch: no number moves by it.
+ *
+ * RULE 956. WHAT DECIDES. (a) The seal moves in the numbers of the four
+ * scenarios out of the domain (their seismic fields) and nowhere else; in
+ * texts where a crater under 200 m is labelled, or a card's words change; (b)
+ * level A does not move — its crater is the legacy one, never out of the
+ * domain; (c) G5 reads nothing new; (d) typecheck, lint, format, the whole
+ * suite, the strict gate, Chromium's end-to-end suite; (e) the label read in
+ * the running app on a crater under 200 m, and the magnitude's absence on a
+ * body out of the domain.
+ *
+ * RULE 957. WHAT AN ADOPTION MAY UPDATE: a test that asserts a magnitude for a
+ * body whose crater is out of the domain, rewritten to its absence; the seal,
+ * re-taken. Any other test that fails refuses the change.
+ *
+ * RULE 958. WHAT MAY NOT HAPPEN. The 200 m is Collins's "couple of hundred
+ * meters", read as 200, and stays; no crater is disabled by it; one run. The
+ * second tier's own round — a law for the strength regime — comes after the
+ * round on fragmentation (the reviewer).
+ */
+
+/** Rule 955: the final crater under which Collins et al.'s law is outside its
+ *  declared domain (m). */
+export const COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M = 200;
+
+/** The outcome of rules 953 to 958, written after their one run. */
+export const CRATER_TIERS_OUTCOME: string | null = null;
