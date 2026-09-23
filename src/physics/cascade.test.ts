@@ -9,6 +9,9 @@ import { simulateEarthquake } from './events/earthquake/index.js';
 import { EXPLOSION_PRESETS, simulateExplosion } from './events/explosion/index.js';
 import { VOLCANO_PRESETS, simulateVolcano } from './events/volcano/index.js';
 import { IMPACT_PRESETS, simulateImpact } from './simulate.js';
+import { degreesToRadians, deg, kgPerM3, m, mps } from './units.js';
+import itLocale from '../i18n/locales/it.json';
+import enLocale from '../i18n/locales/en.json';
 
 describe('cascade', () => {
   it('impact cascade for Chicxulub contains flash, blast, ejecta, firestorm, atmospheric stages', () => {
@@ -168,5 +171,37 @@ describe('cascade', () => {
     const result = simulateVolcano(VOLCANO_PRESETS.MT_ST_HELENS_1980.input);
     const stages = buildVolcanoCascade(result);
     expect(stages.map((s) => s.key)).not.toContain('cascade.volcano.aerosol');
+  });
+
+  it('B-128: every stage of an impact has a name and a description in both languages', () => {
+    const lookup = (tree: unknown, key: string): unknown =>
+      key
+        .split('.')
+        .reduce<unknown>(
+          (node, part) =>
+            node !== null && typeof node === 'object'
+              ? (node as Record<string, unknown>)[part]
+              : undefined,
+          tree
+        );
+    const slow = {
+      impactorDiameter: m(0.5),
+      impactVelocity: mps(14_000),
+      impactorDensity: kgPerM3(3_000),
+      targetDensity: kgPerM3(2_700),
+      impactAngle: degreesToRadians(deg(22.5)),
+      surfaceGravity: 9.806_65,
+    };
+    const results = [
+      ...Object.values(IMPACT_PRESETS).map((p) => simulateImpact(p.input)),
+      simulateImpact(slow),
+    ];
+    expect(results.at(-1)?.crater.state).toBe('outOfDomain');
+    for (const r of results)
+      for (const stage of buildImpactCascade(r))
+        for (const locale of [itLocale, enLocale]) {
+          expect(typeof lookup(locale, `${stage.key}.name`), stage.key).toBe('string');
+          expect(typeof lookup(locale, `${stage.key}.desc`), stage.key).toBe('string');
+        }
   });
 });

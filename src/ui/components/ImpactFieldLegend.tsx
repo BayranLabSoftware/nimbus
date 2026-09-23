@@ -3,6 +3,7 @@ import { useId, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
 import {
+  absentImpactLayers,
   availableImpactLayers,
   layoutColorbar,
   rampColor,
@@ -30,11 +31,13 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
   const waveUnpropagatedReachM = useAppStore((s) => s.waveUnpropagatedReachM);
   const language = i18n.language;
 
-  const { layers, layer } = useMemo(() => {
+  const { layers, layer, absent } = useMemo(() => {
     const ctx = { t, language, uncertaintyKey, waveMap, waveUnpropagatedReachM };
     return {
       layers: availableImpactLayers(result, ctx),
       layer: resolveImpactLayer(result, layerId, ctx),
+      // Rule 1032 (c): a layer that draws nothing is never simply missing.
+      absent: absentImpactLayers(result, ctx),
     };
   }, [result, t, language, uncertaintyKey, layerId, waveMap, waveUnpropagatedReachM]);
 
@@ -60,6 +63,18 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
           </button>
         ))}
       </div>
+      {absent.length > 0 && (
+        <div className={styles.absent} data-testid="impact-layers-absent">
+          <p className={styles.absentHeading}>{t('globe.impactMap.absentHeading')}</p>
+          <ul className={styles.absentList}>
+            {absent.map((a) => (
+              <li key={a.id} data-testid={`impact-layer-absent-${a.id}`} data-beyond={a.beyond}>
+                <strong>{a.tab}</strong> — {a.why}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       {layer !== null && (
         <>
           <div className={styles.head}>
@@ -79,6 +94,26 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
           >
             <strong>{layer.evidence.label}.</strong> {layer.evidence.summary}
           </p>
+          {/* Rule 1029: the layer's provenance card, five fixed fields. */}
+          <details className={styles.card} data-testid="impact-layer-card" data-state={layer.state}>
+            <summary>{t('globe.impactMap.card.heading')}</summary>
+            <dl className={styles.notes} data-beyond={layer.card.beyond}>
+              {(
+                [
+                  ['quantity', `${layer.card.quantity} · ${layer.card.unit}`],
+                  ['state', t(`globe.impactMap.state.${layer.card.state}`)],
+                  ['source', layer.card.source],
+                  ['extent', layer.card.extent],
+                  ['beyond', t(`globe.impactMap.beyond.${layer.card.beyond}`)],
+                ] as const
+              ).map(([key, value]) => (
+                <div key={key} className={styles.note} data-card={key}>
+                  <dt>{t(`globe.impactMap.card.${key}`)}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </details>
           {layer.uncertainty !== undefined && (
             <div
               className={styles.chips}

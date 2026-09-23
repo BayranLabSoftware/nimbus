@@ -19,6 +19,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The impact map says what it does not draw, and where each layer comes
+  from.** A layer the model computes but does not draw — Chelyabinsk's blast,
+  below the lowest drawn threshold; Tunguska's heat, below the main one; the
+  ejecta of a body out of the crater's domain, not modelled — is listed in the
+  legend with its reason, never simply missing; every drawn layer carries a
+  provenance card (quantity and unit, state, source, the extent drawn, and what
+  lies beyond its edge). The first step of the map's grammar the reviewer set
+  (docs/MAP_GRAMMAR.md). The timeline no longer prints raw keys for a crater
+  out of its domain (B-128).
 - **A body that reaches the ground too slowly no longer digs a crater it
   cannot dig.** Below 5 km/s at the ground — slower than sound in rock
   (French 1998) — the crater law does not hold, and the model no longer

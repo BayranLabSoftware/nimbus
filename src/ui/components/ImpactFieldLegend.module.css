@@ -232,3 +232,37 @@
 .evidenceExploratory {
   border-left-style: dashed;
 }
+
+/* Rules 1029 and 1032 (c): the provenance card and the layers not drawn. */
+.card {
+  font-size: 10.5px;
+}
+
+.card summary {
+  cursor: pointer;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.absent {
+  font-size: 10.5px;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.absentHeading {
+  margin: 0 0 2px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+.absentList {
+  margin: 0;
+  padding-left: 14px;
+}

@@ -600,6 +600,27 @@ test.describe('calibration envelope', () => {
     await expect(note).toContainText('No impact in recorded history left a death toll');
   });
 
+  test('rule 1033: the impact map says every layer’s state and what it does not draw', async ({
+    page,
+  }) => {
+    // Chelyabinsk draws its shaking alone: its blast is below the lowest drawn
+    // threshold and must say so, and the layer it draws carries its card.
+    await page.goto('/?lng=en&m=globe&t=impact&p=CHELYABINSK&lat=54.8&lon=61.1');
+    await expandSimulatorPanelIfCollapsed(page);
+    const launch = page.getByRole('button', { name: 'Launch simulation' });
+    await expect(launch).toBeEnabled();
+    await launch.click({ timeout: 60_000 });
+    const legend = page.getByTestId('impact-field-legend');
+    await expect(legend).toBeAttached({ timeout: 90_000 });
+    await expect(legend.getByTestId('impact-layer-absent-overpressure')).toHaveAttribute(
+      'data-beyond',
+      'belowThreshold'
+    );
+    const card = legend.getByTestId('impact-layer-card');
+    await expect(card).toHaveAttribute('data-state', 'computed');
+    await expect(card.locator('[data-card]')).toHaveCount(5);
+  });
+
   test('every number of an impact’s results carries its class of evidence', async ({ page }) => {
     // Phase 1 of the plan of 22 September 2026: no figure without the class
     // of what it rests on — its own, or its section's where the section's

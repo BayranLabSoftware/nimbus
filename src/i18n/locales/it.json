@@ -694,7 +694,10 @@
         "name": "Anello sismico di liquefazione",
         "desc": "La Mw impattogena innesca liquefazione Youd-Idriss sui suoli sabbiosi saturi attorno al cratere."
       },
-      "craterUnresolved": "Arrivo al suolo sotto i 5 km/s: possibile buca di penetrazione (cratere non risolto)"
+      "craterUnresolved": {
+        "name": "Cratere non risolto",
+        "desc": "Il corpo arriva al suolo sotto i 5 km/s: è possibile una buca di penetrazione locale, fuori dal dominio della legge del cratere."
+      }
     },
     "explosion": {
       "flash": {
@@ -1250,7 +1253,62 @@
       "tsunamiCrest": "la cresta, che ripercorre l'arrivo dell'onda su un orologio logaritmico: le prime ore al rallentatore",
       "tsunamiStreaks": "direzione dell'onda, dove supera 1 m",
       "tsunamiRunupBand": "risalita sulla costa da {{low}} a {{high}}",
-      "tsunamiRunupFrom": "risalita sulla costa oltre {{height}}"
+      "tsunamiRunupFrom": "risalita sulla costa oltre {{height}}",
+      "card": {
+        "heading": "Scheda di provenienza",
+        "quantity": "Grandezza",
+        "state": "Stato",
+        "source": "Fonte e modello",
+        "extent": "Estensione disegnata",
+        "beyond": "Oltre il bordo",
+        "extentValue": "da {{outer}} a {{inner}}, fino a {{reach}}",
+        "extentWaveMap": "la carta dell’onda che il globo disegna, le sue voci qui sotto",
+        "extentNone": "nulla oltre ciò che la legenda elenca"
+      },
+      "state": {
+        "verified": "A · implementazione verificata",
+        "exploratory": "esplorativo",
+        "diagnostic": "diagnostico",
+        "outOfDomain": "fuori dominio"
+      },
+      "beyond": {
+        "computedZero": "zero calcolato",
+        "belowThreshold": "sotto la soglia di visualizzazione: il modello continua a dare valori",
+        "notModelled": "non modellato",
+        "notApplicable": "non applicabile"
+      },
+      "absentHeading": "Non disegnati",
+      "absent": {
+        "overpressure": {
+          "belowThreshold": "sotto la soglia più bassa disegnata (0,5 psi = 3,45 kPa): il massimo calcolato al suolo è {{value}}",
+          "computedZero": "zero calcolato"
+        },
+        "wind": {
+          "belowThreshold": "sotto la soglia più bassa disegnata: la sovrappressione massima calcolata al suolo è {{value}}",
+          "computedZero": "zero calcolato"
+        },
+        "thermal": {
+          "belowThreshold": "sotto la soglia principale: il modello calcola ustioni di I grado fino a {{reach}}, non le soglie di II–III grado né l’accensione",
+          "belowThresholdNoReach": "sotto la soglia principale",
+          "computedZero": "zero calcolato"
+        },
+        "ejecta": {
+          "computedZero": "zero calcolato: nessun cratere, nessuna coltre",
+          "notModelled": "non modellato: il cratere è fuori dal dominio della sua legge"
+        },
+        "shaking": {
+          "notModelled": "non modellato: nessuna relazione verificata copre l’accoppiamento al suolo",
+          "outOfDomain": "non modellato: fuori dal dominio del cratere, l’accoppiamento al suolo non è modellato",
+          "belowThreshold": "sotto l’intensità III"
+        },
+        "tsunami": {
+          "computedZero": "zero calcolato: nessuna onda",
+          "notApplicable": "non applicabile: nessuna acqua"
+        },
+        "uncertainty": {
+          "notApplicable": "non applicabile: nessuna soglia disegnata"
+        }
+      }
     }
   },
   "report": {

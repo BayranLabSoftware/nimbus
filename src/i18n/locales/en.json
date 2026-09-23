@@ -694,7 +694,10 @@
         "name": "Seismic liquefaction ring",
         "desc": "Impact-driven Mw triggers Youd-Idriss liquefaction on saturated sandy soils surrounding the crater."
       },
-      "craterUnresolved": "Reaches the ground below 5 km/s: a penetration pit is possible (crater not resolved)"
+      "craterUnresolved": {
+        "name": "Crater not resolved",
+        "desc": "The body reaches the ground below 5 km/s: a local penetration pit is possible, outside the crater law's domain."
+      }
     },
     "explosion": {
       "flash": {
@@ -1250,7 +1253,62 @@
       "tsunamiCrest": "the crest, replaying the wave's arrival on a logarithmic clock: the first hours slowed down",
       "tsunamiStreaks": "the wave's direction, where it passes 1 m",
       "tsunamiRunupBand": "run-up on the coast from {{low}} to {{high}}",
-      "tsunamiRunupFrom": "run-up on the coast above {{height}}"
+      "tsunamiRunupFrom": "run-up on the coast above {{height}}",
+      "card": {
+        "heading": "Provenance card",
+        "quantity": "Quantity",
+        "state": "State",
+        "source": "Source and model",
+        "extent": "Extent drawn",
+        "beyond": "Beyond the edge",
+        "extentValue": "from {{outer}} to {{inner}}, out to {{reach}}",
+        "extentWaveMap": "the wave map the globe draws, its entries below",
+        "extentNone": "nothing beyond what the legend lists"
+      },
+      "state": {
+        "verified": "A · implementation verified",
+        "exploratory": "exploratory",
+        "diagnostic": "diagnostic",
+        "outOfDomain": "out of domain"
+      },
+      "beyond": {
+        "computedZero": "computed zero",
+        "belowThreshold": "below the display threshold: the model goes on giving values",
+        "notModelled": "not modelled",
+        "notApplicable": "not applicable"
+      },
+      "absentHeading": "Not drawn",
+      "absent": {
+        "overpressure": {
+          "belowThreshold": "below the lowest threshold drawn (0.5 psi = 3.45 kPa): the largest computed at the ground is {{value}}",
+          "computedZero": "computed zero"
+        },
+        "wind": {
+          "belowThreshold": "below the lowest threshold drawn: the largest overpressure computed at the ground is {{value}}",
+          "computedZero": "computed zero"
+        },
+        "thermal": {
+          "belowThreshold": "below the main threshold: the model computes first-degree burns out to {{reach}}, not the second- or third-degree thresholds nor ignition",
+          "belowThresholdNoReach": "below the main threshold",
+          "computedZero": "computed zero"
+        },
+        "ejecta": {
+          "computedZero": "computed zero: no crater, no blanket",
+          "notModelled": "not modelled: the crater is out of its law’s domain"
+        },
+        "shaking": {
+          "notModelled": "not modelled: no verified relation covers the coupling to the ground",
+          "outOfDomain": "not modelled: out of the crater’s domain, the coupling to the ground is not modelled",
+          "belowThreshold": "below intensity III"
+        },
+        "tsunami": {
+          "computedZero": "computed zero: no wave",
+          "notApplicable": "not applicable: no water"
+        },
+        "uncertainty": {
+          "notApplicable": "not applicable: no threshold drawn"
+        }
+      }
     }
   },
   "report": {

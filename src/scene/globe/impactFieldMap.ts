@@ -61,6 +61,7 @@ import type { EvidenceQuantity } from '../../physics/validation/evidenceClasses.
 import { evidenceText, type EvidenceText } from './evidenceText.js';
 import { RING_RADIUS_SIGMA } from './ringSigma.js';
 import { INTENSITY_BANDS } from './shakingOverlay.js';
+import type { BeyondEdge, EpistemicState, MapState, ProvenanceCard } from './mapGrammarRules.js';
 
 // ---------------------------------------------------------------------------
 // Geometry
@@ -365,13 +366,25 @@ export interface UncertaintyChoice {
   unavailable?: string;
 }
 
+/** Rule 1030: an isoline as the globe draws it, with its visual state. */
+export type DrawnIsoline = MapIsoline & { state: MapState };
+
+/** Rule 1032 (b): where a layer's field ends, and what lies beyond. */
+export interface LayerEdge {
+  /** The nominal radius the field is drawn to (m). */
+  atM: number;
+  beyond: BeyondEdge;
+  /** An ordinary last isoline, or a limit of the model (rule 1030 (3)). */
+  kind: 'lastIsoline' | 'modelLimit';
+}
+
 export interface ImpactMapLayer {
   id: ImpactLayerId;
   tab: string;
   title: string;
   unit: string;
   field: GroundField | null;
-  isolines: MapIsoline[];
+  isolines: DrawnIsoline[];
   colorbar: ColorbarSpec | null;
   categories: CategoryKey[];
   notes: { label: string; text: string }[];
@@ -379,10 +392,19 @@ export interface ImpactMapLayer {
   /** What the layer's numbers can claim (physics/validation/evidenceClasses.ts):
    *  the legend prints it above everything else the layer says. */
   evidence: LayerEvidence;
+  /** Rule 1030: the layer's visual state as a whole. */
+  state: MapState;
+  /** Rule 1029: its provenance card. */
+  card: ProvenanceCard;
+  /** Rule 1032 (b): its field's edge, null for a layer with no field. */
+  edge: LayerEdge | null;
 }
 
-/** A layer as its builder makes it, before its evidence is attached. */
-type RawLayer = Omit<ImpactMapLayer, 'evidence'>;
+/** A layer as its builder makes it, before its evidence, state, card and edge
+ *  are attached. */
+type RawLayer = Omit<ImpactMapLayer, 'evidence' | 'state' | 'card' | 'edge' | 'isolines'> & {
+  isolines: MapIsoline[];
+};
 
 export type LayerEvidence = Pick<
   EvidenceText,
@@ -1740,7 +1762,140 @@ export function buildImpactLayer(
     ctx,
     horizon !== null && Number.isFinite(horizon) ? horizon : null
   );
-  return { ...settled, evidence: layerEvidence(settled, ctx) };
+  const evidence = layerEvidence(settled, ctx);
+  const edge = layerEdge(settled, horizon !== null && Number.isFinite(horizon) ? horizon : null);
+  return {
+    ...settled,
+    isolines: settled.isolines.map((l) => ({ ...l, state: 'computed' as const })),
+    evidence,
+    state: 'computed',
+    card: layerCard(settled, evidence, edge, ctx),
+    edge,
+  };
+}
+
+const ANTIPODE_M = Math.PI * (EARTH_RADIUS as number);
+
+/** Rule 1032 (b): a field's edge — at the fireball's horizon a limit of the
+ *  model, beyond which nothing is computed; at the antipode nothing lies
+ *  beyond; otherwise the last isoline, below which the model goes on. */
+function layerEdge(layer: RawLayer, horizon: number | null): LayerEdge | null {
+  const field = layer.field;
+  if (field === null || !(field.maxRangeM > 0)) return null;
+  const atM = field.maxRangeM;
+  if (atM >= ANTIPODE_M * 0.999) return { atM, beyond: 'notApplicable', kind: 'modelLimit' };
+  if (horizon !== null && horizon > 0 && atM >= horizon * 0.995)
+    return { atM, beyond: 'notModelled', kind: 'modelLimit' };
+  return { atM, beyond: 'belowThreshold', kind: 'lastIsoline' };
+}
+
+/** Rule 1029: a layer's provenance card. */
+function layerCard(
+  layer: RawLayer,
+  evidence: LayerEvidence,
+  edge: LayerEdge | null,
+  ctx: ImpactMapContext
+): ProvenanceCard {
+  const { t, language } = ctx;
+  const sourceLabel = t('globe.impactMap.noteLabel.source');
+  const source = layer.notes.find((n) => n.label === sourceLabel)?.text ?? evidence.summary;
+  const byRadius = [...layer.isolines].sort((a, b) => b.radiusM - a.radiusM);
+  const outer = byRadius[0];
+  const inner = byRadius[byRadius.length - 1];
+  const reach = (m: number): string =>
+    `${(m / 1_000).toLocaleString(language, { maximumFractionDigits: m < 10_000 ? 1 : 0 })} km`;
+  const extent =
+    outer !== undefined && inner !== undefined
+      ? t('globe.impactMap.card.extentValue', {
+          outer: outer.label,
+          inner: inner.label,
+          reach: reach(edge?.atM ?? outer.radiusM),
+        })
+      : layer.id === 'tsunami'
+        ? t('globe.impactMap.card.extentWaveMap')
+        : layer.categories.length > 0
+          ? layer.categories.map((c) => c.label).join(' · ')
+          : t('globe.impactMap.card.extentNone');
+  const state: EpistemicState = evidence.klass === 'exploratory' ? 'exploratory' : 'verified';
+  return {
+    quantity: layer.title,
+    unit: layer.unit,
+    state,
+    source,
+    extent,
+    beyond: edge?.beyond ?? 'notApplicable',
+  };
+}
+
+/** Rule 1032 (c): a layer this result does not draw, and why. */
+export interface LayerAbsence {
+  id: ImpactLayerId;
+  tab: string;
+  beyond: BeyondEdge;
+  why: string;
+}
+
+/** Rule 1032 (c): every layer the result does not draw, each with its reason —
+ *  a tab is never simply missing. */
+export function absentImpactLayers(
+  result: ImpactScenarioResult,
+  ctx: ImpactMapContext
+): LayerAbsence[] {
+  const { t, language } = ctx;
+  const drawn = new Set(availableImpactLayers(result, ctx).map((l) => l.id));
+  const source = fieldSourceOf(result);
+  const outOfDomain = result.crater.state === 'outOfDomain';
+  const kpa = (pa: number): string =>
+    `${(pa / 1_000).toLocaleString(language, { maximumSignificantDigits: 2 })} kPa`;
+  const km = (m: number): string =>
+    `${(m / 1_000).toLocaleString(language, { maximumFractionDigits: 1 })} km`;
+  const out: LayerAbsence[] = [];
+  for (const id of IMPACT_LAYER_ORDER) {
+    if (drawn.has(id)) continue;
+    const tab = t(`globe.impactMap.layer.${id === 'uncertainty' ? 'probability' : id}.tab`);
+    const key = `globe.impactMap.absent.${id}`;
+    const say = (beyond: BeyondEdge, reason: string, vars?: Record<string, string>): void => {
+      out.push({ id, tab, beyond, why: t(`${key}.${reason}`, vars ?? {}) });
+    };
+    switch (id) {
+      case 'overpressure':
+      case 'wind': {
+        const peak = impactOverpressureAt(source, 1);
+        if (peak > 0) say('belowThreshold', 'belowThreshold', { value: kpa(peak) });
+        else say('computedZero', 'computedZero');
+        break;
+      }
+      case 'thermal': {
+        const first = result.entry.flashBurnRadii.firstDegree as number;
+        if (first > 0) say('belowThreshold', 'belowThreshold', { reach: km(first) });
+        else if (impactThermalExposureAt(source, 1) > 0)
+          say('belowThreshold', 'belowThresholdNoReach');
+        else say('computedZero', 'computedZero');
+        break;
+      }
+      case 'ejecta':
+        if (outOfDomain) say('notModelled', 'notModelled');
+        else say('computedZero', 'computedZero');
+        break;
+      case 'shaking':
+        if (outOfDomain) say('notModelled', 'outOfDomain');
+        else if (result.seismic.magnitude === null) say('notModelled', 'notModelled');
+        else say('belowThreshold', 'belowThreshold');
+        break;
+      case 'tsunami': {
+        const water =
+          ((result.inputs.waterDepth as number | undefined) ?? 0) > 0 ||
+          result.inputs.shoreDistance !== undefined;
+        if (water) say('computedZero', 'computedZero');
+        else say('notApplicable', 'notApplicable');
+        break;
+      }
+      case 'uncertainty':
+        say('notApplicable', 'notApplicable');
+        break;
+    }
+  }
+  return out;
 }
 
 function buildRawLayer(
