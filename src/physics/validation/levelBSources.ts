@@ -27,12 +27,19 @@
  *       half-unit.
  *
  * What was read while pinning, declared (rule 858 continued): the full text of
- * the three papers below, and the search results that led to them, which
- * quoted fragmentation altitudes of 2024 BX1 and 2023 CX1 and Carancas's
- * crater diameter. 2008 TC3's paper could not be read: its publisher refuses
- * automated access, and the event stays unpinned until it is read by hand.
- * Carancas and Meteor Crater are pinned in a later commit of this step, still
- * before step 3.
+ * the papers below, and the search results that led to them, which quoted
+ * fragmentation altitudes of 2024 BX1 and 2023 CX1 and Carancas's crater
+ * diameter. 2008 TC3's paper refuses automated access: Andrea opened it and
+ * gave its text on 23 September. Brown et al. 2008 and Kenkmann et al. 2009
+ * he downloaded the same day. Meteor Crater, class D, is pinned in a later
+ * commit of this step, still before step 3.
+ *
+ * Carancas, declared at pinning: every estimate of its body's mass or energy
+ * uses the crater's diameter (Brown et al. 2008, Sect. 6, "we use the diameter
+ * of the crater as a constraint"), so by rule 860(c) the diameter is reported
+ * as circular and not scored; its depth-to-diameter ratio and its morphology
+ * were not fitted and are scored. No pinned source states a seismic
+ * magnitude, so K5 is dropped (rule 862).
  */
 
 export interface LevelBSource {
@@ -87,6 +94,24 @@ export const LEVEL_B_SOURCES: readonly LevelBSource[] = [
     copy: 'arXiv:2509.12362v1',
   },
   {
+    id: 'borovicka2009',
+    citation:
+      'Borovička J., Charvát Z. (2009), Meteosat observation of the atmospheric entry of 2008 TC3 over Sudan and the associated dust cloud, A&A 507, 1015–1022',
+    copy: 'A&A full HTML, text supplied by Andrea on 23 September 2026',
+  },
+  {
+    id: 'brown2008',
+    citation:
+      'Brown P., ReVelle D. O., et al. (2008), Analysis of a crater-forming meteorite impact in Peru, J. Geophys. Res. 113, E09007',
+    copy: 'PDF supplied by Andrea on 23 September 2026',
+  },
+  {
+    id: 'kenkmann2009',
+    citation:
+      'Kenkmann T., Artemieva N. A., et al. (2009), The Carancas meteorite impact crater, Peru: geologic surveying and modeling of crater formation and atmospheric passage, Meteoritics & Planetary Science 44, 985–1000',
+    copy: 'University of Arizona repository PDF (pages cited as printed in the journal), supplied by Andrea on 23 September 2026',
+  },
+  {
     id: 'jenniskens2021',
     citation:
       'Jenniskens P., et al. (2021), The impact and recovery of asteroid 2018 LA, Meteoritics & Planetary Science 56, doi:10.1111/maps.13653',
@@ -105,6 +130,62 @@ const noCrater = (source: string, where: string): LevelBTarget => ({
 });
 
 export const LEVEL_B_ENTRY_EVENTS: readonly LevelBEvent[] = [
+  {
+    event: '2008 TC3',
+    inputs: {
+      velocity: {
+        value: { kind: 'uniform', low: 12.35, high: 12.45 },
+        unit: 'km/s',
+        source: 'borovicka2009',
+        where:
+          'Sect. 4.1: 12.4 km/s at 50 km, from the astrometric impact trajectory (Chesley et al. 2008)',
+      },
+      angle: {
+        value: { kind: 'uniform', low: 19.95, high: 20.05 },
+        unit: 'deg',
+        source: 'borovicka2009',
+        where: 'Sect. 4.1: "descending angle of 20.0° to the horizontal"',
+      },
+      diameter: {
+        // The volume's normal carried to the equivalent sphere's diameter to
+        // first order: D = (6V/π)^(1/3), σ_D = D σ_V / 3V.
+        value: { kind: 'normal', mean: 3.81, sigma: 0.26 },
+        unit: 'm',
+        source: 'borovicka2009',
+        where:
+          'Sect. 5: "volume of 2008 TC3 from the shape model is 29 ± 6 m3 (Scheirich et al. 2009)"',
+        note: 'The 35 000–65 000 kg from the radiated energy is an effect of the entry: not an input (rule 860(c)).',
+      },
+      density: {
+        value: { kind: 'uniform', low: 2_100, high: 2_500 },
+        unit: 'kg/m3',
+        source: 'borovicka2009',
+        where:
+          'Sect. 5: Almahata Sitta meteorites, "bulk densities of 2100-2500 kg m-3" (Jenniskens et al. 2009)',
+        note: "The authors' guess of a bulk density below 1700 kg m-3 is inferred from the heights of fragmentation, a target: not an input (rule 860(c)).",
+      },
+    },
+    targets: [
+      noCrater('borovicka2009', 'Sect. 5: "only small meteorites (≤ 283 g) were found"'),
+      {
+        id: 'E2',
+        measures:
+          'the height of the first major fragmentation: the flare with dust deposition that Meteosat recorded',
+        source: 'borovicka2009',
+        where: 'Sect. 4.2 and Sect. 5: "Another flare was detected by Meteosat at …" (rule 866(e))',
+        scored: true,
+        note: 'An earlier flare is "possible but uncertain", seen in one channel only (Sect. 4.2): not counted.',
+      },
+      {
+        id: 'E3',
+        measures: 'the height of the main flare',
+        source: 'borovicka2009',
+        where: 'Sect. 5: "the main flare occurred at a height of …"',
+        scored: false,
+        note: 'A row of I2 (rule 858): reported, not scored.',
+      },
+    ],
+  },
   {
     event: '2024 BX1',
     inputs: {
@@ -258,6 +339,80 @@ export const LEVEL_B_ENTRY_EVENTS: readonly LevelBEvent[] = [
         where: 'p. 13: U.S. Government sensors, "peaking in brightness at … altitude"',
         scored: false,
         note: 'A row of I2 (rule 858): reported, not scored.',
+      },
+    ],
+  },
+];
+
+/** Rule 857(c): the crater set. */
+export const LEVEL_B_CRATER_EVENTS: readonly LevelBEvent[] = [
+  {
+    event: 'Carancas',
+    inputs: {
+      velocity: {
+        value: { kind: 'uniform', low: 11.7, high: 16.9 },
+        unit: 'km/s',
+        source: 'brown2008',
+        where:
+          'Sect. 5, [24], p. 8: "between 11.7–16.9 km/s" at the top of the atmosphere, from the orbit (Tisserand parameter above 3)',
+      },
+      angle: {
+        value: { kind: 'uniform', low: 62.5, high: 63.5 },
+        unit: 'deg',
+        source: 'brown2008',
+        where:
+          'Sect. 5, [23], p. 7: best-fit "entry angle of 63°" (rule 866(b)); the source calls it representative, not unique',
+      },
+      diameter: {
+        // 3 to 9 t over the density's interval, as spheres.
+        value: {
+          kind: 'uniform',
+          low: Math.cbrt((6 * 3_000) / (Math.PI * 3_750)),
+          high: Math.cbrt((6 * 9_000) / (Math.PI * 3_650)),
+        },
+        unit: 'm',
+        source: 'brown2008',
+        where: 'Abstract, p. 1: "The initial mass of the meteoroid is in the range of 3–9 tons"',
+        note: "Fitted with the crater's diameter as a constraint (Sect. 6, p. 8): K2 is circular (rule 860(c)).",
+      },
+      density: {
+        value: { kind: 'uniform', low: 3_650, high: 3_750 },
+        unit: 'kg/m3',
+        source: 'kenkmann2009',
+        where:
+          'p. 994: "a density of 3700 kg/m3 (Consolmagno et al. 1998)" (rule 866(b), two significant figures)',
+      },
+    },
+    targets: [
+      {
+        id: 'K1',
+        measures: 'the outcome: a single crater dug by a body that reached the ground',
+        source: 'kenkmann2009',
+        where: 'Abstract, p. 985',
+        scored: true,
+      },
+      {
+        id: 'K2',
+        measures: 'the rim-to-rim diameter',
+        source: 'kenkmann2009',
+        where:
+          'p. 989: "average diameter of …, measured from rim crest to rim crest", and the earlier measurements it quotes',
+        scored: false,
+        note: "Circular: the body's mass was fitted to it (rule 860(c)).",
+      },
+      {
+        id: 'K3',
+        measures: 'the depth-to-diameter ratio',
+        source: 'kenkmann2009',
+        where: 'p. 989: "Depth/diameter ratios obtained from measured profiles …"',
+        scored: true,
+      },
+      {
+        id: 'K4',
+        measures: 'the morphology: a simple, bowl- or cone-shaped crater',
+        source: 'kenkmann2009',
+        where: 'pp. 989–990 and Fig. 2',
+        scored: true,
       },
     ],
   },
