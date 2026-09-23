@@ -1116,6 +1116,22 @@ the entry integrated numerically, proven on the exponential atmosphere, then
 the standard atmosphere; and level B's second round, frozen before this, to
 test it on bodies it has not met.
 
+**The entry's atmosphere — refused** (rules 908 to 918,
+`validation/entryAtmosphereRules.ts`). The entry integrated numerically on
+any profile of the atmosphere (`effects/entryIntegrated.ts`) gives
+Collins's closed forms on his exponential within 0.8 mm and 1e-5 over 4 068
+cases, converges, and agrees with an independent Runge–Kutta integration;
+Eq. 11's approximation of the breakup moves it 34 m on average, 40 m at most. The U.S.
+Standard Atmosphere 1976 (`effects/ussa1976Entry.ts`) gives its printed
+Table I within the last digit from −5 to 150 km, and
+`docs/ATMOSPHERE_TABLE.md` shows Collins's exponential 1.5–1.9 times too
+dense between 35 and 60 km. On I2's 357 fireballs the standard brings the
+median altitude miss from 5.3 to 4.3 km and the bias from +1.7 to −1.6 km,
+but the share inside the band of the strength's prior falls from 45.7 % to
+42.6 %, beyond the 2 points fixed before the run: refused by its own
+criterion. The product stays on the exponential; both the integration and
+the standard stay in the code, verified and dormant.
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this

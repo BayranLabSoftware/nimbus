@@ -1,0 +1,60 @@
+{
+  "rules": "908 to 918",
+  "run": "rule 914, once",
+  "readings": {
+    "closed": {
+      "atmosphere": "closed",
+      "rows": 357,
+      "toTheGround": 6,
+      "medianAbsoluteErrorKm": 5.300283062546637,
+      "meanErrorKm": 1.692119065686779,
+      "coveragePoints": 45.65826330532213
+    },
+    "integratedExponential": {
+      "atmosphere": "integratedExponential",
+      "rows": 357,
+      "toTheGround": 6,
+      "medianAbsoluteErrorKm": 5.294575820328891,
+      "meanErrorKm": 1.6978199745927312,
+      "coveragePoints": 45.938375350140056
+    },
+    "integratedUssa": {
+      "atmosphere": "integratedUssa",
+      "rows": 357,
+      "toTheGround": 4,
+      "medianAbsoluteErrorKm": 4.333422141472305,
+      "meanErrorKm": -1.5512368629147755,
+      "coveragePoints": 42.57703081232493
+    }
+  },
+  "verdict": {
+    "improved": [
+      "absolute error",
+      "bias"
+    ],
+    "worsened": [
+      "coverage"
+    ],
+    "metricsAdopt": false
+  },
+  "onCommonRows": {
+    "closed": {
+      "rows": 351,
+      "medianAbsoluteErrorKm": 5.300283062546637,
+      "meanErrorKm": 1.692119065686779,
+      "withinFiveKm": 164
+    },
+    "integratedExponential": {
+      "rows": 351,
+      "medianAbsoluteErrorKm": 5.294575820328891,
+      "meanErrorKm": 1.6978199745927312,
+      "withinFiveKm": 163
+    },
+    "integratedUssa": {
+      "rows": 351,
+      "medianAbsoluteErrorKm": 4.324215285214752,
+      "meanErrorKm": -1.510499210474197,
+      "withinFiveKm": 190
+    }
+  }
+}

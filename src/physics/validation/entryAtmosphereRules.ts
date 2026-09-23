@@ -271,5 +271,44 @@ export const ENTRY_ATMOSPHERE_CRITERION = {
  * is run next, once.
  */
 
-/** The outcome, written after the one run of rule 914. */
-export const ENTRY_ATMOSPHERE_OUTCOME: string | null = null;
+/**
+ * The outcome, written on 23 September 2026 after the one run of rule 914
+ * (scripts/atmosphere-compare.ts, benchmark/results/
+ * atmosphere-compare-2026-09-23.json), after step 3 was pushed (928b782).
+ *
+ * REFUSED by rule 914's first clause: the integrated U.S. Standard Atmosphere
+ * improves two metrics and worsens the third materially.
+ *   (i)  median absolute miss: 5.30 km under A, 4.33 km under N-USSA —
+ *        improved (by 0.97 km);
+ *   (ii) mean miss: +1.69 km under A, −1.55 km under N-USSA — improved by its
+ *        size (by 0.14 km);
+ *   (iii) coverage of the 80 % band of S2's prior: 45.7 points under A,
+ *        42.6 under N-USSA — worsened by 3.1 points, beyond the 2 fixed;
+ *   bodies to the ground: 6 under A, 4 under N-USSA.
+ * So (b) to (e) were not run, the product stays on `closed`, and N — with its
+ * two profiles, verified — stays in the code, dormant, for a later round.
+ *
+ * Reported, never deciding (rule 915): N-exp reads 5.29 km, +1.70 km and
+ * 45.9 points — solving Eq. 10 instead of Eq. 11 moves nothing that counts,
+ * so what N-USSA moves is the atmosphere's. On the 351 fireballs that burst
+ * under every branch: 5.30, 5.29 and 4.32 km; +1.69, +1.70 and −1.51 km;
+ * within 5 km 164, 163 and 190. Under N-USSA, at the central values of their
+ * inputs, the regression cases burst lower — 2024 BX1 34.9 → 32.3 km, 2023
+ * CX1 33.6 → 31.1 km, Carancas 32.9 → 30.3 km (it still bursts, as it did);
+ * of the development events, Chelyabinsk 27.1 → 24.4 km and Tunguska
+ * 8.16 → 8.55 km, its 1 psi ring 45.0 → 46.3 km. Over level A's 1 782 inputs
+ * under the product's strength law, the breakup comes 4.6 km lower in the
+ * median (P5 −9.0, P95 +2.9 km), the burst 3.0 km lower (P95 +1.8 km), and
+ * the regime changes in 36 inputs.
+ *
+ * Read after, declared, and not a finding of this round: under the standard
+ * the band of S2's prior narrows — its median width 9.7 km under A, 7.6 km
+ * under N-USSA, the standard's density falling faster with altitude above
+ * 30 km than an 8 km scale height lets it — and the misses change side: of
+ * the 357 fireballs, 76 above the band and 118 below it under A, 120 above
+ * and 85 below under N-USSA. The band is the prior of the strength alone;
+ * it was never fitted to cover the record, and the rule counted it as the
+ * reviewer asked.
+ */
+export const ENTRY_ATMOSPHERE_OUTCOME: string | null =
+  "REFUSED 23 September 2026: under the U.S. Standard Atmosphere 1976 the entry's median altitude miss falls from 5.3 to 4.3 km and its bias from +1.7 to −1.6 km, but the share of fireballs inside the band of the strength's prior falls from 45.7 % to 42.6 %, beyond the 2 points rule 914 allowed. The product stays on Collins's exponential; the integrated entry and the standard stay, verified and dormant.";
