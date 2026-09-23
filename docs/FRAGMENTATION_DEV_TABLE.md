@@ -87,3 +87,15 @@ energy that reaches the ground. An uncounted metric is shown in brackets.
 - m3: the mean probability of the observed outcome over Chelyabinsk, Tunguska, 2008 TC3, 2018 LA, 2023 CX1, 2024 BX1, 2022 WJ1: 86.9 %. A variant improves it when the mean of Δp is 0.10 or more (rule 975).
 - m4: counted on no case; in this round a variant must improve two of m1 to m3.
 - The outcomes already right (rule 964 (b)), which a variant must keep at 90 % or more: Chelyabinsk, Tunguska, 2008 TC3, 2018 LA, 2023 CX1, 2024 BX1.
+
+## Amendments of rules 1009 to 1014
+
+- m3 of this version is unfit for decision (rule 1010, B-127): it codes the observed falls in dark flight as not reaching the ground while it reads a whole body at its terminal speed as reaching it. It stays published above, as it is.
+- m1 is not applicable as a test of S1 for 2023 CX1 and 2018 LA; 2024 BX1, an aubrite, is diagnostic (rule 1012). The first observed events, their phase not identified, at the pressure the model's atmosphere gives them at the nominal inputs:
+
+| Case     | First observed event (km) | Pressure on the model's atmosphere (MPa) | Phase          |
+| -------- | ------------------------- | ---------------------------------------- | -------------- |
+| 2024 BX1 | 55.0                      | 0.23                                     | not identified |
+| 2023 CX1 | 29.4                      | 3.82                                     | not identified |
+| 2008 TC3 | 44.5                      | 0.57                                     | not identified |
+| 2018 LA  | 27.8                      | 5.20                                     | not identified |

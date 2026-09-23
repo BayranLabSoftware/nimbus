@@ -30,6 +30,7 @@ import {
   type LevelBInputValue,
 } from '../src/physics/validation/levelBSources.js';
 import { LEVEL_B2_ENTRY_EVENTS } from '../src/physics/validation/levelB2Sources.js';
+import { DRAG_COEFFICIENT, H_SCALE, RHO_0 } from '../src/physics/effects/entryConstants.js';
 import { FIREBALL_EVENTS } from '../src/physics/validation/fireballSetData.js';
 import {
   FIREBALL_BODIES,
@@ -305,4 +306,29 @@ export function runDevCases(overrides: Partial<ImpactScenarioInput> = {}) {
       .map((c) => c.case),
   };
   return { cases, summary };
+}
+
+/**
+ * Rule 1012: the dynamic pressure at each observed first event of m1, on the
+ * model's exponential atmosphere, at the case's nominal inputs (the middle of
+ * each input's interval) and Eq. 8's speed — a diagnostic; no phase is
+ * assigned by it.
+ */
+export function firstEventPressures(): { case: DevCase; altitudeM: number; pressurePa: number }[] {
+  const nominal = (v: LevelBInputValue): number =>
+    v.kind === 'normal' ? v.mean : v.kind === 'fixed' ? v.value : (v.low + v.high) / 2;
+  const out: { case: DevCase; altitudeM: number; pressurePa: number }[] = [];
+  for (const e of [...LEVEL_B_ENTRY_EVENTS, ...LEVEL_B_SEEN_EVENTS, ...LEVEL_B2_ENTRY_EVENTS]) {
+    const r = DEV_TABLE.find((x) => x.case === e.event && x.metric === 'm1');
+    if (r?.observed.kind !== 'altitude') continue;
+    const z = (r.observed.lowM + r.observed.highM) / 2;
+    const v0 = nominal(e.inputs.velocity.value) * 1_000;
+    const L0 = nominal(e.inputs.diameter.value);
+    const rhoI = nominal(e.inputs.density.value);
+    const sinTheta = Math.sin((nominal(e.inputs.angle.value) * Math.PI) / 180);
+    const rho = RHO_0 * Math.exp(-z / H_SCALE);
+    const v = v0 * Math.exp((-3 * rho * DRAG_COEFFICIENT * H_SCALE) / (4 * rhoI * L0 * sinTheta));
+    out.push({ case: r.case, altitudeM: z, pressurePa: rho * v * v });
+  }
+  return out;
 }

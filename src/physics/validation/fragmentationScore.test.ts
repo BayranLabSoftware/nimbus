@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import baseline from './fragmentationBaseline.json';
+import { M3_V2_STATUS } from './fragmentationRoundRules.js';
 import { scoreVariant, type ScoreCase, type ScoreRun } from './fragmentationScore.js';
 
 const BASE = baseline as unknown as ScoreRun;
@@ -64,5 +65,17 @@ describe('the verdict of a variant, written before P ran', () => {
     expect(v.m2.credits.find((c) => c.case === '2024 BX1')?.credited).toBe(-5_000);
     expect(v.rightKept.find((r) => r.case === '2024 BX1')?.kept).toBe(false);
     expect(v.holds).toBe(false);
+  });
+
+  it('rules 1010 and 1011: m3-v2 decides nothing', () => {
+    expect(M3_V2_STATUS).toBe('unfit');
+    // Every case's observed outcome raised to certainty: m3 would gain far
+    // more than 0.10, and still improves nothing.
+    const v = scoreVariant(BASE, {
+      ...BASE,
+      cases: BASE.cases.map((c) => ({ ...c, m3: { ...c.m3, observedOutcome: 1 } })),
+    });
+    expect(v.m3.meanGain).toBeGreaterThan(0.1);
+    expect(v.m3.improved).toBe(false);
   });
 });

@@ -1191,7 +1191,18 @@ outcome 86.9 % over seven, wrong on 2022 WJ1 (docs/FRAGMENTATION_DEV_TABLE.md).
 Variant P — Eq. 14 solved in place of Eq. 15\* (rules 992 to 1000) — REFUSED
 after its one run: no metric improves; every body bursts 0.1 to 2.3 km higher,
 above flares the model already overshot (docs/FRAGMENTATION_VARIANT_P.md).
-Next, in the round's order: S, mass lost by stages between S1 and S2.
+S specified before any code (rules 1001 to 1008), then stopped by the
+reviewer: m3 of version 2 is unfit for decision — it codes the observed
+falls in dark flight as not reaching the ground and a whole body at its
+terminal speed as reaching it (B-127) — and m1 is not applicable to 2023 CX1
+and 2018 LA, whose first observed events sit at second-phase pressures.
+Rules 1009 to 1022 amend the round without erasing version 2: three
+diagnostic observables in place of m3, the priors bounded to ordinary
+chondrites, and, with one evaluable metric left, S to run as a study of
+development rather than a contest for adoption, its specification corrected
+(components with their own paths, budgets of mass, energy and momentum,
+convergence at 32, 64 and 128 shares). Next: the reviewer's reading of rules
+1009 to 1022, before any code of S.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

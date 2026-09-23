@@ -17,7 +17,7 @@ import { writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DEV_CASES, type DevRow } from '../src/physics/validation/fragmentationDevTable.js';
-import { row, runDevCases, type Band } from './fragmentationRun.js';
+import { firstEventPressures, row, runDevCases, type Band } from './fragmentationRun.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_JSON = join(ROOT, 'src', 'physics', 'validation', 'fragmentationBaseline.json');
@@ -129,6 +129,21 @@ lines.push(
   `- m3: the mean probability of the observed outcome over ${summary.m3Cases.join(', ')}: ${summary.m3MeanObservedOutcome === null ? '—' : pct(summary.m3MeanObservedOutcome)}. A variant improves it when the mean of Δp is 0.10 or more (rule 975).`,
   '- m4: counted on no case; in this round a variant must improve two of m1 to m3.',
   `- The outcomes already right (rule 964 (b)), which a variant must keep at 90 % or more: ${summary.rightOutcomes.length === 0 ? 'none' : summary.rightOutcomes.join(', ')}.`,
+  ''
+);
+// Rules 1010 and 1012, added after P's run as columns only (rule 977).
+lines.push(
+  '## Amendments of rules 1009 to 1014',
+  '',
+  '- m3 of this version is unfit for decision (rule 1010, B-127): it codes the observed falls in dark flight as not reaching the ground while it reads a whole body at its terminal speed as reaching it. It stays published above, as it is.',
+  "- m1 is not applicable as a test of S1 for 2023 CX1 and 2018 LA; 2024 BX1, an aubrite, is diagnostic (rule 1012). The first observed events, their phase not identified, at the pressure the model's atmosphere gives them at the nominal inputs:",
+  '',
+  "| Case | First observed event (km) | Pressure on the model's atmosphere (MPa) | Phase |",
+  '| --- | --- | --- | --- |',
+  ...firstEventPressures().map(
+    (e) =>
+      `| ${e.case} | ${(e.altitudeM / 1_000).toFixed(1)} | ${(e.pressurePa / 1e6).toFixed(2)} | not identified |`
+  ),
   ''
 );
 writeFileSync(OUT_MD, lines.join('\n'));

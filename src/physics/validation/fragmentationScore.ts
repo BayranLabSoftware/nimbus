@@ -1,4 +1,4 @@
-import { FRAGMENTATION_CLAUSE } from './fragmentationRoundRules.js';
+import { FRAGMENTATION_CLAUSE, M3_V2_STATUS } from './fragmentationRoundRules.js';
 
 /**
  * The verdict of a variant of the round on fragmentation against the baseline
@@ -132,7 +132,11 @@ export function scoreVariant(base: ScoreRun, variant: ScoreRun): FragmentationVe
   const improved = {
     m1: m1Mean !== null && m1Mean >= bar,
     m2: m2Mean !== null && m2Mean >= bar,
-    m3: m3Mean !== null && m3Mean >= FRAGMENTATION_CLAUSE.observedOutcomeGain,
+    // Rule 1010: m3 of version 2 decides nothing since rules 1009 to 1014.
+    m3:
+      M3_V2_STATUS === 'decides' &&
+      m3Mean !== null &&
+      m3Mean >= FRAGMENTATION_CLAUSE.observedOutcomeGain,
   };
   const improvedCount = [improved.m1, improved.m2, improved.m3].filter(Boolean).length;
   const rightKept = base.summary.rightOutcomes.map((c) => {
@@ -148,6 +152,7 @@ export function scoreVariant(base: ScoreRun, variant: ScoreRun): FragmentationVe
     improvedCount,
     rightKept,
     holds:
-      improvedCount >= FRAGMENTATION_CLAUSE.minMetricsImproved && rightKept.every((r) => r.kept),
+      improvedCount >= FRAGMENTATION_CLAUSE.minMetricsImproved &&
+      (M3_V2_STATUS !== 'decides' || rightKept.every((r) => r.kept)),
   };
 }

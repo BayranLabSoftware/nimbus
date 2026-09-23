@@ -495,11 +495,173 @@ export const VARIANT_P_OUTCOME: string | null =
  * carries S's outcome carries nothing else.
  */
 
-/** Rule 1003: the first phase's mass loss, f1 (the median of the paper's 21). */
+/**
+ * Rules 1009 to 1014 — a versioned amendment of the round, on the reviewer's
+ * reply to rules 1001 to 1008 (23 September 2026, night) and Andrea's word
+ * («Sì, tutto prima del codice»). Written before any code of S. Version 2 of
+ * the table (rules 982 to 986, 09bae54) is kept as it is, numbers and all.
+ *
+ * RULE 1009. WHAT THIS IS. The reviewer refused both proposals of rule 1007:
+ * the threshold of 2.5 km/s — the speed at which luminous flight roughly ends
+ * is no threshold of arrival, a meteorite in dark flight reaches the ground
+ * precisely after it has slowed, and applying it to both sides would make the
+ * comparison symmetric while changing the physical question and making 2022
+ * WJ1 right by a recoding — and the reading of rule 1004's F(q) and rule
+ * 1003's f1 as results of the source. What follows separates the physical
+ * observables from the diagnostic indicators, bounds the priors to the
+ * population they describe, and says anew what could adopt S.
+ *
+ * RULE 1010. m3, VERSION 2, UNFIT FOR DECISION. Its coding is incoherent: the
+ * observed falls in dark flight are coded as not reaching the ground, while
+ * the model's side, read by the regimes, counts a whole body at its terminal
+ * speed — 2022 WJ1 of the baseline — as reaching it. m3-v2 stays published,
+ * as it is, and decides nothing from now on; the defect is registered as
+ * B-127. Neither is "no crater observed" the same as "no meteorite on the
+ * ground", nor as "no crater predicted" where the crater's module answers out
+ * of its domain.
+ *
+ * RULE 1011. THREE OBSERVABLES, DIAGNOSTIC, in place of m3's one, for the
+ * baseline and every variant on the same draws, beside the observation where
+ * the repository holds one: (i) survival at the ground — whether at least one
+ * piece reaches the ground, and the largest piece's mass and speed there;
+ * (ii) the regime of arrival — at the crater law's speeds (5 km/s or more), in
+ * dark flight (at the piece's terminal speed), or between the two, out of the
+ * crater's domain; (iii) the observable crater — whether a law applicable to
+ * what arrives predicts one (computed), none (no crater), or no applicable law
+ * (out of the domain). None of them is called m3 or decides an adoption in
+ * this round.
+ *
+ * RULE 1012. m1 FOR 2023 CX1 AND 2018 LA: NOT APPLICABLE as a test of S1. On
+ * the model's atmosphere at their entry speeds their first observed events,
+ * at 29.4 and 27.8 km, lie at about 3.8 and 5.2 MPa — the second phase's
+ * pressures, not S1's. That signals that the observables may not be the same;
+ * it does not show that an earlier phase happened unseen. Their misses stay in
+ * version 2 as they are; a diagnostic column is added to every m1 row, "first
+ * observed event: phase not identified / pressure estimated on the model's
+ * atmosphere". No phase is assigned to an observed event by the model's own
+ * pressure — that would judge the model on its own assignment. 2024 BX1 stays
+ * a diagnostic of S1, not a confirmation of the ordinary chondrites' prior:
+ * it is an aubrite.
+ *
+ * RULE 1013. THE PRIORS' DOMAIN. Borovička, Spurný & Shrbený (2020) studied
+ * ordinary chondrites — seven falls and fourteen fireballs expected to be — and
+ * say carbonaceous chondrites behave otherwise (p. 17). Among the development
+ * cases: ordinary chondrites, Chelyabinsk (LL5), 2023 CX1 (Saint-Pierre-le-
+ * Viger, an L chondrite) and Carancas (H4–5, diagnostic); not ordinary
+ * chondrites, 2024 BX1 (an aubrite), 2008 TC3 (Almahata Sitta, "predominantly a
+ * ureilite", the paper's p. 19) and 2018 LA (a howardite); unknown, 2022 EB5,
+ * 2022 WJ1 (no meteorite recovered) and Tunguska. Under S the two phases apply
+ * to the ordinary chondrites and to bodies of unknown type as a declared
+ * extrapolation; to the others they do not apply, and their S is today's. The
+ * same bound concerns the adopted two-stage law (rules 896 to 902), which
+ * applies the ordinary chondrites' strengths to every stony density: said
+ * here, not changed in this round.
+ *
+ * RULE 1014. WHAT COULD ADOPT S — anew, before any run. After rules 1010 and
+ * 1012 the metrics that can be evaluated independently are: m1, none (2018 LA
+ * and 2023 CX1 not applicable, 2024 BX1 diagnostic); m2, the burst altitude
+ * against the flares, a proxy, on six cases; m3, none (unfit); m4, none. One
+ * metric is fewer than the two rule 964 requires. S is therefore run as a
+ * physical study of development, not as a contest for adoption: nothing it
+ * shows adopts it in this round; the product's branch stays as it is; its
+ * outputs — the budgets, the three observables, m2 and the rest of rule 1022 —
+ * are published; and whether S is adopted is decided later by an independent
+ * test to be named then, never by reusing the third set to choose the law.
+ */
+
+/**
+ * Rules 1015 to 1022 — variant S, its specification corrected (supersedes
+ * rules 1003 to 1006), on the reviewer's four points. Nimbus's hypotheses are
+ * said as Nimbus's.
+ *
+ * RULE 1015. THE FIRST PHASE, three things kept apart: whether a weak first
+ * phase exists — in the paper's sample it was "detected in all studied
+ * fireballs" (p. 17), so, within the domain of rule 1013, it exists; its
+ * strength S1 — 0.04–0.12 MPa, its geometric midpoint as today; and the share
+ * of the mass it takes, f1. f1 is no property of the individual body: the
+ * study runs S at the classes' edges, f1 = 0.25, 0.5 and 0.6, as a test of
+ * sensitivity, and reports each. Outside the domain there is no first phase
+ * under S.
+ *
+ * RULE 1016. THE SECOND PHASE, a hypothesis of Nimbus, not a result of the
+ * paper: within the domain, the body's cracks have strengths distributed
+ * log-uniformly on [0.9, 5] MPa, the paper's interval of the second phase;
+ * the share broken by a pressure q is F(q) = ln(q/0.9 MPa)/ln(5/0.9), held
+ * between 0 and 1. F(5 MPa) = 1 makes every share break by 5 MPa; the paper
+ * does not say that every meteoroid does, and the study reports, beside it,
+ * how much mass would stay unbroken were the upper edge 10 MPa instead
+ * (rule 1022). The distribution of strengths among the paper's events and
+ * fragments is not, by itself, a distribution of the mass inside one body:
+ * the hypothesis is named so wherever it is published.
+ *
+ * RULE 1017. THE COMPONENTS AND THEIR PATHS. Until the second phase the body
+ * moves as one: its whole mass behind one front, the body's diameter — the
+ * first phase's pieces moving together (p. 15) share that cross-section, and
+ * the first phase sets only the largest piece's mass, which no drag reads.
+ * From the second phase on there are components, each with its own mass,
+ * cross-section and speed: the unbroken core, a sphere of its current mass,
+ * its speed by the drag equation on its own diameter, integrated along the
+ * path; and each broken share, born where the core's pressure first reaches
+ * its strength, with the share's mass, the diameter of a sphere of that mass,
+ * the core's speed and altitude there, then closed by Collins et al.'s pancake
+ * from that point (Eqs. 15* to 20 with its own L0, z* and v*). The pressure
+ * that breaks a share is the core's along the core's actual path; once it has
+ * passed its largest value it breaks nothing more, and no strength already
+ * crossed acts again. Numerically, N shares at the quantiles of the
+ * distribution.
+ *
+ * RULE 1018. THE LIMITS, verified before any case: with the distribution
+ * collapsed to one strength the model is today's to within the integration's
+ * error; N = 32, 64 and 128 agree on every published output within 1 % (64
+ * is the study's); with f1 = 0 and no second phase reached, the body is
+ * today's whole body.
+ *
+ * RULE 1019. THE CLOSURE. What never breaks — the core, where the pressure
+ * never reaches the top of the distribution — is the surviving body, carried to
+ * the ground on its own path, never below its terminal speed. Each broken share
+ * ends as Collins et al. end a body: burst in the air where its pancake reaches
+ * f_p times its own L0, or a swarm on the ground. The largest piece is the
+ * smaller of the first phase's largest piece and the largest surviving
+ * component.
+ *
+ * RULE 1020. THE BUDGETS, kept apart and checked on every run: the solid mass
+ * of each component, the ablated mass (none — Collins et al.'s equations have no
+ * ablation, and none is added), and the sum, the body's; the kinetic energy at
+ * entry equal to the kinetic energy that reaches the ground plus the energy
+ * given to the air — by drag along each component's path, and by each burst
+ * where the pancake stops — with no thermal component apart, since the
+ * luminous efficiency is applied downstream to what the air receives; the
+ * momentum along the path equal to the momentum that reaches the ground plus
+ * the impulse given to the air, gravity neglected as Collins et al. neglect it.
+ * The tolerance, 10⁻⁹ of the entry's energy and momentum, checks the
+ * arithmetic of budgets so defined, not their definition.
+ *
+ * RULE 1021. THE STATUS: the cascade of components closed share by share with
+ * Collins et al.'s pancake is an exploratory experiment, not a solution
+ * validated by observation for a cascade of many components; it is published
+ * as such.
+ *
+ * RULE 1022. PUBLISHED, for the baseline where it applies and for S at each
+ * f1 of rule 1015: the mass kept and lost at S1, at 0.9 and 5 MPa and at the
+ * ground; each component's speed and kinetic energy; the energy given to the
+ * air per kilometre of altitude; the largest piece's mass and speed; the
+ * frequency of a burst, a swarm on the ground, a surviving body and the state
+ * out of the crater's domain; the three observables of rule 1011; m2 as the
+ * burst altitude where the core or a share bursts, with its probability; and
+ * the unbroken mass under the upper edge of 10 MPa. No code of S before the
+ * reviewer reads rules 1009 to 1022.
+ */
+
+/** Rule 1010: m3 of version 2 — and the outcomes "already right" read on it —
+ *  decides nothing from rules 1009 to 1014 on. */
+export type M3V2Status = 'decides' | 'unfit';
+export const M3_V2_STATUS: M3V2Status = 'unfit';
+
+/** Rule 1003 (superseded by rule 1015): the first phase's mass loss, f1. */
 export const S_FIRST_PHASE_LOSS = 0.5;
 
-/** Rule 1004: the second phase's crack strengths, log-uniform (Pa), and the
- *  shares they are read in. */
+/** Rules 1004 and 1016: the second phase's crack strengths, log-uniform (Pa),
+ *  a hypothesis of Nimbus, and the shares they are read in (rule 1018). */
 export const S_SECOND_PHASE_RANGE = [900_000, 5_000_000] as const;
 export const S_SECOND_PHASE_SHARES = 64;
 
