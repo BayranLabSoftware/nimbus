@@ -34,6 +34,12 @@
  * he downloaded the same day. Meteor Crater, class D, from chapters 4, 10 and
  * 11 of Kring's guidebook, downloaded with Andrea's leave the same day.
  *
+ * Rules 867 to 874 (levelBProtocolRules.ts), the reviewer's corrections,
+ * reshaped this file before step 3: 2008 TC3 and 2018 LA moved to the seen
+ * set; E3 became a compatibility with the flare; the angles of Carancas and
+ * Meteor Crater were widened; every input says whether it leans on a target;
+ * the ground's density was fixed.
+ *
  * Carancas, declared at pinning: every estimate of its body's mass or energy
  * uses the crater's diameter (Brown et al. 2008, Sect. 6, "we use the diameter
  * of the crater as a constraint"), so by rule 860(c) the diameter is reported
@@ -50,11 +56,17 @@ export interface LevelBSource {
 
 export type LevelBInputValue =
   | { readonly kind: 'normal'; readonly mean: number; readonly sigma: number }
-  | { readonly kind: 'uniform'; readonly low: number; readonly high: number };
+  | { readonly kind: 'uniform'; readonly low: number; readonly high: number }
+  /** Rule 869: random impact angles, p(θ) ∝ sin 2θ between the bounds (degrees). */
+  | { readonly kind: 'sin2theta'; readonly low: number; readonly high: number }
+  /** Rule 873: a value the model itself supplies, not drawn. */
+  | { readonly kind: 'fixed'; readonly value: number };
 
 export interface LevelBInput {
   readonly value: LevelBInputValue;
   readonly unit: 'km/s' | 'deg' | 'm' | 'kg/m3';
+  /** Rule 872: whether the value leans on a target the round scores. */
+  readonly dependsOnTarget: boolean;
   readonly source: string;
   readonly where: string;
   readonly note?: string;
@@ -66,6 +78,8 @@ export interface LevelBTarget {
   readonly source: string;
   readonly where: string;
   readonly scored: boolean;
+  /** Rule 868, for a scored target. */
+  readonly priority?: 'primary' | 'secondary';
   readonly note?: string;
 }
 
@@ -76,6 +90,8 @@ export interface LevelBEvent {
     readonly angle: LevelBInput;
     readonly diameter: LevelBInput;
     readonly density: LevelBInput;
+    /** Rule 873. */
+    readonly targetDensity: LevelBInput;
   };
   readonly targets: readonly LevelBTarget[];
 }
@@ -133,15 +149,162 @@ const noCrater = (source: string, where: string): LevelBTarget => ({
   source,
   where,
   scored: true,
+  priority: 'primary',
+});
+
+/** The same outcome for a body of the seen set (rule 867): reported, never
+ *  counted. */
+const seenOutcome = (source: string, where: string): LevelBTarget => ({
+  id: 'E1',
+  measures: 'the outcome: a break-up in the air, meteorites recovered, no crater',
+  source,
+  where,
+  scored: false,
+});
+
+/** Rule 873: no pinned source states the ground under these bodies. */
+const crustalRock = (source: string): LevelBInput => ({
+  value: { kind: 'fixed', value: 2_700 },
+  unit: 'kg/m3',
+  dependsOnTarget: false,
+  source,
+  where: "not stated by the source: the model's crustal rock, CRUSTAL_ROCK_DENSITY (rule 873)",
 });
 
 export const LEVEL_B_ENTRY_EVENTS: readonly LevelBEvent[] = [
+  {
+    event: '2024 BX1',
+    inputs: {
+      velocity: {
+        value: { kind: 'normal', mean: 15.199, sigma: 0.008 },
+        unit: 'km/s',
+        dependsOnTarget: false,
+        source: 'spurny2024',
+        where: 'Table 3, v∞, p. 4',
+      },
+      angle: {
+        value: { kind: 'uniform', low: 75.557, high: 75.74 },
+        unit: 'deg',
+        dependsOnTarget: false,
+        source: 'spurny2024',
+        where: 'Table 2, slope at the beginning and at the end, p. 3',
+      },
+      diameter: {
+        // H = 32.84 (half-unit 0.005), p = 0.50 ± 20 % (rule 866(b), (c)).
+        value: {
+          kind: 'uniform',
+          low: (1_329_000 * 10 ** (-32.845 / 5)) / Math.sqrt(0.6),
+          high: (1_329_000 * 10 ** (-32.835 / 5)) / Math.sqrt(0.4),
+        },
+        unit: 'm',
+        dependsOnTarget: false,
+        source: 'spurny2024',
+        where: 'p. 7: H = 32.84 (MPC), albedo "about 0.50" of E-type asteroids and aubrites',
+        note: 'The 140 kg of the fragmentation model is fitted to the light curve, a target: not an input (rule 860(c)).',
+      },
+      density: {
+        value: { kind: 'uniform', low: 2_790, high: 3_410 },
+        unit: 'kg/m3',
+        dependsOnTarget: false,
+        source: 'spurny2024',
+        where: 'p. 7: "the typical aubrite density 3100 kg m−3" (±10 %, rule 866(b))',
+      },
+      targetDensity: crustalRock('spurny2024'),
+    },
+    targets: [
+      noCrater('spurny2024', 'abstract and Sect. 7, p. 1 and p. 7: meteorites recovered'),
+      {
+        id: 'E2',
+        measures: 'the height at which the first major fragmentation started',
+        source: 'spurny2024',
+        where:
+          'Sect. 5, p. 4: "The first major, and in fact catastrophic, fragmentation started at a height of …"',
+        scored: true,
+        priority: 'primary',
+      },
+      {
+        id: 'E3',
+        measures:
+          'compatibility with the flare altitude (rule 868): the model deposits its energy at `entry.burstAltitude`, a proxy of the two equally bright flares, not the same observable',
+        source: 'spurny2024',
+        where:
+          'Sect. 5, p. 4: "maximum brightness … in two almost equally bright flares at heights of …" (rule 866(e))',
+        scored: true,
+        priority: 'secondary',
+      },
+    ],
+  },
+  {
+    event: '2023 CX1',
+    inputs: {
+      velocity: {
+        value: { kind: 'normal', mean: 14.04, sigma: 0.03 },
+        unit: 'km/s',
+        dependsOnTarget: false,
+        source: 'egal2025',
+        where: 'Table 3, initial velocity, p. 32',
+      },
+      angle: {
+        value: { kind: 'uniform', low: 48.725, high: 49.098 },
+        unit: 'deg',
+        dependsOnTarget: false,
+        source: 'egal2025',
+        where: 'Table 3, slope at the beginning and at the end before the flare, p. 32',
+      },
+      diameter: {
+        value: { kind: 'uniform', low: 0.7, high: 1.1 },
+        unit: 'm',
+        dependsOnTarget: false,
+        source: 'egal2025',
+        where:
+          'Sect. 4.3, p. 16: radius "based on brightness alone, to 35-55 cm" (H = 32.7 ± 0.3, albedo of (20) Massalia 0.196 ± 0.036)',
+        note: 'The preferred 36 ± 3 cm and 650 ± 160 kg combine the light curve and the infrasound, which are effects of the entry: not inputs (rule 860(c)).',
+      },
+      density: {
+        value: { kind: 'uniform', low: 3_294, high: 3_353 },
+        unit: 'kg/m3',
+        dependsOnTarget: false,
+        source: 'egal2025',
+        where:
+          'Sect. 2.1.3, p. 7: bulk densities of the meteorites, 3.353 ± 0.080 and 3.294 ± 0.002 g/cm3',
+      },
+      targetDensity: crustalRock('egal2025'),
+    },
+    targets: [
+      noCrater('egal2025', 'Sect. 2 and 4, meteorites recovered (Saint-Pierre-le-Viger)'),
+      {
+        id: 'E2',
+        measures: 'the altitude of the first of the two major fragmentation events of the flare',
+        source: 'egal2025',
+        where: 'Sect. 2.2, p. 8, and p. 9: "two major fragmentation events at altitudes of …"',
+        scored: true,
+        priority: 'primary',
+        note: 'Fragment F separated earlier "with minimal mass loss" and no brightening (p. 9): not a major fragmentation.',
+      },
+      {
+        id: 'E3',
+        measures:
+          'compatibility with the flare altitude (rule 868): the model deposits its energy at `entry.burstAltitude`, a proxy of the second and more prominent fragmentation phase, not the same observable',
+        source: 'egal2025',
+        where:
+          'p. 8 (the second of the two events) and p. 9 ("the second, more prominent fragmentation phase around …"): the interval between the two figures (rule 866(e))',
+        scored: true,
+        priority: 'secondary',
+      },
+    ],
+  },
+];
+
+/** Rule 867: rows of I2's CNEOS fireballs — run and reported as public checks,
+ *  never counted for level B. */
+export const LEVEL_B_SEEN_EVENTS: readonly LevelBEvent[] = [
   {
     event: '2008 TC3',
     inputs: {
       velocity: {
         value: { kind: 'uniform', low: 12.35, high: 12.45 },
         unit: 'km/s',
+        dependsOnTarget: false,
         source: 'borovicka2009',
         where:
           'Sect. 4.1: 12.4 km/s at 50 km, from the astrometric impact trajectory (Chesley et al. 2008)',
@@ -149,6 +312,7 @@ export const LEVEL_B_ENTRY_EVENTS: readonly LevelBEvent[] = [
       angle: {
         value: { kind: 'uniform', low: 19.95, high: 20.05 },
         unit: 'deg',
+        dependsOnTarget: false,
         source: 'borovicka2009',
         where: 'Sect. 4.1: "descending angle of 20.0° to the horizontal"',
       },
@@ -157,6 +321,7 @@ export const LEVEL_B_ENTRY_EVENTS: readonly LevelBEvent[] = [
         // first order: D = (6V/π)^(1/3), σ_D = D σ_V / 3V.
         value: { kind: 'normal', mean: 3.81, sigma: 0.26 },
         unit: 'm',
+        dependsOnTarget: false,
         source: 'borovicka2009',
         where:
           'Sect. 5: "volume of 2008 TC3 from the shape model is 29 ± 6 m3 (Scheirich et al. 2009)"',
@@ -165,21 +330,23 @@ export const LEVEL_B_ENTRY_EVENTS: readonly LevelBEvent[] = [
       density: {
         value: { kind: 'uniform', low: 2_100, high: 2_500 },
         unit: 'kg/m3',
+        dependsOnTarget: false,
         source: 'borovicka2009',
         where:
           'Sect. 5: Almahata Sitta meteorites, "bulk densities of 2100-2500 kg m-3" (Jenniskens et al. 2009)',
         note: "The authors' guess of a bulk density below 1700 kg m-3 is inferred from the heights of fragmentation, a target: not an input (rule 860(c)).",
       },
+      targetDensity: crustalRock('borovicka2009'),
     },
     targets: [
-      noCrater('borovicka2009', 'Sect. 5: "only small meteorites (≤ 283 g) were found"'),
+      seenOutcome('borovicka2009', 'Sect. 5: "only small meteorites (≤ 283 g) were found"'),
       {
         id: 'E2',
         measures:
           'the height of the first major fragmentation: the flare with dust deposition that Meteosat recorded',
         source: 'borovicka2009',
         where: 'Sect. 4.2 and Sect. 5: "Another flare was detected by Meteosat at …" (rule 866(e))',
-        scored: true,
+        scored: false,
         note: 'An earlier flare is "possible but uncertain", seen in one channel only (Sect. 4.2): not counted.',
       },
       {
@@ -193,129 +360,26 @@ export const LEVEL_B_ENTRY_EVENTS: readonly LevelBEvent[] = [
     ],
   },
   {
-    event: '2024 BX1',
-    inputs: {
-      velocity: {
-        value: { kind: 'normal', mean: 15.199, sigma: 0.008 },
-        unit: 'km/s',
-        source: 'spurny2024',
-        where: 'Table 3, v∞, p. 4',
-      },
-      angle: {
-        value: { kind: 'uniform', low: 75.557, high: 75.74 },
-        unit: 'deg',
-        source: 'spurny2024',
-        where: 'Table 2, slope at the beginning and at the end, p. 3',
-      },
-      diameter: {
-        // H = 32.84 (half-unit 0.005), p = 0.50 ± 20 % (rule 866(b), (c)).
-        value: {
-          kind: 'uniform',
-          low: (1_329_000 * 10 ** (-32.845 / 5)) / Math.sqrt(0.6),
-          high: (1_329_000 * 10 ** (-32.835 / 5)) / Math.sqrt(0.4),
-        },
-        unit: 'm',
-        source: 'spurny2024',
-        where: 'p. 7: H = 32.84 (MPC), albedo "about 0.50" of E-type asteroids and aubrites',
-        note: 'The 140 kg of the fragmentation model is fitted to the light curve, a target: not an input (rule 860(c)).',
-      },
-      density: {
-        value: { kind: 'uniform', low: 2_790, high: 3_410 },
-        unit: 'kg/m3',
-        source: 'spurny2024',
-        where: 'p. 7: "the typical aubrite density 3100 kg m−3" (±10 %, rule 866(b))',
-      },
-    },
-    targets: [
-      noCrater('spurny2024', 'abstract and Sect. 7, p. 1 and p. 7: meteorites recovered'),
-      {
-        id: 'E2',
-        measures: 'the height at which the first major fragmentation started',
-        source: 'spurny2024',
-        where:
-          'Sect. 5, p. 4: "The first major, and in fact catastrophic, fragmentation started at a height of …"',
-        scored: true,
-      },
-      {
-        id: 'E3',
-        measures: 'the height of maximum brightness, the two equally bright flares',
-        source: 'spurny2024',
-        where:
-          'Sect. 5, p. 4: "maximum brightness … in two almost equally bright flares at heights of …" (rule 866(e))',
-        scored: true,
-      },
-    ],
-  },
-  {
-    event: '2023 CX1',
-    inputs: {
-      velocity: {
-        value: { kind: 'normal', mean: 14.04, sigma: 0.03 },
-        unit: 'km/s',
-        source: 'egal2025',
-        where: 'Table 3, initial velocity, p. 32',
-      },
-      angle: {
-        value: { kind: 'uniform', low: 48.725, high: 49.098 },
-        unit: 'deg',
-        source: 'egal2025',
-        where: 'Table 3, slope at the beginning and at the end before the flare, p. 32',
-      },
-      diameter: {
-        value: { kind: 'uniform', low: 0.7, high: 1.1 },
-        unit: 'm',
-        source: 'egal2025',
-        where:
-          'Sect. 4.3, p. 16: radius "based on brightness alone, to 35-55 cm" (H = 32.7 ± 0.3, albedo of (20) Massalia 0.196 ± 0.036)',
-        note: 'The preferred 36 ± 3 cm and 650 ± 160 kg combine the light curve and the infrasound, which are effects of the entry: not inputs (rule 860(c)).',
-      },
-      density: {
-        value: { kind: 'uniform', low: 3_294, high: 3_353 },
-        unit: 'kg/m3',
-        source: 'egal2025',
-        where:
-          'Sect. 2.1.3, p. 7: bulk densities of the meteorites, 3.353 ± 0.080 and 3.294 ± 0.002 g/cm3',
-      },
-    },
-    targets: [
-      noCrater('egal2025', 'Sect. 2 and 4, meteorites recovered (Saint-Pierre-le-Viger)'),
-      {
-        id: 'E2',
-        measures: 'the altitude of the first of the two major fragmentation events of the flare',
-        source: 'egal2025',
-        where: 'Sect. 2.2, p. 8, and p. 9: "two major fragmentation events at altitudes of …"',
-        scored: true,
-        note: 'Fragment F separated earlier "with minimal mass loss" and no brightening (p. 9): not a major fragmentation.',
-      },
-      {
-        id: 'E3',
-        measures:
-          'the altitude of peak brightness, the second and more prominent fragmentation phase',
-        source: 'egal2025',
-        where:
-          'p. 8 (the second of the two events) and p. 9 ("the second, more prominent fragmentation phase around …"): the interval between the two figures (rule 866(e))',
-        scored: true,
-      },
-    ],
-  },
-  {
     event: '2018 LA',
     inputs: {
       velocity: {
         value: { kind: 'normal', mean: 16.999, sigma: 0.001 },
         unit: 'km/s',
+        dependsOnTarget: false,
         source: 'jenniskens2021',
         where: 'p. 12: speed at 100 km altitude from the measured orbit',
       },
       angle: {
         value: { kind: 'normal', mean: 24.12, sigma: 0.01 },
         unit: 'deg',
+        dependsOnTarget: false,
         source: 'jenniskens2021',
         where: 'p. 14: elevation El',
       },
       diameter: {
         value: { kind: 'uniform', low: 0.79, high: 1.56 },
         unit: 'm',
+        dependsOnTarget: false,
         source: 'jenniskens2021',
         where:
           'p. 30: "133 ± 23 cm or 96 ± 17 cm" for H = 31.08 (G = 0) or 31.78 (G = 0.15) and the V-class albedo 0.37 ± 0.12 — the interval spanning both',
@@ -324,18 +388,20 @@ export const LEVEL_B_ENTRY_EVENTS: readonly LevelBEvent[] = [
       density: {
         value: { kind: 'normal', mean: 2_850, sigma: 10 },
         unit: 'kg/m3',
+        dependsOnTarget: false,
         source: 'jenniskens2021',
         where: 'p. 15: bulk density of MP-01, 2.85 ± 0.01 g/cm3',
       },
+      targetDensity: crustalRock('jenniskens2021'),
     },
     targets: [
-      noCrater('jenniskens2021', 'Abstract and p. 1: twenty-three meteorites recovered'),
+      seenOutcome('jenniskens2021', 'Abstract and p. 1: twenty-three meteorites recovered'),
       {
         id: 'E2',
         measures: 'the altitude of the disruption, the one flare, triangulated from video',
         source: 'jenniskens2021',
         where: 'p. 12: "Triangulation of these directions puts the flare at … altitude = …"',
-        scored: true,
+        scored: false,
         note: 'The body broke up once, in the flare; the U.S. Government sensors give its peak (p. 13), the CNEOS row already in the repository (rule 858).',
       },
       {
@@ -358,16 +424,18 @@ export const LEVEL_B_CRATER_EVENTS: readonly LevelBEvent[] = [
       velocity: {
         value: { kind: 'uniform', low: 11.7, high: 16.9 },
         unit: 'km/s',
+        dependsOnTarget: false,
         source: 'brown2008',
         where:
           'Sect. 5, [24], p. 8: "between 11.7–16.9 km/s" at the top of the atmosphere, from the orbit (Tisserand parameter above 3)',
       },
       angle: {
-        value: { kind: 'uniform', low: 62.5, high: 63.5 },
+        value: { kind: 'uniform', low: 45, high: 75 },
         unit: 'deg',
+        dependsOnTarget: false,
         source: 'brown2008',
         where:
-          'Sect. 5, [23], p. 7: best-fit "entry angle of 63°" (rule 866(b)); the source calls it representative, not unique',
+          'Sect. 5, [23], p. 7: best-fit "entry angle of 63°", representative and not unique — uniform 45° to 75° (rule 869, the reviewer)',
       },
       diameter: {
         // 3 to 9 t over the density's interval, as spheres.
@@ -377,6 +445,7 @@ export const LEVEL_B_CRATER_EVENTS: readonly LevelBEvent[] = [
           high: Math.cbrt((6 * 9_000) / (Math.PI * 3_650)),
         },
         unit: 'm',
+        dependsOnTarget: true,
         source: 'brown2008',
         where: 'Abstract, p. 1: "The initial mass of the meteoroid is in the range of 3–9 tons"',
         note: "Fitted with the crater's diameter as a constraint (Sect. 6, p. 8): K2 is circular (rule 860(c)).",
@@ -384,9 +453,18 @@ export const LEVEL_B_CRATER_EVENTS: readonly LevelBEvent[] = [
       density: {
         value: { kind: 'uniform', low: 3_650, high: 3_750 },
         unit: 'kg/m3',
+        dependsOnTarget: false,
         source: 'kenkmann2009',
         where:
           'p. 994: "a density of 3700 kg/m3 (Consolmagno et al. 1998)" (rule 866(b), two significant figures)',
+      },
+      targetDensity: {
+        value: { kind: 'uniform', low: 1_800, high: 2_200 },
+        unit: 'kg/m3',
+        dependsOnTarget: false,
+        source: 'kenkmann2009',
+        where:
+          'p. 991: "the estimated density of wet soil for the target (~2 gcm−3)" (±10 %, rules 866(b) and 873)',
       },
     },
     targets: [
@@ -396,6 +474,7 @@ export const LEVEL_B_CRATER_EVENTS: readonly LevelBEvent[] = [
         source: 'kenkmann2009',
         where: 'Abstract, p. 985',
         scored: true,
+        priority: 'primary',
       },
       {
         id: 'K2',
@@ -412,6 +491,7 @@ export const LEVEL_B_CRATER_EVENTS: readonly LevelBEvent[] = [
         source: 'kenkmann2009',
         where: 'p. 989: "Depth/diameter ratios obtained from measured profiles …"',
         scored: true,
+        priority: 'primary',
       },
       {
         id: 'K4',
@@ -419,6 +499,7 @@ export const LEVEL_B_CRATER_EVENTS: readonly LevelBEvent[] = [
         source: 'kenkmann2009',
         where: 'pp. 989–990 and Fig. 2',
         scored: true,
+        priority: 'secondary',
       },
     ],
   },
@@ -440,21 +521,24 @@ export const LEVEL_B_CONSISTENCY_EVENTS: readonly LevelBEvent[] = [
       velocity: {
         value: { kind: 'uniform', low: 11, high: 20 },
         unit: 'km/s',
+        dependsOnTarget: false,
         source: 'kring2017',
         where:
           'Ch. 11, p. 119: "The impact velocity is usually assumed to be between 11 and 20 km/s"',
         note: 'An impact velocity, taken as the speed of entry: an iron of 10 to 50 m keeps most of it.',
       },
       angle: {
-        value: { kind: 'uniform', low: 44.5, high: 45.5 },
+        value: { kind: 'sin2theta', low: 30, high: 75 },
         unit: 'deg',
+        dependsOnTarget: false,
         source: 'kring2017',
         where:
-          'Ch. 10, p. 116: "a 45° impact angle, the most probable impact angle and consistent with the symmetrical shape of the crater" (rule 866(b))',
+          'Ch. 10, p. 116: "a 45° impact angle, the most probable impact angle" — random impacts, p(θ) ∝ sin 2θ between 30° and 75°; the nominal 45° is a scenario apart (rule 869, the reviewer)',
       },
       diameter: {
         value: { kind: 'uniform', low: 10, high: 50 },
         unit: 'm',
+        dependsOnTarget: false,
         source: 'kring2017',
         where:
           'Ch. 11, p. 119: "the projectile is usually assumed to have a pre-collisional diameter of roughly 10 to 50 m"',
@@ -462,10 +546,12 @@ export const LEVEL_B_CONSISTENCY_EVENTS: readonly LevelBEvent[] = [
       density: {
         value: { kind: 'uniform', low: 7_750, high: 7_850 },
         unit: 'kg/m3',
+        dependsOnTarget: false,
         source: 'kring2017',
         where:
           'Ch. 11, Table 11.1 note, p. 120: "I assume a projectile density of 7.8 g/cm3" (rule 866(b))',
       },
+      targetDensity: crustalRock('kring2017'),
     },
     targets: [
       {
@@ -474,6 +560,7 @@ export const LEVEL_B_CONSISTENCY_EVENTS: readonly LevelBEvent[] = [
         source: 'kring2017',
         where: 'Ch. 4, p. 35: "has a diameter of …"',
         scored: true,
+        priority: 'primary',
       },
       {
         id: 'D2',
@@ -481,6 +568,7 @@ export const LEVEL_B_CONSISTENCY_EVENTS: readonly LevelBEvent[] = [
         source: 'kring2017',
         where: 'Ch. 4, p. 35: "a bowl-shaped depression that is … deep"',
         scored: true,
+        priority: 'primary',
         note: 'Eroded and partly filled since (p. 36): the fresh crater the model gives was deeper.',
       },
       {
@@ -489,6 +577,7 @@ export const LEVEL_B_CONSISTENCY_EVENTS: readonly LevelBEvent[] = [
         source: 'kring2017',
         where: 'Ch. 4, p. 35: "The crater has a simple bowl-shaped morphology"',
         scored: true,
+        priority: 'secondary',
       },
     ],
   },

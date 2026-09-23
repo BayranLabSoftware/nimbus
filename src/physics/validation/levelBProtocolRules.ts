@@ -176,15 +176,107 @@
  * run. Whatever is noticed after it is written down as read after.
  */
 
-export type LevelBSet = 'development' | 'entry' | 'crater' | 'consistency';
+/**
+ * Rules 867 to 874 — the reviewer's corrections, adopted before step 3 as rule
+ * 865 allows. Written on 23 September 2026 from his reply of that day to the
+ * protocol (sent by Andrea as «Nimbus — protocollo livello B per il
+ * revisore»), which approved it on conditions; each condition is one rule
+ * below, and each is his. No model has been run on any pinned input.
+ *
+ * RULE 867. THE SETS, REVISED. 2008 TC3, 2018 LA and 2022 EB5 are rows of
+ * I2's 357 CNEOS fireballs: the model's altitudes were examined on them, in
+ * aggregate. They leave the entry set for a set of their own, `seen`: run and
+ * reported as public checks, never counted for level B. Level B of the entry
+ * rests on 2023 CX1 and 2024 BX1; of the crater on Carancas; Meteor Crater
+ * stays class D; the development set is unchanged. A B of the entry that
+ * generalises beyond them needs a further body seen before impact, used
+ * neither in development nor in I2 — pinned by rules of its own, before its
+ * model is run.
+ *
+ * RULE 868. THE TARGETS, primary and secondary, and their bars (replacing
+ * rule 863(b) to (e) for level B):
+ *   E1 the outcome — primary — passes if at least 90 % of the draws dig no
+ *      crater of any kind (`crater.origin` is `none`);
+ *   E2 the altitude of the first major fragmentation, against
+ *      `entry.breakupAltitude` — primary — passes if the draws' 5–95 % band
+ *      overlaps the observed interval and their median lies inside it once it
+ *      is widened on each side by the larger of 30 % of its midpoint and 5 km;
+ *   E3 "compatibility with the flare altitude": the altitude at which the
+ *      model deposits its energy, `entry.burstAltitude`, is a proxy of the
+ *      flare, not the same observable (the light depends on the luminous
+ *      efficiency, the ablation, every fragmentation and the instrument) —
+ *      secondary — passes if the band meets the observed interval widened by
+ *      5 km on each side;
+ *   K1 the outcome — primary — passes if at least 90 % of the draws dig a
+ *      crater with a body that reached the ground (`crater.origin` is
+ *      `impact`);
+ *   K3 the depth-to-diameter ratio — primary — passes if the band overlaps the
+ *      observed interval and the median lies inside it once widened by 20 % of
+ *      its midpoint on each side;
+ *   K4 and D3 the morphology — secondary — passes if at least 80 % of the
+ *      draws answer as observed;
+ *   D1 and D2, class D — pass if the observed interval lies inside the band;
+ *      the median against the interval widened by 30 % of its midpoint is
+ *      reported beside it.
+ * Where an observed value is an interval, the median is held to the interval,
+ * never to a single figure chosen after the run.
+ *
+ * RULE 869. THE ANGLES. A best-fit or a most probable angle is not a rounded
+ * measurement, and rule 866(b)'s half-unit does not apply to it. Carancas:
+ * uniform between 45° and 75° about the representative 63°. Meteor Crater:
+ * p(θ) ∝ sin 2θ between 30° and 75°, the distribution of random impacts; its
+ * nominal 45° is run as a scenario apart, reported, never mixed into the
+ * ensemble.
+ *
+ * RULE 870. WHAT DECIDES, replacing rule 864. A family earns class B limited
+ * to the domain of rule 871 if (i) every primary target of every counted event
+ * passes, (ii) at least 80 % of its secondary targets pass, and (iii) its
+ * continuous targets show no directional bias: the mean of ln(median /
+ * observed midpoint) over them lies within ±ln 1.3. (iv) Whether the 5–95 %
+ * bands cover as often as they claim cannot be measured on two events, and the
+ * outcome says so rather than claim it. For the crater, Carancas alone gives
+ * at most "B provisional, a single case", worded "compatible with Carancas in
+ * one reference case"; "validated" waits for a second independent positive
+ * case — an iron with a crater field, or a body constrained before its crater
+ * was found.
+ *
+ * RULE 871. THE DOMAIN. The entry's is the span of 2023 CX1's and 2024 BX1's
+ * pinned inputs: stony bodies of 0.46 to 1.1 m, entering at 14.0 to 15.2 km/s
+ * and 48.7° to 75.7°, of 3 100 to 3 350 kg/m³ (rule 866(b) widens 2024 BX1's
+ * to 2 790–3 410). Nothing outside it is claimed.
+ *
+ * RULE 872. EVERY INPUT SAYS WHETHER IT DEPENDS ON A SCORED TARGET. Carancas's
+ * 3 to 9 t does: it was fitted with the crater as a constraint, so it is a
+ * mixed informative prior, not an independent distribution. Beside the
+ * scored run, a stress run widens it to 1 to 27 t (a third of the lowest to
+ * three times the highest) and is reported, not scored, to show how much the
+ * test leans on it.
+ *
+ * RULE 873. THE TARGET'S GROUND, fixed now because no rule had: Carancas,
+ * wet soil of "~2 g cm−3" (Kenkmann et al. 2009, p. 991; ±10 % by rule
+ * 866(b)); Meteor Crater and the bodies of the entry set, which no pinned
+ * source gives, the model's crustal rock, 2 700 kg/m³, declared as such.
+ *
+ * RULE 874. AFTER THIS COMMIT the protocol is frozen: step 3 may start. The
+ * reviewer's conditions and where each went: the three CNEOS rows
+ * reclassified (867); energy deposition apart from brightness (868, E3);
+ * the angles widened (869); primary and secondary targets, the family rule,
+ * the bias and the coverage (870); every claim limited to its domain (870,
+ * 871); a second positive crater before "validated" (870). The table of
+ * dependence he asked for is `dependsOnTarget` on every input of
+ * levelBSources.ts (872).
+ */
 
-/** Rule 857: every event, in exactly one set. */
+export type LevelBSet = 'development' | 'seen' | 'entry' | 'crater' | 'consistency';
+
+/** Rules 857 and 867: every event, in exactly one set. */
 export const LEVEL_B_EVENTS: Readonly<Record<string, LevelBSet>> = {
   'Chelyabinsk 2013': 'development',
   'Tunguska 1908': 'development',
   'Sikhote-Alin 1947': 'development',
-  '2008 TC3': 'entry',
-  '2018 LA': 'entry',
+  '2008 TC3': 'seen',
+  '2018 LA': 'seen',
+  '2022 EB5': 'seen',
   '2023 CX1': 'entry',
   '2024 BX1': 'entry',
   Carancas: 'crater',
@@ -198,12 +290,21 @@ export const LEVEL_B_FROZEN_MODEL = '2c2c2f5';
 export const LEVEL_B_SEED = 'level-b-2026-09-23';
 export const LEVEL_B_DRAWS = 1_000;
 
-/** Rule 863(b)–(d). */
+/** Rules 868 and 870. */
 export const LEVEL_B_BARS = {
-  continuousLogRatio: Math.log(1.2),
   outcomeShare: 0.9,
-  magnitude: 0.5,
+  morphologyShare: 0.8,
+  fragmentationRelative: 0.3,
+  fragmentationMinimumM: 5_000,
+  flareWideningM: 5_000,
+  depthRatioRelative: 0.2,
+  consistencyRelative: 0.3,
+  secondaryShare: 0.8,
+  biasLogRatio: Math.log(1.3),
 } as const;
+
+/** Rule 872: Carancas's stress run. */
+export const LEVEL_B_CARANCAS_STRESS_MASS_KG = [1_000, 27_000] as const;
 
 /** Rule 863(f), in pascals and metres per second. */
 export const LEVEL_B_DAMAGE_BANDS = {
