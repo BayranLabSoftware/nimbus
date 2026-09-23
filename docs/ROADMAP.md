@@ -1067,6 +1067,17 @@ where a fragmenting body's light peaks. Coverage is not estimated on two
 events; a B of the entry that generalises needs a further body seen before
 impact, and a crater B a second positive case.
 
+**The second round, frozen before phase 4** (rules 875 to 880,
+`levelBSecondRules.ts`, same day). As the reviewer asked, the next list is
+fixed before a line of the new physics of strength exists, and its sources
+stay closed until its own step 2: 2022 WJ1 counted for the entry, 2024 XA1,
+2024 UQ and 2026 RW1 counted only if a source reports an observed (not
+modelled) altitude, and Sterlitamak — an iron that fell before witnesses and
+dug a single crater — for the crater, if its mass can be pinned from the
+recovered meteorite rather than the crater. Phase 4 may learn only from the
+development and seen sets and from published statistics of other falls;
+2023 CX1, 2024 BX1 and Carancas are regression cases, never fitted to.
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this
