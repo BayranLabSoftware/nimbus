@@ -1,12 +1,13 @@
 /**
- * Step 2 of the round on fragmentation (rules 978 to 981,
+ * Step 2 of the round on fragmentation (rules 978 to 986,
  * src/physics/validation/fragmentationRoundRules.ts): the baseline's metrics
- * on every development case, once.
+ * on every development case — version 2, as rules 982 to 986 rectify it; the
+ * first version is kept in fragmentationBaseline.v1.json.
  *
  *   pnpm exec tsx scripts/fragmentation-baseline.ts
  *
- * Runs today's model on the draws rule 978 names, reads each metric as rule
- * 979 says against the table of rule 980, and writes
+ * Runs today's model on the draws rule 978 names, reads each metric as rules
+ * 979, 983 and 984 say against the table of rules 980 and 986, and writes
  * src/physics/validation/fragmentationBaseline.json and
  * docs/FRAGMENTATION_DEV_TABLE.md. Deterministic: no clock, no randomness but
  * the seeds'.
@@ -230,31 +231,37 @@ const row = (c: DevCase, metric: DevRow['metric']): DevRow => {
   return r;
 };
 
-/** Rule 979: the distance from the median to the observed interval. */
-const miss = (median: number, r: DevRow): number | null =>
-  r.observed.kind === 'altitude'
-    ? Math.max(0, r.observed.lowM - median, median - r.observed.highM)
+/** Rules 983 and 984: the distance from a conditional median to the observed
+ *  interval, none inside it; none where there is no altitude to read. */
+const miss = (b: Band | null, r: DevRow): number | null =>
+  b !== null && r.observed.kind === 'altitude'
+    ? Math.max(0, r.observed.lowM - b.median, b.median - r.observed.highM)
     : null;
+
+/** A band over the draws in which the event happens, or none. */
+const conditional = (values: readonly number[]): Band | null =>
+  values.length === 0 ? null : band(values);
 
 const cases = DEV_CASES.map(({ case: c, role }) => {
   const { inputs, drawn } = inputsOf(c);
   const runs = inputs.map((input) => simulateImpact(input));
-  const reaches = runs.map((r) => r.entry.regime !== 'COMPLETE_AIRBURST');
-  const m1 = band(runs.map((r) => (r.entry.firstFragmentationAltitude as number | undefined) ?? 0));
-  const m2 = band(
-    runs.map((r) =>
-      r.entry.regime === 'COMPLETE_AIRBURST' ? (r.entry.burstAltitude as number) : 0
-    )
-  );
+  const n = runs.length;
+  // Rule 983: the first stage, where the model produces one.
+  const firsts = runs
+    .map((r) => r.entry.firstFragmentationAltitude as number | undefined)
+    .filter((h): h is number => h !== undefined && h > 0);
+  const m1 = conditional(firsts);
+  // Rule 984: the burst, where the body bursts in the air.
+  const bursts = runs
+    .filter((r) => r.entry.regime === 'COMPLETE_AIRBURST')
+    .map((r) => r.entry.burstAltitude as number);
+  const m2 = conditional(bursts);
   const m4 = band(runs.map((r) => r.entry.energyFractionToGround));
-  // Not a metric: the model's one breakup (Eq. 11), and m1 read on it where the
-  // two-stage law does not cover the body's density — asked of the reviewer.
-  const breakup = band(runs.map((r) => r.entry.breakupAltitude as number));
-  const uncovered = runs.filter((r) => r.entry.firstFragmentationAltitude === undefined).length;
-  const m1OnBreakup = band(
-    runs.map((r) => (r.entry.firstFragmentationAltitude ?? r.entry.breakupAltitude) as number)
-  );
-  const pReach = reaches.filter(Boolean).length / runs.length;
+  // Rule 983: the single breakup of a body the two-stage law does not cover.
+  const single = runs
+    .filter((r) => r.entry.firstFragmentationAltitude === undefined)
+    .map((r) => r.entry.breakupAltitude as number);
+  const pReach = runs.filter((r) => r.entry.regime !== 'COMPLETE_AIRBURST').length / n;
   const m3row = row(c, 'm3');
   const pObserved =
     m3row.observed.kind === 'outcome' ? (m3row.observed.reachesGround ? pReach : 1 - pReach) : null;
@@ -262,15 +269,25 @@ const cases = DEV_CASES.map(({ case: c, role }) => {
     case: c,
     role,
     drawn,
-    draws: runs.length,
-    m1: { ...m1, miss: miss(m1.median, row(c, 'm1')), counted: row(c, 'm1').counted },
-    m2: { ...m2, miss: miss(m2.median, row(c, 'm2')), counted: row(c, 'm2').counted },
+    draws: n,
+    m1: {
+      pFirstStage: firsts.length / n,
+      altitude: m1,
+      miss: miss(m1, row(c, 'm1')),
+      counted: row(c, 'm1').counted,
+    },
+    m2: {
+      pBurst: bursts.length / n,
+      altitude: m2,
+      miss: miss(m2, row(c, 'm2')),
+      counted: row(c, 'm2').counted,
+    },
     m3: { reachesGround: pReach, observedOutcome: pObserved, counted: m3row.counted },
     m4: { ...m4, counted: row(c, 'm4').counted },
     diagnostic: {
-      breakupEq11: breakup,
-      uncoveredByTwoStage: uncovered / runs.length,
-      m1OnBreakupWhereUncovered: { ...m1OnBreakup, miss: miss(m1OnBreakup.median, row(c, 'm1')) },
+      /** Rule 983: "the altitude of the single breakup", in no mean. */
+      singleBreakup: conditional(single),
+      shareWithoutFirstStageLaw: single.length / n,
     },
     regimes: shares(runs.map((r) => r.entry.regime)),
     craterStates: shares(runs.map((r) => r.crater.state)),
@@ -279,13 +296,14 @@ const cases = DEV_CASES.map(({ case: c, role }) => {
 
 const mean = (xs: readonly number[]): number | null =>
   xs.length === 0 ? null : xs.reduce((a, b) => a + b, 0) / xs.length;
+const withMiss = (metric: 'm1' | 'm2') =>
+  cases.filter((c) => c[metric].counted && c[metric].miss !== null);
 const summary = {
-  m1MeanMissM: mean(cases.filter((c) => c.m1.counted).map((c) => c.m1.miss ?? 0)),
-  /** Not a metric: the same, m1 read on the one breakup where uncovered. */
-  m1MeanMissOnBreakupWhereUncoveredM: mean(
-    cases.filter((c) => c.m1.counted).map((c) => c.diagnostic.m1OnBreakupWhereUncovered.miss ?? 0)
-  ),
-  m2MeanMissM: mean(cases.filter((c) => c.m2.counted).map((c) => c.m2.miss ?? 0)),
+  m1Cases: withMiss('m1').map((c) => c.case),
+  m1MeanMissM: mean(withMiss('m1').map((c) => c.m1.miss ?? 0)),
+  m2Cases: withMiss('m2').map((c) => c.case),
+  m2MeanMissM: mean(withMiss('m2').map((c) => c.m2.miss ?? 0)),
+  m3Cases: cases.filter((c) => c.m3.counted).map((c) => c.case),
   m3MeanObservedOutcome: mean(
     cases.filter((c) => c.m3.counted).map((c) => c.m3.observedOutcome ?? 0)
   ),
@@ -299,7 +317,9 @@ const summary = {
 };
 
 const out = {
-  protocol: 'rules 959 to 981, src/physics/validation/fragmentationRoundRules.ts',
+  protocol: 'rules 959 to 986, src/physics/validation/fragmentationRoundRules.ts',
+  version: 2,
+  rectifies: 'fragmentationBaseline.v1.json (b1bf097), by rules 982 to 986',
   model: 'the baseline of rule 960: the product as it stands after ae80c5d',
   engine: { node: process.version, platform },
   cases,
@@ -328,11 +348,25 @@ const quality = (r: DevRow): string =>
 const lines: string[] = [
   '# The development table of the round on fragmentation',
   '',
-  'Step 2 of the round (rules 959 to 981, `src/physics/validation/fragmentationRoundRules.ts`),',
-  'written by `scripts/fragmentation-baseline.ts` from `fragmentationDevTable.ts` (the targets,',
-  "fixed before the baseline was computed) and today's model (the baseline of rule 960). Fixed",
-  'once for the round: after P runs only columns are added (rule 977). m2 is a proxy: the',
-  'brightest flare is not the largest release of energy (rule 974).',
+  'Version 2, rectified before P by rules 982 to 986; version 1 (b1bf097) is kept in',
+  '`docs/FRAGMENTATION_DEV_TABLE.v1.md` and `fragmentationBaseline.v1.json`. Step 2 of the round',
+  '(rules 959 to 986, `src/physics/validation/fragmentationRoundRules.ts`), written by',
+  "`scripts/fragmentation-baseline.ts` from `fragmentationDevTable.ts` (the targets) and today's",
+  'model (the baseline of rule 960), on the draws of rule 978, unchanged. After P runs only',
+  'columns are added (rule 977). m2 is a proxy: the brightest flare is not the largest release',
+  'of energy (rule 974).',
+  '',
+  '## What the rectification changed',
+  '',
+  '| | Version 1 (rule 979) | Version 2 (rules 983 to 986) |',
+  '| --- | --- | --- |',
+  "| m1 | the first stage's altitude over all draws, 0 where the model produces none | the probability of a first stage, and its altitude over the draws that have one; not applicable where no draw has one (2008 TC3, whose single breakup is diagnostic) |",
+  '| m2 | the burst altitude over all draws, 0 where the body or swarm reaches the ground | the probability of a burst in the air, and its altitude over the draws that burst |',
+  '| Credit | a mean miss falling by 1 km | the same, read case by case over the cases with an altitude on both sides; a gain counts only where the variant does not lower the probability of the event (rule 985) |',
+  '| Counted, m1 | 2008 TC3, 2018 LA, 2023 CX1, 2024 BX1 | 2018 LA, 2023 CX1, 2024 BX1 |',
+  '| Counted, m2 | 2008 TC3, 2018 LA, 2022 EB5, 2023 CX1, 2024 BX1, 2022 WJ1 | unchanged |',
+  '| Counted, m3 | the same, less 2022 EB5, plus Carancas, Chelyabinsk, Tunguska | Carancas diagnostic: its entry runs to sea level, the site lies at about 3 800 m (rule 986) |',
+  '| m4 | counted nowhere | unchanged |',
   '',
   '## Targets',
   '',
@@ -350,14 +384,16 @@ lines.push(
   '',
   '## The baseline',
   '',
-  'm1, m2 and m4 are the median over the draws, with the 5 %–95 % band; the miss is the distance',
-  'from the median to the observed interval, none inside it. m3 is the probability the model gives',
-  'the observed outcome. An uncounted metric is shown in brackets.',
+  'm1 and m2: the probability of the event, then the median of its altitude over the draws in',
+  'which it happens, with the 5 %–95 % band, and the distance from that median to the observed',
+  'interval. m3: the probability the model gives the observed outcome. m4: the median share of the',
+  'energy that reaches the ground. An uncounted metric is shown in brackets.',
   '',
-  '| Case | Draws | m1 first stage (km) | m1 miss | m2 release, proxy (km) | m2 miss | m3 p(observed) | m4 energy to the ground | Regimes | Crater states | Not a metric: breakup, Eq. 11 (km) | Not a metric: share outside the two-stage law |',
-  '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |'
+  '| Case | Draws | m1 p(first stage) | m1 altitude (km) | m1 miss (km) | m2 p(burst) | m2 burst altitude, proxy (km) | m2 miss (km) | m3 p(observed) | m4 energy to the ground | Regimes | Crater states | Diagnostic: altitude of the single breakup (km) |',
+  '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |'
 );
-const bandKm = (b: Band): string => `${km(b.median)} [${km(b.p5)}–${km(b.p95)}]`;
+const bandKm = (b: Band | null): string =>
+  b === null ? '—' : `${km(b.median)} [${km(b.p5)}–${km(b.p95)}]`;
 const wrap = (s: string, counted: boolean): string => (counted ? s : `(${s})`);
 const shareText = (x: Record<string, number>): string =>
   Object.entries(x)
@@ -365,24 +401,17 @@ const shareText = (x: Record<string, number>): string =>
     .join(', ');
 for (const c of cases) {
   lines.push(
-    `| ${c.case} | ${c.drawn} | ${wrap(bandKm(c.m1), c.m1.counted)} | ${c.m1.miss === null ? '—' : wrap(km(c.m1.miss), c.m1.counted)} | ${wrap(bandKm(c.m2), c.m2.counted)} | ${c.m2.miss === null ? '—' : wrap(km(c.m2.miss), c.m2.counted)} | ${c.m3.observedOutcome === null ? `— (reaches ${pct(c.m3.reachesGround)})` : wrap(pct(c.m3.observedOutcome), c.m3.counted)} | ${wrap(`${c.m4.median.toPrecision(3)} [${c.m4.p5.toPrecision(3)}–${c.m4.p95.toPrecision(3)}]`, c.m4.counted)} | ${shareText(c.regimes)} | ${shareText(c.craterStates)} | ${bandKm(c.diagnostic.breakupEq11)} | ${pct(c.diagnostic.uncoveredByTwoStage)} |`
+    `| ${c.case} | ${c.drawn} | ${wrap(pct(c.m1.pFirstStage), c.m1.counted)} | ${wrap(bandKm(c.m1.altitude), c.m1.counted)} | ${c.m1.miss === null ? '—' : wrap(km(c.m1.miss), c.m1.counted)} | ${wrap(pct(c.m2.pBurst), c.m2.counted)} | ${wrap(bandKm(c.m2.altitude), c.m2.counted)} | ${c.m2.miss === null ? '—' : wrap(km(c.m2.miss), c.m2.counted)} | ${c.m3.observedOutcome === null ? `— (reaches ${pct(c.m3.reachesGround)})` : wrap(pct(c.m3.observedOutcome), c.m3.counted)} | ${wrap(`${c.m4.median.toPrecision(3)} [${c.m4.p5.toPrecision(3)}–${c.m4.p95.toPrecision(3)}]`, c.m4.counted)} | ${shareText(c.regimes)} | ${shareText(c.craterStates)} | ${bandKm(c.diagnostic.singleBreakup)} |`
   );
 }
 lines.push(
   '',
   '## What a variant is measured against',
   '',
-  `- m1: the mean miss over its ${String(cases.filter((c) => c.m1.counted).length)} counted cases, ${summary.m1MeanMissM === null ? '—' : `${km(summary.m1MeanMissM)} km`}; a variant improves it by lowering it 1 km or more.`,
-  `- m2: the mean miss over its ${String(cases.filter((c) => c.m2.counted).length)} counted cases, ${summary.m2MeanMissM === null ? '—' : `${km(summary.m2MeanMissM)} km`}; the same bar.`,
-  `- m3: the mean probability of the observed outcome over its ${String(cases.filter((c) => c.m3.counted).length)} counted cases, ${summary.m3MeanObservedOutcome === null ? '—' : pct(summary.m3MeanObservedOutcome)}; a variant improves it when the mean of Δp is 0.10 or more (rule 975).`,
+  `- m1: the mean miss of the first stage's conditional altitude over ${summary.m1Cases.join(', ')}: ${summary.m1MeanMissM === null ? '—' : `${km(summary.m1MeanMissM)} km`}. A variant improves it when the mean credited fall of the miss is 1 km or more (rule 985).`,
+  `- m2: the mean miss of the conditional burst altitude over ${summary.m2Cases.join(', ')}: ${summary.m2MeanMissM === null ? '—' : `${km(summary.m2MeanMissM)} km`}. The same bar and the same credit.`,
+  `- m3: the mean probability of the observed outcome over ${summary.m3Cases.join(', ')}: ${summary.m3MeanObservedOutcome === null ? '—' : pct(summary.m3MeanObservedOutcome)}. A variant improves it when the mean of Δp is 0.10 or more (rule 975).`,
   '- m4: counted on no case; in this round a variant must improve two of m1 to m3.',
-  `- Not a metric, asked of the reviewer: where the two-stage law does not cover a body's density (2 500 to 5 000 kg/m³) the model gives it no first stage and breaks it once, at Eq. 11; rule 979 reads its m1 as 0. Read on that one breakup instead, m1's mean miss would be ${summary.m1MeanMissOnBreakupWhereUncoveredM === null ? '—' : `${km(summary.m1MeanMissOnBreakupWhereUncoveredM)} km`} (${cases
-    .filter((c) => c.m1.counted && c.diagnostic.uncoveredByTwoStage > 0)
-    .map(
-      (c) =>
-        `${c.case}: ${pct(c.diagnostic.uncoveredByTwoStage)} of the draws uncovered, ${km(c.diagnostic.m1OnBreakupWhereUncovered.median)} km, miss ${km(c.diagnostic.m1OnBreakupWhereUncovered.miss ?? 0)} km`
-    )
-    .join('; ')}).`,
   `- The outcomes already right (rule 964 (b)), which a variant must keep at 90 % or more: ${summary.rightOutcomes.length === 0 ? 'none' : summary.rightOutcomes.join(', ')}.`,
   ''
 );

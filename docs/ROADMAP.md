@@ -1181,11 +1181,14 @@ reviewer's roles; four metrics (first stage, release altitude as a proxy,
 gain in probability of the observed outcome, energy to the ground where a
 fraction with its uncertainty is observed); adopted only if two improve, no
 right outcome is lost and no band widens by more than 50 %. Step 2 done
-(rules 978 to 981, docs/FRAGMENTATION_DEV_TABLE.md): m1 counted on four
-cases, m2 on six, m3 on eight, m4 on none; today's model misses the first
-stage by 31.2 km on average, the release by 10.1 km, and gives the observed
-outcome 76 % — wrong on 2022 WJ1 and Carancas. Next: the reviewer's answer
-on the table, then P.
+(rules 978 to 981) and rectified before P (rules 982 to 986, version 1
+kept): no absence is read as an altitude — m1 and m2 are the probability of
+the event and its altitude where it happens; 2008 TC3's m1 is not
+applicable, Carancas diagnostic until its site's altitude is mended.
+Today's model misses the first stage by 27.2 km on average over three
+cases, the burst — a proxy — by 5.2 km over six, and gives the observed
+outcome 86.9 % over seven, wrong on 2022 WJ1 (docs/FRAGMENTATION_DEV_TABLE.md).
+Next: the reviewer's leave for P.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

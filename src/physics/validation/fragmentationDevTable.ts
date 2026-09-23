@@ -6,7 +6,9 @@ import type { TargetQuality } from './fragmentationRoundRules.js';
  * quality of the target and whether it is counted. Written before the
  * baseline was computed on any case (rule 978), from the level B rounds'
  * targets and sources, I2's CNEOS row and the presets' own notes; no source
- * was opened for it. Fixed once for the round (rule 977).
+ * was opened for it. Fixed once for the round (rule 977); rectified once,
+ * before P, by rules 982 to 986 — version 1 kept in
+ * docs/FRAGMENTATION_DEV_TABLE.v1.md.
  */
 
 export type DevCase =
@@ -151,8 +153,9 @@ export const DEV_TABLE: readonly DevRow[] = [
     where:
       'Sect. 4.2 and Sect. 5: "Another flare was detected by Meteosat at 45-44 km" — the first major fragmentation (rule 866(e))',
     quality: 'direct',
-    counted: true,
-    reason: 'measured and unique: the earlier flare is "possible but uncertain" and not counted',
+    counted: false,
+    reason:
+      "not applicable (rule 983): its density lies below the two-stage law's range and the model produces no first stage — its one breakup is diagnostic; the observation stands, measured and unique",
   },
   {
     case: '2008 TC3',
@@ -380,8 +383,9 @@ export const DEV_TABLE: readonly DevRow[] = [
     source: 'kenkmann2009',
     where: 'Abstract, p. 985: an H4–5 chondrite struck the ground and formed a crater',
     quality: 'direct',
-    counted: true,
-    reason: 'a crater: the body reached the ground',
+    counted: false,
+    reason:
+      'diagnostic (rule 986): a crater, the body reached the ground — but the entry is computed down to sea level where the site lies at about 3 800 m, until that is mended apart',
   },
   {
     case: 'Carancas',
