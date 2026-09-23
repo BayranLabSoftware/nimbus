@@ -141,6 +141,55 @@
  * counted for adoption, yes or no, with the reason.
  */
 
+/**
+ * Rules 978 to 981 — step 2: the development table and the baseline's draws.
+ * Written on 23 September 2026, evening, on Andrea's word («Sì, tutto in
+ * ordine»), before the baseline is computed on any case.
+ *
+ * RULE 978. THE DRAWS (fills rule 962). Every case runs on today's model, the
+ * baseline of rule 960, entering at sea level as the level B rounds ran it:
+ *   - 2024 BX1, 2023 CX1 and Carancas on the inputs of levelBSources.ts, and
+ *     2022 WJ1 on those of levelB2Sources.ts, each on the second round's
+ *     stream (its seed and the event's name), 1 000 draws — the draws that
+ *     round ran;
+ *   - 2008 TC3 and 2018 LA on the first round's inputs and stream (its seed,
+ *     the event's name and "scored"), 1 000 draws;
+ *   - Chelyabinsk and Tunguska, one run at the preset's inputs, and 2022 EB5,
+ *     one run at the body I2 reads from its CNEOS row (rule 77: 3 000 kg/m³,
+ *     its diameter from its energy and speed, its angle from its velocity) —
+ *     the repository pins no uncertainty for them, and rule 963 opens no
+ *     source. On a single run m3 is 0 or 1, and rule 976 reads no band.
+ *
+ * RULE 979. THE MODEL'S SIDE OF EACH METRIC. m1: the two-stage law's first
+ * fragmentation altitude, 0 where the body never reaches S1. m2: the burst
+ * altitude of a complete airburst, 0 where the body or its swarm reaches the
+ * ground and releases its energy there — a proxy (rule 974). m3: the share of
+ * draws whose body or swarm reaches the ground (the regimes INTACT and
+ * PARTIAL_AIRBURST), read as the probability of the observed outcome. m4: the
+ * share of the kinetic energy that reaches the ground. m1, m2 and m4 are read
+ * by their median over all the draws; a miss is the distance from the median
+ * to the observed interval, none inside it; a band is the 5 %–95 % width over
+ * all the draws.
+ *
+ * RULE 980. THE TABLE (fragmentationDevTable.ts): for each case and metric
+ * the observed value or outcome, its interval, its source and place, the
+ * quality of the target and whether it is counted, with the reason — all from
+ * what the repository holds. Counted: m1 on BX1, CX1, TC3 and 2018 LA; m2 on
+ * those four, WJ1 and EB5; m3 on those five, Carancas, Chelyabinsk and
+ * Tunguska; m4 on none, since no source in the repository gives the energy
+ * that reached the ground as a fraction with its uncertainty (rule 975) — so
+ * in this round a variant must improve two of m1 to m3. Chelyabinsk's and
+ * Tunguska's observed altitudes are not in the repository; whether to open a
+ * source for them is asked of the reviewer before P runs.
+ *
+ * RULE 981. THE BASELINE, computed once by scripts/fragmentation-baseline.ts
+ * into fragmentationBaseline.json and docs/FRAGMENTATION_DEV_TABLE.md, and
+ * committed with the table. The outcomes already right of rule 964 (b) are
+ * read from it: the counted cases where the baseline gives the observed
+ * outcome a probability of 0.9 or more. After P's run nothing of rules 978 to
+ * 981 changes (rule 977); before it, only by the reviewer's answer.
+ */
+
 /** The axes of rule 960. */
 export type FragmentationAxis = 'pancake' | 'strength' | 'fragments';
 
