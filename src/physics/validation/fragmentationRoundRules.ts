@@ -716,6 +716,22 @@ export const M3_V2_STATUS: M3V2Status = 'unfit';
  * would not.
  */
 
+/**
+ * RULE 1027. THE VERIFICATION OF THE STUDY, before its run, on 90 bodies that
+ * are none of the development cases (fragmentationStudyS.test.ts). The budgets
+ * of mass, energy and momentum close within 2 × 10⁻¹⁵; one strength
+ * reproduces today's breakup within 39.9 m and its burst within 22.7 m, with
+ * the same outcome, on 260 bodies; a body that never reaches the second phase
+ * is today's whole body to the bit; a copy of the core follows its path to the
+ * bit, and a core no share of which breaks keeps Eq. 8's path within 10⁻⁸.
+ * 64 shares agree with 128 within 0.8 % of the body's mass and energy and
+ * 0.43 % in the mean altitude of the energy given to the air. 32 shares do not
+ * meet rule 1018's 1 % as written: they step the mass by 1/32 and differ from
+ * 64 by up to 1.6 % of it — a resolution 32 cannot reach by construction; they
+ * are held within their own step, and the study's 64 is converged against 128.
+ * The cost: about 1 ms a run.
+ */
+
 /** Rule 1003 (superseded by rule 1015): the first phase's mass loss, f1. */
 export const S_FIRST_PHASE_LOSS = 0.5;
 

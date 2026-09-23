@@ -105,7 +105,7 @@ const byName = (events: readonly LevelBEvent[], name: string): LevelBEvent => {
 };
 
 /** Rule 978: the draws of each case. */
-function inputsOf(c: DevCase): { inputs: ImpactScenarioInput[]; drawn: string } {
+export function inputsOf(c: DevCase): { inputs: ImpactScenarioInput[]; drawn: string } {
   switch (c) {
     case '2024 BX1':
     case '2023 CX1':
