@@ -605,8 +605,16 @@ test.describe('calibration envelope', () => {
     // of what it rests on — its own, or its section's where the section's
     // numbers share one. The toll opens with its warning, and the table that
     // says what every class means sits under the results.
-    await envelopeNoteFor(page, 't=impact&p=METEOR_CRATER&lat=35.027&lon=-111.022');
+    // It waits for the results, not for the toll: the warning heads the toll
+    // from the moment its estimate starts, and the estimate's population
+    // lookup can outlast a runner's patience (the CI of 3ec3906).
+    await page.goto('/?lng=en&m=globe&t=impact&p=METEOR_CRATER&lat=41.9028&lon=12.4964');
+    await expandSimulatorPanelIfCollapsed(page);
+    const launch = page.getByRole('button', { name: 'Launch simulation' });
+    await expect(launch).toBeEnabled();
+    await launch.click({ timeout: 60_000 });
     const panel = page.getByRole('complementary', { name: 'Simulator controls' });
+    await expect(panel.getByTestId('evidence-table')).toBeAttached({ timeout: 90_000 });
     const bare = await panel.evaluate((root) => {
       const out: string[] = [];
       for (const dl of Array.from(root.querySelectorAll('dl'))) {
@@ -625,7 +633,6 @@ test.describe('calibration envelope', () => {
     expect(bare).toEqual([]);
     await expect(panel.locator('[data-evidence]').first()).toBeAttached();
     await expect(panel.getByTestId('casualties-not-validated')).toBeVisible({ timeout: 90_000 });
-    await expect(panel.getByTestId('evidence-table')).toBeAttached();
   });
 
   // Hidden with the module it drives: since 22 September 2026 the site offers
