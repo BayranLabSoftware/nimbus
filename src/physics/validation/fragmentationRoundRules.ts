@@ -410,5 +410,98 @@ export type TargetQuality = 'direct' | 'reconstructed' | 'modelDependent';
 export const VARIANT_P_OUTCOME: string | null =
   'REFUSED 23 September 2026 by rule 964 (a): the solution of Eq. 14 improves no metric — m1 unchanged, m2 worse by 0.15 km on average (every body bursts higher, by 0.1 to 2.3 km, above flares it already overshot), m3 unchanged.';
 
+/**
+ * Rules 1001 to 1008 — variant S, its specification, frozen before any line of
+ * it, as the reviewer asked on 23 September 2026, night (trigger, evolution of
+ * the mass, closure, and a budget of mass, momentum and energy), on Andrea's
+ * word («Sì, specifica e regole»). From Borovička, Spurný & Shrbený (2020),
+ * AJ 160, 42 (arXiv:2006.07080v1, downloaded again with Andrea's leave), alone.
+ *
+ * RULE 1001. WHAT THE SOURCE SAYS, read before this specification. Two phases,
+ * not a continuous loss: the first at 0.04–0.12 MPa, catastrophic or nearly —
+ * at least 40 % of the mass lost — in 2/3 of cases (abstract; pp. 12, 14–15);
+ * then a quiet interval in which the dynamic pressure grows 5 to 10 times with
+ * no gross fragmentation (p. 15; none at 0.12–0.96 MPa among the falls,
+ * p. 12); the second phase at 0.9–5 MPa, from about 0.5 MPa for smaller bodies
+ * (abstract), "a smooth distribution of crack strengths" (p. 18), its events
+ * more numerous and each of less mass (p. 13), into pieces of 20–40 MPa that
+ * survive as meteorites (p. 20); where the pressure never reaches the
+ * strength "the body can land as a meteorite" (p. 20), and "the second phase
+ * was sometimes not observed at all ... decelerated before the dynamic
+ * pressure reached 5 MPa" (p. 17). The first phase's pieces "move together for
+ * some time" (p. 15) and break in the second phase themselves (p. 13). The
+ * mass loss between S1 and S2 the round first named (rule 960) is therefore
+ * read as the paper gives it: a step at S1, nothing between, and a loss spread
+ * over the second phase.
+ *
+ * RULE 1002. THE VARIABLE: the dynamic pressure q = ρ(z) v(z)², the paper's,
+ * on the body's path, the exponential atmosphere and Eq. 8's speed before any
+ * piece breaks in the second phase.
+ *
+ * RULE 1003. THE TRIGGER AND THE FIRST PHASE. At q = S1 (0.04–0.12 MPa, its
+ * geometric midpoint as today) the body separates: its largest piece keeps
+ * 1 − f1 of the mass. f1 is 0.5, the median of the paper's 21 bodies as its
+ * text classes them — among the fireballs 6 lost ≳ 60 %, 4 about 50 % and 4
+ * ≲ 30 % (pp. 14–15); among the falls 4 lost more than half, Košice about
+ * 40 %, Renchen and Jesenice less than 25 % (p. 12); its prior, for a Monte
+ * Carlo that draws it, those classes at their stated edges: 0.6 six times, 0.5
+ * eight times, 0.4 once, 0.3 four times and 0.25 twice. The
+ * separated pieces move with the largest and break in the second phase too:
+ * the assembly's mass and path are unchanged by the first phase, which sets the
+ * largest piece's mass; the wake of dust it leaves is given no mass (the paper
+ * gives none).
+ *
+ * RULE 1004. THE SECOND PHASE, the evolution of the mass. The assembly's
+ * cracks have strengths distributed log-uniformly on [0.9, 5] MPa — the
+ * paper's interval and the product's own prior on S2 (rule 882(c)): by the
+ * time q reaches q, the share F(q) = ln(q/0.9 MPa) / ln(5/0.9) of the mass has
+ * broken, 0 ≤ F ≤ 1, F(0.9 MPa) = 0, continuous, no share ever mended. The
+ * share that breaks at a strength Y follows Collins et al.'s closure from the
+ * altitude where q first reaches Y: the breakup of Eq. 11 at Y, the pancake of
+ * Eq. 15*, the burst at f_p L0 or the swarm on the ground, the speed of
+ * Eq. 17*. Numerically, 64 shares at the quantiles of the distribution. With
+ * the distribution collapsed to one strength the model is today's.
+ *
+ * RULE 1005. THE CLOSURE. What the second phase leaves unbroken, 1 − F(q_max)
+ * with q_max the largest pressure the assembly reaches, is the surviving body:
+ * carried to the ground on Eq. 8's path, never below the terminal speed of a
+ * body of its own mass. The largest fragment is the smaller of the first
+ * phase's largest piece and the surviving body. Each share ends as one of
+ * three: a burst in the air, a swarm on the ground, or the surviving body; the
+ * crater states are read, as today, of what reaches the ground.
+ *
+ * RULE 1006. THE BUDGET, checked on every run: the shares' masses sum to the
+ * body's; the kinetic energy at entry equals, within 10⁻⁹ of itself, the energy
+ * deposited in the air plus the energy that reaches the ground; likewise the
+ * momentum along the path. Published for every case: the mass kept and lost
+ * at S1, at 0.9 and 5 MPa and at the ground; the speed and kinetic energy of
+ * each component; the energy deposited per kilometre of altitude; the largest
+ * fragment's mass and speed; the frequency of a burst, a swarm on the ground,
+ * a surviving body and the state out of the crater's domain. No mass
+ * disappears: none leaves the budget but by a named component.
+ *
+ * RULE 1007. HOW S IS READ BY THE TABLE — OPEN. Rule 979 reads m3 by the
+ * regimes, a body or swarm on the ground being INTACT or PARTIAL; the table
+ * codes the observed falls — meteorites in dark flight — as not reaching the
+ * ground, while the baseline's 2022 WJ1, a whole body at 98 m/s, a meteorite
+ * of its full mass in dark flight, counts as reaching it. Under S nearly every
+ * body leaves a surviving piece: read by the regimes it would reach the ground
+ * wherever a meteorite fell. This is a question of the frozen table (rule
+ * 977), asked of the reviewer before any code of S; no reading is chosen here.
+ *
+ * RULE 1008. NO CODE of S before the reviewer answers rule 1007 and reads
+ * rules 1001 to 1006. What may not happen, as for P: no constant moves; no
+ * parameter is chosen on a development case; one run; the commit that
+ * carries S's outcome carries nothing else.
+ */
+
+/** Rule 1003: the first phase's mass loss, f1 (the median of the paper's 21). */
+export const S_FIRST_PHASE_LOSS = 0.5;
+
+/** Rule 1004: the second phase's crack strengths, log-uniform (Pa), and the
+ *  shares they are read in. */
+export const S_SECOND_PHASE_RANGE = [900_000, 5_000_000] as const;
+export const S_SECOND_PHASE_SHARES = 64;
+
 /** The outcome of the round, written after its last variant. */
 export const FRAGMENTATION_ROUND_OUTCOME: string | null = null;
