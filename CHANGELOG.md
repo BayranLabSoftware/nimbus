@@ -19,6 +19,12 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **A low overpressure layer, for glass and light damage.** "Low overpressure —
+  glass damage (exploratory)" reads the overpressure's own field from 1 kPa up
+  to 0.5 psi, where the structural layer starts, with lines at 1 and 3 kPa and
+  a scale of its own; it is exploratory, and enters neither the structural
+  scale nor the toll. Chelyabinsk, whose 1.6 kPa drew nothing, now draws its
+  1 kPa line at 30 km. Step 5 of the map's grammar.
 - **The ejecta's map says where its cut is.** Past the 1 mm isopach a veil fades
   out to 0.1 mm, labelled "deposit < 1 mm or not resolved at the current scale"
   — never "continues" — and the legend says "Map shown: thickness ≥ 1 mm", on

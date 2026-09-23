@@ -101,6 +101,18 @@ States 2, 3 and 4 are drawn from each layer's edge (step 1), with these choices:
   corrente» — never «continua». The legend states the cut: «Mappa visualizzata: spessore ≥ 1 mm».
 - The globe and the report change together (rule 1037).
 
+## Step 5, as built
+
+- A layer of its own, «Sovrappressione bassa — danno a vetri (esplorativo)»: the overpressure's
+  own field (the one verified at level A), read from 1 kPa up to 0.5 psi = 3.45 kPa, where the
+  structural layer starts, on ColorBrewer's BuPu; lines at 1 and 3 kPa where the field reaches
+  them. Its evidence class is exploratory by name, and its legend carries the reviewer's three
+  sentences and «fuori dalla scala strutturale e dal conteggio delle vittime». Below 1 kPa the same
+  state-2 veil as every layer.
+- Chelyabinsk: 1.6 kPa at the ground gives the 1 kPa line at 30 km, no 3 kPa line; its structural
+  layer still says it draws nothing, and why.
+- It sits second among the tabs, so a scenario without a structural layer opens on it.
+
 ## The printed report (rule 1037)
 
 The reviewer, approving steps 1 to 3, asked for the report now, before step 4: the globe and the

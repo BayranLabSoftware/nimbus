@@ -236,6 +236,7 @@ export function isolinePointAtBearing(
 
 export type ImpactLayerId =
   | 'overpressure'
+  | 'lowOverpressure'
   | 'wind'
   | 'thermal'
   | 'ejecta'
@@ -245,6 +246,7 @@ export type ImpactLayerId =
 
 export const IMPACT_LAYER_ORDER: readonly ImpactLayerId[] = [
   'overpressure',
+  'lowOverpressure',
   'wind',
   'thermal',
   'ejecta',
@@ -473,6 +475,7 @@ export type LayerEvidence = Pick<
  *  family of the threshold it reads. */
 const LAYER_EVIDENCE: Readonly<Record<Exclude<ImpactLayerId, 'uncertainty'>, EvidenceQuantity>> = {
   overpressure: 'blast',
+  lowOverpressure: 'blast',
   wind: 'blast',
   thermal: 'thermal',
   ejecta: 'ejecta',
@@ -494,6 +497,16 @@ function layerEvidence(layer: RawLayer, ctx: ImpactMapContext): LayerEvidence {
       ? FAMILY_EVIDENCE[layer.uncertainty?.selected?.family ?? 'blast']
       : LAYER_EVIDENCE[layer.id];
   const { klass, label, short, summary } = evidenceText(quantity, ctx.t, ctx.language);
+  // Rule 1031 (c): the verified field, read below the thresholds of damage it
+  // was verified at — exploratory.
+  if (layer.id === 'lowOverpressure')
+    return {
+      quantity,
+      klass: 'exploratory',
+      label: ctx.t('evidence.class.exploratory.label'),
+      short: ctx.t('evidence.class.exploratory.short'),
+      summary: ctx.t('globe.impactMap.layer.lowOverpressure.evidence'),
+    };
   return { quantity, klass, label, short, summary };
 }
 
@@ -587,6 +600,17 @@ export const OVERPRESSURE_PALETTE = [
   '#e31a1c',
   '#bd0026',
   '#800026',
+] as const;
+/** ColorBrewer BuPu: the low overpressure's own scale (rule 1031 (c)), apart
+ *  from the structural layer's reds. */
+export const LOW_OVERPRESSURE_PALETTE = [
+  '#e0ecf4',
+  '#bfd3e6',
+  '#9ebcda',
+  '#8c96c6',
+  '#8c6bb1',
+  '#88419d',
+  '#6e016b',
 ] as const;
 /** Air in motion: deep blue to white. */
 export const WIND_PALETTE = [
@@ -896,6 +920,94 @@ function overpressureLayer(result: ImpactScenarioResult, ctx: ImpactMapContext):
         label: t('globe.impactMap.noteLabel.limit'),
         text: t('globe.impactMap.note.belowLowestBlast'),
       },
+    ],
+  };
+}
+
+/** Rule 1031 (c): the low overpressure's lines (kPa). */
+export const LOW_OVERPRESSURE_LEVELS_KPA = [3, 1] as const;
+
+/**
+ * Rule 1031 (c): the overpressure below the structural thresholds, where glass
+ * breaks and light damage begins — the same field as the overpressure's layer,
+ * read from 1 kPa up to 0.5 psi (3.45 kPa), where that layer starts, with a
+ * scale of its own. Exploratory: its lines are not validated as a prediction
+ * of the field, and it enters neither the structural scale nor the toll.
+ */
+function lowOverpressureLayer(
+  result: ImpactScenarioResult,
+  ctx: ImpactMapContext
+): RawLayer | null {
+  const { t, language } = ctx;
+  const source = fieldSourceOf(result);
+  const kpaAt = (r: number): number => impactOverpressureAt(source, r) / 1_000;
+  const halfEarth = Math.PI * (EARTH_RADIUS as number);
+  const levels = LOW_OVERPRESSURE_LEVELS_KPA.map((kpa) => ({
+    kpa,
+    r: impactFieldReach(kpaAt, kpa, 1, halfEarth),
+  })).filter((x) => x.r > 0);
+  if (levels.length === 0) return null;
+  const loKpa = 1;
+  const hiKpa = (OVERPRESSURE_LIGHT_DAMAGE as number) / 1_000;
+  const blastSource = t(
+    isCompleteAirburst(result)
+      ? 'globe.impactMap.source.airBlast'
+      : 'globe.impactMap.source.groundBlast'
+  );
+  const kpaLabel = (kpa: number): string => `${formatNumber(kpa, 0, language)} kPa`;
+  return {
+    id: 'lowOverpressure',
+    tab: t('globe.impactMap.layer.lowOverpressure.tab'),
+    title: t('globe.impactMap.layer.lowOverpressure.title'),
+    unit: t('globe.impactMap.layer.lowOverpressure.unit'),
+    field: {
+      family: 'blast',
+      minRangeM: 1,
+      maxRangeM: Math.max(...levels.map((x) => x.r)),
+      colorAt: (r) => logColor(LOW_OVERPRESSURE_PALETTE, kpaAt(r), loKpa, hiKpa),
+    },
+    below: {
+      valueAt: kpaAt,
+      scale: 'ratio',
+      format: (v) => `${sigFigures(v, language)} kPa`,
+    },
+    isolines: withBearings(
+      levels.map((x) => ({
+        id: `low-${x.kpa.toString()}`,
+        family: 'blast' as const,
+        radiusM: x.r,
+        label: kpaLabel(x.kpa),
+        title: t('globe.impactMap.isoline.lowTitle', { value: kpaLabel(x.kpa) }),
+        description: t('globe.impactMap.isoline.low'),
+        source: blastSource,
+      }))
+    ),
+    colorbar: {
+      palette: LOW_OVERPRESSURE_PALETTE,
+      lo: Math.log10(loKpa),
+      hi: Math.log10(hiKpa),
+      log: true,
+      ticks: [1, 2, 3].map((v) => ({ value: v, label: formatNumber(v, 0, language) })),
+      marks: levels.map((x) => ({
+        value: x.kpa,
+        label: kpaLabel(x.kpa),
+        detail: formatRange(x.r, language),
+      })),
+    },
+    categories: [],
+    notes: [
+      {
+        label: t('globe.impactMap.noteLabel.thresholds'),
+        text: t('globe.impactMap.note.lowThresholds'),
+      },
+      { label: t('globe.impactMap.noteLabel.what'), text: t('globe.impactMap.note.lowWhat') },
+      {
+        label: t('globe.impactMap.noteLabel.validation'),
+        text: t('globe.impactMap.note.lowValidation'),
+      },
+      { label: t('globe.impactMap.noteLabel.not'), text: t('globe.impactMap.note.lowNot') },
+      { label: t('globe.impactMap.noteLabel.source'), text: blastSource },
+      { label: t('globe.impactMap.noteLabel.limit'), text: t('globe.impactMap.note.lowLimit') },
     ],
   };
 }
@@ -2179,6 +2291,7 @@ export function absentImpactLayers(
     };
     switch (id) {
       case 'overpressure':
+      case 'lowOverpressure':
       case 'wind': {
         const peak = impactOverpressureAt(source, 1);
         if (peak > 0) say('belowThreshold', 'belowThreshold', { value: kpa(peak) });
@@ -2226,6 +2339,8 @@ function buildRawLayer(
   switch (id) {
     case 'overpressure':
       return overpressureLayer(result, ctx);
+    case 'lowOverpressure':
+      return lowOverpressureLayer(result, ctx);
     case 'wind':
       return windLayer(result, ctx);
     case 'thermal':

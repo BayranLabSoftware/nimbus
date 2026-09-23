@@ -1141,6 +1141,12 @@
           "title": "L'onda in mare",
           "unit": "altezza dell'onda riportata a 1000 m di profondità con la legge di Green · m",
           "unitUnsized": "nessuna onda che Nimbus sappia dimensionare"
+        },
+        "lowOverpressure": {
+          "tab": "Sovrappressione bassa",
+          "title": "Sovrappressione bassa — danno a vetri (esplorativo)",
+          "unit": "kPa, scala logaritmica",
+          "evidence": "Il campo dell'onda d'urto verificato al livello A, letto sotto le soglie di danno strutturale: le linee a 1 e 3 kPa non sono validate come previsione del danno."
         }
       },
       "markWithWind": "{{range}} · vento {{wind}} km/h",
@@ -1160,7 +1166,9 @@
         "wholeEarth": "Tutta la Terra",
         "why": "Perché",
         "notModelled": "Non modellati",
-        "shown": "Mappa visualizzata"
+        "shown": "Mappa visualizzata",
+        "thresholds": "Soglie",
+        "validation": "Validazione"
       },
       "note": {
         "isolinesMedian": "le soglie del modello, alla mediana",
@@ -1204,7 +1212,12 @@
         "tsunamiLimitLand": "un impatto sulla terraferma solleva l'onda solo con il segmento di cratere che cade in mare; gli ejecta che ricadono in acqua non sono contati, perché nessuno ha pubblicato quanto sollevano (regole 267–273)",
         "tsunamiLimitSea": "la risalita sulla costa è una stima su spiaggia piana (Synolakis 1987), non una mappa d'inondazione",
         "thermalNotModelled": "Rientro globale degli ejecta e riscaldamento atmosferico: non modellati in questo layer",
-        "ejectaShown": "spessore ≥ 1 mm"
+        "ejectaShown": "spessore ≥ 1 mm",
+        "lowThresholds": "Le soglie storiche di danno grave iniziano a 0,5 psi / 3,45 kPa",
+        "lowWhat": "Questo layer mostra pressioni inferiori per interpretare rottura vetri e danno leggero",
+        "lowValidation": "Il modello non è validato su Chelyabinsk come previsione del campo; confronto osservativo disponibile",
+        "lowNot": "fuori dalla scala strutturale e dal conteggio delle vittime",
+        "lowLimit": "sotto 1 kPa non si colora; sopra 3,45 kPa la scala si ferma: lì comincia il livello Sovrappressione"
       },
       "source": {
         "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 al suolo (regole 748–755), verificata contro l'Earth Impact Effects Program (I1)",
@@ -1232,7 +1245,9 @@
         "probabilityTitle": "{{p}} % · {{threshold}}",
         "probability": "la soglia è superata con questa probabilità su questa linea (scarto pubblicato 1σ {{sigma}} %)",
         "agreementTitle": "{{threshold}} · la mediana",
-        "agreement": "la linea della carta del campo; la forchetta attorno è quella del campo"
+        "agreement": "la linea della carta del campo; la forchetta attorno è quella del campo",
+        "lowTitle": "Sovrappressione {{value}}",
+        "low": "soglia esplorativa per la rottura dei vetri e il danno leggero, non validata come previsione del campo"
       },
       "liquefactionLabel": "liquefazione",
       "ejectaEdge": "bordo della coltre",
@@ -1312,6 +1327,10 @@
         },
         "uncertainty": {
           "notApplicable": "non applicabile: nessuna soglia disegnata"
+        },
+        "lowOverpressure": {
+          "belowThreshold": "sotto 1 kPa, la linea più bassa di questo livello: il massimo calcolato al suolo è {{value}}",
+          "computedZero": "zero calcolato"
         }
       },
       "mark": {

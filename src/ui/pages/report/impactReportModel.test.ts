@@ -218,6 +218,7 @@ describe("an impact's report, in the reader's language (IMP-7c)", () => {
     ]);
     expect(model.figures.map((f) => f.layer.id)).toEqual([
       'overpressure',
+      'lowOverpressure',
       'wind',
       'thermal',
       'ejecta',

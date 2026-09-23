@@ -78,7 +78,8 @@ async function worstContrast(page: Page, root: string): Promise<{ lowest: number
 test.describe('the impact report', () => {
   test('opens from a link in Italian with every map, and no English on it', async ({ page }) => {
     await openReport(page, 'it');
-    await expect(page.locator('svg[data-report-map]')).toHaveCount(6);
+    // Seven maps: the low overpressure's (rule 1031 (c)) among them.
+    await expect(page.locator('svg[data-report-map]')).toHaveCount(7);
     const text = await page.getByTestId('impact-report').innerText();
     expect(text).toContain('Report di simulazione');
     expect(text).toContain('Impatto cosmico · Meteor Crater (Barringer)');
@@ -96,7 +97,7 @@ test.describe('the impact report', () => {
       expect(text).not.toContain(english);
     }
     // No photograph of the globe: none was behind this link, and it says so.
-    await expect(page.locator('svg[data-report-map] image')).toHaveCount(6);
+    await expect(page.locator('svg[data-report-map] image')).toHaveCount(7);
   });
 
   test('reads the same scenario in English, the sender’s language switchable', async ({ page }) => {

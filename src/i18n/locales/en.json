@@ -1141,6 +1141,12 @@
           "title": "The wave at sea",
           "unit": "the wave's height carried to 1,000 m of depth by Green's law · m",
           "unitUnsized": "no wave Nimbus can size"
+        },
+        "lowOverpressure": {
+          "tab": "Low overpressure",
+          "title": "Low overpressure — glass damage (exploratory)",
+          "unit": "kPa, logarithmic scale",
+          "evidence": "The shock-wave field verified at level A, read below the thresholds of structural damage: the lines at 1 and 3 kPa are not validated as a prediction of the damage."
         }
       },
       "markWithWind": "{{range}} · wind {{wind}} km/h",
@@ -1160,7 +1166,9 @@
         "wholeEarth": "Whole Earth",
         "why": "Why",
         "notModelled": "Not modelled",
-        "shown": "Map shown"
+        "shown": "Map shown",
+        "thresholds": "Thresholds",
+        "validation": "Validation"
       },
       "note": {
         "isolinesMedian": "the model's thresholds, at the median",
@@ -1204,7 +1212,12 @@
         "tsunamiLimitLand": "an impact on land raises the wave only with the segment of its crater that lies in the sea; ejecta falling into the water are not counted, for nobody has published how much they raise (rules 267 to 273)",
         "tsunamiLimitSea": "the run-up on the coast is a plane-beach estimate (Synolakis 1987), not a map of the flooding",
         "thermalNotModelled": "Global re-entry of the ejecta and atmospheric heating: not modelled in this layer",
-        "ejectaShown": "thickness ≥ 1 mm"
+        "ejectaShown": "thickness ≥ 1 mm",
+        "lowThresholds": "The historical thresholds of serious damage begin at 0.5 psi / 3.45 kPa",
+        "lowWhat": "This layer shows lower pressures, to read broken glass and light damage",
+        "lowValidation": "The model is not validated on Chelyabinsk as a prediction of the field; an observational comparison is available",
+        "lowNot": "outside the structural scale and the toll",
+        "lowLimit": "below 1 kPa not coloured; above 3.45 kPa the scale stops: there the Overpressure layer begins"
       },
       "source": {
         "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 at the ground (rules 748 to 755), verified against the Earth Impact Effects Program (I1)",
@@ -1232,7 +1245,9 @@
         "probabilityTitle": "{{p}} % · {{threshold}}",
         "probability": "the threshold is exceeded with this probability at this line (published 1σ scatter {{sigma}} %)",
         "agreementTitle": "{{threshold}} · the median",
-        "agreement": "the line of the map of the field; the band about it is the field's"
+        "agreement": "the line of the map of the field; the band about it is the field's",
+        "lowTitle": "Overpressure {{value}}",
+        "low": "an exploratory threshold for broken glass and light damage, not validated as a prediction of the field"
       },
       "liquefactionLabel": "liquefaction",
       "ejectaEdge": "edge of the blanket",
@@ -1312,6 +1327,10 @@
         },
         "uncertainty": {
           "notApplicable": "not applicable: no threshold drawn"
+        },
+        "lowOverpressure": {
+          "belowThreshold": "below 1 kPa, this layer’s lowest line: the largest computed at the ground is {{value}}",
+          "computedZero": "computed zero"
         }
       },
       "mark": {

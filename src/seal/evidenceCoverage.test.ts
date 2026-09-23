@@ -47,7 +47,11 @@ describe('every number an impact prints carries its class of evidence', () => {
           expect(EVIDENCE_QUANTITIES, `${scenario.id} ${layer.id}`).toContain(
             layer.evidence.quantity
           );
-          expect(layer.evidence.klass).toBe(EVIDENCE[layer.evidence.quantity].klass);
+          // Rule 1031 (c): the low overpressure reads the verified blast below
+          // the thresholds it was verified at — exploratory, by name.
+          expect(layer.evidence.klass).toBe(
+            layer.id === 'lowOverpressure' ? 'exploratory' : EVIDENCE[layer.evidence.quantity].klass
+          );
           expect(layer.evidence.label.length).toBeGreaterThan(0);
           expect(layer.evidence.summary.length).toBeGreaterThan(0);
         }

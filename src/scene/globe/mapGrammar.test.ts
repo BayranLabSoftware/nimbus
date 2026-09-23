@@ -256,3 +256,25 @@ describe('rule 1031 (b): the ejecta past the 1 mm isopach', () => {
     }
   });
 });
+
+describe('rule 1031 (c): the low overpressure', () => {
+  it('draws Chelyabinsk’s 1.6 kPa as its own exploratory layer, outside the structural scale', () => {
+    const r = simulateImpact(IMPACT_PRESETS.CHELYABINSK.input);
+    const low = availableImpactLayers(r, ctx).find((l) => l.id === 'lowOverpressure');
+    expect(low).toBeDefined();
+    // 1.6 kPa at the ground: the 1 kPa line, not the 3 kPa one.
+    expect(low?.isolines.map((l) => l.id)).toEqual(['low-1']);
+    expect(low?.evidence.klass).toBe('exploratory');
+    expect(low?.card.state).toBe('exploratory');
+    const notes = low?.notes.map((n) => n.text) ?? [];
+    for (const key of ['lowThresholds', 'lowWhat', 'lowValidation', 'lowNot'])
+      expect(notes).toContain(`globe.impactMap.note.${key}`);
+    // The structural layer still says it draws nothing, and why.
+    expect(absentImpactLayers(r, ctx).find((a) => a.id === 'overpressure')?.beyond).toBe(
+      'belowThreshold'
+    );
+    // Its lines stand where the field reads 1 kPa.
+    const line = low?.isolines[0];
+    expect(impactOverpressureAt(fieldSourceOf(r), line?.radiusM ?? 0) / 1_000).toBeCloseTo(1, 6);
+  });
+});
