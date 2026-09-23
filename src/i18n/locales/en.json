@@ -2303,35 +2303,35 @@
         "summary": "The reference program’s entry, case by case; both miss the altitudes the sky measured by a median {{error}} km.",
         "domain": "Bodies of 1 m to 30 km, comet to iron, at 12 to 70 km/s and 15 to 90°, on the reference grids: the airburst, the break-up that still strikes the ground, and the body that arrives whole. Slow irons break higher here than in the program, which doubles the paper’s I_f (BM-13), and that is written down case by case.",
         "error": "",
-        "missing": "Level B: an entry that meets the observed altitudes — the {{bar}} km bar over the bolides, Chelyabinsk and Tunguska in the blind test."
+        "missing": "A body’s strength as an uncertain two-stage property instead of one taken from its density (phase 4); then a new level B on bodies seen by telescopes before they entered and never used, chosen before the change; and the {{bar}} km bar over the bolides."
       },
       "crater": {
         "name": "Crater",
         "summary": "The reference program’s crater scaling, case by case, with a scattered body’s crater field joined where the program steps; not yet held to a measured crater.",
         "domain": "Simple and complex craters in sedimentary and crystalline rock, from the bodies of the reference grids that reach the ground; where the fragments land spread wider than the crater, a crater field, joined to the single crater without the program’s step (rules 846 to 853).",
         "error": "",
-        "missing": "Level B: Meteor Crater in the blind test; level C: hydrocode results (iSALE, CTH) across angles and targets."
+        "missing": "Level B: an entry that lets strong bodies reach the ground, as at Carancas, and a second observed crater whose body is known apart from the crater; level C: hydrocode results (iSALE, CTH) across angles and targets."
       },
       "blast": {
         "name": "Air blast",
         "summary": "The reference program’s air blast, case by case; its curves are scaled from nuclear tests.",
         "domain": "Airbursts and ground impacts from 1 to 20 000 km, on the reference grids.",
         "error": "",
-        "missing": "Level B: the damage Chelyabinsk and Tunguska left, in the blind test."
+        "missing": "Level B: the measured damage of an airburst never used to develop the model — Chelyabinsk and Tunguska were, and stay development cases."
       },
       "thermal": {
         "name": "Heat, burns and fire",
         "summary": "Burn and ignition thresholds measured on nuclear flashes of seconds, applied to pulses that can last minutes.",
         "domain": "The fireball’s radius is the reference program’s ({{excellent}} % of its readings within 2 %); the burn, ignition and fire rings drawn from it are not checked.",
         "error": "Not established: no burn or fire an impact left has been compared.",
-        "missing": "Thresholds for long pulses, and Tunguska’s burnt forest as a check."
+        "missing": "Thresholds for long pulses, and a burnt area measured in an event never used to develop the model (Tunguska was)."
       },
       "ejecta": {
         "name": "Ejecta",
         "summary": "The reference program’s ejecta blanket, case by case; not yet held to a measured blanket.",
         "domain": "The blanket’s edge at 1 cm to 100 m of thickness, around the craters of the reference grids; an iron’s strewn field and a low burst dig other craters than the program’s map draws, by design.",
         "error": "",
-        "missing": "Level B: measured blankets — Meteor Crater, the Ries."
+        "missing": "Level B: measured blankets around craters whose body is known apart from the crater; Meteor Crater and the Ries give at most consistency, class D."
       },
       "seismic": {
         "name": "Seismic shaking",

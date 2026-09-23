@@ -2556,35 +2556,35 @@
         "summary": "L’ingresso del programma di riferimento, caso per caso; entrambi sbagliano di {{error}} km in mediana le quote misurate in cielo.",
         "domain": "Corpi da 1 m a 30 km, da cometa a ferro, da 12 a 70 km/s e da 15 a 90°, sulle griglie di riferimento: l’esplosione in aria, la frammentazione che arriva comunque al suolo, il corpo che arriva intero. I ferri lenti qui si rompono più in alto che nel programma, che raddoppia l’I_f del paper (BM-13), ed è scritto caso per caso.",
         "error": "",
-        "missing": "Livello B: un ingresso che rispetti le quote osservate — la soglia di {{bar}} km sui bolidi, Čeljabinsk e Tunguska nel test in cieco."
+        "missing": "Una resistenza del corpo incerta e a due stadi al posto di una sola ricavata dalla densità (fase 4); poi un nuovo livello B su corpi visti al telescopio prima dell’ingresso e mai usati, scelti prima della correzione; e la soglia di {{bar}} km sui bolidi."
       },
       "crater": {
         "name": "Cratere",
         "summary": "Le leggi di scala del cratere del programma di riferimento, caso per caso, con il campo di crateri di un corpo disperso unito dove il programma fa uno scatto; non ancora confrontate con un cratere misurato.",
         "domain": "Crateri semplici e complessi in roccia sedimentaria e cristallina, dai corpi delle griglie di riferimento che arrivano al suolo; dove i frammenti cadono sparsi più largo del cratere, un campo di crateri, unito al cratere singolo senza lo scatto del programma (regole 846–853).",
         "error": "",
-        "missing": "Livello B: Meteor Crater nel test in cieco; livello C: risultati di hydrocode (iSALE, CTH) su angoli e bersagli diversi."
+        "missing": "Livello B: un ingresso che lasci arrivare al suolo i corpi resistenti, come a Carancas, e un secondo cratere osservato il cui corpo sia noto indipendentemente dal cratere; livello C: risultati di hydrocode (iSALE, CTH) su angoli e bersagli diversi."
       },
       "blast": {
         "name": "Onda d’urto",
         "summary": "L’onda d’urto del programma di riferimento, caso per caso; le sue curve sono scalate da test nucleari.",
         "domain": "Esplosioni in aria e impatti al suolo, da 1 a 20 000 km, sulle griglie di riferimento.",
         "error": "",
-        "missing": "Livello B: i danni lasciati da Čeljabinsk e Tunguska, nel test in cieco."
+        "missing": "Livello B: i danni misurati di un airburst mai usato per sviluppare il modello — Čeljabinsk e Tunguska lo sono stati e restano casi di sviluppo."
       },
       "thermal": {
         "name": "Calore, ustioni e incendi",
         "summary": "Soglie di ustione e di accensione misurate su lampi nucleari di secondi, applicate a impulsi che possono durare minuti.",
         "domain": "Il raggio della palla di fuoco è quello del programma di riferimento (il {{excellent}} % delle letture entro il 2 %); gli anelli di ustione, accensione e incendio che ne derivano non sono verificati.",
         "error": "Non stabilito: nessuna ustione né incendio lasciati da un impatto è stato confrontato.",
-        "missing": "Soglie per impulsi lunghi, e la foresta bruciata di Tunguska come verifica."
+        "missing": "Soglie per impulsi lunghi, e un’area bruciata misurata in un evento mai usato per sviluppare il modello (Tunguska lo è stato)."
       },
       "ejecta": {
         "name": "Ejecta",
         "summary": "La coltre di ejecta del programma di riferimento, caso per caso; non ancora confrontata con una coltre misurata.",
         "domain": "Il bordo della coltre da 1 cm a 100 m di spessore, attorno ai crateri delle griglie di riferimento; il campo disseminato di un ferro e un airburst basso scavano altri crateri da quelli che la mappa del programma disegna, per progetto.",
         "error": "",
-        "missing": "Livello B: coltri misurate — Meteor Crater, il Ries."
+        "missing": "Livello B: coltri misurate attorno a crateri il cui corpo sia noto indipendentemente dal cratere; Meteor Crater e il Ries danno al più una coerenza, classe D."
       },
       "seismic": {
         "name": "Scuotimento sismico",
