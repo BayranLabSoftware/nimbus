@@ -589,7 +589,10 @@
         "fires": "only the shaking is counted. Fire after the earthquake, which the USGS ShakeOut scenario puts at about half the dead for a Mw 7.8 on the San Andreas, is not in this model at all"
       }
     },
-    "preparingReport": "Preparing the report… {{done}}/{{total}}"
+    "preparingReport": "Preparing the report… {{done}}/{{total}}",
+    "mcShare": "in {{share}} % of the runs",
+    "mcNever": "in no run",
+    "monteCarloFooterShare": "Where a quantity is zero in more than one run in ten (no crater, no firestorm), the row says in how many runs it happens and gives P10–P90 of those runs alone."
   },
   "cascade": {
     "label": "Cascade timeline",

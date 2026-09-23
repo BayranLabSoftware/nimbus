@@ -692,6 +692,12 @@ select.paramInput {
   text-align: right;
 }
 
+.mcShare {
+  display: block;
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
 .mcFooter {
   font-size: 10px;
   opacity: 0.55;

@@ -29,6 +29,12 @@ export interface PercentileSummary {
   p90: number;
   /** Arithmetic mean across the sample set. */
   mean: number;
+  /** Rule 890 (validation/monteCarloShareRules.ts): the fraction of the
+   *  finite draws above zero. */
+  share: number;
+  /** Rule 890: the P10, P50 and P90 of the draws above zero alone; null
+   *  where there are none. */
+  given: { p10: number; p50: number; p90: number } | null;
 }
 
 export interface MonteCarloOutput<TMetrics extends Record<string, number>> {
@@ -69,15 +75,32 @@ export interface MonteCarloInput<TInput, TOutput, TMetrics extends Record<string
 export function percentileSummary(samples: number[]): PercentileSummary {
   const finite = samples.filter((x) => Number.isFinite(x));
   if (finite.length === 0) {
-    return { p10: 0, p50: 0, p90: 0, mean: 0 };
+    return { p10: 0, p50: 0, p90: 0, mean: 0, share: 0, given: null };
   }
   finite.sort((a, b) => a - b);
-  const pick = (p: number): number => {
-    const idx = Math.min(finite.length - 1, Math.max(0, Math.floor(p * finite.length)));
-    return finite[idx] ?? 0;
-  };
   const mean = finite.reduce((s, x) => s + x, 0) / finite.length;
-  return { p10: pick(0.1), p50: pick(0.5), p90: pick(0.9), mean };
+  const above = finite.filter((x) => x > 0);
+  return {
+    p10: pickQuantile(finite, 0.1),
+    p50: pickQuantile(finite, 0.5),
+    p90: pickQuantile(finite, 0.9),
+    mean,
+    share: above.length / finite.length,
+    given:
+      above.length === 0
+        ? null
+        : {
+            p10: pickQuantile(above, 0.1),
+            p50: pickQuantile(above, 0.5),
+            p90: pickQuantile(above, 0.9),
+          },
+  };
+}
+
+/** The engine's quantile of a sorted sample: the value at ⌊p n⌋, clamped. */
+export function pickQuantile(sorted: readonly number[], p: number): number {
+  const idx = Math.min(sorted.length - 1, Math.max(0, Math.floor(p * sorted.length)));
+  return sorted[idx] ?? 0;
 }
 
 /**

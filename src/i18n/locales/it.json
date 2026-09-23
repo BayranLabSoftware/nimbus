@@ -589,7 +589,10 @@
         "fires": "si contano solo i morti da scuotimento. Gli incendi dopo il terremoto, che lo scenario ShakeOut dell'USGS stima attorno alla metà delle vittime per un Mw 7,8 sulla San Andreas, in questo modello non ci sono"
       }
     },
-    "preparingReport": "Preparo il report… {{done}}/{{total}}"
+    "preparingReport": "Preparo il report… {{done}}/{{total}}",
+    "mcShare": "nel {{share}} % dei campioni",
+    "mcNever": "in nessun campione",
+    "monteCarloFooterShare": "Dove una grandezza è zero in più di un campione su dieci (niente cratere, niente incendio), la riga dice in quanti campioni si verifica e dà P10–P90 di quei soli campioni."
   },
   "cascade": {
     "label": "Timeline a cascata",
