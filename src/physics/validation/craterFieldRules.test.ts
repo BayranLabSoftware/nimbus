@@ -22,13 +22,22 @@ const SCATTERED: ImpactScenarioInput = {
   targetDensity: kgPerM3(2_500),
 };
 
+// The two readings of the whole grid run the model 1 782 and 450 times: they
+// hand the worker's event loop back every 25 rows, or a slow runner's worker
+// misses its runner (the CI of d58bd77).
+const breathe = (): Promise<void> =>
+  new Promise((resolve) => {
+    setImmediate(resolve);
+  });
+
 describe('rules 838 to 845: a scattered body digs a crater field', () => {
-  it('spreads the swarm as the program does: every printed dispersion of the wide grid, on its equations', () => {
+  it('spreads the swarm as the program does: every printed dispersion of the wide grid, on its equations', async () => {
     // Eq. 15* at the ground with Eq. 16*, on the program's own entry: the
     // minor axis of the ellipse it prints, within the interval its two printed
     // figures stand for.
     let read = 0;
-    for (const row of EIEP_GRID) {
+    for (const [i, row] of EIEP_GRID.entries()) {
+      if (i % 25 === 0) await breathe();
       const minor = row.fragmentEllipseM?.[1];
       if (row.error !== null || minor === undefined) continue;
       const r = simulateImpact({ ...eiepRowInput(row), entryEquations: 'program' });
@@ -79,10 +88,11 @@ describe('rules 838 to 845: a scattered body digs a crater field', () => {
     expect(vertical.crater.origin).toBe('impact');
   });
 
-  it('does not reach the sea, nor an iron', () => {
+  it('does not reach the sea, nor an iron', async () => {
     const sea = simulateImpact({ ...SCATTERED, waterDepth: m(50), craterField: 'field' });
     expect(sea.crater.origin).not.toBe('craterField');
-    for (const row of EIEP_GRID) {
+    for (const [i, row] of EIEP_GRID.entries()) {
+      if (i % 25 === 0) await breathe();
       if (row.error !== null || row.densityKgM3 < 7_000) continue;
       const r = simulateEiepRow(row, { craterField: 'field' });
       expect(r.crater.origin, String(row.index)).not.toBe('craterField');

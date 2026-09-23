@@ -19,16 +19,25 @@ import { buildSealScenarios, sealTranslators, type SealTranslators } from './imp
  * The panel is held to the same in the end-to-end suite, on the page itself.
  */
 
+// 308 scenarios, each run and drawn twice: the worker's event loop is handed
+// back every ten, or a slow runner's worker misses its runner (the CI of
+// d58bd77).
+const breathe = (): Promise<void> =>
+  new Promise((resolve) => {
+    setImmediate(resolve);
+  });
+
 describe('every number an impact prints carries its class of evidence', () => {
   let t: SealTranslators;
   beforeAll(async () => {
     t = await sealTranslators();
   });
 
-  it('on the globe, in the report and in its key figures, for every sealed scenario', () => {
+  it('on the globe, in the report and in its key figures, for every sealed scenario', async () => {
     let layers = 0;
     let rows = 0;
-    for (const scenario of buildSealScenarios()) {
+    for (const [i, scenario] of buildSealScenarios().entries()) {
+      if (i % 10 === 0) await breathe();
       const run = safeRunImpact(scenario.input);
       if (!run.ok) continue;
       for (const language of ['en', 'it'] as const) {
