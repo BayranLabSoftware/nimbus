@@ -118,6 +118,8 @@ export interface ImpactReportContext {
   timeZone?: string;
   /** The preset's own name, or null for a scenario of the reader's own. */
   presetName: string | null;
+  /** The preset's key, for what its maps say was observed (rule 1031 (d)). */
+  preset?: string | null;
   uncertaintyKey: string | null;
   casualties: CasualtyEstimate | null;
   nearest: NearestPlace | null;
@@ -659,7 +661,7 @@ export function buildImpactReport(
   const { t, language } = ctx;
   // The tsunami's layer is the globe's wave map, which a flat map of the
   // report does not draw; the wave is in the numbers.
-  const mapCtx = { t, language, uncertaintyKey: ctx.uncertaintyKey };
+  const mapCtx = { t, language, uncertaintyKey: ctx.uncertaintyKey, preset: ctx.preset ?? null };
   const figures = availableImpactLayers(result, mapCtx)
     .filter((layer) => isFieldLayer(layer.id))
     .map((layer, i) => ({ number: i + 1, layer }));

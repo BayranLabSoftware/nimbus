@@ -210,7 +210,13 @@ export function ReportMap({
         required: false,
       })),
     ];
-    const placedBoxes: [number, number, number, number][] = [];
+    // The north, the scale and the photograph are taken before any label.
+    const placedBoxes: [number, number, number, number][] = [
+      [size - 30, 0, size, 40],
+      [0, size - 30, size * 0.45, size],
+    ];
+    if (globeShot !== null)
+      placedBoxes.push([size - size * 0.31 - 10, size - size * 0.31 - 24, size, size]);
     return items.flatMap((item) => {
       const fontSize = item.state ? stateSize : labelSize;
       const lines = item.text.split('\n');
@@ -246,7 +252,7 @@ export function ReportMap({
       const py = (H - y) * k;
       return [{ ...item, fontSize, x: px, y: py, box: boxAt(px, py) }];
     });
-  }, [result, layer, drawing, H, k, size, labelSize]);
+  }, [result, layer, drawing, H, k, size, labelSize, globeShot]);
 
   // What the cities' names must not print over: the labels, the north, the
   // scale and the photograph.

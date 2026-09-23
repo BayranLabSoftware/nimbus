@@ -113,6 +113,18 @@ States 2, 3 and 4 are drawn from each layer's edge (step 1), with these choices:
   layer still says it draws nothing, and why.
 - It sits second among the tabs, so a scenario without a structural layer opens on it.
 
+## Step 6, as built
+
+- A heat whose every drawn threshold is zero — no second- or third-degree burn, no ignition —
+  while the model still gives first-degree burns keeps its tab: the layer's state is «below the
+  threshold», drawn as the same veil in a halo out to the first degree's reach, «sotto la soglia
+  principale». Tunguska: 12.1 km.
+- The legend says what the model computes («la fluenza di un'ustione di I grado fino a 12,1 km, e
+  nessuna ustione di II o III grado né accensione») and, apart, under «Osservato», what was
+  observed — only when the scenario is the preset of that event: «Foresta bruciacchiata osservata
+  vicino all'epicentro; il meccanismo e la distribuzione non sono validati da questo layer».
+- A heat with no first-degree reach either stays in «Non disegnati», with its reason.
+
 ## The printed report (rule 1037)
 
 The reviewer, approving steps 1 to 3, asked for the report now, before step 4: the globe and the

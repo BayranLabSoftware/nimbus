@@ -464,6 +464,9 @@ type RawLayer = Omit<
   /** What lies past an ordinary last edge, where it is not the field going on
    *  below its threshold. */
   beyond?: BeyondEdge;
+  /** Rule 1031 (d): a layer whose every drawn threshold is zero while the
+   *  model gives a smaller effect — the reach of that effect, and its words. */
+  halo?: { toM: number; extent: string };
 };
 
 export type LayerEvidence = Pick<
@@ -513,6 +516,9 @@ function layerEvidence(layer: RawLayer, ctx: ImpactMapContext): LayerEvidence {
 export interface ImpactMapContext {
   t: TFunction;
   language: string;
+  /** The preset the result was run from, where it was: a layer read against
+   *  that event's record says what was observed (rule 1031 (d)). */
+  preset?: string | null;
   /** The threshold the uncertainty view reads; the first it has when null. */
   uncertaintyKey?: string | null;
   /** What the globe's wave map has drawn, for the tsunami's layer to name
@@ -710,6 +716,8 @@ function cssToRgba(css: string, alphaScale = 1): readonly [number, number, numbe
  *  field's edge; in an area, just past its own. */
 export function markLabelRadius(mark: StateMark): number {
   if (mark.state === 'modelLimit') return mark.fromM;
+  // A halo from the centre: its words inside it, near its edge.
+  if (!(mark.fromM > 0)) return mark.toM * 0.7;
   if (mark.state === 'belowThreshold') return mark.fromM * Math.pow(mark.toM / mark.fromM, 0.06);
   return mark.fromM * 1.08;
 }
@@ -733,6 +741,20 @@ export function markGroundField(
   tone: 'globe' | 'paper' = 'globe'
 ): GroundField | null {
   if (mark.state === 'modelLimit' || !(mark.toM > mark.fromM)) return null;
+  if (mark.state === 'belowThreshold' && !(mark.fromM > 0)) {
+    // Rule 1031 (d): a halo from the centre, the veil's own opacity out to
+    // four fifths of its reach and fading over the last fifth.
+    const [r, g, b] = cssToRgba(tone === 'paper' ? BELOW_BAND_PAPER_CSS : BELOW_BAND_CSS);
+    return {
+      family: mark.family,
+      minRangeM: 1,
+      maxRangeM: mark.toM,
+      colorAt: (x) => {
+        const u = Math.max(0, (x / mark.toM - 0.8) / 0.2);
+        return u >= 1 ? null : [r, g, b, Math.round(255 * BELOW_BAND_ALPHA * (1 - u))];
+      },
+    };
+  }
   if (mark.state === 'belowThreshold') {
     const [r, g, b] = cssToRgba(tone === 'paper' ? BELOW_BAND_PAPER_CSS : BELOW_BAND_CSS);
     const span = Math.log(mark.toM / mark.fromM);
@@ -1114,7 +1136,7 @@ function thermalLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawL
     { key: 'thirdDegreeBurn', radius: result.damage.thirdDegreeBurn as number },
     { key: 'secondDegreeBurn', radius: result.damage.secondDegreeBurn as number },
   ].filter((x) => x.radius > 0);
-  if (rings.length === 0) return null;
+  if (rings.length === 0) return belowMainHeat(result, ctx);
   // Each line's value is the field at the line: the threshold it stands at.
   const withValue = rings.map((x) => ({ ...x, q: impactThermalExposureAt(source, x.radius) }));
   const lowest = Math.min(...withValue.map((x) => x.q));
@@ -1182,6 +1204,52 @@ function thermalLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawL
         }),
       },
       { label: t('globe.impactMap.noteLabel.source'), text: thermalSource },
+      { label: t('globe.impactMap.noteLabel.limit'), text: t('globe.impactMap.note.thermalLimit') },
+    ],
+  };
+}
+
+/** Rule 1031 (d): what was observed, said apart from what the model computes,
+ *  for a preset whose record a layer is read against. */
+const OBSERVED: Readonly<Record<string, Partial<Record<ImpactLayerId, string>>>> = {
+  TUNGUSKA: { thermal: 'globe.impactMap.observed.tunguskaThermal' },
+};
+
+function observedNote(id: ImpactLayerId, ctx: ImpactMapContext): { label: string; text: string }[] {
+  const key = ctx.preset == null ? undefined : OBSERVED[ctx.preset]?.[id];
+  return key === undefined
+    ? []
+    : [{ label: ctx.t('globe.impactMap.noteLabel.observed'), text: ctx.t(key) }];
+}
+
+/**
+ * Rule 1031 (d): a heat whose every drawn threshold is zero — no second- or
+ * third-degree burn, no ignition — while the model still gives first-degree
+ * burns is not hidden: its tab stays, with a faint halo out to the first
+ * degree's reach, «sotto la soglia principale». Tunguska: 12.1 km.
+ */
+function belowMainHeat(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLayer | null {
+  const { t, language } = ctx;
+  const first = result.entry.flashBurnRadii.firstDegree as number;
+  if (!(first > 0)) return null;
+  const reach = formatRange(first, language);
+  return {
+    id: 'thermal',
+    tab: t('globe.impactMap.layer.thermal.tab'),
+    title: t('globe.impactMap.layer.thermal.title'),
+    unit: t('globe.impactMap.layer.thermal.unit'),
+    field: null,
+    halo: { toM: first, extent: t('globe.impactMap.card.extentBelowMain', { reach }) },
+    isolines: [],
+    colorbar: null,
+    categories: [],
+    notes: [
+      {
+        label: t('globe.impactMap.noteLabel.computed'),
+        text: t('globe.impactMap.note.thermalBelowMain', { reach }),
+      },
+      ...observedNote('thermal', ctx),
+      { label: t('globe.impactMap.noteLabel.source'), text: t('globe.impactMap.source.thermal') },
       { label: t('globe.impactMap.noteLabel.limit'), text: t('globe.impactMap.note.thermalLimit') },
     ],
   };
@@ -2057,11 +2125,31 @@ export function buildImpactLayer(
       : null;
   const horizon =
     fireballHorizon !== null && Number.isFinite(fireballHorizon) ? fireballHorizon : null;
-  const { below, beyond, ...settled } = settleIsolines(layer, ctx, horizon);
+  const { below, beyond, halo, ...settled } = settleIsolines(layer, ctx, horizon);
   const evidence = layerEvidence(settled, ctx);
   const edge = layerEdge(settled, horizon, beyond);
-  const card = layerCard(settled, evidence, edge, ctx);
-  const marks = stateMarks(settled, below, edge, horizon, card, ctx);
+  const drawnCard = layerCard(settled, evidence, edge, ctx);
+  // Rule 1031 (d): a layer drawn only as a halo below its main threshold.
+  const card: ProvenanceCard =
+    halo === undefined
+      ? drawnCard
+      : { ...drawnCard, extent: halo.extent, beyond: 'belowThreshold' };
+  const marks =
+    halo === undefined
+      ? stateMarks(settled, below, edge, horizon, card, ctx)
+      : [
+          {
+            id: 'halo',
+            state: 'belowThreshold' as const,
+            family: layer.id === 'thermal' ? ('heat' as const) : ('circle' as const),
+            fromM: 0,
+            toM: halo.toM,
+            label: ctx.t('globe.impactMap.mark.label.belowMain'),
+            labelBearingDeg: MARK_BEARING_DEG.below,
+            description: `${ctx.t('globe.impactMap.card.beyond')}: ${ctx.t('globe.impactMap.beyond.belowThreshold')}`,
+            card,
+          },
+        ];
   // Rule 1031 (a): where the heat stops at its horizon, what else heats the
   // ground beyond it is named, and said not to be in this layer.
   const notes =
@@ -2082,7 +2170,7 @@ export function buildImpactLayer(
       state: l.atLimit !== undefined ? ('modelLimit' as const) : ('computed' as const),
     })),
     evidence,
-    state: 'computed',
+    state: halo === undefined ? 'computed' : 'belowThreshold',
     card,
     edge,
     marks,

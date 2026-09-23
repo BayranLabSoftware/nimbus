@@ -1168,7 +1168,9 @@
         "notModelled": "Non modellati",
         "shown": "Mappa visualizzata",
         "thresholds": "Soglie",
-        "validation": "Validazione"
+        "validation": "Validazione",
+        "computed": "Calcolato",
+        "observed": "Osservato"
       },
       "note": {
         "isolinesMedian": "le soglie del modello, alla mediana",
@@ -1217,7 +1219,8 @@
         "lowWhat": "Questo layer mostra pressioni inferiori per interpretare rottura vetri e danno leggero",
         "lowValidation": "Il modello non è validato su Chelyabinsk come previsione del campo; confronto osservativo disponibile",
         "lowNot": "fuori dalla scala strutturale e dal conteggio delle vittime",
-        "lowLimit": "sotto 1 kPa non si colora; sopra 3,45 kPa la scala si ferma: lì comincia il livello Sovrappressione"
+        "lowLimit": "sotto 1 kPa non si colora; sopra 3,45 kPa la scala si ferma: lì comincia il livello Sovrappressione",
+        "thermalBelowMain": "il modello calcola la fluenza di un'ustione di I grado fino a {{reach}}, e nessuna ustione di II o III grado né accensione"
       },
       "source": {
         "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 al suolo (regole 748–755), verificata contro l'Earth Impact Effects Program (I1)",
@@ -1283,7 +1286,8 @@
         "extentValue": "da {{outer}} a {{inner}}, fino a {{reach}}",
         "extentOne": "{{value}}, fino a {{reach}}",
         "extentWaveMap": "la carta dell’onda che il globo disegna, le sue voci qui sotto",
-        "extentNone": "nulla oltre ciò che la legenda elenca"
+        "extentNone": "nulla oltre ciò che la legenda elenca",
+        "extentBelowMain": "ustioni di I grado fino a {{reach}}; nessuna soglia principale raggiunta"
       },
       "state": {
         "verified": "A · implementazione verificata",
@@ -1342,7 +1346,8 @@
           },
           "compressed": "soglie {{lo}}–{{hi}} cal/cm²\ncompresse presso il limite geometrico",
           "compressedOne": "soglia {{value}} cal/cm²\ncompressa presso il limite geometrico",
-          "belowThresholdEjecta": "deposito < 1 mm oppure\nnon risolto dalla scala corrente"
+          "belowThresholdEjecta": "deposito < 1 mm oppure\nnon risolto dalla scala corrente",
+          "belowMain": "sotto la soglia principale"
         },
         "source": {
           "below": "lo stesso modello del campo, letto oltre la soglia più bassa disegnata"
@@ -1356,6 +1361,9 @@
           "thermal": "l’orizzonte diretto della palla di fuoco, a {{range}}: oltre, la sua cima è sotto l’orizzonte e il modello non calcola la radiazione diretta (Collins et al. 2005)"
         },
         "effectiveMagnitude": "magnitudo efficace {{m}}"
+      },
+      "observed": {
+        "tunguskaThermal": "Foresta bruciacchiata osservata vicino all'epicentro; il meccanismo e la distribuzione non sono validati da questo layer"
       }
     }
   },

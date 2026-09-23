@@ -1168,7 +1168,9 @@
         "notModelled": "Not modelled",
         "shown": "Map shown",
         "thresholds": "Thresholds",
-        "validation": "Validation"
+        "validation": "Validation",
+        "computed": "Computed",
+        "observed": "Observed"
       },
       "note": {
         "isolinesMedian": "the model's thresholds, at the median",
@@ -1217,7 +1219,8 @@
         "lowWhat": "This layer shows lower pressures, to read broken glass and light damage",
         "lowValidation": "The model is not validated on Chelyabinsk as a prediction of the field; an observational comparison is available",
         "lowNot": "outside the structural scale and the toll",
-        "lowLimit": "below 1 kPa not coloured; above 3.45 kPa the scale stops: there the Overpressure layer begins"
+        "lowLimit": "below 1 kPa not coloured; above 3.45 kPa the scale stops: there the Overpressure layer begins",
+        "thermalBelowMain": "the model computes the fluence of a first-degree burn out to {{reach}}, and no second- or third-degree burn nor ignition"
       },
       "source": {
         "groundBlast": "Collins, Melosh & Marcus (2005), Eq. 54 at the ground (rules 748 to 755), verified against the Earth Impact Effects Program (I1)",
@@ -1283,7 +1286,8 @@
         "extentValue": "from {{outer}} to {{inner}}, out to {{reach}}",
         "extentOne": "{{value}}, out to {{reach}}",
         "extentWaveMap": "the wave map the globe draws, its entries below",
-        "extentNone": "nothing beyond what the legend lists"
+        "extentNone": "nothing beyond what the legend lists",
+        "extentBelowMain": "first-degree burns out to {{reach}}; no main threshold reached"
       },
       "state": {
         "verified": "A · implementation verified",
@@ -1342,7 +1346,8 @@
           },
           "compressed": "thresholds {{lo}}–{{hi}} cal/cm²\ncompressed at the geometric limit",
           "compressedOne": "threshold {{value}} cal/cm²\ncompressed at the geometric limit",
-          "belowThresholdEjecta": "deposit < 1 mm or\nnot resolved at the current scale"
+          "belowThresholdEjecta": "deposit < 1 mm or\nnot resolved at the current scale",
+          "belowMain": "below the main threshold"
         },
         "source": {
           "below": "the same model as the field, read past the lowest threshold drawn"
@@ -1356,6 +1361,9 @@
           "thermal": "the fireball’s direct horizon, at {{range}}: beyond it the fireball’s top is below the horizon and the model does not compute the direct radiation (Collins et al. 2005)"
         },
         "effectiveMagnitude": "effective magnitude {{m}}"
+      },
+      "observed": {
+        "tunguskaThermal": "Scorched forest observed near the epicentre; the mechanism and the distribution are not validated by this layer"
       }
     }
   },

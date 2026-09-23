@@ -28,6 +28,8 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
   const { t, i18n } = useTranslation();
   const layerId = useAppStore((s) => s.impactFieldLayer);
   const uncertaintyKey = useAppStore((s) => s.impactUncertaintyKey);
+  const impactPreset = useAppStore((s) => s.impact.preset);
+  const preset = impactPreset === 'CUSTOM' ? null : impactPreset;
   const setLayer = useAppStore((s) => s.setImpactFieldLayer);
   const setUncertaintyKey = useAppStore((s) => s.setImpactUncertaintyKey);
   const frontActive = useAppStore((s) => s.shockFrontActive);
@@ -36,14 +38,14 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
   const language = i18n.language;
 
   const { layers, layer, absent } = useMemo(() => {
-    const ctx = { t, language, uncertaintyKey, waveMap, waveUnpropagatedReachM };
+    const ctx = { t, language, uncertaintyKey, waveMap, waveUnpropagatedReachM, preset };
     return {
       layers: availableImpactLayers(result, ctx),
       layer: resolveImpactLayer(result, layerId, ctx),
       // Rule 1032 (c): a layer that draws nothing is never simply missing.
       absent: absentImpactLayers(result, ctx),
     };
-  }, [result, t, language, uncertaintyKey, layerId, waveMap, waveUnpropagatedReachM]);
+  }, [result, t, language, uncertaintyKey, layerId, waveMap, waveUnpropagatedReachM, preset]);
 
   return (
     <section className={styles.map} data-testid="impact-field-legend">

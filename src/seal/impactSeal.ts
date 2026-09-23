@@ -360,9 +360,11 @@ export function readScenario(scenario: SealScenario, t: SealTranslators): SealRe
 
   const result = run.result;
   const toll = casualties(result);
+  // Rule 1031 (d): a preset's maps say what its event was observed to do.
+  const preset = scenario.id.startsWith('preset:') ? scenario.id.slice('preset:'.length) : null;
   const layers = {
-    it: availableImpactLayers(result, { t: t.it, language: 'it' }),
-    en: availableImpactLayers(result, { t: t.en, language: 'en' }),
+    it: availableImpactLayers(result, { t: t.it, language: 'it', preset }),
+    en: availableImpactLayers(result, { t: t.en, language: 'en', preset }),
   };
   const report = {
     it: buildImpactReport(result, {
@@ -372,6 +374,7 @@ export function readScenario(scenario: SealScenario, t: SealTranslators): SealRe
       evaluatedAt: REPORT_AT,
       timeZone: 'UTC',
       presetName: scenario.presetName,
+      preset,
       uncertaintyKey: null,
       casualties: null,
       nearest: null,
@@ -384,6 +387,7 @@ export function readScenario(scenario: SealScenario, t: SealTranslators): SealRe
       evaluatedAt: REPORT_AT,
       timeZone: 'UTC',
       presetName: scenario.presetName,
+      preset,
       uncertaintyKey: null,
       casualties: null,
       nearest: null,

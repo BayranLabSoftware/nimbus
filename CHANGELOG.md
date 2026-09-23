@@ -19,6 +19,11 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Tunguska's heat is no longer hidden.** A heat whose drawn thresholds are all
+  zero while the model still gives first-degree burns keeps its tab: a faint
+  halo "below the main threshold" out to the first degree's reach (Tunguska,
+  12.1 km), the legend saying what the model computes and, apart, what was
+  observed at Tunguska. Step 6 of the map's grammar.
 - **A low overpressure layer, for glass and light damage.** "Low overpressure —
   glass damage (exploratory)" reads the overpressure's own field from 1 kPa up
   to 0.5 psi, where the structural layer starts, with lines at 1 and 3 kPa and

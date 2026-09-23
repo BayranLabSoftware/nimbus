@@ -340,6 +340,7 @@ export function ImpactReport({
         location,
         evaluatedAt,
         presetName: preset === 'CUSTOM' ? null : IMPACT_PRESETS[preset].name,
+        preset: preset === 'CUSTOM' ? null : preset,
         uncertaintyKey,
         casualties,
         nearest,
@@ -489,7 +490,9 @@ export function ImpactReport({
         {map(figure, 280, false)}
         <Legend layer={figure.layer} barHeight={150} />
       </div>
-      <IsolineTable layer={figure.layer} language={language} />
+      {figure.layer.isolines.length > 0 && (
+        <IsolineTable layer={figure.layer} language={language} />
+      )}
       {figure.layer.id === 'uncertainty' && (
         <ThresholdTable layer={figure.layer} language={language} />
       )}
@@ -628,7 +631,9 @@ export function ImpactReport({
                 {/* Rule 1037 (c): the fixed note. */}
                 <b data-testid="rendering-note">{t('report.impact.renderingNote')}</b>
               </p>
-              <IsolineTable layer={first.layer} language={language} />
+              {first.layer.isolines.length > 0 && (
+                <IsolineTable layer={first.layer} language={language} />
+              )}
             </>
           )}
           <h3 className={styles.subheading}>{t('report.impact.howTitle')}</h3>

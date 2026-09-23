@@ -545,6 +545,7 @@ export function Globe(): JSX.Element {
   const setWaveMapKey = useAppStore((s) => s.setWaveMapKey);
   const impactFieldLayer = useAppStore((s) => s.impactFieldLayer);
   const impactUncertaintyKey = useAppStore((s) => s.impactUncertaintyKey);
+  const impactPreset = useAppStore((s) => s.impact.preset);
   const { i18n: uiI18n } = useTranslation();
   /** The result and layer the camera last framed an impact's map on. */
   const framedLayerRef = useRef<{ result: object; layer: string } | null>(null);
@@ -4402,6 +4403,7 @@ export function Globe(): JSX.Element {
       t: i18next.t.bind(i18next),
       language: uiLanguage,
       uncertaintyKey: impactUncertaintyKey,
+      preset: impactPreset === 'CUSTOM' ? null : impactPreset,
     };
     const layer = impact === null ? null : resolveImpactLayer(impact.data, impactFieldLayer, ctx);
     // Under an impact's map the imagery turns to greys; back otherwise, and
@@ -4489,6 +4491,7 @@ export function Globe(): JSX.Element {
     location,
     impactFieldLayer,
     impactUncertaintyKey,
+    impactPreset,
     uiLanguage,
     shotTick,
   ]);
@@ -4513,6 +4516,7 @@ export function Globe(): JSX.Element {
           t: i18next.t.bind(i18next),
           language,
           uncertaintyKey: state.impactUncertaintyKey,
+          preset: state.impact.preset === 'CUSTOM' ? null : state.impact.preset,
         };
         const camera = viewer.camera;
         const saved = {

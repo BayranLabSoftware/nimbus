@@ -104,7 +104,7 @@ describe('one geometry for the isoline and the colour (B-105)', () => {
 });
 
 describe('the layers an impact draws: every quantity, nothing left out', () => {
-  it('draws Meteor Crater seven ways and Tunguska five', () => {
+  it('draws Meteor Crater seven ways and Tunguska six', () => {
     expect(availableImpactLayers(meteor, ctx).map((l) => l.id)).toEqual([
       'overpressure',
       'lowOverpressure',
@@ -118,6 +118,7 @@ describe('the layers an impact draws: every quantity, nothing left out', () => {
       'overpressure',
       'lowOverpressure',
       'wind',
+      'thermal',
       'shaking',
       'uncertainty',
     ]);

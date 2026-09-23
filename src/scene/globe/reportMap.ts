@@ -174,6 +174,13 @@ export function reportMapHalfWidth(result: ImpactScenarioResult, layer: ImpactMa
       reach = Math.max(reach, Math.abs(x), Math.abs(y));
     }
   }
+  // Rule 1031 (d): a halo from the centre is framed whole.
+  for (const mk of layer.marks) {
+    if (mk.fromM > 0) continue;
+    for (const [x, y] of outline(shapes[mk.family], mk.toM)) {
+      reach = Math.max(reach, Math.abs(x), Math.abs(y));
+    }
+  }
   if (reach === 0 && layer.field !== null) {
     const s = shapes[layer.field.family];
     reach =

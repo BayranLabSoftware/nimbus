@@ -100,7 +100,8 @@ describe('rule 1032: the grammar of the impact map', () => {
     const chelyabinsk = absentImpactLayers(simulateImpact(IMPACT_PRESETS.CHELYABINSK.input), ctx);
     expect(chelyabinsk.find((a) => a.id === 'overpressure')?.beyond).toBe('belowThreshold');
     const tunguska = absentImpactLayers(simulateImpact(IMPACT_PRESETS.TUNGUSKA.input), ctx);
-    expect(tunguska.find((a) => a.id === 'thermal')?.beyond).toBe('belowThreshold');
+    // Tunguska's heat is drawn, below its main threshold (rule 1031 (d)).
+    expect(tunguska.find((a) => a.id === 'thermal')).toBeUndefined();
     expect(tunguska.find((a) => a.id === 'ejecta')?.beyond).toBe('computedZero');
   });
 
@@ -144,7 +145,9 @@ describe('rule 1030: what the globe draws past a field’s edge', () => {
               ? `globe.impactMap.mark.label.notModelled.${layer.id}`
               : layer.id === 'ejecta'
                 ? 'globe.impactMap.mark.label.belowThresholdEjecta'
-                : `globe.impactMap.mark.label.${mark.state}`;
+                : mark.id === 'halo'
+                  ? 'globe.impactMap.mark.label.belowMain'
+                  : `globe.impactMap.mark.label.${mark.state}`;
           expect(mark.label).toBe(words);
         }
   });
@@ -276,5 +279,38 @@ describe('rule 1031 (c): the low overpressure', () => {
     // Its lines stand where the field reads 1 kPa.
     const line = low?.isolines[0];
     expect(impactOverpressureAt(fieldSourceOf(r), line?.radiusM ?? 0) / 1_000).toBeCloseTo(1, 6);
+  });
+});
+
+describe('rule 1031 (d): below the main threshold', () => {
+  const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
+
+  it('keeps Tunguska’s heat, a faint halo out to the first degree’s reach', () => {
+    const heat = availableImpactLayers(tunguska, ctx).find((l) => l.id === 'thermal');
+    expect(heat).toBeDefined();
+    expect(heat?.state).toBe('belowThreshold');
+    expect(heat?.isolines).toEqual([]);
+    expect(heat?.marks).toHaveLength(1);
+    const halo = heat?.marks[0];
+    expect(halo?.fromM).toBe(0);
+    expect(halo?.toM).toBe(tunguska.entry.flashBurnRadii.firstDegree);
+    expect(halo?.card.beyond).toBe('belowThreshold');
+    expect(heat?.notes.map((n) => n.text)).toContain(
+      'globe.impactMap.note.thermalBelowMain{"reach":"12,1 km"}'
+    );
+    const shade = halo === undefined ? null : markGroundField(halo);
+    expect(shade?.colorAt(1_000)?.[3]).toBeGreaterThan(0);
+    expect(shade?.colorAt((halo?.toM ?? 0) * 0.999)?.[3] ?? 0).toBeLessThan(
+      shade?.colorAt(1_000)?.[3] ?? 0
+    );
+  });
+
+  it('says what was observed apart, only for the event it was observed at', () => {
+    const noted = (preset: string | null): string[] =>
+      availableImpactLayers(tunguska, { ...ctx, preset })
+        .find((l) => l.id === 'thermal')
+        ?.notes.map((n) => n.text) ?? [];
+    expect(noted('TUNGUSKA')).toContain('globe.impactMap.observed.tunguskaThermal');
+    expect(noted(null)).not.toContain('globe.impactMap.observed.tunguskaThermal');
   });
 });
