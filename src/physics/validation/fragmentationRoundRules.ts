@@ -241,6 +241,86 @@
  * rule 978, once.
  */
 
+/**
+ * Rules 992 to 998 — variant P: the solution of Eq. 14 in place of Eq. 15.
+ * Written on 23 September 2026, night, on the reviewer's leave (after the
+ * rectification of rules 982 to 986) and Andrea's word («Sì, P ora»), before
+ * any line of the variant. The development table is version 2 (09bae54), its
+ * baseline fragmentationBaseline.json as committed there; B-126 stays
+ * refused; nothing of the effects, the rings, the climate or the casualties
+ * is touched in this round (the reviewer).
+ *
+ * RULE 992. WHAT P IS. Collins, Melosh & Marcus (2005), p. 821, read on the
+ * page: after the breakup the pancake's diameter obeys d²L/dt² =
+ * C_D ρ(z) v²(z) / (ρ_i L) (their Eq. 13, Chyba et al. 1993), which, "if L does
+ * not increase too much over the scale height H", becomes
+ *     L d²L/dz² = C_D ρ(z) / (ρ_i sin²θ)          (their Eq. 14),
+ * with L = L0 at z = z*; their Eq. 15* is "an analytic approximation to the
+ * full solution of this equation". Under P the diameter is Eq. 14 solved, with
+ * L(z*) = L0 and dL/dz(z*) = 0 — the slope Eq. 15* itself has there — on the
+ * exponential atmosphere of the operative branch. Everything else is as
+ * today: the breakup of Eq. 11 (at S2 for a stony body under the two-stage
+ * law); the burst where L reaches f_p L0, Eq. 18's own condition; the speed of
+ * Eq. 17*, its integral of e^((z*−z)/H) L² taken on this L; below a burst the
+ * cloud as today (axis F is apart); the swarm's spread at the ground, L(0), and
+ * `entryPath`'s diameter and speed before the burst, from the same solution.
+ * The virtual burst altitude of a swarm that reaches the ground stays Eq. 18's
+ * — a convention the ground blast reads only under the program's laws, not the
+ * product's `surface`. Only the paper's equations on the exponential are
+ * touched: the program's branch and the tabulated profiles keep Eq. 15.
+ *
+ * RULE 993. THE NUMERICS, fixed now: the classical fourth-order Runge–Kutta
+ * in altitude on (L, dL/dz, the integral of Eq. 17*), from z* down, with a step
+ * of 10 m (the last step cut at the ground); the burst placed inside its step
+ * by linear interpolation of L, and its speed and integral read there alike.
+ * Measured before these rules: 0.075 ms a run on a grid of 45 bodies — 75 ms
+ * for a Monte Carlo of 1 000 draws. Verified before the run, on a grid of
+ * bodies that are none of the development cases: (a) at 5 m the burst
+ * altitude moves by less than 1 m and the speed at the burst or the ground by
+ * less than 10⁻⁶ of itself; (b) at the breakup L, dL/dz and d²L/dz² are those
+ * of Eq. 14; (c) near the breakup L agrees with Eq. 15* to second order in
+ * (z* − z)/l — both are L0 (1 + (z* − z)²/(2l²)) there; (d) with the variant
+ * off, every number is the product's to the bit.
+ *
+ * RULE 994. THE SWITCH. `pancakeGrowth: 'eq15' | 'eq14'` on the input, 'eq15'
+ * by default until an adoption; level A's comparisons with the program pin
+ * 'eq15' (the program's); G5 reads a branch through NIMBUS_PANCAKE.
+ *
+ * RULE 995. THE RUN, once, on the draws of rule 978 with the variant on:
+ * published for every case beside the baseline — p₁ and the first stage's
+ * conditional altitude, p_b and the conditional burst altitude, the
+ * probability of the observed outcome, the energy to the ground, the
+ * frequency of the three crater states, the regimes and the bands — in
+ * fragmentationVariantP.json and docs/FRAGMENTATION_VARIANT_P.md, written by
+ * scripts/fragmentation-variant.ts; the verdict read by
+ * fragmentationScore.ts, written and pushed before the run, on rules 964,
+ * 975, 976, 981 and 985. Rule 964 (d) — G5, level A, the suite, the gate, the
+ * end-to-end suite and the seal on the variant as default — is run only if
+ * (a) to (c) hold.
+ *
+ * RULE 996. WHAT P CAN MOVE, said before: the first stage precedes the
+ * pancake, so P moves no m1 — the metric reads the same on both sides and
+ * credits nothing. P is therefore adopted only if m2 and m3 both improve.
+ *
+ * RULE 997. WHAT AN ADOPTION MAY UPDATE: a test that pins a number of
+ * Eq. 15* or of the closed forms of Eqs. 17* to 20 on the operative branch,
+ * re-read on the solution of Eq. 14 with the rule named; the seal, re-taken,
+ * each moving scenario listed; the development table's P columns. Any other
+ * test that fails refuses P.
+ *
+ * RULE 998. WHAT MAY NOT HAPPEN. No constant moves — C_D, f_p, H, ρ0, the
+ * strengths; the step is not changed after the run; the third set is not
+ * opened; the commit that carries P's outcome carries nothing else (the
+ * reviewer): no change to the atmosphere, the crater, the effects or the
+ * climate.
+ */
+
+/** Rule 994: the pancake's growth after the breakup. */
+export type PancakeGrowth = 'eq15' | 'eq14';
+
+/** Rule 993: the Runge–Kutta step in altitude (m). */
+export const EQ14_STEP_M = 10;
+
 /** The axes of rule 960. */
 export type FragmentationAxis = 'pancake' | 'strength' | 'fragments';
 
