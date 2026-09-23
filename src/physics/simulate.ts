@@ -40,6 +40,7 @@ import {
   type StrengthLaw,
 } from './effects/atmosphericEntry.js';
 import type { EntryAtmosphere } from './validation/entryAtmosphereRules.js';
+import type { PancakeGrowth } from './validation/fragmentationRoundRules.js';
 import {
   CRATER_DOMAIN_MIN_SPEED_MS,
   type CraterDomain,
@@ -210,6 +211,8 @@ export interface ImpactScenarioInput {
   entryAtmosphere?: EntryAtmosphere;
   /** Rules 945 to 952: Eq. 21 at any speed, or inside its domain only. */
   craterDomain?: CraterDomain;
+  /** Rules 992 to 998: the pancake as Eq. 15* or as Eq. 14 solved. */
+  pancakeGrowth?: PancakeGrowth;
   /** Compass azimuth (° clockwise from geographic North) the impactor
    *  is travelling toward at the moment of contact. Drives the down-
    *  range orientation of the asymmetric ejecta blanket for oblique
@@ -672,7 +675,8 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       undefined,
       input.entryBoundary,
       input.airFlash,
-      input.entryAtmosphere
+      input.entryAtmosphere,
+      input.pancakeGrowth
     )
   );
   // Crater and ejecta come from the speed the body or its swarm strikes
@@ -794,6 +798,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
             impactAngle: input.impactAngle,
             breakupAltitude: entry.breakupAltitude,
             ...(input.entryAtmosphere === undefined ? {} : { atmosphere: input.entryAtmosphere }),
+            ...(input.pancakeGrowth === undefined ? {} : { pancake: input.pancakeGrowth }),
           }),
           wholeCrater()
         )
@@ -952,6 +957,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
               ...(input.entryEquations === undefined ? {} : { equations: input.entryEquations }),
               ...(input.entryBoundary === undefined ? {} : { boundary: input.entryBoundary }),
               ...(input.entryAtmosphere === undefined ? {} : { atmosphere: input.entryAtmosphere }),
+              ...(input.pancakeGrowth === undefined ? {} : { pancake: input.pancakeGrowth }),
             }
           ),
           input.impactAngle,

@@ -184,6 +184,8 @@ export const LEVEL_A_DIFFERENCES: readonly LevelADifference[] = [
         impactorDensity: pair.row.densityKgM3,
         impactAngle: (pair.row.angleDeg * Math.PI) / 180,
         breakupAltitude: whole.entry.breakupAltitude,
+        // Rule 994: the program's pancake is Eq. 15*.
+        pancake: 'eq15',
       }) as number;
       const s = spread / (whole.crater.transientDiameter as number);
       if (!(s > 1 && s < 2)) return false;

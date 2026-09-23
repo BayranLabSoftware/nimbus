@@ -64,7 +64,14 @@ if (mode === 'queries') {
       undefined,
       kgPerM3(b.densityKgM3),
       J(energy),
-      angle
+      angle,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      // Rule 994: the program's pancake is Eq. 15*.
+      'eq15'
     );
     const crater = programWaterCraterDiameter({
       impactorDiameter: m(b.diameterM),

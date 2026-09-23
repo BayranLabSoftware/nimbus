@@ -315,11 +315,55 @@
  * climate.
  */
 
+/**
+ * Rule 999 — the step, amended before the run. Written on 23 September 2026,
+ * night, when rule 993's verification, run on its grid of 108 bodies that are
+ * none of the development cases, failed, and before P has run on any case.
+ *
+ * RULE 999. (a) With the fixed 10 m step the speed moved by more than 10⁻⁶
+ * when the step halved on 31 bodies of the 108, by up to 2.3 %: bodies of a
+ * metre, whose dispersion length l (Eq. 16*) is some 12 m at 8 km, so that the
+ * pancake reaches f_p L0 within a few steps and the burst's integral is read
+ * across one of them. The step becomes the smaller of 10 m and l/200, and (a)
+ * halves that step; with it alone one body still moved by 1.1 × 10⁻⁶, the
+ * linear interpolation of the integral across the burst's step, so the burst
+ * is found inside its step by Newton's method on a partial Runge–Kutta step
+ * from the step's start, and its integral read there. Nothing else of rule 993
+ * moves. The cost, measured again: 0.148 ms a solution on the grid, and a
+ * whole simulation from 4.8 to 5.2 ms (+7 %) on 45 bodies. (c) was first written against the bare quadratic
+ * L0 (1 + (z* − z)²/(2l²)) at 0.01 l, with 1 % of the growth allowed, and
+ * failed by 0.03 points on one body whose l is about twice H — where the
+ * density's own rise over the depth, a third-order term, weighs; it is
+ * rewritten as the rule states it: Eq. 14's and Eq. 15*'s growths agree to
+ * second order — their difference, a third-order term, is within 1 % of the
+ * growth at a depth of 0.001 of the smaller of l and H (it is about a sixth of
+ * depth/H there). Both found and changed on the grid alone.
+ */
+
+/**
+ * RULE 1000. THE SCORE, as fragmentationScore.ts reads it, pushed with the
+ * dormant candidate before P runs. m1 and m2 as rule 985 says: case by case,
+ * over the counted cases that have a conditional altitude on both sides (a
+ * case without one on either side is listed apart and averages nothing); the
+ * probability of the event the altitude belongs to is p₁ for m1, and for m2
+ * the probability of the observed outcome — or, where no outcome is observed
+ * (2022 EB5), the probability of the burst; a gain counts only where that
+ * probability does not fall and the conditional altitude's 5 %–95 % width does
+ * not grow by more than half (rule 976; a single run reads no band); a loss
+ * always counts; the metric improves when the mean credited fall of the miss is
+ * 1 km or more. m3: the mean over its counted cases of Δp, 0.10 or more. The
+ * outcomes already right are the baseline's list, each kept at 0.9 or more.
+ * Rule 964 (a) to (c) hold when two metrics improve and every one is kept.
+ */
+
 /** Rule 994: the pancake's growth after the breakup. */
 export type PancakeGrowth = 'eq15' | 'eq14';
 
-/** Rule 993: the Runge–Kutta step in altitude (m). */
+/** Rule 993: the Runge–Kutta step in altitude (m), at most. */
 export const EQ14_STEP_M = 10;
+
+/** Rule 999: the step is at most this fraction of the dispersion length. */
+export const EQ14_STEPS_PER_DISPERSION_LENGTH = 200;
 
 /** The axes of rule 960. */
 export type FragmentationAxis = 'pancake' | 'strength' | 'fragments';

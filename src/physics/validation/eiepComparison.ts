@@ -57,6 +57,8 @@ export function eiepRowInput(
     strengthLaw: 'density',
     // Rule 948: the program evaluates Eq. 21 at any speed.
     craterDomain: 'legacy',
+    // Rule 994: the program's pancake is Eq. 15*.
+    pancakeGrowth: 'eq15',
     ...options,
   };
 }

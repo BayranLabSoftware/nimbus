@@ -21,6 +21,8 @@ import type {
 } from '../units.js';
 import { J, kgPerM3, m, mps, Pa } from '../units.js';
 import type { EntryAtmosphere } from '../validation/entryAtmosphereRules.js';
+import type { PancakeGrowth } from '../validation/fragmentationRoundRules.js';
+import { eq14At, solveEq14 } from './pancakeEq14.js';
 import { DRAG_COEFFICIENT, GRAVITY, H_SCALE, PANCAKE_FACTOR, RHO_0 } from './entryConstants.js';
 import {
   entryProfileOf,
@@ -91,6 +93,10 @@ export const DEFAULT_STRENGTH_LAW: StrengthLaw = 'twoStage';
  * the switch boundary whatever the options say.
  */
 export const DEFAULT_ENTRY_ATMOSPHERE: EntryAtmosphere = 'closed';
+
+/** Rule 994: the pancake's growth after the breakup — Eq. 15* until variant P
+ *  of the round on fragmentation is adopted. */
+export const DEFAULT_PANCAKE_GROWTH: PancakeGrowth = 'eq15';
 
 /** The table of an integrated branch; null for the closed forms. */
 function tableOf(atmosphere: EntryAtmosphere): ReturnType<typeof entryTable> | null {
@@ -565,7 +571,8 @@ export function atmosphericEntry(
   burstSpeed: BurstSpeed = DEFAULT_BURST_SPEED,
   boundary: EntryBoundary = DEFAULT_ENTRY_BOUNDARY,
   airFlash: AirFlash = DEFAULT_AIR_FLASH,
-  atmosphere: EntryAtmosphere = DEFAULT_ENTRY_ATMOSPHERE
+  atmosphere: EntryAtmosphere = DEFAULT_ENTRY_ATMOSPHERE,
+  pancake: PancakeGrowth = DEFAULT_PANCAKE_GROWTH
 ): AtmosphericEntryResult {
   const program = equations === 'program';
   const joined = boundary === 'joined';
@@ -679,6 +686,45 @@ export function atmosphericEntry(
   // Eq. 17's coefficient on the integral of e^((z*−z)/H) L(z)².
   const k = (0.75 * DRAG_COEFFICIENT * rhoStar) / (rhoI * L0 ** 3 * sinTheta);
 
+  // Rules 992 to 998 (variant P): on the paper's equations, the pancake as
+  // Eq. 14 solved instead of Eq. 15*; the burst where it reaches f_p L0, the
+  // speed of Eq. 17* on it. A swarm that reaches the ground keeps Eq. 18's
+  // virtual burst altitude.
+  if (pancake === 'eq14' && !followsProgram) {
+    const solution = solveEq14({
+      diameter: L0,
+      density: rhoI,
+      sinTheta,
+      breakupAltitude: zStar,
+    });
+    const endVelocity = vStar * Math.exp(-k * solution.endIntegral);
+    if (solution.burstAltitude !== null && solution.burstAltitude > 0) {
+      const blastYield = airburstBlastYield(J(totalKE), (endVelocity / v0) ** 2);
+      return {
+        burstAltitude: m(solution.burstAltitude),
+        breakupAltitude: m(zStar),
+        virtualBurstAltitude: m(solution.burstAltitude),
+        regime: 'COMPLETE_AIRBURST',
+        endVelocity: mps(endVelocity),
+        energyFractionToGround: 0,
+        atmosphericYieldMegatons: totalKE / JOULES_PER_MEGATON_TNT,
+        ...computeEntryDamage(totalKE, solution.burstAltitude, blastYield, airFlash),
+      };
+    }
+    const share = Math.min(1, (endVelocity / v0) ** 2);
+    const yieldJ = (1 - share) * totalKE;
+    return {
+      burstAltitude: m(0),
+      breakupAltitude: m(zStar),
+      virtualBurstAltitude: m(Math.min(zBurst, 0)),
+      regime: 'PARTIAL_AIRBURST',
+      endVelocity: mps(endVelocity),
+      energyFractionToGround: share,
+      atmosphericYieldMegatons: yieldJ / JOULES_PER_MEGATON_TNT,
+      ...computeEntryDamage(yieldJ, 0, yieldJ, airFlash),
+    };
+  }
+
   if (zBurst > 0) {
     // Eq. 19: the integral from the airburst to the breakup. The program
     // takes its Eq. 20 between the same altitudes, without the −3(l/H)² term,
@@ -745,6 +791,8 @@ export function swarmSpreadAtGround(input: {
   impactAngle: number;
   breakupAltitude: number;
   atmosphere?: EntryAtmosphere;
+  /** Rule 992: L(0) from Eq. 14 solved, under variant P. */
+  pancake?: PancakeGrowth;
 }): Meters {
   const L0 = input.impactorDiameter;
   const zStar = input.breakupAltitude;
@@ -758,6 +806,19 @@ export function swarmSpreadAtGround(input: {
       sinTheta: Math.sin(input.impactAngle),
     };
     return m(integratedSpreadAtGround(table, body, zStar));
+  }
+  if ((input.pancake ?? DEFAULT_PANCAKE_GROWTH) === 'eq14') {
+    return m(
+      solveEq14(
+        {
+          diameter: L0,
+          density: input.impactorDensity,
+          sinTheta: Math.sin(input.impactAngle),
+          breakupAltitude: zStar,
+        },
+        { throughBurst: true }
+      ).groundDiameter
+    );
   }
   const rhoStar = RHO_0 * Math.exp(-zStar / H_SCALE);
   // Eq. 16*.
@@ -802,6 +863,8 @@ export interface EntryPathOptions {
   equations?: EntryEquations;
   boundary?: EntryBoundary;
   atmosphere?: EntryAtmosphere;
+  /** Rule 992: the pancake of variant P. */
+  pancake?: PancakeGrowth;
 }
 
 /**
@@ -881,10 +944,18 @@ export function entryPath(
   const vStar = wholeSpeed(zStar);
   const l = L0 * sinTheta * Math.sqrt(rhoI / (DRAG_COEFFICIENT * rhoStar));
   const alpha = Math.sqrt(PANCAKE_FACTOR * PANCAKE_FACTOR - 1);
-  const zBurst = zStar - 2 * H_SCALE * Math.log(1 + (l / (2 * H_SCALE)) * alpha);
   const k = (0.75 * DRAG_COEFFICIENT * rhoStar) / (rhoI * L0 ** 3 * sinTheta);
   const c = (2 * H_SCALE) / l;
-  const pancake = (z: number): { diameter: number; velocity: number } => {
+  // Rules 992 to 998 (variant P): the pancake as Eq. 14 solved.
+  const solution =
+    (options.pancake ?? DEFAULT_PANCAKE_GROWTH) === 'eq14' && !followsProgram
+      ? solveEq14({ diameter: L0, density: rhoI, sinTheta, breakupAltitude: zStar })
+      : null;
+  const zBurst =
+    solution === null
+      ? zStar - 2 * H_SCALE * Math.log(1 + (l / (2 * H_SCALE)) * alpha)
+      : (solution.burstAltitude ?? -1);
+  const pancakeEq15 = (z: number): { diameter: number; velocity: number } => {
     const w = Math.exp((zStar - z) / (2 * H_SCALE));
     const integral =
       2 *
@@ -896,6 +967,11 @@ export function entryPath(
       diameter: L0 * Math.sqrt(1 + c * c * (w - 1) ** 2),
       velocity: vStar * Math.exp(-k * integral),
     };
+  };
+  const pancake = (z: number): { diameter: number; velocity: number } => {
+    if (solution === null) return pancakeEq15(z);
+    const node = eq14At(solution, z);
+    return { diameter: node.diameter, velocity: vStar * Math.exp(-k * node.integral) };
   };
   const burst = zBurst > 0 ? pancake(zBurst) : null;
   for (const z of altitudes) {

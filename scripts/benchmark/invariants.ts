@@ -106,6 +106,8 @@ const STRENGTH_LAW = process.env.NIMBUS_STRENGTH_LAW;
 /** Rules 945 to 952 of validation/craterDomainRules.ts: the crater's domain,
  *  when the sweep is asked to read one branch or the other. */
 const CRATER_DOMAIN = process.env.NIMBUS_CRATER_DOMAIN;
+/** Rule 994 of validation/fragmentationRoundRules.ts: the pancake's growth. */
+const PANCAKE = process.env.NIMBUS_PANCAKE;
 /** Rule 947: the fields that are not numbers where the crater is out of its
  *  law's domain — by definition, so the finite invariant does not read them. */
 const OUT_OF_DOMAIN_FIELDS = new Set([
@@ -276,6 +278,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(CRATER_FIELD === undefined ? {} : { craterField: CRATER_FIELD }),
         ...(STRENGTH_LAW === undefined ? {} : { strengthLaw: STRENGTH_LAW }),
         ...(CRATER_DOMAIN === undefined ? {} : { craterDomain: CRATER_DOMAIN }),
+        ...(PANCAKE === undefined ? {} : { pancakeGrowth: PANCAKE }),
         ...(AIRBURST_RADIATION === undefined ? {} : { airburstRadiation: AIRBURST_RADIATION }),
       } as never) as unknown as Json,
     // Rule 780 of validation/atapRadiationAgainRules.ts: the blast source,
@@ -294,6 +297,7 @@ export const HAZARDS: readonly Hazard[] = [
         ...(CRATER_FIELD === undefined ? {} : { craterField: CRATER_FIELD }),
         ...(STRENGTH_LAW === undefined ? {} : { strengthLaw: STRENGTH_LAW }),
         ...(CRATER_DOMAIN === undefined ? {} : { craterDomain: CRATER_DOMAIN }),
+        ...(PANCAKE === undefined ? {} : { pancakeGrowth: PANCAKE }),
         airburstRadiation: 'efficiency',
       } as never) as unknown as Json,
     // Rules 683 to 690 of validation/blastShrinkSourceRules.ts: a blast ring
