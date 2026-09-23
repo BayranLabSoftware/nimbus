@@ -657,6 +657,65 @@ export const VARIANT_P_OUTCOME: string | null =
 export type M3V2Status = 'decides' | 'unfit';
 export const M3_V2_STATUS: M3V2Status = 'unfit';
 
+/**
+ * Rules 1023 to 1026 — the study of S, before its code: the reviewer's leave
+ * (23 September 2026, night: rules 1009 to 1022 suffice to write S's code as a
+ * study of development, not as an adoptable variant), his additions, and two
+ * corrections found while designing the code, before any line of it and any
+ * run. Andrea's word: «Sì, codice e corsa».
+ *
+ * RULE 1023. THE REVIEWER'S ADDITIONS. (a) The results on the bodies of
+ * unknown type are labelled "sensitivity with the ordinary chondrites'
+ * priors", never a prediction for their composition; 2024 BX1, 2008 TC3 and
+ * 2018 LA are run under S as controls of robustness out of the priors' domain
+ * (amending rule 1013's "their S is today's"), neither a success nor a failure
+ * of S. (b) Every energy output says that the ablated mass is none by the
+ * model's assumption, not by a physical prediction. (c) Two automatic tests
+ * before the run: the limit of mass — for every share 0 ≤ m_k ≤ m0, and the
+ * shares' masses plus the core's equal m0; and the limit of dynamics — a
+ * component made with the core's mass, cross-section and speed follows the
+ * core's path until an explicit physical rule parts them. (d) Diagnostic, not
+ * blocking: the core's remaining mass with the upper edge at 5 and at 10 MPa,
+ * beside the altitude and the energy of the release. (e) S runs on every
+ * development case at f1 = 0.25, 0.50 and 0.60, the three published in full
+ * with a row for the baseline; none is chosen after. (f) The outcome is
+ * written in the reviewer's words: "Studio S: la variante mostra come una
+ * cascata di frammentazione a due fasi modifica quota, deposito di energia,
+ * sopravvivenza e regime d'arrivo nel dominio delle condriti ordinarie. Non
+ * viene adottata in questo round e non riceve una classe B; la decisione resta
+ * riservata a un test indipendente successivo." The third set stays closed
+ * and chooses nothing — not f1, not F(q)'s shape, not its upper edge, not the
+ * closure.
+ *
+ * RULE 1024. A SHARE'S CROSS-SECTION, corrected (amends rule 1017). Rule 1017
+ * gave each broken share the diameter of a sphere of its own mass; then the
+ * shares' dynamics depend on how many there are — the more shares, the smaller
+ * each, the sooner its pancake reaches f_p times its own size — and the
+ * convergence of rule 1018 fails by construction, the numerics choosing the
+ * physics. A share is instead a slice of the core: the core's mass per unit of
+ * frontal area, its share of the core's area — so it decelerates, per unit of
+ * mass, as the core does where it breaks, and its pancake is Collins et al.'s
+ * with L0 the core's diameter there; its mass weighs only on its energy and
+ * momentum. With the distribution collapsed to one strength the one share is
+ * the whole body, and the model is today's.
+ *
+ * RULE 1025. THE LIMIT OF RULE 1018, stated exactly. Under S a share breaks
+ * where the core's pressure actually reaches its strength — the root of
+ * Eq. 10; today's model places the breakup by Eq. 11, the paper's
+ * approximation of that root, within 40 m of it (rules 691 to 697). The limit
+ * holds when, with one strength, the breakup lies within 50 m of today's, the
+ * outcome is the same, and the burst altitude, the speed at the burst or the
+ * ground and the energy to the ground agree to within what those 50 m move
+ * in today's own closed forms.
+ *
+ * RULE 1026. THE TERMINAL FLOOR IN THE BUDGET. Collins et al.'s drag neglects
+ * gravity, yet a surviving body is never given less than its terminal speed
+ * (as today): where that floor acts, the kinetic energy and the momentum it
+ * adds are written in the budget as a term of its own, the work of the
+ * gravity the equations leave out — so the budget closes, and says where it
+ * would not.
+ */
+
 /** Rule 1003 (superseded by rule 1015): the first phase's mass loss, f1. */
 export const S_FIRST_PHASE_LOSS = 0.5;
 
