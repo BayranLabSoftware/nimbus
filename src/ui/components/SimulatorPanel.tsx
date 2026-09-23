@@ -836,7 +836,14 @@ export function SimulatorPanel(): JSX.Element {
                   </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.finalCrater')}>
-                      {formatKilometres(result.data.crater.finalDiameter)}
+                      {/* Rule 947: out of the domain the crater is not resolved. */}
+                      {result.data.crater.state === 'outOfDomain' ? (
+                        <span data-testid="crater-unresolved">
+                          {t('simulator.craterUnresolved')}
+                        </span>
+                      ) : (
+                        formatKilometres(result.data.crater.finalDiameter)
+                      )}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>
@@ -845,7 +852,9 @@ export function SimulatorPanel(): JSX.Element {
                   </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.transientCrater')}>
-                      {formatKilometres(result.data.crater.transientDiameter)}
+                      {result.data.crater.state === 'outOfDomain'
+                        ? t('simulator.notResolved')
+                        : formatKilometres(result.data.crater.transientDiameter)}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>
@@ -854,7 +863,9 @@ export function SimulatorPanel(): JSX.Element {
                   </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.craterDepth')}>
-                      {formatKilometres(result.data.crater.depth)}
+                      {result.data.crater.state === 'outOfDomain'
+                        ? t('simulator.notResolved')
+                        : formatKilometres(result.data.crater.depth)}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>
@@ -1084,25 +1095,37 @@ export function SimulatorPanel(): JSX.Element {
                   <dt className={styles.resultLabel}>{t('simulator.ejectaEdge1m')}</dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.ejecta')}>
-                      <RangeValue meters={result.data.ejecta.blanketEdge1m} />
+                      {result.data.crater.state === 'outOfDomain' ? (
+                        t('simulator.notResolved')
+                      ) : (
+                        <RangeValue meters={result.data.ejecta.blanketEdge1m} />
+                      )}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.ejectaEdge1mm')}</dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.ejecta')}>
-                      <RangeValue meters={result.data.ejecta.blanketEdge1mm} />
+                      {result.data.crater.state === 'outOfDomain' ? (
+                        t('simulator.notResolved')
+                      ) : (
+                        <RangeValue meters={result.data.ejecta.blanketEdge1mm} />
+                      )}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.ejectaAt2R')}</dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.ejecta')}>
-                      {formatKilometres(result.data.ejecta.thicknessAt2R)}
+                      {result.data.crater.state === 'outOfDomain'
+                        ? t('simulator.notResolved')
+                        : formatKilometres(result.data.ejecta.thicknessAt2R)}
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>{t('simulator.ejectaAt10R')}</dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.ejecta')}>
-                      {formatKilometres(result.data.ejecta.thicknessAt10R)}
+                      {result.data.crater.state === 'outOfDomain'
+                        ? t('simulator.notResolved')
+                        : formatKilometres(result.data.ejecta.thicknessAt10R)}
                     </CitationTooltip>
                   </dd>
                 </dl>
@@ -2091,6 +2114,8 @@ function formatPercentShare(share: number): string {
 
 function MonteCarloPanel({ mc }: { mc: ActiveMonteCarlo }): JSX.Element {
   const { t } = useTranslation();
+  const outOfDomainShare =
+    (mc.data.metrics as Record<string, { mean: number } | undefined>).craterOutOfDomain?.mean ?? 0;
   return (
     <section className={styles.result} aria-label={t('simulator.monteCarloLabel')}>
       <h3 className={styles.resultLabel} style={{ marginTop: 0 }}>
@@ -2107,6 +2132,9 @@ function MonteCarloPanel({ mc }: { mc: ActiveMonteCarlo }): JSX.Element {
         </thead>
         <tbody>
           {Object.entries(mc.data.metrics).map(([key, band]) => {
+            // Rule 949: the share out of the crater's domain is said beside
+            // the crater's and the ejecta's rows, not as a row of its own.
+            if (key === 'craterOutOfDomain') return null;
             // Rules 890 and 905 (validation/monteCarloShareRules.ts): a
             // quantity zero in more than a tenth of the runs is shown by how
             // often it happens and how large it is when it does; below 1 %,
@@ -2122,6 +2150,14 @@ function MonteCarloPanel({ mc }: { mc: ActiveMonteCarlo }): JSX.Element {
                 <tr>
                   <td>
                     {name}
+                    {outOfDomainShare > 0 &&
+                      (key === 'finalCraterDiameter' || key === 'ejectaEdge1m') && (
+                        <span className={styles.mcShare}>
+                          {t('simulator.mcOutOfDomain', {
+                            share: formatPercentShare(outOfDomainShare),
+                          })}
+                        </span>
+                      )}
                     {row.kind !== 'whole' && (
                       <span className={styles.mcShare}>
                         {row.kind === 'share'

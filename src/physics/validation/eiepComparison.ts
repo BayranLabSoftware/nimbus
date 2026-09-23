@@ -39,7 +39,8 @@ export const EIEP_TARGET_DENSITY: Readonly<Record<EiepRow['target'], number>> = 
 /** A row of the grid as the model runs it; `options` names a law other than
  *  the default, for reading two on one commit. The strength is pinned to
  *  Eq. 9 (rule 885(a)): the reference program uses it, and level A verifies
- *  Collins et al.'s equations, whatever law the product runs on. */
+ *  Collins et al.'s equations, whatever law the product runs on; the crater,
+ *  to Eq. 21 at any speed as the program reads it (rule 948). */
 export function eiepRowInput(
   row: EiepRow,
   options: Pick<
@@ -54,6 +55,8 @@ export function eiepRowInput(
     targetDensity: kgPerM3(EIEP_TARGET_DENSITY[row.target]),
     impactAngle: degreesToRadians(deg(row.angleDeg)),
     strengthLaw: 'density',
+    // Rule 948: the program evaluates Eq. 21 at any speed.
+    craterDomain: 'legacy',
     ...options,
   };
 }

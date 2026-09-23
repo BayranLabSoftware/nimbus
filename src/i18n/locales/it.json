@@ -232,6 +232,9 @@
     "complex": "Cratere complesso",
     "transientCrater": "Cratere transiente",
     "craterDepth": "Profondità cratere",
+    "craterUnresolved": "non risolto: possibile buca di penetrazione locale (sotto i 5 km/s la legge del cratere non vale)",
+    "notResolved": "non risolto",
+    "mcOutOfDomain": "fuori dal dominio del cratere nel {{share}} % dei campioni",
     "damageLabel": "Anelli di danno",
     "thirdDegreeBurn": "Raggio ustioni 3°",
     "fivePsiRing": "Anello 5 psi (crollo)",
@@ -682,7 +685,8 @@
       "liquefaction": {
         "name": "Anello sismico di liquefazione",
         "desc": "La Mw impattogena innesca liquefazione Youd-Idriss sui suoli sabbiosi saturi attorno al cratere."
-      }
+      },
+      "craterUnresolved": "Arrivo al suolo sotto i 5 km/s: possibile buca di penetrazione (cratere non risolto)"
     },
     "explosion": {
       "flash": {
@@ -1309,7 +1313,8 @@
         "deathsBand": "ordine di grandezza · banda 5–95 %: da {{low}} a {{high}} · non validato per stime demografiche",
         "deathsTable": "ordine di grandezza · banda della tabella: da {{low}} a {{high}} · non validato per stime demografiche",
         "deathsPending": "in calcolo",
-        "craterFieldDetail": "di un campo di crateri, unito · profondo {{depth}} · {{morphology}}"
+        "craterFieldDetail": "di un campo di crateri, unito · profondo {{depth}} · {{morphology}}",
+        "craterUnresolved": "il corpo arriva al suolo sotto i 5 km/s: possibile buca di penetrazione locale, fuori dal dominio della legge del cratere"
       },
       "group": {
         "scenario": "Parametri dello scenario",
@@ -1377,7 +1382,8 @@
         "tsunamiAt5000Range": "Ampiezza a 5000 km (intervallo)",
         "tsunamiAt5000Dispersed": "Ampiezza a 5000 km (corretta per la dispersione)",
         "runupAt1000": "Risalita sulla costa a 1000 km (Synolakis 1:100)",
-        "travelTo1000": "Tempo di viaggio dello tsunami fino a 1000 km"
+        "travelTo1000": "Tempo di viaggio dello tsunami fino a 1000 km",
+        "craterUnresolved": "Cratere"
       },
       "value": {
         "nearestSea": "a {{distance}}, profondo {{depth}}",
@@ -1486,7 +1492,9 @@
       },
       "foot": "Bayran Nimbus · Report di simulazione · {{name}} · modello {{model}}",
       "page": "Pagina",
-      "pageOf": "di"
+      "pageOf": "di",
+      "notResolved": "non risolto",
+      "craterUnresolved": "sotto i 5 km/s la legge del cratere (Collins et al. 2005, Eq. 21) non vale: è possibile una buca di penetrazione locale (French 1998)"
     }
   },
   "about": {

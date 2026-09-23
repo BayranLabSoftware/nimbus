@@ -311,18 +311,23 @@ function groups(
     tagged(row(t, 'energyToGround', energyShare(r.entry.energyFractionToGround, l)), 'entry'),
   ]);
 
+  // Rule 947: out of the domain of its law the crater is not resolved.
+  const unresolved = r.crater.state === 'outOfDomain';
+  const craterLength = (x: number): string =>
+    unresolved ? t('report.impact.notResolved') : length(x, l);
   const craterRows = [
-    row(t, 'transientCrater', length(r.crater.transientDiameter, l)),
-    row(t, 'finalCrater', length(r.crater.finalDiameter, l)),
-    row(t, 'craterDepth', length(r.crater.depth, l)),
+    row(t, 'transientCrater', craterLength(r.crater.transientDiameter)),
+    row(t, 'finalCrater', craterLength(r.crater.finalDiameter)),
+    row(t, 'craterDepth', craterLength(r.crater.depth)),
   ];
+  if (unresolved) craterRows.push(row(t, 'craterUnresolved', t('report.impact.craterUnresolved')));
   // A morphology is a fact about a crater, and an airburst leaves none (B-045).
   if (crater) {
     craterRows.push(
       row(t, 'craterMorphology', t(`report.impact.enum.morphology.${r.crater.morphology}`))
     );
   }
-  craterRows.push(row(t, 'craterRim', length(r.damage.craterRim, l)));
+  craterRows.push(row(t, 'craterRim', craterLength(r.damage.craterRim)));
 
   const blastFigure = fig('overpressure');
   const windFigure = fig('wind');
@@ -362,10 +367,18 @@ function groups(
   const ejecta = group(
     'ejecta',
     [
-      row(t, 'ejectaEdge1mm', length(r.ejecta.blanketEdge1mm, l), ejectaFigure),
-      row(t, 'ejectaEdge1m', length(r.ejecta.blanketEdge1m, l), ejectaFigure),
-      row(t, 'ejectaAt2R', meters(r.ejecta.thicknessAt2R, 1, l)),
-      row(t, 'ejectaAt10R', meters(r.ejecta.thicknessAt10R, 2, l)),
+      row(t, 'ejectaEdge1mm', craterLength(r.ejecta.blanketEdge1mm), ejectaFigure),
+      row(t, 'ejectaEdge1m', craterLength(r.ejecta.blanketEdge1m), ejectaFigure),
+      row(
+        t,
+        'ejectaAt2R',
+        unresolved ? t('report.impact.notResolved') : meters(r.ejecta.thicknessAt2R, 1, l)
+      ),
+      row(
+        t,
+        'ejectaAt10R',
+        unresolved ? t('report.impact.notResolved') : meters(r.ejecta.thicknessAt10R, 2, l)
+      ),
     ],
     'ejecta'
   );
@@ -464,18 +477,24 @@ function keyFigures(r: ImpactScenarioResult, ctx: ImpactReportContext): KeyFigur
     ),
     k(
       'crater',
-      crater ? length(r.crater.finalDiameter, l) : NONE,
-      crater
-        ? t(
-            r.crater.origin === 'craterField'
-              ? 'report.impact.key.craterFieldDetail'
-              : 'report.impact.key.craterDetail',
-            {
-              depth: length(r.crater.depth as number, l),
-              morphology: t(`report.impact.enum.morphology.${r.crater.morphology}`),
-            }
-          )
-        : t('report.impact.key.craterNone')
+      r.crater.state === 'outOfDomain'
+        ? t('report.impact.notResolved')
+        : crater
+          ? length(r.crater.finalDiameter, l)
+          : NONE,
+      r.crater.state === 'outOfDomain'
+        ? t('report.impact.key.craterUnresolved')
+        : crater
+          ? t(
+              r.crater.origin === 'craterField'
+                ? 'report.impact.key.craterFieldDetail'
+                : 'report.impact.key.craterDetail',
+              {
+                depth: length(r.crater.depth as number, l),
+                morphology: t(`report.impact.enum.morphology.${r.crater.morphology}`),
+              }
+            )
+          : t('report.impact.key.craterNone')
     ),
     k(
       'magnitude',

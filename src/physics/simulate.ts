@@ -8,6 +8,7 @@ import {
 } from './constants.js';
 import {
   craterDepth,
+  DEFAULT_CRATER_DOMAIN,
   finalCraterDiameter,
   transientCraterDiameter,
 } from './events/impact/crater.js';
@@ -39,6 +40,11 @@ import {
   type StrengthLaw,
 } from './effects/atmosphericEntry.js';
 import type { EntryAtmosphere } from './validation/entryAtmosphereRules.js';
+import {
+  CRATER_DOMAIN_MIN_SPEED_MS,
+  type CraterDomain,
+  type CraterState,
+} from './validation/craterDomainRules.js';
 import {
   craterAsymmetry,
   ejectaButterflyAsymmetry,
@@ -202,6 +208,8 @@ export interface ImpactScenarioInput {
   firstStageStrength?: Pascals;
   /** Rules 908 to 918: the branch of the entry's atmosphere. */
   entryAtmosphere?: EntryAtmosphere;
+  /** Rules 945 to 952: Eq. 21 at any speed, or inside its domain only. */
+  craterDomain?: CraterDomain;
   /** Compass azimuth (° clockwise from geographic North) the impactor
    *  is travelling toward at the moment of contact. Drives the down-
    *  range orientation of the asymmetric ejecta blanket for oblique
@@ -434,6 +442,11 @@ export interface ImpactScenarioResult {
      *  complete airburst's kept energy that strikes the ground below its
      *  fireball (`lowBurst`, rules 756 to 763), or nothing (`none`). */
     origin: 'impact' | 'strewnField' | 'ironSwarm' | 'lowBurst' | 'craterField' | 'none';
+    /** Rule 947 (validation/craterDomainRules.ts): `computed`, `none`, or
+     *  `outOfDomain` — something reaches the ground below the speed at which
+     *  Eq. 21 holds, and the diameters, the depth and the ejecta are then not
+     *  numbers: the crater is not resolved, a local penetration pit possible. */
+    state: CraterState;
   };
   seismic: {
     /** Seismic magnitude of the energy delivered to the ground (Collins
@@ -833,6 +846,21 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
             : fieldShare < 1
               ? 'craterField'
               : 'impact';
+  // Rules 946 and 947: out of the domain where Eq. 21 is read, for a term that
+  // weighs in the crater, at the speed the entry leaves the body below 5 km/s.
+  // The iron's strewn field alone keeps its own law, read at the entry speed.
+  const groundSpeedTerm = !(ironDigs && strewnShare >= 1);
+  const craterState: CraterState =
+    (Dfr as number) <= 0
+      ? 'none'
+      : (input.craterDomain ?? DEFAULT_CRATER_DOMAIN) === 'hypervelocity' &&
+          groundSpeedTerm &&
+          (entry.endVelocity as number) < CRATER_DOMAIN_MIN_SPEED_MS
+        ? 'outOfDomain'
+        : 'computed';
+  const resolved = craterState !== 'outOfDomain';
+  /** What is published of the crater: nothing numeric out of the domain. */
+  const shown = (x: Meters): Meters => (resolved ? x : m(Number.NaN));
 
   // Damage rings = max(ground-coupled surface burst, atmospheric
   // airburst). The two physical components target the same observer
@@ -990,7 +1018,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       ? m(Math.max(surface, air))
       : groundImpactReach(threshold, groundBlast.altitude, groundBlast.energy, groundBlast.held);
   const damage: ImpactDamageRadii = {
-    craterRim: surfaceDamage.craterRim,
+    craterRim: shown(surfaceDamage.craterRim),
     thirdDegreeBurn: seen(
       thermalRing(
         combineImpactFlashes(surfaceDamage.thirdDegreeBurn, entry.flashBurnRadii.thirdDegree),
@@ -1148,11 +1176,12 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       kineticEnergyMegatons: joulesToMegatons(ke),
     },
     crater: {
-      transientDiameter: Dtc,
-      finalDiameter: Dfr,
-      depth,
+      transientDiameter: shown(Dtc),
+      finalDiameter: shown(Dfr),
+      depth: shown(depth),
       morphology,
       origin: craterOrigin,
+      state: craterState,
     },
     seismic: {
       magnitude: seismicM,
@@ -1170,7 +1199,18 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     },
     damage,
     damageAsymmetry,
-    ejecta,
+    // Rule 947: out of the domain no ejecta blanket is given; the sea's
+    // coupling below reads the model's own (rule 948).
+    ejecta: resolved
+      ? ejecta
+      : {
+          ...ejecta,
+          blanketEdge1mm: m(Number.NaN),
+          blanketEdge1m: m(Number.NaN),
+          thicknessAt2R: m(Number.NaN),
+          thicknessAt10R: m(Number.NaN),
+          downrangeOffset: m(Number.NaN),
+        },
     firestorm,
     entry:
       radiantHeat === null

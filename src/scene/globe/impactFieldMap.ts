@@ -774,7 +774,9 @@ function windLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLaye
     result.damage.overpressure5psi
   );
   if (!(outer > 0)) return null;
-  const crater = result.damage.craterRim;
+  // Rule 947: a crater out of its law's domain has no radius; the wind's
+  // levels are then read from the ground up, as for no crater.
+  const crater = Number.isFinite(result.damage.craterRim) ? result.damage.craterRim : 0;
   const loKmh = programPeakWind(OVERPRESSURE_LIGHT_DAMAGE) * 3.6;
   const levels = WIND_LEVELS_KMH.map((kmh) => ({ kmh, r: windReachM(result, kmh) })).filter(
     (x) => x.r > Math.max(crater, 0) && x.r > 0

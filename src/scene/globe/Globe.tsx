@@ -4416,9 +4416,12 @@ export function Globe(): JSX.Element {
       viewer.scene.requestRender();
       return;
     }
-    const craterLabel = i18next.t('globe.impactMap.craterLabel', {
-      diameter: formatRange((impact.data.damage.craterRim as number) * 2, uiLanguage),
-    });
+    // Rule 947: out of the crater law's domain there is no diameter to label.
+    const craterLabel = Number.isFinite(impact.data.damage.craterRim)
+      ? i18next.t('globe.impactMap.craterLabel', {
+          diameter: formatRange((impact.data.damage.craterRim as number) * 2, uiLanguage),
+        })
+      : '';
     const hover = drawImpactFieldLayer(
       viewer,
       impact.data,

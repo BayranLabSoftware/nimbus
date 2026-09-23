@@ -216,8 +216,10 @@ function build(params: {
 export function sceneFromImpact(result: ImpactScenarioResult, origin: SceneOrigin): ImpactScene {
   const ke = result.impactor.kineticEnergy;
   const blastEnergy = J(ke * IMPACT_BLAST_COUPLING);
-  const craterRadius = m(result.crater.finalDiameter / 2);
-  const ejectaRange = result.ejecta.blanketEdge1mm;
+  // Rule 947: a crater out of its law's domain is not drawn, nor its ejecta.
+  const finite = (x: number): number => (Number.isFinite(x) ? x : 0);
+  const craterRadius = m(finite(result.crater.finalDiameter) / 2);
+  const ejectaRange = m(finite(result.ejecta.blanketEdge1mm));
   const ejectaSpeed = ejectaSpeedForRange(ejectaRange);
   const arrival = buildShockArrival(
     blastEnergy,

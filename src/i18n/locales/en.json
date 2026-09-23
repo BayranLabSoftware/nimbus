@@ -232,6 +232,9 @@
     "complex": "Complex crater",
     "transientCrater": "Transient crater",
     "craterDepth": "Crater depth",
+    "craterUnresolved": "not resolved: a local penetration pit is possible (below 5 km/s the crater law does not hold)",
+    "notResolved": "not resolved",
+    "mcOutOfDomain": "outside the crater law's domain in {{share}} % of the runs",
     "damageLabel": "Damage rings",
     "thirdDegreeBurn": "3rd-degree burn radius",
     "fivePsiRing": "5 psi ring (collapse)",
@@ -682,7 +685,8 @@
       "liquefaction": {
         "name": "Seismic liquefaction ring",
         "desc": "Impact-driven Mw triggers Youd-Idriss liquefaction on saturated sandy soils surrounding the crater."
-      }
+      },
+      "craterUnresolved": "Reaches the ground below 5 km/s: a penetration pit is possible (crater not resolved)"
     },
     "explosion": {
       "flash": {
@@ -1309,7 +1313,8 @@
         "deathsBand": "order of magnitude · 5–95 % band: {{low}} to {{high}} · not validated for demographic estimates",
         "deathsTable": "order of magnitude · the table’s band: {{low}} to {{high}} · not validated for demographic estimates",
         "deathsPending": "being counted",
-        "craterFieldDetail": "a crater field’s, joined · {{depth}} deep · {{morphology}}"
+        "craterFieldDetail": "a crater field’s, joined · {{depth}} deep · {{morphology}}",
+        "craterUnresolved": "the body reaches the ground below 5 km/s: a local penetration pit is possible, outside the crater law's domain"
       },
       "group": {
         "scenario": "Scenario inputs",
@@ -1377,7 +1382,8 @@
         "tsunamiAt5000Range": "Tsunami A @ 5,000 km (range)",
         "tsunamiAt5000Dispersed": "Tsunami A @ 5,000 km (dispersion-corrected)",
         "runupAt1000": "Coastal run-up @ 1,000 km (Synolakis 1:100)",
-        "travelTo1000": "Tsunami travel to 1,000 km"
+        "travelTo1000": "Tsunami travel to 1,000 km",
+        "craterUnresolved": "Crater"
       },
       "value": {
         "nearestSea": "{{distance}} away, {{depth}} deep",
@@ -1486,7 +1492,9 @@
       },
       "foot": "Bayran Nimbus · Simulation report · {{name}} · model {{model}}",
       "page": "Page",
-      "pageOf": "of"
+      "pageOf": "of",
+      "notResolved": "not resolved",
+      "craterUnresolved": "below 5 km/s the crater law (Collins et al. 2005, Eq. 21) does not hold: a local penetration pit is possible (French 1998)"
     }
   },
   "about": {

@@ -1102,7 +1102,10 @@ function craterWaterReading(
     global,
     location.latitude,
     location.longitude,
-    (result.crater.transientDiameter as number) / 2,
+    // Rule 947: no transient crater out of its law's domain.
+    Number.isFinite(result.crater.transientDiameter)
+      ? (result.crater.transientDiameter as number) / 2
+      : 0,
     {
       lattice: CRATER_WATER_LATTICE,
       minDepthM: IMPACT_SHORELINE.minDepthM,

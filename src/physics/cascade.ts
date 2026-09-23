@@ -65,6 +65,9 @@ export function buildImpactCascade(result: ImpactScenarioResult): CascadeStage[]
   // (B-045 of docs/BUG_REGISTRY.md, found in Andrea's report of 17 September).
   if ((result.crater.finalDiameter as number) > 0) {
     stages.push(stage('cascade.impact.crater', s(0), 'primary'));
+  } else if (result.crater.state === 'outOfDomain') {
+    // Rule 947: the body reaches the ground, too slowly for the crater's law.
+    stages.push(stage('cascade.impact.craterUnresolved', s(0), 'primary'));
   }
   stages.push(stage('cascade.impact.seismic', s(0), 'secondary'));
 

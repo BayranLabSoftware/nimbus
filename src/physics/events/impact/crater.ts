@@ -1,6 +1,14 @@
 import { SIMPLE_COMPLEX_TRANSITION_EARTH, STANDARD_GRAVITY } from '../../constants.js';
 import type { KilogramPerCubicMeter, Meters, MetersPerSecond, Radians } from '../../units.js';
 import { m } from '../../units.js';
+import type { CraterDomain } from '../../validation/craterDomainRules.js';
+
+/**
+ * Rules 945 to 952 (validation/craterDomainRules.ts): whether Eq. 21 is read
+ * at any speed (`legacy`, as Collins et al.'s program reads it) or only inside
+ * the hypervelocity domain, the crater being "not resolved" below it.
+ */
+export const DEFAULT_CRATER_DOMAIN: CraterDomain = 'legacy';
 
 /**
  * Crater morphology pipeline (Collins, Melosh & Marcus 2005, "Earth Impact

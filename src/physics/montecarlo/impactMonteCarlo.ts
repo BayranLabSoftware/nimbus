@@ -65,6 +65,10 @@ export interface ImpactMonteCarloMetrics extends Record<string, number> {
   firestormIgnition: number;
   /** Seismic magnitude (Collins et al. 2005 Eq. 40*). */
   seismicMagnitude: number;
+  /** Rule 949: 1 where the crater is out of the domain of its law, 0
+   *  elsewhere — its mean is the share of such draws, whose crater and
+   *  ejecta are not numbers and so leave those rows. */
+  craterOutOfDomain: number;
 }
 
 /** A draw log-uniform between the bounds. */
@@ -141,6 +145,7 @@ export function runImpactMonteCarlo(
       // No magnitude where no relation covers the burst (rule 730): the
       // engine drops what is not a number.
       seismicMagnitude: r.seismic.magnitude ?? Number.NaN,
+      craterOutOfDomain: r.crater.state === 'outOfDomain' ? 1 : 0,
     }),
   });
 }
