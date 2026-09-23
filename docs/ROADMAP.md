@@ -1138,6 +1138,23 @@ alternative — not adopted"; the gap between Eq. 15 and Eq. 14 becomes a
 round of its own, "the dynamics of fragmentation", after level B's second
 round and on a third set of events.
 
+**Level B's second round — incompatible with 2022 WJ1; no class B**
+(rules 919 to 932, `validation/levelBSecondRules.ts`; sources
+`levelB2Sources.ts`, predictions `levelB2Predictions.json`, score
+`levelB2Score.ts`). The model frozen at 5b6b7a5. Of the candidates frozen
+before phase 4, only 2022 WJ1 could be counted: 2024 XA1's altitudes are
+computed for assumed strengths, 2024 UQ's is CNEOS's alone, 2026 RW1 has no
+paper yet, and every mass of Sterlitamak's body is fitted to its crater. On
+2022 WJ1 the model keeps the body whole in 92 % of its draws and digs a
+crater where it broke up in the air; the flares are met only on the draws
+that burst. Not a validation of a population nor an estimate of coverage.
+It names three items for the round on the dynamics of fragmentation: one
+second-stage strength for the whole body (all or nothing, where the body
+broke step by step), a hypervelocity crater for a body at terminal speed,
+and a first stage at 61–66 km for every body. The third set that round is
+judged on needs three new bodies with measured altitudes and one
+non-circular crater (rule 932).
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this

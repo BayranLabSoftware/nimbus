@@ -249,5 +249,54 @@ export const LEVEL_B2_EVENTS: Readonly<Record<string, LevelB2Set>> = {
 /** Rule 876(e): the counted bodies of the entry a B needs. */
 export const LEVEL_B2_MIN_ENTRY_BODIES = 2;
 
-/** The outcome, written after the round's step 4. */
-export const LEVEL_B2_OUTCOME: string | null = null;
+/**
+ * The outcome, written on 23 September 2026 after step 4, from the predictions
+ * committed in aaec9bf and the observed values of levelB2Targets.ts, scored by
+ * levelB2Score.ts (recomputed by its test).
+ *
+ * INCOMPATIBLE WITH 2022 WJ1; NO CLASS B — not a validation of a population
+ * nor an estimate of coverage (rule 927).
+ *
+ * 2022 WJ1, counted. E1 FAILS: 8.2 % of the draws dig no crater, against a bar
+ * of 90 %. In the other 91.8 % the model keeps the body whole — its dynamic
+ * pressure never reaches the second stage's strength, 2.12 MPa at the prior's
+ * midpoint — and brings it to the ground at about 0.1 km/s, where it still
+ * digs a crater of 2.3 to 3.4 m. The body broke up in the air; its largest
+ * fragment, of some 9 to 20 kg, fell without digging one. E3, read on the 82
+ * draws that dig no crater (rule 930): the model deposits its energy at 28.7
+ * to 30.8 km (median 29.8), against flares at 34.0 to 38.7 km widened by 5 km
+ * — it meets them, by 1.8 km, and a secondary target cannot carry a failed
+ * primary. E2, qualitative (rule 928): the model places the first stage at
+ * 63.4 to 63.5 km, a major first phase in two draws in three; "No
+ * identifiable initial fragmentation was observed at dynamic pressures up to
+ * 0.1 MPa; the comparison is not assessed quantitatively, because an absence
+ * does not determine a unique observed altitude."
+ *
+ * The standard atmosphere, a sensitivity (rule 924): on the same draws 43.4 %
+ * dig no crater — E1 fails as well; E3 meets.
+ *
+ * Sterlitamak, diagnostic (rules 922 and 931): its mass of 1.4 to 2.6 t is
+ * fitted to the crater, its 30° to 60° an analytical choice. On every ground —
+ * 1 800, 2 200 and 2 700 kg/m³ — every draw digs a single simple crater, so
+ * that outcome does not hang on the ground assumed; its median diameter is
+ * 20.5, 19.2 and 17.9 m against the 9.4 to 10 m observed, and its depth over
+ * diameter 0.21 against 0.32 to 0.50.
+ *
+ * The first round's bodies on the new model (rule 877), reported: 2024 BX1
+ * bursts in the air (E1) and now meets its flares (E3, 34.8–35.0 km against
+ * 33.9–35.2), where the first round missed them; its first stage at 64.9 km
+ * misses the 55 km where its fragmentation began (E2). 2023 CX1 bursts in the
+ * air, its first stage at 63.6 km and its energy at 33.4–33.7 km against a
+ * first fragmentation at 29.4 km and flares at 27–28 km: E2 and E3 miss.
+ * Carancas digs no crater in any draw, as before.
+ *
+ * What it names for phase 4: the second stage is one strength for the whole
+ * body, so a stone whose dynamic pressure peaks near it either stays whole or
+ * breaks at once — 2022 WJ1 fragmented step by step from about 0.4 MPa; a
+ * body that reaches the ground at terminal speed is given a hypervelocity
+ * crater; and the first stage sits at 61 to 66 km for every body, where
+ * 2024 BX1's began at 55 km and 2022 WJ1 showed none. The third set of rule
+ * 932 is what a later round is judged on.
+ */
+export const LEVEL_B2_OUTCOME: string | null =
+  'Incompatible with 2022 WJ1; no class B — 23 September 2026. Not a validation of a population nor an estimate of coverage. The model keeps the body whole in 92 % of its draws and digs a crater where it broke up in the air; the flares are met only on the draws that burst. Sterlitamak, diagnostic: a single simple crater on every ground, twice as wide as observed.';

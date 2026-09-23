@@ -30,7 +30,10 @@ describe('rules 875 to 880: the second round of level B, frozen first', () => {
     expect(LEVEL_B2_MIN_ENTRY_BODIES).toBe(2);
   });
 
-  it('has no outcome before its own step 4', () => {
-    expect(LEVEL_B2_OUTCOME).toBeNull();
+  it('words its outcome as rule 927 fixed it', () => {
+    expect(LEVEL_B2_OUTCOME).toMatch(/^Incompatible with 2022 WJ1; no class B/);
+    expect(LEVEL_B2_OUTCOME).toContain(
+      'Not a validation of a population nor an estimate of coverage'
+    );
   });
 });
