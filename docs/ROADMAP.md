@@ -1180,8 +1180,12 @@ S2, fragments slowed by their own size — on development cases with the
 reviewer's roles; four metrics (first stage, release altitude as a proxy,
 gain in probability of the observed outcome, energy to the ground where a
 fraction with its uncertainty is observed); adopted only if two improve, no
-right outcome is lost and no band widens by more than 50 %. Next: step 2,
-the development table, fixed once for the round.
+right outcome is lost and no band widens by more than 50 %. Step 2 done
+(rules 978 to 981, docs/FRAGMENTATION_DEV_TABLE.md): m1 counted on four
+cases, m2 on six, m3 on eight, m4 on none; today's model misses the first
+stage by 31.2 km on average, the release by 10.1 km, and gives the observed
+outcome 76 % — wrong on 2022 WJ1 and Carancas. Next: the reviewer's answer
+on the table, then P.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

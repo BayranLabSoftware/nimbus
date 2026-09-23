@@ -1,0 +1,524 @@
+{
+  "protocol": "rules 959 to 981, src/physics/validation/fragmentationRoundRules.ts",
+  "model": "the baseline of rule 960: the product as it stands after ae80c5d",
+  "engine": {
+    "node": "v22.20.0",
+    "platform": "darwin-arm64"
+  },
+  "cases": [
+    {
+      "case": "Chelyabinsk",
+      "role": "historical control",
+      "drawn": "one run at the preset's inputs",
+      "draws": 1,
+      "m1": {
+        "median": 68599.98724494695,
+        "p5": 68599.98724494695,
+        "p95": 68599.98724494695,
+        "width": 0,
+        "miss": null,
+        "counted": false
+      },
+      "m2": {
+        "median": 27122.929062827527,
+        "p5": 27122.929062827527,
+        "p95": 27122.929062827527,
+        "width": 0,
+        "miss": null,
+        "counted": false
+      },
+      "m3": {
+        "reachesGround": 0,
+        "observedOutcome": 1,
+        "counted": true
+      },
+      "m4": {
+        "median": 0,
+        "p5": 0,
+        "p95": 0,
+        "width": 0,
+        "counted": false
+      },
+      "diagnostic": {
+        "breakupEq11": {
+          "median": 41612.93642429973,
+          "p5": 41612.93642429973,
+          "p95": 41612.93642429973,
+          "width": 0
+        },
+        "uncoveredByTwoStage": 0,
+        "m1OnBreakupWhereUncovered": {
+          "median": 68599.98724494695,
+          "p5": 68599.98724494695,
+          "p95": 68599.98724494695,
+          "width": 0,
+          "miss": null
+        }
+      },
+      "regimes": {
+        "COMPLETE_AIRBURST": 1
+      },
+      "craterStates": {
+        "none": 1
+      }
+    },
+    {
+      "case": "Tunguska",
+      "role": "historical control",
+      "drawn": "one run at the preset's inputs",
+      "draws": 1,
+      "m1": {
+        "median": 64684.70371165651,
+        "p5": 64684.70371165651,
+        "p95": 64684.70371165651,
+        "width": 0,
+        "miss": null,
+        "counted": false
+      },
+      "m2": {
+        "median": 8158.038763053224,
+        "p5": 8158.038763053224,
+        "p95": 8158.038763053224,
+        "width": 0,
+        "miss": null,
+        "counted": false
+      },
+      "m3": {
+        "reachesGround": 0,
+        "observedOutcome": 1,
+        "counted": true
+      },
+      "m4": {
+        "median": 0,
+        "p5": 0,
+        "p95": 0,
+        "width": 0,
+        "counted": false
+      },
+      "diagnostic": {
+        "breakupEq11": {
+          "median": 37254.014068669705,
+          "p5": 37254.014068669705,
+          "p95": 37254.014068669705,
+          "width": 0
+        },
+        "uncoveredByTwoStage": 0,
+        "m1OnBreakupWhereUncovered": {
+          "median": 64684.70371165651,
+          "p5": 64684.70371165651,
+          "p95": 64684.70371165651,
+          "width": 0,
+          "miss": null
+        }
+      },
+      "regimes": {
+        "COMPLETE_AIRBURST": 1
+      },
+      "craterStates": {
+        "none": 1
+      }
+    },
+    {
+      "case": "2008 TC3",
+      "role": "regression",
+      "drawn": "level B's first round: level-b-2026-09-23/2008 TC3/scored, 1000 draws",
+      "draws": 1000,
+      "m1": {
+        "median": 0,
+        "p5": 0,
+        "p95": 0,
+        "width": 0,
+        "miss": 43500,
+        "counted": true
+      },
+      "m2": {
+        "median": 48624.203431041766,
+        "p5": 46902.81517567096,
+        "p95": 50353.14471044398,
+        "width": 3450.3295347730163,
+        "miss": 11124.203431041766,
+        "counted": true
+      },
+      "m3": {
+        "reachesGround": 0,
+        "observedOutcome": 1,
+        "counted": true
+      },
+      "m4": {
+        "median": 0,
+        "p5": 0,
+        "p95": 0,
+        "width": 0,
+        "counted": false
+      },
+      "diagnostic": {
+        "breakupEq11": {
+          "median": 56697.3177459621,
+          "p5": 54641.05282915289,
+          "p95": 58990.70244510609,
+          "width": 4349.6496159532035
+        },
+        "uncoveredByTwoStage": 1,
+        "m1OnBreakupWhereUncovered": {
+          "median": 56697.3177459621,
+          "p5": 54641.05282915289,
+          "p95": 58990.70244510609,
+          "width": 4349.6496159532035,
+          "miss": 11197.3177459621
+        }
+      },
+      "regimes": {
+        "COMPLETE_AIRBURST": 1
+      },
+      "craterStates": {
+        "none": 1
+      }
+    },
+    {
+      "case": "2018 LA",
+      "role": "regression",
+      "drawn": "level B's first round: level-b-2026-09-23/2018 LA/scored, 1000 draws",
+      "draws": 1000,
+      "m1": {
+        "median": 66652.83786624347,
+        "p5": 66638.88486111518,
+        "p95": 66660.97159961643,
+        "width": 22.08673850125342,
+        "miss": 37952.83786624347,
+        "counted": true
+      },
+      "m2": {
+        "median": 36787.051135036396,
+        "p5": 36600.9477151816,
+        "p95": 36829.85084792862,
+        "width": 228.90313274701475,
+        "miss": 8037.051135036396,
+        "counted": true
+      },
+      "m3": {
+        "reachesGround": 0,
+        "observedOutcome": 1,
+        "counted": true
+      },
+      "m4": {
+        "median": 0,
+        "p5": 0,
+        "p95": 0,
+        "width": 0,
+        "counted": false
+      },
+      "diagnostic": {
+        "breakupEq11": {
+          "median": 38124.795400661555,
+          "p5": 37500.19042844326,
+          "p95": 38430.43763363836,
+          "width": 930.2472051950972
+        },
+        "uncoveredByTwoStage": 0,
+        "m1OnBreakupWhereUncovered": {
+          "median": 66652.83786624347,
+          "p5": 66638.88486111518,
+          "p95": 66660.97159961643,
+          "width": 22.08673850125342,
+          "miss": 37952.83786624347
+        }
+      },
+      "regimes": {
+        "COMPLETE_AIRBURST": 1
+      },
+      "craterStates": {
+        "none": 1
+      }
+    },
+    {
+      "case": "2022 EB5",
+      "role": "regression",
+      "drawn": "one run at the body I2 reads from its CNEOS row (rule 77)",
+      "draws": 1,
+      "m1": {
+        "median": 66870.77562675913,
+        "p5": 66870.77562675913,
+        "p95": 66870.77562675913,
+        "width": 0,
+        "miss": null,
+        "counted": false
+      },
+      "m2": {
+        "median": 31050.81169092901,
+        "p5": 31050.81169092901,
+        "p95": 31050.81169092901,
+        "width": 0,
+        "miss": 2199.188309070989,
+        "counted": true
+      },
+      "m3": {
+        "reachesGround": 0,
+        "observedOutcome": null,
+        "counted": false
+      },
+      "m4": {
+        "median": 0,
+        "p5": 0,
+        "p95": 0,
+        "width": 0,
+        "counted": false
+      },
+      "diagnostic": {
+        "breakupEq11": {
+          "median": 39338.14742217723,
+          "p5": 39338.14742217723,
+          "p95": 39338.14742217723,
+          "width": 0
+        },
+        "uncoveredByTwoStage": 0,
+        "m1OnBreakupWhereUncovered": {
+          "median": 66870.77562675913,
+          "p5": 66870.77562675913,
+          "p95": 66870.77562675913,
+          "width": 0,
+          "miss": null
+        }
+      },
+      "regimes": {
+        "COMPLETE_AIRBURST": 1
+      },
+      "craterStates": {
+        "none": 1
+      }
+    },
+    {
+      "case": "2023 CX1",
+      "role": "crucial regression",
+      "drawn": "level B's second round: level-b2-2026-09-23/2023 CX1, 1000 draws",
+      "draws": 1000,
+      "m1": {
+        "median": 63597.33979149931,
+        "p5": 63543.0062024756,
+        "p95": 63651.51798748781,
+        "width": 108.51178501221148,
+        "miss": 34147.33979149931,
+        "counted": true
+      },
+      "m2": {
+        "median": 33572.586830548185,
+        "p5": 33432.25172471864,
+        "p95": 33657.4653607724,
+        "width": 225.21363605376246,
+        "miss": 5422.586830548185,
+        "counted": true
+      },
+      "m3": {
+        "reachesGround": 0,
+        "observedOutcome": 1,
+        "counted": true
+      },
+      "m4": {
+        "median": 0,
+        "p5": 0,
+        "p95": 0,
+        "width": 0,
+        "counted": false
+      },
+      "diagnostic": {
+        "breakupEq11": {
+          "median": 35206.483317841936,
+          "p5": 34913.92110369869,
+          "p95": 35431.43474177992,
+          "width": 517.5136380812328
+        },
+        "uncoveredByTwoStage": 0,
+        "m1OnBreakupWhereUncovered": {
+          "median": 63597.33979149931,
+          "p5": 63543.0062024756,
+          "p95": 63651.51798748781,
+          "width": 108.51178501221148,
+          "miss": 34147.33979149931
+        }
+      },
+      "regimes": {
+        "COMPLETE_AIRBURST": 1
+      },
+      "craterStates": {
+        "none": 1
+      }
+    },
+    {
+      "case": "2024 BX1",
+      "role": "crucial regression",
+      "drawn": "level B's second round: level-b2-2026-09-23/2024 BX1, 1000 draws",
+      "draws": 1000,
+      "m1": {
+        "median": 64858.462040930186,
+        "p5": 64843.49539327976,
+        "p95": 64873.04204544584,
+        "width": 29.54665216608555,
+        "miss": 9358.462040930186,
+        "counted": true
+      },
+      "m2": {
+        "median": 34936.17671232778,
+        "p5": 34821.13017879876,
+        "p95": 35000.4241765424,
+        "width": 179.29399774363992,
+        "miss": 0,
+        "counted": true
+      },
+      "m3": {
+        "reachesGround": 0,
+        "observedOutcome": 1,
+        "counted": true
+      },
+      "m4": {
+        "median": 0,
+        "p5": 0,
+        "p95": 0,
+        "width": 0,
+        "counted": false
+      },
+      "diagnostic": {
+        "breakupEq11": {
+          "median": 36190.05635586327,
+          "p5": 35941.39285303209,
+          "p95": 36395.04425505237,
+          "width": 453.65140202028124
+        },
+        "uncoveredByTwoStage": 0,
+        "m1OnBreakupWhereUncovered": {
+          "median": 64858.462040930186,
+          "p5": 64843.49539327976,
+          "p95": 64873.04204544584,
+          "width": 29.54665216608555,
+          "miss": 9358.462040930186
+        }
+      },
+      "regimes": {
+        "COMPLETE_AIRBURST": 1
+      },
+      "craterStates": {
+        "none": 1
+      }
+    },
+    {
+      "case": "2022 WJ1",
+      "role": "crucial regression",
+      "drawn": "level B's second round: level-b2-2026-09-23/2022 WJ1, 1000 draws",
+      "draws": 1000,
+      "m1": {
+        "median": 63464.27727695981,
+        "p5": 63427.774813772594,
+        "p95": 63491.49289418212,
+        "width": 63.71808040952601,
+        "miss": null,
+        "counted": false
+      },
+      "m2": {
+        "median": 0,
+        "p5": 0,
+        "p95": 29605.27228697692,
+        "width": 29605.27228697692,
+        "miss": 33995,
+        "counted": true
+      },
+      "m3": {
+        "reachesGround": 0.918,
+        "observedOutcome": 0.08199999999999996,
+        "counted": true
+      },
+      "m4": {
+        "median": 0.00004839735955857988,
+        "p5": 0,
+        "p95": 0.00005937237087158322,
+        "width": 0.00005937237087158322,
+        "counted": false
+      },
+      "diagnostic": {
+        "breakupEq11": {
+          "median": 0,
+          "p5": 0,
+          "p95": 30002.910086466738,
+          "width": 30002.910086466738
+        },
+        "uncoveredByTwoStage": 0,
+        "m1OnBreakupWhereUncovered": {
+          "median": 63464.27727695981,
+          "p5": 63427.774813772594,
+          "p95": 63491.49289418212,
+          "width": 63.71808040952601,
+          "miss": null
+        }
+      },
+      "regimes": {
+        "COMPLETE_AIRBURST": 0.082,
+        "INTACT": 0.918
+      },
+      "craterStates": {
+        "none": 0.082,
+        "outOfDomain": 0.918
+      }
+    },
+    {
+      "case": "Carancas",
+      "role": "survival control",
+      "drawn": "level B's second round: level-b2-2026-09-23/Carancas, 1000 draws",
+      "draws": 1000,
+      "m1": {
+        "median": 63869.446287006635,
+        "p5": 60984.664127683565,
+        "p95": 66304.07791033448,
+        "width": 5319.413782650918,
+        "miss": null,
+        "counted": false
+      },
+      "m2": {
+        "median": 32938.497462125786,
+        "p5": 30335.139033546064,
+        "p95": 35073.303523320435,
+        "width": 4738.164489774372,
+        "miss": null,
+        "counted": false
+      },
+      "m3": {
+        "reachesGround": 0,
+        "observedOutcome": 0,
+        "counted": true
+      },
+      "m4": {
+        "median": 0,
+        "p5": 0,
+        "p95": 0,
+        "width": 0,
+        "counted": false
+      },
+      "diagnostic": {
+        "breakupEq11": {
+          "median": 35981.85606846993,
+          "p5": 32866.583451474704,
+          "p95": 38570.5449244478,
+          "width": 5703.9614729730965
+        },
+        "uncoveredByTwoStage": 0,
+        "m1OnBreakupWhereUncovered": {
+          "median": 63869.446287006635,
+          "p5": 60984.664127683565,
+          "p95": 66304.07791033448,
+          "width": 5319.413782650918,
+          "miss": null
+        }
+      },
+      "regimes": {
+        "COMPLETE_AIRBURST": 1
+      },
+      "craterStates": {
+        "none": 1
+      }
+    }
+  ],
+  "summary": {
+    "m1MeanMissM": 31239.65992466824,
+    "m1MeanMissOnBreakupWhereUncoveredM": 23163.989361158765,
+    "m2MeanMissM": 10129.671617616223,
+    "m3MeanObservedOutcome": 0.76025,
+    "m4Counted": 0,
+    "rightOutcomes": ["Chelyabinsk", "Tunguska", "2008 TC3", "2018 LA", "2023 CX1", "2024 BX1"]
+  }
+}

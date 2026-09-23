@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import baseline from './fragmentationBaseline.json';
 import { DEV_CASES, DEV_TABLE } from './fragmentationDevTable.js';
+import { FRAGMENTATION_CLAUSE } from './fragmentationRoundRules.js';
 
 describe('rule 980: the development table of the round on fragmentation', () => {
   it('holds one row for every case and metric', () => {
@@ -48,5 +50,37 @@ describe('rule 980: the development table of the round on fragmentation', () => 
       'Carancas',
     ]);
     expect(counted('m4')).toEqual([]);
+  });
+});
+
+describe('rule 981: the baseline, as committed', () => {
+  const cases = baseline.cases;
+  const mean = (xs: number[]): number => xs.reduce((a, b) => a + b, 0) / xs.length;
+
+  it('reads every case of the table, in its order', () => {
+    expect(cases.map((c) => c.case)).toEqual(DEV_CASES.map((c) => c.case));
+  });
+
+  it('sums its counted cases as its summary says', () => {
+    expect(baseline.summary.m1MeanMissM).toBeCloseTo(
+      mean(cases.filter((c) => c.m1.counted).map((c) => c.m1.miss ?? 0)),
+      6
+    );
+    expect(baseline.summary.m2MeanMissM).toBeCloseTo(
+      mean(cases.filter((c) => c.m2.counted).map((c) => c.m2.miss ?? 0)),
+      6
+    );
+    expect(baseline.summary.m3MeanObservedOutcome).toBeCloseTo(
+      mean(cases.filter((c) => c.m3.counted).map((c) => c.m3.observedOutcome ?? 0)),
+      9
+    );
+    expect(baseline.summary.rightOutcomes).toEqual(
+      cases
+        .filter(
+          (c) =>
+            c.m3.counted && (c.m3.observedOutcome ?? 0) >= FRAGMENTATION_CLAUSE.rightOutcomeShare
+        )
+        .map((c) => c.case)
+    );
   });
 });
