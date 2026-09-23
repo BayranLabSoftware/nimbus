@@ -364,6 +364,36 @@ export function explainBandCause(pair: EiepRatio): string {
   return difference?.id ?? 'open';
 }
 
+/**
+ * What a reading's band asks of it — the cause of a 2–10 % reading, the
+ * difference that covers one past 10 % or answered by one side only — is
+ * computed once and kept, since both can run the model again. `runLevelA`
+ * computes them a few at a time and hands its event loop back between them;
+ * `finish` and `summariseLevelA` then only read.
+ */
+const causes = new WeakMap<EiepRatio, string>();
+const coverings = new WeakMap<EiepRatio, string | null>();
+
+function causeOf(pair: EiepRatio): string {
+  let cause = causes.get(pair);
+  if (cause === undefined) {
+    cause = explainBandCause(pair);
+    causes.set(pair, cause);
+  }
+  return cause;
+}
+
+function coveringOf(reading: EiepRatio): string | null {
+  let id = coverings.get(reading);
+  if (id === undefined) {
+    id =
+      LEVEL_A_DIFFERENCES.find((d) => d.quantities.includes(reading.quantity) && d.applies(reading))
+        ?.id ?? null;
+    coverings.set(reading, id);
+  }
+  return id;
+}
+
 export function summariseLevelA(pairs: readonly EiepRatio[]): LevelASummary[] {
   const quantities = [...new Set(pairs.map((p) => p.quantity))];
   return quantities.map((quantity) => {
@@ -382,12 +412,11 @@ export function summariseLevelA(pairs: readonly EiepRatio[]): LevelASummary[] {
       if (b === 'excellent') excellent++;
       else if (b === 'explain') {
         explain++;
-        const cause = explainBandCause(p);
+        const cause = causeOf(p);
         explainBy[cause] = (explainBy[cause] ?? 0) + 1;
       } else {
         audit++;
-        if (!LEVEL_A_DIFFERENCES.some((d) => d.quantities.includes(quantity) && d.applies(p)))
-          unexplained++;
+        if (coveringOf(p) === null) unexplained++;
       }
       if (b !== 'excellent') {
         if (p.model > p.reference) above++;
@@ -419,13 +448,10 @@ function finish(
   modelFailed: { row: EiepRow; error: string }[],
   programFailed: number
 ): LevelARun {
-  const covering = (reading: EiepRatio): string | null =>
-    LEVEL_A_DIFFERENCES.find((d) => d.quantities.includes(reading.quantity) && d.applies(reading))
-      ?.id ?? null;
   const audits = pairs
     .map((pair) => ({ pair, epsilon: epsilonOf(pair) }))
     .filter((a) => bandOf(a.epsilon) === 'audit')
-    .map((a) => ({ ...a, difference: covering(a.pair) }));
+    .map((a) => ({ ...a, difference: coveringOf(a.pair) }));
   return {
     cases: rows.length,
     programFailed,
@@ -435,7 +461,7 @@ function finish(
     audits,
     // A one-sided reading has a model or a reference of zero, which every
     // difference's test reads as such.
-    oneSided: oneSided.map((reading) => ({ reading, difference: covering(reading) })),
+    oneSided: oneSided.map((reading) => ({ reading, difference: coveringOf(reading) })),
   };
 }
 
@@ -472,7 +498,9 @@ export function runLevelASync(rows: readonly EiepRow[]): LevelARun {
 /**
  * The same comparison, awaiting `step` every 25 cases so that a caller in a
  * test worker can hand its event loop back (a synchronous minute makes
- * vitest's worker miss its runner — the CI of da51c86).
+ * vitest's worker miss its runner — the CI of da51c86) — and every ten
+ * readings while it asks what their bands ask, which ran the model again for
+ * a further 23 s on the Mac and past the minute on the CI of f243c16.
  */
 export async function runLevelA(
   rows: readonly EiepRow[],
@@ -486,6 +514,18 @@ export async function runLevelA(
     if (i % 25 === 0) await step();
     if (row.error !== null) programFailed++;
     else readCase(row, pairs, oneSided, modelFailed);
+  }
+  let asked = 0;
+  for (const pair of pairs) {
+    const band = bandOf(epsilonOf(pair));
+    if (band === 'explain') causeOf(pair);
+    else if (band === 'audit') coveringOf(pair);
+    else continue;
+    if (++asked % 10 === 0) await step();
+  }
+  for (const reading of oneSided) {
+    coveringOf(reading);
+    if (++asked % 10 === 0) await step();
   }
   return finish(rows, pairs, oneSided, modelFailed, programFailed);
 }
