@@ -7340,6 +7340,186 @@
         "strewn field → simple": 1
       }
     },
+    "levelB": {
+      "frozenModel": "2c2c2f5",
+      "families": [
+        {
+          "family": "entry",
+          "earns": "none",
+          "primaryPass": false,
+          "secondaryShare": 0,
+          "bias": 0.3009
+        },
+        {
+          "family": "crater",
+          "earns": "none",
+          "primaryPass": false,
+          "secondaryShare": 0,
+          "bias": null
+        },
+        {
+          "family": "consistency",
+          "earns": "D",
+          "primaryPass": true,
+          "secondaryShare": 1,
+          "bias": -0.3078
+        }
+      ],
+      "targets": [
+        {
+          "event": "2024 BX1",
+          "target": "E1",
+          "counted": true,
+          "priority": "primary",
+          "pass": true,
+          "logRatio": null
+        },
+        {
+          "event": "2024 BX1",
+          "target": "E2",
+          "counted": true,
+          "priority": "primary",
+          "pass": false,
+          "logRatio": -0.0739
+        },
+        {
+          "event": "2024 BX1",
+          "target": "E3",
+          "counted": true,
+          "priority": "secondary",
+          "pass": false,
+          "logRatio": 0.329
+        },
+        {
+          "event": "2023 CX1",
+          "target": "E1",
+          "counted": true,
+          "priority": "primary",
+          "pass": true,
+          "logRatio": null
+        },
+        {
+          "event": "2023 CX1",
+          "target": "E2",
+          "counted": true,
+          "priority": "primary",
+          "pass": false,
+          "logRatio": 0.4792
+        },
+        {
+          "event": "2023 CX1",
+          "target": "E3",
+          "counted": true,
+          "priority": "secondary",
+          "pass": false,
+          "logRatio": 0.4693
+        },
+        {
+          "event": "2008 TC3",
+          "target": "E1",
+          "counted": false,
+          "priority": null,
+          "pass": true,
+          "logRatio": null
+        },
+        {
+          "event": "2008 TC3",
+          "target": "E2",
+          "counted": false,
+          "priority": null,
+          "pass": false,
+          "logRatio": 0.2422
+        },
+        {
+          "event": "2008 TC3",
+          "target": "E3",
+          "counted": false,
+          "priority": null,
+          "pass": false,
+          "logRatio": 0.2732
+        },
+        {
+          "event": "2018 LA",
+          "target": "E1",
+          "counted": false,
+          "priority": null,
+          "pass": true,
+          "logRatio": null
+        },
+        {
+          "event": "2018 LA",
+          "target": "E2",
+          "counted": false,
+          "priority": null,
+          "pass": false,
+          "logRatio": 0.6914
+        },
+        {
+          "event": "2018 LA",
+          "target": "E3",
+          "counted": false,
+          "priority": null,
+          "pass": false,
+          "logRatio": 0.5934
+        },
+        {
+          "event": "Carancas",
+          "target": "K1",
+          "counted": true,
+          "priority": "primary",
+          "pass": false,
+          "logRatio": null
+        },
+        {
+          "event": "Carancas",
+          "target": "K2",
+          "counted": false,
+          "priority": null,
+          "pass": false,
+          "logRatio": null
+        },
+        {
+          "event": "Carancas",
+          "target": "K3",
+          "counted": true,
+          "priority": "primary",
+          "pass": false,
+          "logRatio": null
+        },
+        {
+          "event": "Carancas",
+          "target": "K4",
+          "counted": true,
+          "priority": "secondary",
+          "pass": false,
+          "logRatio": null
+        },
+        {
+          "event": "Meteor Crater",
+          "target": "D1",
+          "counted": true,
+          "priority": "primary",
+          "pass": true,
+          "logRatio": -0.4827
+        },
+        {
+          "event": "Meteor Crater",
+          "target": "D2",
+          "counted": true,
+          "priority": "primary",
+          "pass": true,
+          "logRatio": -0.1329
+        },
+        {
+          "event": "Meteor Crater",
+          "target": "D3",
+          "counted": true,
+          "priority": "secondary",
+          "pass": true,
+          "logRatio": null
+        }
+      ]
+    },
     "levelA": {
       "readOn": "2026-09-23",
       "cases": 1865,

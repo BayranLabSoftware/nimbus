@@ -12,6 +12,8 @@ import {
   type EvidenceQuantity,
 } from './evidenceClasses.js';
 import { bandOf, epsilonOf, runLevelA, type LevelARun } from './levelA.js';
+import { LEVEL_B_EVENTS } from './levelBProtocolRules.js';
+import { scoreLevelB } from './levelBScore.js';
 
 /**
  * The evidence table (phase 1 of the plan of 22 September 2026) states
@@ -115,6 +117,32 @@ describe('the evidence behind each number an impact prints', () => {
     expect(observed?.meetsBar).toBe(fireball.meetsBar);
   });
 
+  it('states level B as its score reads it (phase 3)', () => {
+    // The families level B put to the test, and on which events: the score
+    // recomputed from the committed predictions and observed values.
+    const score = scoreLevelB();
+    const counted = (set: string): string[] =>
+      Object.entries(LEVEL_B_EVENTS)
+        .filter(([, s]) => s === set)
+        .map(([name]) => name);
+    const earns = Object.fromEntries(score.families.map((f) => [f.family, f.earns]));
+    expect(EVIDENCE.entry.levelB).toEqual({
+      outcome: earns.entry === 'none' ? 'not earned' : earns.entry,
+      events: counted('entry'),
+      consistent: [],
+    });
+    expect(EVIDENCE.crater.levelB).toEqual({
+      outcome: earns.crater === 'none' ? 'not earned' : earns.crater,
+      events: counted('crater'),
+      consistent: earns.consistency === 'D' ? counted('consistency') : [],
+    });
+    // No other family was put to it, and none claims B.
+    for (const q of EVIDENCE_QUANTITIES) {
+      if (q !== 'entry' && q !== 'crater') expect(EVIDENCE[q].levelB, q).toBeNull();
+      expect(EVIDENCE[q].klass, q).not.toBe('B');
+    }
+  });
+
   it('never lets a family that misses its observations above class A', () => {
     // B is "validated within stated domain": a family whose observations miss
     // their bar cannot hold it.
@@ -132,6 +160,7 @@ describe('the evidence behind each number an impact prints', () => {
       ['it', it_],
     ] as const) {
       const e = (locale as { evidence: Record<string, unknown> }).evidence as {
+        levelB: Record<string, string>;
         class: Record<string, { label: string; short: string; meaning: string }>;
         quantity: Record<
           string,
@@ -152,6 +181,7 @@ describe('the evidence behind each number an impact prints', () => {
         // A family with no reference check must say in words why its error is
         // not established; a checked one may leave it to the figures.
         if (EVIDENCE[q].klass !== 'A') expect(words?.error, `${name} ${q}`).toBeTruthy();
+        if (EVIDENCE[q].levelB !== null) expect(e.levelB[q], `${name} ${q}`).toBeTruthy();
       }
     }
   });

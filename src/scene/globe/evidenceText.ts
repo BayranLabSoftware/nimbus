@@ -65,6 +65,7 @@ export function evidenceText(
   if (record.klass === 'A' && reference !== null)
     errors.push(t(reference.pastTen > 0 ? 'evidence.checked' : 'evidence.checkedClean', values));
   if (observed !== null) errors.push(t('evidence.observedBolides', values));
+  if (record.levelB !== null) errors.push(t(`evidence.levelB.${quantity}`));
   const own = t(`${base}.error`, values);
   if (own.length > 0) errors.push(own);
   return {

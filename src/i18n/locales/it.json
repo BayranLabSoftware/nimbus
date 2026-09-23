@@ -2615,6 +2615,10 @@
         "missing": "Nulla può validarlo finché un impatto non lascia un bilancio; si può portare la dispersione di ogni tasso che usa."
       }
     },
-    "checkedClean": "Confrontato caso per caso con l’{{program}} su {{impacts}} impatti ({{readings}} letture): il {{excellent}} % entro il 2 %, le altre entro le cifre che il programma stampa, nessuna oltre il 10 % (livello A)."
+    "checkedClean": "Confrontato caso per caso con l’{{program}} su {{impacts}} impatti ({{readings}} letture): il {{excellent}} % entro il 2 %, le altre entro le cifre che il programma stampa, nessuna oltre il 10 % (livello A).",
+    "levelB": {
+      "entry": "Livello B non ottenuto (23 settembre 2026): sui due corpi visti al telescopio prima di entrare in atmosfera, 2023 CX1 e 2024 BX1, l’esito «airburst senza cratere» è corretto, ma le quote di frammentazione e di rilascio dell’energia risultano sistematicamente troppo alte. Il modello lega la resistenza alla sola densità e non rappresenta la dispersione osservata della resistenza dei meteoroidi.",
+      "crater": "Livello B non ottenuto (23 settembre 2026): a Carancas, dove una condrite di pochi metri arrivò al suolo e scavò un cratere di 14 m, il modello la rompe in aria in ogni simulazione. A Meteor Crater diametro e profondità osservati stanno dentro le bande del modello sugli intervalli della letteratura: coerente, classe D, non di più."
+    }
   }
 }

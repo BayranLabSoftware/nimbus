@@ -159,6 +159,11 @@ import {
   type LevelARun,
 } from '../src/physics/validation/levelA.js';
 import {
+  LEVEL_B_EVENTS,
+  LEVEL_B_FROZEN_MODEL,
+} from '../src/physics/validation/levelBProtocolRules.js';
+import { scoreLevelB, type LevelBScore } from '../src/physics/validation/levelBScore.js';
+import {
   residualAgainstReference,
   verifyRings,
   type VerificationRow,
@@ -3559,6 +3564,36 @@ const EIEP_LABEL: Readonly<Record<EiepQuantity, string>> = {
   wind: 'Peak wind behind the shock front at the distance',
 };
 
+/** Level B (phase 3 of the plan): the model against observed events, preregistered. */
+function levelBSection(score: LevelBScore): string {
+  const sets = (set: string): string =>
+    Object.entries(LEVEL_B_EVENTS)
+      .filter(([, s]) => s === set)
+      .map(([name]) => name)
+      .join(', ');
+  const rows = score.targets.map(
+    (t) =>
+      `| ${t.event} | ${t.target} | ${t.counted ? (t.priority ?? '') : 'reported'} | ${t.pass ? 'pass' : 'fail'} | ${t.detail} |`
+  );
+  const families = score.families.map(
+    (f) =>
+      `- ${f.family}: ${f.earns === 'none' ? 'not earned' : f.earns} — primary ${f.primaryPass ? 'pass' : 'fail'}, secondary ${f.secondaryShare === null ? 'none' : `${fixed(f.secondaryShare * 100, 0).toString()} %`}, bias ${f.bias === null ? 'none' : `ln ratio ${fixed(f.bias, 3).toString()}`}${f.family === 'consistency' ? ' (class D takes no bias bar)' : ''}`
+  );
+  return [
+    `Level B of the certification plan, validated within stated domain: the model frozen at ${LEVEL_B_FROZEN_MODEL} held to observed events, preregistered (\`validation/levelBProtocolRules.ts\`, rules 855 to 874): the sets, the targets, the bars and the frozen model written first; the sources pinned before the model ran (\`validation/levelBSources.ts\`); the reviewer's corrections adopted before the predictions; the predictions committed before any observed value (\`validation/levelBPredictions.json\`); the observed values entered where they were pinned (\`validation/levelBTargets.ts\`) and scored by \`validation/levelBScore.ts\`, whose test recomputes this table. Preregistered, not blind: no third party holds the targets.`,
+    '',
+    `Development, never counted: ${sets('development')}. Seen, reported only: ${sets('seen')}. Entry: ${sets('entry')}. Crater: ${sets('crater')}. Consistency, class D: ${sets('consistency')}.`,
+    '',
+    '| Event | Target | Counted | Result | Reading |',
+    '| --- | --- | --- | --- | --- |',
+    ...rows,
+    '',
+    ...families,
+    '',
+    'Coverage of the 5–95 % bands is not estimated: two counted events cannot show it.',
+  ].join('\n');
+}
+
 /** Level A (phase 2 of the plan of 22 September 2026): every case, both grids. */
 function levelASection(run: LevelARun): string {
   const pct = (x: number): string => fixed(x, 2).toString();
@@ -4059,6 +4094,7 @@ function main(): void {
   const byRule = ruleCells(ruleSets);
   const eiep = runEiep();
   const levelA = runLevelASync([...EIEP_REFERENCE, ...EIEP_GRID]);
+  const levelB = scoreLevelB();
   const ringChecks = verifyRings();
   const contourLaws = runContourLaws();
   const ground = runGround(ruleSets, contourLaws.tolls.boore2014);
@@ -4271,6 +4307,10 @@ ${eiepSection(eiep)}
 ### Level A: implementation verified, case by case
 
 ${levelASection(levelA)}
+
+### Level B: the model against observed events, preregistered
+
+${levelBSection(levelB)}
 
 ### The intensity rings against their authors' code
 
@@ -4797,6 +4837,24 @@ otherwise.
         })),
         regimes: eiep.regimes,
         craters: eiep.craters,
+      },
+      levelB: {
+        frozenModel: LEVEL_B_FROZEN_MODEL,
+        families: levelB.families.map((f) => ({
+          family: f.family,
+          earns: f.earns,
+          primaryPass: f.primaryPass,
+          secondaryShare: f.secondaryShare === null ? null : fixed(f.secondaryShare, 3),
+          bias: f.bias === null ? null : fixed(f.bias, 4),
+        })),
+        targets: levelB.targets.map((t) => ({
+          event: t.event,
+          target: t.target,
+          counted: t.counted,
+          priority: t.priority,
+          pass: t.pass,
+          logRatio: t.logRatio === null ? null : fixed(t.logRatio, 4),
+        })),
       },
       levelA: {
         readOn: EIEP_GRID_READ_ON,

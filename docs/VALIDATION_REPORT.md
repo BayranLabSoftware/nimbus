@@ -1925,6 +1925,40 @@ The 2–10 % band, by the cause shown at work on each reading (`explainBandCause
 - Fireball radius: entry 4
 - Ejecta blanket edge (1 cm to 100 m): entry 48, low-burst-crater 4
 
+### Level B: the model against observed events, preregistered
+
+Level B of the certification plan, validated within stated domain: the model frozen at 2c2c2f5 held to observed events, preregistered (`validation/levelBProtocolRules.ts`, rules 855 to 874): the sets, the targets, the bars and the frozen model written first; the sources pinned before the model ran (`validation/levelBSources.ts`); the reviewer's corrections adopted before the predictions; the predictions committed before any observed value (`validation/levelBPredictions.json`); the observed values entered where they were pinned (`validation/levelBTargets.ts`) and scored by `validation/levelBScore.ts`, whose test recomputes this table. Preregistered, not blind: no third party holds the targets.
+
+Development, never counted: Chelyabinsk 2013, Tunguska 1908, Sikhote-Alin 1947. Seen, reported only: 2008 TC3, 2018 LA, 2022 EB5. Entry: 2023 CX1, 2024 BX1. Crater: Carancas. Consistency, class D: Meteor Crater.
+
+| Event | Target | Counted | Result | Reading |
+| --- | --- | --- | --- | --- |
+| 2024 BX1 | E1 | primary | pass | 100.0 % of the draws answer "none" (bar 90 %) |
+| 2024 BX1 | E2 | primary | fail | median 51082, band 48197–53955 against 54500–55500: band misses, median inside ±16500 |
+| 2024 BX1 | E3 | secondary | fail | median 48012, band 45482–50582 against 33850–35250: band misses the flare ±5000 |
+| 2023 CX1 | E1 | primary | pass | 100.0 % of the draws answer "none" (bar 90 %) |
+| 2023 CX1 | E2 | primary | fail | median 47475, band 47188–47750 against 29350–29450: band misses, median outside ±8820 |
+| 2023 CX1 | E3 | secondary | fail | median 44128, band 43514–44783 against 27050–28150: band misses the flare ±5000 |
+| 2008 TC3 | E1 | reported | pass | 100.0 % of the draws answer "none" (bar 90 %) |
+| 2008 TC3 | E2 | reported | fail | median 56697, band 54641–58991 against 43500–45500: band misses, median inside ±13350 |
+| 2008 TC3 | E3 | reported | fail | median 48624, band 46903–50353 against 36500–37500: band misses the flare ±5000 |
+| 2018 LA | E1 | reported | pass | 100.0 % of the draws answer "none" (bar 90 %) |
+| 2018 LA | E2 | reported | fail | median 55505, band 55327–55690 against 26900–28700: band misses, median outside ±8340 |
+| 2018 LA | E3 | reported | fail | median 51949, band 51012–52881 against 28650–28750: band misses the flare ±5000 |
+| Carancas | K1 | primary | fail | 0.0 % of the draws answer "impact" (bar 90 %) |
+| Carancas | K2 | reported | fail | the model gives no value here |
+| Carancas | K3 | primary | fail | the model gives no value here |
+| Carancas | K4 | secondary | fail | 0.0 % of the draws dig a simple crater (bar 80 %) |
+| Meteor Crater | D1 | primary | pass | median 741, band 235–1492 against 1150–1250: observed inside the band; median outside ±30 % (reported) |
+| Meteor Crater | D2 | primary | pass | median 158, band 49.9–318 against 175–185: observed inside the band; median inside ±30 % (reported) |
+| Meteor Crater | D3 | secondary | pass | 100.0 % of the draws dig a simple crater (bar 80 %) |
+
+- entry: not earned — primary fail, secondary 0 %, bias ln ratio 0.301
+- crater: not earned — primary fail, secondary 0 %, bias none
+- consistency: D — primary pass, secondary 100 %, bias ln ratio -0.308 (class D takes no bias bar)
+
+Coverage of the 5–95 % bands is not estimated: two counted events cannot show it.
+
 ### The intensity rings against their authors' code
 
 The relations that draw the intensity rings, and the one each earthquake is

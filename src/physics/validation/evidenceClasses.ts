@@ -95,6 +95,20 @@ export interface ObservedCheck {
   readonly meetsBar: boolean;
 }
 
+/**
+ * Level B (phase 3 of the plan): the model held to observed events,
+ * preregistered — rules 855 to 874 (levelBProtocolRules.ts), scored by
+ * levelBScore.ts. Its outcome, as the reviewer worded it on 23 September 2026,
+ * is in the locales (`evidence.levelB.*`).
+ */
+export interface LevelBCheck {
+  readonly outcome: 'not earned';
+  /** The events the family was counted on. */
+  readonly events: readonly string[];
+  /** Events it is consistent with, class D, where there are some. */
+  readonly consistent: readonly string[];
+}
+
 export interface EvidenceRecord {
   readonly quantity: EvidenceQuantity;
   readonly klass: EvidenceClass;
@@ -102,6 +116,8 @@ export interface EvidenceRecord {
   readonly reference: ReferenceCheck | null;
   /** The observations it is held to, where there are some. */
   readonly observed: ObservedCheck | null;
+  /** Level B, where the family was put to it. */
+  readonly levelB: LevelBCheck | null;
 }
 
 /**
@@ -124,6 +140,7 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
     klass: 'A',
     reference: { impacts: 1794, readings: 1794, excellentPercent: 81.2, pastTen: 0 },
     observed: null,
+    levelB: null,
   },
   entry: {
     quantity: 'entry',
@@ -138,6 +155,7 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
       bar: 5,
       meetsBar: false,
     },
+    levelB: { outcome: 'not earned', events: ['2023 CX1', '2024 BX1'], consistent: [] },
   },
   crater: {
     quantity: 'crater',
@@ -145,6 +163,7 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
     // Transient and final diameter, final depth.
     reference: { impacts: 960, readings: 2880, excellentPercent: 82.4, pastTen: 36 },
     observed: null,
+    levelB: { outcome: 'not earned', events: ['Carancas'], consistent: ['Meteor Crater'] },
   },
   blast: {
     quantity: 'blast',
@@ -153,6 +172,7 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
     // wind behind it.
     reference: { impacts: 1678, readings: 4076, excellentPercent: 93.4, pastTen: 76 },
     observed: null,
+    levelB: null,
   },
   thermal: {
     quantity: 'thermal',
@@ -161,17 +181,43 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
     // checked against anything observed.
     reference: { impacts: 958, readings: 958, excellentPercent: 99.4, pastTen: 1 },
     observed: null,
+    levelB: null,
   },
   ejecta: {
     quantity: 'ejecta',
     klass: 'A',
     reference: { impacts: 1103, readings: 5078, excellentPercent: 92.4, pastTen: 331 },
     observed: null,
+    levelB: null,
   },
-  seismic: { quantity: 'seismic', klass: 'exploratory', reference: null, observed: null },
-  atmosphere: { quantity: 'atmosphere', klass: 'exploratory', reference: null, observed: null },
-  tsunami: { quantity: 'tsunami', klass: 'exploratory', reference: null, observed: null },
-  casualties: { quantity: 'casualties', klass: 'exploratory', reference: null, observed: null },
+  seismic: {
+    quantity: 'seismic',
+    klass: 'exploratory',
+    reference: null,
+    observed: null,
+    levelB: null,
+  },
+  atmosphere: {
+    quantity: 'atmosphere',
+    klass: 'exploratory',
+    reference: null,
+    observed: null,
+    levelB: null,
+  },
+  tsunami: {
+    quantity: 'tsunami',
+    klass: 'exploratory',
+    reference: null,
+    observed: null,
+    levelB: null,
+  },
+  casualties: {
+    quantity: 'casualties',
+    klass: 'exploratory',
+    reference: null,
+    observed: null,
+    levelB: null,
+  },
 };
 
 export function evidenceOf(quantity: EvidenceQuantity): EvidenceRecord {

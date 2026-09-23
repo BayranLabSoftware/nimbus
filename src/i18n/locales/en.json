@@ -2362,6 +2362,10 @@
         "missing": "Nothing can validate it until an impact leaves a toll; what can be done is to carry the spread of every rate it uses."
       }
     },
-    "checkedClean": "Checked case by case against the {{program}} on {{impacts}} impacts ({{readings}} readings): {{excellent}} % within 2 %, the rest within the figures the program prints, none past 10 % (level A)."
+    "checkedClean": "Checked case by case against the {{program}} on {{impacts}} impacts ({{readings}} readings): {{excellent}} % within 2 %, the rest within the figures the program prints, none past 10 % (level A).",
+    "levelB": {
+      "entry": "Level B not earned (23 September 2026): on the two bodies seen by telescopes before they entered, 2023 CX1 and 2024 BX1, the outcome — an airburst with no crater — is right, but the altitudes of fragmentation and energy release come out systematically too high. The model ties strength to density alone and does not represent the observed spread of meteoroid strength.",
+      "crater": "Level B not earned (23 September 2026): at Carancas, where a chondrite a few metres across reached the ground and dug a 14 m crater, the model breaks it up in the air in every run. At Meteor Crater the observed diameter and depth lie inside the model’s bands over the literature’s ranges: consistent, class D, no more."
+    }
   }
 }
