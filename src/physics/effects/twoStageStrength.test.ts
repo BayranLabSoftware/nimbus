@@ -86,3 +86,30 @@ describe('a body’s strength in two stages (rules 881 to 889)', () => {
     expect(two.entry.breakupAltitude as number).toBeLessThan(today.entry.breakupAltitude);
   });
 });
+
+describe('rule 896(i): the Monte Carlo draws the two strengths under the law', () => {
+  it('draws S1 and S2 in their intervals for a covered body, and nothing under today’s law', async () => {
+    const { impactSampler } = await import('../montecarlo/impactMonteCarlo.js');
+    const { mulberry32 } = await import('../montecarlo/sampling.js');
+    const nominal: ImpactScenarioInput = {
+      impactorDiameter: m(1),
+      impactVelocity: mps(15_000),
+      impactorDensity: kgPerM3(3_300),
+      targetDensity: kgPerM3(2_700),
+      impactAngle: degreesToRadians(deg(60)),
+    };
+    const two = impactSampler({ ...nominal, strengthLaw: 'twoStage' });
+    const rng = mulberry32('rule-896');
+    for (let i = 0; i < 200; i++) {
+      const s = two(rng);
+      if (s.impactorStrength === undefined) continue;
+      expect(s.impactorStrength as number).toBeGreaterThanOrEqual(900_000);
+      expect(s.impactorStrength as number).toBeLessThanOrEqual(5_000_000);
+      expect(s.firstStageStrength as number).toBeGreaterThanOrEqual(40_000);
+      expect(s.firstStageStrength as number).toBeLessThanOrEqual(120_000);
+    }
+    const today = impactSampler({ ...nominal, strengthLaw: 'density' })(mulberry32('rule-896'));
+    expect(today.impactorStrength).toBeUndefined();
+    expect(today.firstStageStrength).toBeUndefined();
+  });
+});

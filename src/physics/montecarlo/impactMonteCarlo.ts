@@ -1,5 +1,11 @@
+import {
+  DEFAULT_STRENGTH_LAW,
+  FIRST_STAGE_STRENGTH_RANGE,
+  MAIN_STAGE_STRENGTH_RANGE,
+  twoStageCovers,
+} from '../effects/atmosphericEntry.js';
 import { simulateImpact, type ImpactScenarioInput } from '../simulate.js';
-import { kgPerM3, m, mps } from '../units.js';
+import { kgPerM3, m, mps, Pa } from '../units.js';
 import { IMPACT_INPUT_SIGMA } from '../uq/conventions.js';
 import type { MonteCarloOutput } from './engine.js';
 import { runMonteCarlo } from './engine.js';
@@ -61,6 +67,11 @@ export interface ImpactMonteCarloMetrics extends Record<string, number> {
   seismicMagnitude: number;
 }
 
+/** A draw log-uniform between the bounds. */
+function sampleLogUniform(rng: Rng, [low, high]: readonly [number, number]): number {
+  return Math.exp(Math.log(low) + (Math.log(high) - Math.log(low)) * rng.next());
+}
+
 export function impactSampler(nominal: ImpactScenarioInput): (rng: Rng) => ImpactScenarioInput {
   return (rng: Rng): ImpactScenarioInput => {
     const diameter = sampleLognormal(
@@ -82,6 +93,20 @@ export function impactSampler(nominal: ImpactScenarioInput): (rng: Rng) => Impac
       IMPACT_INPUT_SIGMA.density.sigma
     );
     const angleRad = sampleImpactAngle(rng);
+    // Rule 882(c), done by rule 896(i): under the two-stage law, for a body
+    // it covers and no strength given, the two phases' strengths are drawn
+    // log-uniform over their intervals. Under today's law nothing more is
+    // drawn, so its runs keep their stream.
+    const law = nominal.strengthLaw ?? DEFAULT_STRENGTH_LAW;
+    const strengths =
+      law === 'twoStage' &&
+      nominal.impactorStrength === undefined &&
+      twoStageCovers(impactorDensity)
+        ? {
+            impactorStrength: Pa(sampleLogUniform(rng, MAIN_STAGE_STRENGTH_RANGE)),
+            firstStageStrength: Pa(sampleLogUniform(rng, FIRST_STAGE_STRENGTH_RANGE)),
+          }
+        : {};
     // Target density is ground-fixed and not sampled; it and every
     // other unsampled field ride through untouched.
     return {
@@ -90,6 +115,7 @@ export function impactSampler(nominal: ImpactScenarioInput): (rng: Rng) => Impac
       impactVelocity: mps(velocity),
       impactorDensity: kgPerM3(impactorDensity),
       impactAngle: angleRad as ImpactScenarioInput['impactAngle'],
+      ...strengths,
     };
   };
 }
