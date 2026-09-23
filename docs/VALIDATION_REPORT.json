@@ -7471,7 +7471,7 @@
           "constantSign": false,
           "explainBy": {
             "printed": 146,
-            "open": 15,
+            "unrounded": 15,
             "entry": 9
           }
         },
@@ -7489,7 +7489,7 @@
           "explainBy": {
             "printed": 129,
             "entry": 6,
-            "open": 11
+            "unrounded": 11
           }
         },
         {
@@ -7505,7 +7505,7 @@
           "constantSign": false,
           "explainBy": {
             "printed": 119,
-            "open": 30,
+            "unrounded": 30,
             "entry": 4
           }
         },

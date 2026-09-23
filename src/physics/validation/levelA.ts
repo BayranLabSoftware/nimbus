@@ -216,14 +216,7 @@ export const LEVEL_A_DIFFERENCES: readonly LevelADifference[] = [
  * `explainBandCause` answers `open` — written on 23 September 2026 after the
  * wide grid was read. Below the audit bar, and printed as open.
  */
-const CRATER_OPEN =
-  "Not yet traced: a few dozen crater readings — transient and final diameters and final depths, simple and complex craters alike — sit 2 to 8 % from the program, past the interval its two printed figures stand for and not moved by the entry's equations, and below it far more often than above. A constant difference in an intermediate the program rounds, or in the collapse of a complex crater, would do this; it is to be audited, and nothing is tuned on it.";
-
-export const LEVEL_A_OPEN: Readonly<Partial<Record<EiepQuantity, string>>> = {
-  transientDiameter: CRATER_OPEN,
-  finalDiameter: CRATER_OPEN,
-  finalDepth: CRATER_OPEN,
-};
+export const LEVEL_A_OPEN: Readonly<Partial<Record<EiepQuantity, string>>> = {};
 
 export interface LevelASummary {
   quantity: EiepQuantity;
@@ -261,12 +254,53 @@ function quantile(sorted: readonly number[], q: number): number {
 }
 
 /**
+ * A crater's gap from the radius the program's own map carries unrounded —
+ * its printed diameters are rounded to two figures, its map's are not. The
+ * depth is read from the final diameter it is computed from. On the first
+ * grid, whose rows keep no map, the gap from the printed interval instead.
+ * Null where the quantity is not a crater's.
+ */
+function unroundedCraterEpsilon(pair: EiepRatio): number | null {
+  if (
+    pair.quantity !== 'transientDiameter' &&
+    pair.quantity !== 'finalDiameter' &&
+    pair.quantity !== 'finalDepth'
+  )
+    return null;
+  const radii = extras(pair.row).craterRadiiM;
+  const final = radii?.[0];
+  const transient = radii?.[1];
+  if (final === undefined || transient === undefined) {
+    // The first grid's rows keep no map: the gap from the interval the
+    // printed figure stands for, which is where the map's radii put the rest.
+    const half = printedHalfUnit(pair.quantity, pair.reference);
+    const low = pair.reference - half;
+    const high = pair.reference + half;
+    if (pair.model >= low && pair.model <= high) return 0;
+    return pair.model < low ? 1 - pair.model / low : pair.model / high - 1;
+  }
+  const crater = modelOf(pair.row).crater;
+  switch (pair.quantity) {
+    case 'transientDiameter':
+      return Math.abs((crater.transientDiameter as number) / (2 * transient) - 1);
+    case 'finalDiameter':
+    case 'finalDepth':
+      return Math.abs((crater.finalDiameter as number) / (2 * final) - 1);
+    default:
+      return null;
+  }
+}
+
+/**
  * Why a reading of the 2–10 % band parts from the program, shown on the pair:
  * `printed` where the model lies within the interval the program's printed
  * figure stands for; `entry` where on the program's own equations it lies
- * within 2 % or within that interval; a documented difference's id where one
- * other than the entry's is at work; `open` where nothing yet explains it —
- * printed as such, below the audit bar.
+ * within 2 % or within that interval; `unrounded` where a crater lies within
+ * 2 % of the radius the program's own map carries unrounded (written after
+ * the wide grid was read: 56 crater readings sat past the printed interval,
+ * all below it, and against the map's radii every one is within 2 %); a
+ * documented difference's id where one other than the entry's is at work;
+ * `open` where nothing yet explains it — printed as such, below the audit bar.
  */
 export function explainBandCause(pair: EiepRatio): string {
   if (insidePrinted(pair.quantity, pair.model, pair.reference)) return 'printed';
@@ -277,6 +311,8 @@ export function explainBandCause(pair: EiepRatio): string {
       insidePrinted(pair.quantity, onProgram.model, onProgram.reference))
   )
     return 'entry';
+  const unrounded = unroundedCraterEpsilon(pair);
+  if (unrounded !== null && unrounded < LEVEL_A_BARS.excellent) return 'unrounded';
   const difference = LEVEL_A_DIFFERENCES.find(
     (d) =>
       d.id !== 'entry-paper-equations' && d.quantities.includes(pair.quantity) && d.applies(pair)

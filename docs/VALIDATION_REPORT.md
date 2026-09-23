@@ -1900,7 +1900,7 @@ The documented differences:
 - **low-burst-crater** (Ejecta blanket edge (1 cm to 100 m)): Below its fireball a low airburst digs with the share 1 − z/R of its mass (rules 756 to 763, B-097); the program draws no such crater, and its map the blanket of another.
 - **program-map-edge** (Ejecta blanket edge (1 cm to 100 m)): The program's map writes its own crater's radius for a blanket ring it would draw past about ten thousand kilometres — a centimetre of a 10 to 30 km body's ejecta reads as ending at the rim, while a decimetre reaches 4 700 km. This model's ring is where the thickness law puts it, beyond 9 000 km.
 
-The 2–10 % band, by the cause shown at work on each reading (`explainBandCause`): `printed`, inside the interval the program's printed figure stands for; `entry`, back within 2 % or inside that interval on the program's own equations; a documented difference; or `open`.
+The 2–10 % band, by the cause shown at work on each reading (`explainBandCause`): `printed`, inside the interval the program's printed figure stands for; `entry`, back within 2 % or inside that interval on the program's own equations; `unrounded`, a crater within 2 % of the radius the program's own map carries unrounded, or — on the first grid, whose rows keep no map — of the interval its printed figure stands for; a documented difference; or `open`.
 
 - Energy before entry: printed 337
 - Breakup altitude: entry 58
@@ -1909,14 +1909,12 @@ The 2–10 % band, by the cause shown at work on each reading (`explainBandCause
 - The same, high end within three burst altitudes: entry 19
 - Peak wind behind the shock front at the distance: printed 95, entry 34
 - Speed at the ground: printed 74, entry 12
-- Transient crater diameter: printed 146, open 15, entry 9
-- Final crater diameter: printed 129, entry 6, open 11
-- Final crater depth: printed 119, open 30, entry 4
+- Transient crater diameter: printed 146, unrounded 15, entry 9
+- Final crater diameter: printed 129, entry 6, unrounded 11
+- Final crater depth: printed 119, unrounded 30, entry 4
 - Air-blast overpressure at the distance (ground impacts): entry 22
 - Fireball radius: entry 4
 - Ejecta blanket edge (1 cm to 100 m): entry 48, low-burst-crater 4
-
-Open: Not yet traced: a few dozen crater readings — transient and final diameters and final depths, simple and complex craters alike — sit 2 to 8 % from the program, past the interval its two printed figures stand for and not moved by the entry's equations, and below it far more often than above. A constant difference in an intermediate the program rounds, or in the collapse of a complex crater, would do this; it is to be audited, and nothing is tuned on it.
 
 ### The intensity rings against their authors' code
 

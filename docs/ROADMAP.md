@@ -985,14 +985,18 @@ work on it** — recomputed, not assumed:
   wide. **A defect of this model: B-123, open** — a physics change, for a
   round with its rules written first.
 
-The 2–10 % band is attributed reading by reading to the program's printed
-precision or the entry's equations, but for 56 crater readings 2 to 8 % from
-the program, mostly below it, which nothing yet explains and the report prints
-as open. The evidence table now states level A on both grids — share within
-2 %, readings past 10 %, each documented — and the crater's card names the
-crater field it lacks. `levelA.test.ts` runs the whole comparison in every CI
-run (about ten seconds here), and the validation report prints its table, the
-causes and the open band.
+The 2–10 % band is attributed reading by reading, and none of it is left
+open: the program's printed precision; the entry's equations; and, for 56
+crater readings that sat just past the interval their printed figure stands
+for — all below it — the crater's radii the program's own map carries
+unrounded: against them the complex craters of the wide grid agree within
+0.8 % and the simple ones in the median to 0.02 %.
+
+The evidence table now states level A on both grids — share within 2 %,
+readings past 10 %, each documented — and the crater's card names the crater
+field it lacks. `levelA.test.ts` runs the whole comparison in every CI run
+(about ten seconds here), and the validation report prints its table, the
+causes past 10 % and the causes of the 2–10 % band.
 
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 

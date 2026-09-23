@@ -3602,7 +3602,7 @@ function levelASection(run: LevelARun): string {
     ...audits,
     ...(differences.length === 0 ? [] : ['', 'The documented differences:', ...differences]),
     '',
-    "The 2–10 % band, by the cause shown at work on each reading (`explainBandCause`): `printed`, inside the interval the program's printed figure stands for; `entry`, back within 2 % or inside that interval on the program's own equations; a documented difference; or `open`.",
+    "The 2–10 % band, by the cause shown at work on each reading (`explainBandCause`): `printed`, inside the interval the program's printed figure stands for; `entry`, back within 2 % or inside that interval on the program's own equations; `unrounded`, a crater within 2 % of the radius the program's own map carries unrounded, or — on the first grid, whose rows keep no map — of the interval its printed figure stands for; a documented difference; or `open`.",
     '',
     ...run.summaries
       .filter((s) => s.explain > 0)
