@@ -102,18 +102,62 @@
  * appendix S1 if one is closed before that round's predictions.
  */
 
+/**
+ * Rules 973 to 977 — the reviewer's answers, amending the frame before step 2.
+ * Written on 23 September 2026, evening, on Andrea's word («Sì, tutto in
+ * ordine»). What is not amended here stands as written above.
+ *
+ * RULE 973. THE VARIANTS PUBLISHED (amends rule 967). Not the eight cells of
+ * the matrix: the baseline (Eq. 15, the two-stage strength with the whole body
+ * broken at S2, one cloud), P alone, S alone, F alone, and combinations only
+ * of the variants that met rule 964 alone — one axis at a time keeps each
+ * change's effect its own and no search over combinations for a favourable
+ * one. One interaction, optional and exploratory: P with S, only if both are
+ * adopted alone, since lateral growth and mass loss may not add; a note,
+ * deciding nothing, no parameter chosen from it.
+ *
+ * RULE 974. m2 IS A PROXY (amends rule 962). The brightest flare is not the
+ * largest release of energy; m2 is labelled a proxy wherever it is published.
+ *
+ * RULE 975. m3 AND m4 (amend rules 962 and 964 (a)). m3, on a case, is
+ * Δp = p_variant(the observed outcome) − p_baseline(the observed outcome),
+ * reaching the ground and not reaching it treated alike; it improves when its
+ * mean over the counted cases is 0.10 or more. m4 is counted on a case only as
+ * a fraction of the initial kinetic energy, between 0 and 1, against an
+ * observation whose uncertainty is declared; an observation in joules is
+ * compared as the same quantity — both fractions of the initial kinetic
+ * energy, or both joules — and an indirect estimate is never converted
+ * without its uncertainty propagated. Otherwise m4 is not counted on that
+ * case.
+ *
+ * RULE 976. THE BANDS (amends rule 964 (c)). An improvement on a case does
+ * not count if that metric's band on it widens by more than 50 %.
+ *
+ * RULE 977. THE TABLE (amends rules 963 and 966). Fixed once for the whole
+ * round: its sources, its observed intervals and the baseline's metrics do
+ * not change after P's run; only new columns are added, for P, S, F and the
+ * adopted combinations. Two columns are required in it: the quality of the
+ * target — direct, reconstructed or model-dependent — and whether it is
+ * counted for adoption, yes or no, with the reason.
+ */
+
 /** The axes of rule 960. */
 export type FragmentationAxis = 'pancake' | 'strength' | 'fragments';
 
-/** Rule 964: what improves a metric. */
+/** Rule 964, as rules 975 and 976 amend it: what improves a metric. */
 export const FRAGMENTATION_CLAUSE = {
   altitudeImproveKm: 1,
-  groundShareImprove: 0.1,
+  /** Rule 975: the mean over the counted cases of Δp on the observed outcome. */
+  observedOutcomeGain: 0.1,
   energyShareImprove: 0.1,
   minMetricsImproved: 2,
   rightOutcomeShare: 0.9,
-  bandDoubling: 2,
+  /** Rule 976: a band wider than this ratio voids the case's improvement. */
+  bandWidening: 1.5,
 } as const;
+
+/** Rule 977: the quality of a target in the development table. */
+export type TargetQuality = 'direct' | 'reconstructed' | 'modelDependent';
 
 /** The outcome of the round, written after its last variant. */
 export const FRAGMENTATION_ROUND_OUTCOME: string | null = null;

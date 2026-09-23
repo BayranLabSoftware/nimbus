@@ -246,3 +246,62 @@ export const COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M = 200;
  */
 export const CRATER_TIERS_OUTCOME: string | null =
   "ADOPTED 23 September 2026: out of the crater law's domain no seismic magnitude is given; a crater computed under 200 m is labelled exploratory, outside the domain Collins et al. declare, its numbers kept.";
+
+/**
+ * Rules 968 to 972 — what else is of crater origin (B-125). Written on
+ * 23 September 2026, evening, on Andrea's word («Sì, tutto in ordine»), after
+ * the reviewer's reply to rules 953 to 958. Written before any line of the
+ * change.
+ *
+ * RULE 968. THE DEFECT. The reviewer's reading of "of crater origin": out of
+ * the domain, nothing is given that presupposes the crater's excavation or its
+ * coupling to the ground — the crater's diameter and depth; its rim, its
+ * ejecta and their geometry; the seismic magnitude and the liquefaction; any
+ * radius computed from the crater's mass or geometry. The blast and the flash
+ * of the energy deposited in the air or at the ground stay, their source said,
+ * and are not presented as effects of a cratering impact. Four outputs still
+ * read the crater out of the domain: (i) the stratospheric dust, the rock the
+ * crater pulverizes (Toon et al. 1997, §8.2), given only where a transient
+ * crater is; (ii) the shock-made nitric acid, whose NO comes mostly from the
+ * ejecta plume (Prinn & Fegley 1987); (iii) the sea's coupling, which reads
+ * the transient cavity on land and the rim and the 1 m isopach at sea, and
+ * publishes its reach from them — rule 948 kept it on the model's own crater;
+ * (iv) the drawn offset of the ejecta blanket, 0.3 of its edge. And the
+ * morphology is read from the final diameter; the panel and the report hide
+ * it out of the domain, the report's citations do not. Registered as B-125.
+ *
+ * RULE 969. THE CHANGE, out of the domain only: (i) and (ii) are not given
+ * (not a number), "not resolved" in the panel and the report; (iii) the sea's
+ * coupling reads no crater — no rim, no transient cavity on land, no ejecta
+ * reach: on land no wave is raised through a crater the model does not
+ * resolve, which is not a claim that none is raised; at sea the water cavity
+ * stays, since it is not Eq. 21's crater — whether its law holds at a few
+ * hundred metres a second is a question for the tsunami, not asked here;
+ * (iv) the blanket's offset reads no blanket; the morphology is cited
+ * nowhere. And the damage section of the panel and of the report says, under
+ * the rings, where they come from: the energy released in the air and the
+ * energy that reaches the ground, each in megatons, not an impact that digs
+ * a crater — a slow penetration is not modelled.
+ *
+ * RULE 970. WHAT DECIDES. (a) The seal's numbers move in the scenarios out of
+ * the domain and nowhere else — today drawn:048, 136, 150 and 166, whose dust,
+ * acid and blanket offset go, and none of which raises a wave; the drawing
+ * moves nowhere, the blanket being drawn in none of them; the texts move
+ * where the source line and the unresolved rows are written. (b) Level A
+ * does not move. (c) G5 reads nothing new, its exemption of rule 952 extended
+ * to the two fields. (d) Typecheck, lint, format, the whole suite, the strict
+ * gate, Chromium's end-to-end suite. (e) Read in the running app on a body
+ * out of the domain: dust and acid not resolved, and the source line.
+ *
+ * RULE 971. WHAT AN ADOPTION MAY UPDATE: a test that asserts a dust, an acid,
+ * a sea reach or a blanket offset for a body out of the domain, rewritten to
+ * its absence; G5's exemption, extended to the dust and the acid; the seal,
+ * re-taken. Any other test that fails refuses the change.
+ *
+ * RULE 972. WHAT MAY NOT HAPPEN. No threshold moves; nothing the energy makes
+ * — blast, flash, fire, climate — moves by a bit; the water cavity at sea is
+ * untouched; one run.
+ */
+
+/** The outcome of rules 968 to 972, written after their one run. */
+export const CRATER_ORIGIN_OUTCOME: string | null = null;
