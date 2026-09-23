@@ -106,7 +106,7 @@
  * RULE 1033. THE VISUAL SUITE, fixed cases: Chicxulub, Chelyabinsk and
  * Tunguska at their presets, and a body out of the crater's domain (a stone of
  * 0.5 m at 14 km/s and 22.5° over land) — every layer photographed headless,
- * before the change and after each step (scripts/globe-visual-suite.mjs), the
+ * before the change and after each step (scripts/globe-visual-suite.ts), the
  * photographs kept out of the repository and sent to the reviewer; an
  * end-to-end test reads each layer's state and card from the page.
  *

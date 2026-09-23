@@ -73,7 +73,7 @@ effect comes back.
 
 The visual suite photographs every layer of four fixed cases — Chicxulub, Chelyabinsk, Tunguska
 and a body out of the crater's domain — before the change and after each step
-(`scripts/globe-visual-suite.mjs`); an end-to-end test reads each layer's state and card.
+(`scripts/globe-visual-suite.ts`); an end-to-end test reads each layer's state and card.
 
 ## Order
 
