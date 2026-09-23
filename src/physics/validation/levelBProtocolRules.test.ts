@@ -47,7 +47,7 @@ describe('rules 855 to 874: level B, preregistered', () => {
     expect(LEVEL_B_DAMAGE_BANDS.glassSporadicPa[1]).toBe(LEVEL_B_DAMAGE_BANDS.glassExtensivePa[0]);
   });
 
-  it('has no outcome until step 4', () => {
-    expect(LEVEL_B_OUTCOME).toBeNull();
+  it('has its outcome only after step 4 (levelBScore.test.ts recomputes it)', () => {
+    expect(LEVEL_B_OUTCOME).toMatch(/^NOT EARNED 23 September 2026/);
   });
 });

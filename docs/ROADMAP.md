@@ -1032,6 +1032,41 @@ field it lacks. `levelA.test.ts` runs the whole comparison in every CI run
 (about ten seconds here), and the validation report prints its table, the
 causes past 10 % and the causes of the 2–10 % band.
 
+### Level B: the model against what was observed, preregistered _(phase 3, 23 September 2026 — not earned)_
+
+Rules 855 to 874 (`validation/levelBProtocolRules.ts`), written before any
+source was opened for the test; the sources pinned before the model ran
+(`levelBSources.ts`, rule 866 turning a source's words into intervals); the
+reviewer's corrections adopted before step 3 (867–874); the predictions of
+the model frozen at 2c2c2f5 committed before any observed value
+(`levelBPredictions.json`, ad08138); the observed values entered where they
+were pinned and scored (`levelBTargets.ts`, `levelBScore.ts`, whose test
+recomputes the outcome on every commit). Preregistered, not blind: no third
+party holds the targets, and the order protects the test.
+
+The sets. Development, never counted: Chelyabinsk, Tunguska, Sikhote-Alin
+(each calibrated on, or changed after a check). Seen, reported only:
+2008 TC3, 2018 LA, 2022 EB5 (rows of I2's CNEOS fireballs). Entry: 2023 CX1
+and 2024 BX1, bodies seen by telescopes before they entered. Crater:
+Carancas. Class D: Meteor Crater.
+
+The outcome. **Entry, not earned**: both bodies break up in the air with no
+crater, as observed, but the model breaks them and deposits their energy too
+high — 2023 CX1, which held until 29.4 km under 4 MPa, breaks at 47 km in
+the model; the mean log ratio over the four altitudes is +0.30, past the
+ln 1.3 bar, the sign the CNEOS fireballs showed. **Crater, not earned**:
+Carancas digs no crater in any draw, even with its mass widened to 27 t —
+the strong chondrite that reached the ground is the case one strength per
+density cannot represent. **Meteor Crater, class D**: the observed diameter
+and depth lie inside the model's bands over the literature's ranges.
+
+What it names for phase 4, first: the strength of a body. One strength per
+density (Collins et al. 2005, Eq. 9) cannot hold a body that yields at
+0.12 MPa and one that holds 4 MPa; and the pancake's burst altitude is not
+where a fragmenting body's light peaks. Coverage is not estimated on two
+events; a B of the entry that generalises needs a further body seen before
+impact, and a crater B a second positive case.
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this

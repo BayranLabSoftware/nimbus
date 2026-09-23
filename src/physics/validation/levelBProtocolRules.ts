@@ -314,5 +314,55 @@ export const LEVEL_B_DAMAGE_BANDS = {
   treesWindMps: [20, 50],
 } as const;
 
-/** The outcome, written after step 4. */
-export const LEVEL_B_OUTCOME: string | null = null;
+/**
+ * The outcome, written on 23 September 2026 after step 4, from the
+ * predictions committed in ad08138 and the observed values of
+ * levelBTargets.ts, scored by levelBScore.ts (recomputed by its test).
+ *
+ * ENTRY — NOT EARNED. Both bodies break up in the air with no crater, as
+ * observed (E1, 100 % of the draws). But the model breaks them too high and
+ * deposits its energy too high. 2024 BX1, a weak aubrite whose fragmentation
+ * began at 55 km under 0.12 MPa: the model breaks it at 48–54 km (median 51.1)
+ * — close, but its band misses the observed interval. 2023 CX1, an unusually
+ * strong L chondrite that held until 29.4 km under up to 4 MPa: the model
+ * breaks it at 47.2–47.8 km. Their flares (34–35 km and 27–28 km) against the
+ * model's energy deposition at 45.5–50.6 km and 43.5–44.8 km: missed even
+ * widened by 5 km. Mean ln(median / observed) over the four altitudes +0.30,
+ * past the ±ln 1.3 bar: a bias of the sign the CNEOS fireballs showed in I2.
+ * The seen rows say the same (2008 TC3: 57 km against 44–45; 2018 LA: 55 km
+ * against 27–29). What it names for phase 4: one strength per density
+ * (Collins et al. 2005, Eq. 9) cannot hold both a body that yields at 0.12
+ * MPa and one that holds 4 MPa; the strength is a property of the body, and
+ * the pancake's burst altitude is not where a fragmenting body's light peaks.
+ *
+ * CRATER — NOT EARNED. At Carancas the model breaks the 3–9 t chondrite at
+ * 41–47 km and bursts it at 37–42 km, with no crater in any draw (K1 0 %), so
+ * the depth-to-diameter ratio and the morphology have nothing to be read on.
+ * The stress run, 1 to 27 t, gives the same. The observed body reached the
+ * ground at hypervelocity — the case Brown et al. (2008) and Kenkmann et al.
+ * (2009) explain by an unusually high strength — which rule 866(d)'s density
+ * law cannot represent. The model enters to sea level; Carancas lies at
+ * 3 800 m, a difference the model cannot take.
+ *
+ * CONSISTENCY — CLASS D, Meteor Crater. Over the ranges the literature
+ * usually assumes (10–50 m, 11–20 km/s, sin 2θ over 30–75°), the observed
+ * diameter (1.15–1.25 km) and today's depth (175–185 m) lie inside the
+ * model's bands (235–1 492 m; 50–318 m), and every draw that digs a crater
+ * digs a simple one. The bands are wide because the inputs are; the median
+ * diameter, 741 m, is 38 % under the observed; 46 % of the draws do not dig
+ * a single crater (an iron swarm or a strewn field). "Consistent with
+ * literature ranges", no more.
+ *
+ * Coverage (rule 870(iv)) is not estimated: two counted events cannot show
+ * whether the bands cover as often as they claim. The development set is
+ * reported as it stands in the validation report at 2c2c2f5.
+ *
+ * Read after the run, and declared so: the model's breakup altitude for
+ * 2023 CX1 barely moves across its inputs (band 0.56 km wide), because the
+ * strength it derives from a density of 3.3 g/cm³ is fixed; the observed
+ * scatter of strengths among meteorite falls (0.04 to 5 MPa, Borovička et
+ * al. 2020 as cited by Spurný et al. 2024) is far wider than any band the
+ * pinned inputs could give.
+ */
+export const LEVEL_B_OUTCOME: string | null =
+  'NOT EARNED 23 September 2026 — entry: both bodies break up with no crater as observed, but the model breaks them and deposits their energy too high (mean ln ratio +0.30 over four altitudes, bar ln 1.3); crater: Carancas digs no crater in any draw; Meteor Crater consistent with literature ranges, class D. The strength of a body, which one density law cannot represent, is the first item of phase 4.';

@@ -19,6 +19,15 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **Level B, preregistered: the impact model against observed events.**
+  Rules 855 to 874, sources pinned before the model ran, the reviewer's
+  corrections adopted before the predictions, the predictions of the model
+  frozen at 2c2c2f5 committed before any observed value, and a score its
+  test recomputes on every commit. The outcome: no class B. The model breaks
+  up small bodies in the air as observed, but too high (2023 CX1: 47 km
+  against 29.4 km); it digs no crater at Carancas; Meteor Crater is
+  consistent with the literature's ranges (class D). The strength of a body
+  is the first item of phase 4.
 - **A body that reaches the ground scattered digs a crater field.** Where the
   fragments of a stony or porous body that breaks up land spread wider than
   the crater the whole swarm would dig, the simulator now draws a crater
