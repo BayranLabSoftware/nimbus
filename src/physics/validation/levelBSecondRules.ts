@@ -174,6 +174,56 @@
  * out of reach.
  */
 
+/**
+ * Rules 927 to 932 — the reviewer's corrections to step 2, adopted before
+ * step 3 as rule 865 allows. Written on 23 September 2026, afternoon, from his
+ * reply of that day to the summary of step 2 (sent by Andrea as «Nimbus —
+ * secondo giro B, fonti per il revisore»); each is his. No prediction has
+ * been computed.
+ *
+ * RULE 927. THE ROUND GOES ON, AS A PRE-REGISTERED DIAGNOSTIC AUDIT. With one
+ * counted body it can earn no class B; it tests whether the two-stage model
+ * avoids a gross error on a sub-metre body of its declared domain. Its words
+ * are fixed now: if 2022 WJ1 passes, "compatible with 2022 WJ1 in one
+ * independent case"; if not, "incompatible with 2022 WJ1; no class B"; and
+ * either way, "not a validation of a population nor an estimate of coverage".
+ *
+ * RULE 928. E2 STAYS OUT, and is reported so. The heights of the source's
+ * fragmentation table come from a model fitted to the light curve and not
+ * unique: testing the model against them would compare two models. The
+ * absence of a first-stage fragmentation is no pass-or-fail target either —
+ * one event, and a model that gives a major first phase in two draws in three.
+ * It is reported as a qualitative check, unscored, in the reviewer's words: "No
+ * identifiable initial fragmentation was observed at dynamic pressures up to
+ * 0.1 MPa; the comparison is not assessed quantitatively, because an absence
+ * does not determine a unique observed altitude."
+ *
+ * RULE 929. E3 IS "COMPATIBILITY WITH THE FLARE HEIGHTS", never "the altitude
+ * of the main fragmentation": a joint test of the strength's threshold, the
+ * cascade of fragments, the ablation and the light.
+ *
+ * RULE 930. E1 AND E3 HOLD TOGETHER. E1, "no crater", passes if at least 90 %
+ * of the draws dig no crater. E3 is read only on the draws that satisfy E1:
+ * its 5–95 % band is theirs, and it is compatible only if that band meets the
+ * observed heights widened by 5 km (rule 868). A model that meets the flares
+ * only in draws that dig a crater or reach the ground is not compatible with
+ * the event. The share of the E1 draws is reported beside.
+ *
+ * RULE 931. STERLITAMAK, diagnostic. Its 30° to 60° is reported as an
+ * analytical choice, not an interval observed. Its target is run at 1 800,
+ * 2 200 and 2 700 kg/m³ with no probability given to any, to show whether
+ * "crater, crater field or no crater" depends on the ground assumed; 2 700 is
+ * the reference grid's rock, not a stand-in for plastic clay and black earth.
+ *
+ * RULE 932. THE THIRD SET, kept for the round on the dynamics of
+ * fragmentation, must hold before any new request for level B: at least three
+ * new bodies with their altitude measured directly, and at least one that
+ * reached the ground or dug a crater with inputs not fitted to it.
+ */
+
+/** Rule 931: Sterlitamak's grounds (kg/m³). */
+export const LEVEL_B2_STERLITAMAK_GROUNDS = [1_800, 2_200, 2_700] as const;
+
 /** Rule 919: the model under test. */
 export const LEVEL_B2_FROZEN_MODEL = '5b6b7a5';
 
