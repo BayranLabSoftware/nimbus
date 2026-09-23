@@ -948,6 +948,52 @@ appears without its class; on the page, no row of an impact's results does.
 digests the numbers' 308 are unchanged — only the drawing (279) and the
 report's text (616) moved, carrying their classes.
 
+### Level A: implementation verified, case by case _(phase 2, 23 September 2026)_
+
+The plan's level A — the impact pipeline held to the reference implementation
+of its equations on thousands of cases, with the reviewing astrophysicist's
+bars, in every CI run — now stands. A wide grid of 1 782 cases was fixed in
+`scripts/eiep-grid.py` before the program was asked (58c599f): a factorial of
+ten sizes from 1 m to 30 km, comet, porous rock, rock and iron, 12 to 70 km/s,
+15 to 90°; crystalline rock; every range from 1 to 20 000 km for eight bodies;
+and sixteen sizes across the passage from airburst to ground impact. The bars
+were written before its answers were read (`validation/levelA.ts`, 509e3d7):
+under 2 % excellent, 2 to 10 % explained, over 10 % audited or a documented
+difference, a constant sign flagged. The Earth Impact Effects Program was then
+asked, with Andrea's leave, one request every 1.5 s; it answered 1 713 and
+failed on 69 of its own (`validation/eiepGrid.json`, every printed figure and
+every ring of its map kept).
+
+With the 83 of the first grid: **1 865 cases, 18 377 readings, the simulator
+failing on none.** Where the 83 had found nothing past 5 %, the wide grid
+found **497 readings past 10 %, and every one is traced to a cause shown at
+work on it** — recomputed, not assumed:
+
+- **the entry's equations** (101): since rules 691 to 697 the entry runs on the
+  paper's; the program doubles Eq. 12's I_f (BM-13), and slow irons break and
+  burst kilometres apart. On the program's equations every such reading is
+  back inside 10 %;
+- **an iron's crater by its mass** (216) and **a low burst's crater** (8):
+  rules 764 to 771 and 756 to 763 dig other craters than the one whose
+  blanket the program's map draws;
+- **the program's map** (60): it writes its own crater's radius for a blanket
+  ring it would draw past about 10 000 km;
+- **the program's printing** (14): winds printed to a millimetre per second;
+- **the crater field** (98): where a scattered body's fragments land wider
+  than its crater, the program makes a crater field and gives the largest
+  fragment's crater; this model digs one crater of the whole body, twice as
+  wide. **A defect of this model: B-123, open** — a physics change, for a
+  round with its rules written first.
+
+The 2–10 % band is attributed reading by reading to the program's printed
+precision or the entry's equations, but for 56 crater readings 2 to 8 % from
+the program, mostly below it, which nothing yet explains and the report prints
+as open. The evidence table now states level A on both grids — share within
+2 %, readings past 10 %, each documented — and the crater's card names the
+crater field it lacks. `levelA.test.ts` runs the whole comparison in every CI
+run (about ten seconds here), and the validation report prints its table, the
+causes and the open band.
+
 ### Every ceiling and gate, reviewed _(21 September 2026)_
 
 Andrea asked, on opening the domain, whether a ceiling or a gate this

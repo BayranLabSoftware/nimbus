@@ -19,6 +19,17 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ### Added
 
+- **The impact pipeline is held to its reference implementation on 1 865
+  impacts, case by case, at every commit.** Level A of the certification plan:
+  a wide grid of bodies from 1 m to 30 km, comet to iron, 12 to 70 km/s, 15 to
+  90°, at ranges from 1 to 20 000 km, run by the Earth Impact Effects Program
+  as its authors publish it and by the simulator — 18 377 readings, the
+  simulator failing on none. Every reading more than 10 % from the program is
+  traced to a cause shown at work on it, and one of them is a defect of the
+  simulator, now open (B-123: a body whose fragments land spread wider than its
+  crater digs one crater, where the program makes a crater field). The
+  validation report prints the table, the causes and what is still open.
+
 - **Every number an impact prints says what it rests on.** A class of
   evidence, on the scale of the astrophysicist's review, beside every figure
   of the panel, on every layer of the globe's legend and on every row and key

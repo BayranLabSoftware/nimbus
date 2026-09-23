@@ -50,7 +50,8 @@ export function evidenceText(
   const reference = record.reference;
   const observed = record.observed;
   const values = {
-    worst: reference === null ? '' : fixedPercent(reference.worstPercent, language),
+    excellent: reference === null ? '' : fixedPercent(reference.excellentPercent, language),
+    pastTen: reference === null ? '' : plainNumber(reference.pastTen, language),
     impacts: reference === null ? '' : plainNumber(reference.impacts, language),
     readings: reference === null ? '' : plainNumber(reference.readings, language),
     program: EVIDENCE_REFERENCE_PROGRAM,
@@ -61,7 +62,8 @@ export function evidenceText(
   // Level A's error is the reference's own comparison, in figures; the rest
   // say in words why there is none yet.
   const errors: string[] = [];
-  if (record.klass === 'A' && reference !== null) errors.push(t('evidence.checked', values));
+  if (record.klass === 'A' && reference !== null)
+    errors.push(t(reference.pastTen > 0 ? 'evidence.checked' : 'evidence.checkedClean', values));
   if (observed !== null) errors.push(t('evidence.observedBolides', values));
   const own = t(`${base}.error`, values);
   if (own.length > 0) errors.push(own);

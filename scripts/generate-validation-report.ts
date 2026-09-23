@@ -150,6 +150,14 @@ import {
   type EiepSummary,
 } from '../src/physics/validation/eiepComparison.js';
 import { EIEP_READ_ON, EIEP_REFERENCE } from '../src/physics/validation/eiepReference.js';
+import { EIEP_GRID, EIEP_GRID_READ_ON } from '../src/physics/validation/eiepGrid.js';
+import {
+  LEVEL_A_BARS,
+  LEVEL_A_DIFFERENCES,
+  LEVEL_A_OPEN,
+  runLevelASync,
+  type LevelARun,
+} from '../src/physics/validation/levelA.js';
 import {
   residualAgainstReference,
   verifyRings,
@@ -3551,6 +3559,63 @@ const EIEP_LABEL: Readonly<Record<EiepQuantity, string>> = {
   wind: 'Peak wind behind the shock front at the distance',
 };
 
+/** Level A (phase 2 of the plan of 22 September 2026): every case, both grids. */
+function levelASection(run: LevelARun): string {
+  const pct = (x: number): string => fixed(x, 2).toString();
+  const rows = run.summaries.map(
+    (s) =>
+      `| ${EIEP_LABEL[s.quantity]} | ${s.pairs.toString()} | ${pct(s.medianPercent)} | ${pct(s.p90Percent)} | ${fixed(s.maxPercent, 1).toString()} | ${s.excellent.toString()} | ${s.explain.toString()} | ${s.audit.toString()} | ${s.unexplained.toString()} | ${s.constantSign ? 'yes' : 'no'} |`
+  );
+  // Every reading past the audit bar is in the JSON; here, how many each
+  // documented difference covers, and any that none covers, one by one.
+  const byDifference = new Map<string, number>();
+  for (const a of run.audits) {
+    if (a.difference !== null)
+      byDifference.set(a.difference, (byDifference.get(a.difference) ?? 0) + 1);
+  }
+  const undocumented = run.audits
+    .filter((a) => a.difference === null)
+    .map(
+      (a) =>
+        `- ${EIEP_LABEL[a.pair.quantity]}, ε ${fixed(a.epsilon * 100, 1).toString()} %: ${a.pair.row.diameterM.toString()} m, ${a.pair.row.densityKgM3.toString()} kg/m³, ${a.pair.row.velocityKmS.toString()} km/s, ${a.pair.row.angleDeg.toString()}°, ${a.pair.row.target}, ${a.pair.row.distanceKm.toString()} km — **no documented difference**`
+    );
+  const audits = [
+    ...[...byDifference].map(([id, n]) => `- ${id}: ${n.toString()}`),
+    ...undocumented,
+  ];
+  const differences = LEVEL_A_DIFFERENCES.map(
+    (d) =>
+      `- **${d.id}** (${d.quantities.map((q) => EIEP_LABEL[q]).join(', ')}${d.bug === undefined ? '' : `; ${d.bug}`}): ${d.why}`
+  );
+  return [
+    `Level A of the certification plan of 22 September 2026, implementation verified: the impact pipeline held to the Earth Impact Effects Program case by case, on the ${EIEP_REFERENCE.length.toString()} impacts above and the ${EIEP_GRID.length.toString()} of the wide grid \`scripts/eiep-grid.py\` fixed before the program was asked (commit 58c599f) and read from it on ${EIEP_GRID_READ_ON} (\`validation/eiepGrid.json\`). The bars were written before the answers were read (\`validation/levelA.ts\`, commit 509e3d7): ε = |X − ref| / ref; under ${(LEVEL_A_BARS.excellent * 100).toString()} % excellent; ${(LEVEL_A_BARS.excellent * 100).toString()} to ${(LEVEL_A_BARS.audit * 100).toString()} % explained in writing; over ${(LEVEL_A_BARS.audit * 100).toString()} % audited or a documented difference of design; a constant sign flagged as a possible bug.`,
+    '',
+    `${run.cases.toString()} cases; the program failed on ${run.programFailed.toString()} of them (its own answer), the simulator on ${run.modelFailed.length.toString()}; ${run.pairs.length.toString()} readings.`,
+    '',
+    '| Quantity | Readings | Median ε % | P90 ε % | Max ε % | < 2 % | 2–10 % | > 10 % | Unexplained | Constant sign |',
+    '| --- | --: | --: | --: | --: | --: | --: | --: | --: | :-: |',
+    ...rows,
+    '',
+    run.audits.length === 0
+      ? 'No reading passes the audit bar.'
+      : `Readings past the audit bar: ${run.audits.length.toString()}, ${undocumented.length.toString()} with no documented difference; by the difference that covers them (each recomputed by \`validation/levelA.test.ts\` from \`validation/eiepGrid.json\`):`,
+    ...audits,
+    ...(differences.length === 0 ? [] : ['', 'The documented differences:', ...differences]),
+    '',
+    "The 2–10 % band, by the cause shown at work on each reading (`explainBandCause`): `printed`, inside the interval the program's printed figure stands for; `entry`, back within 2 % or inside that interval on the program's own equations; a documented difference; or `open`.",
+    '',
+    ...run.summaries
+      .filter((s) => s.explain > 0)
+      .map(
+        (s) =>
+          `- ${EIEP_LABEL[s.quantity]}: ${Object.entries(s.explainBy)
+            .map(([cause, n]) => `${cause} ${n.toString()}`)
+            .join(', ')}`
+      ),
+    ...[...new Set(Object.values(LEVEL_A_OPEN))].map((note) => `\nOpen: ${note}`),
+  ].join('\n');
+}
+
 function eiepSection(run: EiepRun): string {
   const ratio = (v: number): string => `${v.toFixed(2)}×`;
   const table = (rows: readonly EiepSummary[]): string[] => [
@@ -3987,6 +4052,7 @@ function main(): void {
   const ruleSets = runRuleSets();
   const byRule = ruleCells(ruleSets);
   const eiep = runEiep();
+  const levelA = runLevelASync([...EIEP_REFERENCE, ...EIEP_GRID]);
   const ringChecks = verifyRings();
   const contourLaws = runContourLaws();
   const ground = runGround(ruleSets, contourLaws.tolls.boore2014);
@@ -4195,6 +4261,10 @@ ${failureSection(goldenAgg, 'Golden case failures')}
 ### The impact pipeline against the Earth Impact Effects Program
 
 ${eiepSection(eiep)}
+
+### Level A: implementation verified, case by case
+
+${levelASection(levelA)}
 
 ### The intensity rings against their authors' code
 
@@ -4721,6 +4791,48 @@ otherwise.
         })),
         regimes: eiep.regimes,
         craters: eiep.craters,
+      },
+      levelA: {
+        readOn: EIEP_GRID_READ_ON,
+        cases: levelA.cases,
+        programFailed: levelA.programFailed,
+        modelFailed: levelA.modelFailed.length,
+        readings: levelA.pairs.length,
+        bars: LEVEL_A_BARS,
+        summaries: levelA.summaries.map((x) => ({
+          quantity: x.quantity,
+          readings: x.pairs,
+          medianPercent: fixed(x.medianPercent, 3),
+          p90Percent: fixed(x.p90Percent, 3),
+          maxPercent: fixed(x.maxPercent, 3),
+          excellent: x.excellent,
+          explain: x.explain,
+          audit: x.audit,
+          unexplained: x.unexplained,
+          constantSign: x.constantSign,
+          explainBy: x.explainBy,
+        })),
+        // By the difference that covers them; every one is recomputed by
+        // validation/levelA.test.ts from validation/eiepGrid.json, so the
+        // report the browser loads carries the counts, not the rows.
+        auditsByDifference: Object.fromEntries(
+          [...new Set(levelA.audits.map((a) => a.difference ?? 'none'))].map((id) => [
+            id,
+            levelA.audits.filter((a) => (a.difference ?? 'none') === id).length,
+          ])
+        ),
+        undocumented: levelA.audits
+          .filter((a) => a.difference === null)
+          .map((a) => ({
+            quantity: a.pair.quantity,
+            epsilonPercent: fixed(a.epsilon * 100, 2),
+            diameterM: a.pair.row.diameterM,
+            densityKgM3: a.pair.row.densityKgM3,
+            velocityKmS: a.pair.row.velocityKmS,
+            angleDeg: a.pair.row.angleDeg,
+            target: a.pair.row.target,
+            distanceKm: a.pair.row.distanceKm,
+          })),
       },
     },
     golden: {

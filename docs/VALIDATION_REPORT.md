@@ -1862,6 +1862,62 @@ Outcome, program → simulator: airburst → COMPLETE_AIRBURST: 24; ground → P
 - **Strength.** Where a strength class is chosen — every impact preset but Tunguska, and the custom panel's taxonomy — the simulator takes it (Popova et al. 2011); the grid, like the program, takes the strength of Collins et al.'s Eq. 9 from density.
 - **An iron's airburst.** For the grid's one iron that bursts, 30 m at 20 km/s and 45 degrees, the program prints no crater's size — "Large fragments strike the surface and may create a crater strewn field" — and its map draws the ejecta of the whole body's crater at its residual speed. Since 21 September 2026 the simulator digs that crater (rules 764 to 771, B-098: from 10⁷ kg an iron's fragments dig as one, Bland & Artemieva 2006), and its blanket lies within 1 % of the map's at every thickness. The same map draws a blanket for every stony airburst too, where the program prints that no crater forms; the simulator draws none there.
 
+### Level A: implementation verified, case by case
+
+Level A of the certification plan of 22 September 2026, implementation verified: the impact pipeline held to the Earth Impact Effects Program case by case, on the 83 impacts above and the 1782 of the wide grid `scripts/eiep-grid.py` fixed before the program was asked (commit 58c599f) and read from it on 2026-09-23 (`validation/eiepGrid.json`). The bars were written before the answers were read (`validation/levelA.ts`, commit 509e3d7): ε = |X − ref| / ref; under 2 % excellent; 2 to 10 % explained in writing; over 10 % audited or a documented difference of design; a constant sign flagged as a possible bug.
+
+1865 cases; the program failed on 71 of them (its own answer), the simulator on 0; 18377 readings.
+
+| Quantity | Readings | Median ε % | P90 ε % | Max ε % | < 2 % | 2–10 % | > 10 % | Unexplained | Constant sign |
+| --- | --: | --: | --: | --: | --: | --: | --: | --: | :-: |
+| Energy before entry | 1794 | 1.01 | 2.82 | 3.9 | 1457 | 337 | 0 | 0 | no |
+| Breakup altitude | 1794 | 0 | 0.3 | 51.4 | 1721 | 58 | 15 | 0 | yes |
+| Burst altitude (airbursts) | 834 | 0 | 0.86 | 263.9 | 768 | 45 | 21 | 0 | yes |
+| Air-blast overpressure at the distance (airbursts) | 720 | 0.03 | 0.57 | 75.8 | 688 | 19 | 13 | 0 | no |
+| The same, high end within three burst altitudes | 720 | 0.03 | 0.57 | 75.8 | 688 | 19 | 13 | 0 | no |
+| Peak wind behind the shock front at the distance | 1678 | 0.03 | 1.97 | 72 | 1512 | 129 | 37 | 0 | no |
+| Speed at the ground | 960 | 0.34 | 1.89 | 15.6 | 872 | 86 | 2 | 0 | no |
+| Transient crater diameter | 960 | 0.83 | 2.97 | 102.1 | 776 | 170 | 14 | 0 | no |
+| Final crater diameter | 960 | 0.77 | 2.64 | 102.3 | 800 | 146 | 14 | 0 | no |
+| Final crater depth | 960 | 0.91 | 2.75 | 102 | 793 | 153 | 14 | 0 | no |
+| Air-blast overpressure at the distance (ground impacts) | 958 | 0.04 | 0.29 | 35.6 | 923 | 22 | 13 | 0 | yes |
+| Fireball radius | 958 | 0.02 | 0.1 | 10.2 | 953 | 4 | 1 | 0 | no |
+| Ejecta blanket edge (1 cm to 100 m) | 5081 | 0.04 | 0.85 | 6485.4 | 4689 | 52 | 340 | 0 | no |
+
+Readings past the audit bar: 497, 0 with no documented difference; by the difference that covers them (each recomputed by `validation/levelA.test.ts` from `validation/eiepGrid.json`):
+- wind-printed-to-a-millimetre-per-second: 14
+- entry-paper-equations: 101
+- iron-crater-by-mass: 216
+- crater-field: 98
+- low-burst-crater: 8
+- program-map-edge: 60
+
+The documented differences:
+- **entry-paper-equations** (Breakup altitude, Burst altitude (airbursts), Speed at the ground, Air-blast overpressure at the distance (airbursts), The same, high end within three burst altitudes, Air-blast overpressure at the distance (ground impacts), Peak wind behind the shock front at the distance, Fireball radius): The entry runs on the paper's equations since rules 691 to 697 (DEFAULT_ENTRY_EQUATIONS, effects/atmosphericEntry.ts); the program takes twice Eq. 12's I_f in its Eq. 11 (BM-13), so a strong, slow body — the irons at 12 km/s above all — breaks and bursts kilometres lower there, reaches the ground slower, and blasts and burns from another height. On the program's own equations, which the model still computes by name, every such pair is back inside 10 %.
+- **wind-printed-to-a-millimetre-per-second** (Peak wind behind the shock front at the distance): The program prints the peak wind to three decimals of a metre per second («0.003 m/s»); a thousand kilometres and more from a small burst the whole answer is a digit or two, and every pair here is inside 10 % of the interval its printed figure stands for — for two irons at 12 and 20 km/s only once the entry runs on the program's equations too.
+- **crater-field** (Transient crater diameter, Final crater diameter, Final crater depth, Ejecta blanket edge (1 cm to 100 m); B-123): Where the fragments of a body that reaches the ground broken land spread wider than the crater it would dig, the program answers «a crater field, not a single crater» and gives the crater of the largest fragment — half the diameter. This model digs one crater of the whole body there, and its ejecta blanket with it. The program is right to call it a field; this model has no crater field for a stony or porous body.
+- **iron-crater-by-mass** (Ejecta blanket edge (1 cm to 100 m)): An iron's crater ends by its mass (rules 764 to 771, B-098; Bland & Artemieva 2006): a strewn field of small craters, or a swarm's. The program's map still draws the blanket of one crater of the whole body at its end speed, which is not the crater this model — or the program's own text — says forms.
+- **low-burst-crater** (Ejecta blanket edge (1 cm to 100 m)): Below its fireball a low airburst digs with the share 1 − z/R of its mass (rules 756 to 763, B-097); the program draws no such crater, and its map the blanket of another.
+- **program-map-edge** (Ejecta blanket edge (1 cm to 100 m)): The program's map writes its own crater's radius for a blanket ring it would draw past about ten thousand kilometres — a centimetre of a 10 to 30 km body's ejecta reads as ending at the rim, while a decimetre reaches 4 700 km. This model's ring is where the thickness law puts it, beyond 9 000 km.
+
+The 2–10 % band, by the cause shown at work on each reading (`explainBandCause`): `printed`, inside the interval the program's printed figure stands for; `entry`, back within 2 % or inside that interval on the program's own equations; a documented difference; or `open`.
+
+- Energy before entry: printed 337
+- Breakup altitude: entry 58
+- Burst altitude (airbursts): entry 45
+- Air-blast overpressure at the distance (airbursts): entry 19
+- The same, high end within three burst altitudes: entry 19
+- Peak wind behind the shock front at the distance: printed 95, entry 34
+- Speed at the ground: printed 74, entry 12
+- Transient crater diameter: printed 146, open 15, entry 9
+- Final crater diameter: printed 129, entry 6, open 11
+- Final crater depth: printed 119, open 30, entry 4
+- Air-blast overpressure at the distance (ground impacts): entry 22
+- Fireball radius: entry 4
+- Ejecta blanket edge (1 cm to 100 m): entry 48, low-burst-crater 4
+
+Open: Not yet traced: a few dozen crater readings — transient and final diameters and final depths, simple and complex craters alike — sit 2 to 8 % from the program, past the interval its two printed figures stand for and not moved by the entry's equations, and below it far more often than above. A constant difference in an intermediate the program rounds, or in the collapse of a complex crater, would do this; it is to be audited, and nothing is tuned on it.
+
 ### The intensity rings against their authors' code
 
 The relations that draw the intensity rings, and the one each earthquake is

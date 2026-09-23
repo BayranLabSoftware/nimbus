@@ -65,15 +65,21 @@ export const EVIDENCE_QUANTITIES: readonly EvidenceQuantity[] = [
   'casualties',
 ];
 
-/** A comparison with the reference implementation (level A's evidence). */
+/**
+ * A comparison with the reference implementation, case by case (level A,
+ * `levelA.ts`, on both reference grids): every reading past the audit bar
+ * must be traced to a documented difference for the family to hold class A.
+ */
 export interface ReferenceCheck {
-  /** Impacts of the reference grid that answer this quantity. */
+  /** Impacts of the reference grids that answer this family. */
   readonly impacts: number;
   /** Pairs compared: an impact can answer at several ranges or thresholds. */
   readonly readings: number;
-  /** The widest disagreement of any single pair, in per cent, rounded up to
-   *  a tenth. */
-  readonly worstPercent: number;
+  /** The share within 2 % of the program, in per cent, rounded down to a
+   *  tenth. */
+  readonly excellentPercent: number;
+  /** Readings past 10 %, each traced to a documented difference. */
+  readonly pastTen: number;
 }
 
 /** A comparison with what was observed. */
@@ -107,22 +113,23 @@ export interface EvidenceRecord {
 export const EVIDENCE_REFERENCE_PROGRAM = 'Earth Impact Effects Program';
 
 /**
- * The table. `reference` figures are those of `eiepRatios()` on
- * `EIEP_REFERENCE`, and the observed entry those of the validation report's
+ * The table. `reference` figures are those of level A (`runLevelA`) on both
+ * reference grids — the 83 impacts of `eiepReference.ts` and the 1 782 of
+ * `eiepGrid.json` — and the observed entry those of the validation report's
  * fireball reading; the test beside this file recomputes both.
  */
 export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
   energy: {
     quantity: 'energy',
     klass: 'A',
-    reference: { impacts: 81, readings: 81, worstPercent: 2.9 },
+    reference: { impacts: 1794, readings: 1794, excellentPercent: 81.2, pastTen: 0 },
     observed: null,
   },
   entry: {
     quantity: 'entry',
     klass: 'A',
     // Breakup and burst altitudes, and the speed at the ground.
-    reference: { impacts: 81, readings: 162, worstPercent: 5 },
+    reference: { impacts: 1794, readings: 3588, excellentPercent: 93.6, pastTen: 38 },
     observed: {
       id: 'bolides',
       events: 357,
@@ -136,7 +143,7 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
     quantity: 'crater',
     klass: 'A',
     // Transient and final diameter, final depth.
-    reference: { impacts: 57, readings: 171, worstPercent: 4.3 },
+    reference: { impacts: 960, readings: 2880, excellentPercent: 82.2, pastTen: 42 },
     observed: null,
   },
   blast: {
@@ -144,7 +151,7 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
     klass: 'A',
     // Peak overpressure of airbursts (both ends) and ground impacts, and the
     // wind behind it.
-    reference: { impacts: 81, readings: 186, worstPercent: 0.6 },
+    reference: { impacts: 1678, readings: 4076, excellentPercent: 93.4, pastTen: 76 },
     observed: null,
   },
   thermal: {
@@ -152,13 +159,13 @@ export const EVIDENCE: Readonly<Record<EvidenceQuantity, EvidenceRecord>> = {
     klass: 'exploratory',
     // The fireball's radius is the program's; the rings drawn from it are not
     // checked against anything observed.
-    reference: { impacts: 57, readings: 57, worstPercent: 0.1 },
+    reference: { impacts: 958, readings: 958, excellentPercent: 99.4, pastTen: 1 },
     observed: null,
   },
   ejecta: {
     quantity: 'ejecta',
     klass: 'A',
-    reference: { impacts: 58, readings: 281, worstPercent: 0.9 },
+    reference: { impacts: 1103, readings: 5081, excellentPercent: 92.2, pastTen: 340 },
     observed: null,
   },
   seismic: { quantity: 'seismic', klass: 'exploratory', reference: null, observed: null },

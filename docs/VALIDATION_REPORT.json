@@ -7339,6 +7339,232 @@
         "simple → simple": 8,
         "strewn field → simple": 1
       }
+    },
+    "levelA": {
+      "readOn": "2026-09-23",
+      "cases": 1865,
+      "programFailed": 71,
+      "modelFailed": 0,
+      "readings": 18377,
+      "bars": {
+        "excellent": 0.02,
+        "audit": 0.1
+      },
+      "summaries": [
+        {
+          "quantity": "energy",
+          "readings": 1794,
+          "medianPercent": 1.01,
+          "p90Percent": 2.816,
+          "maxPercent": 3.908,
+          "excellent": 1457,
+          "explain": 337,
+          "audit": 0,
+          "unexplained": 0,
+          "constantSign": false,
+          "explainBy": {
+            "printed": 337
+          }
+        },
+        {
+          "quantity": "breakupAltitude",
+          "readings": 1794,
+          "medianPercent": 0.002,
+          "p90Percent": 0.295,
+          "maxPercent": 51.425,
+          "excellent": 1721,
+          "explain": 58,
+          "audit": 15,
+          "unexplained": 0,
+          "constantSign": true,
+          "explainBy": {
+            "entry": 58
+          }
+        },
+        {
+          "quantity": "burstAltitude",
+          "readings": 834,
+          "medianPercent": 0.001,
+          "p90Percent": 0.857,
+          "maxPercent": 263.927,
+          "excellent": 768,
+          "explain": 45,
+          "audit": 21,
+          "unexplained": 0,
+          "constantSign": true,
+          "explainBy": {
+            "entry": 45
+          }
+        },
+        {
+          "quantity": "airburstOverpressure",
+          "readings": 720,
+          "medianPercent": 0.027,
+          "p90Percent": 0.567,
+          "maxPercent": 75.827,
+          "excellent": 688,
+          "explain": 19,
+          "audit": 13,
+          "unexplained": 0,
+          "constantSign": false,
+          "explainBy": {
+            "entry": 19
+          }
+        },
+        {
+          "quantity": "airburstOverpressureHigh",
+          "readings": 720,
+          "medianPercent": 0.027,
+          "p90Percent": 0.567,
+          "maxPercent": 75.827,
+          "excellent": 688,
+          "explain": 19,
+          "audit": 13,
+          "unexplained": 0,
+          "constantSign": false,
+          "explainBy": {
+            "entry": 19
+          }
+        },
+        {
+          "quantity": "wind",
+          "readings": 1678,
+          "medianPercent": 0.033,
+          "p90Percent": 1.967,
+          "maxPercent": 72.014,
+          "excellent": 1512,
+          "explain": 129,
+          "audit": 37,
+          "unexplained": 0,
+          "constantSign": false,
+          "explainBy": {
+            "printed": 95,
+            "entry": 34
+          }
+        },
+        {
+          "quantity": "groundVelocity",
+          "readings": 960,
+          "medianPercent": 0.337,
+          "p90Percent": 1.891,
+          "maxPercent": 15.635,
+          "excellent": 872,
+          "explain": 86,
+          "audit": 2,
+          "unexplained": 0,
+          "constantSign": false,
+          "explainBy": {
+            "printed": 74,
+            "entry": 12
+          }
+        },
+        {
+          "quantity": "transientDiameter",
+          "readings": 960,
+          "medianPercent": 0.827,
+          "p90Percent": 2.974,
+          "maxPercent": 102.142,
+          "excellent": 776,
+          "explain": 170,
+          "audit": 14,
+          "unexplained": 0,
+          "constantSign": false,
+          "explainBy": {
+            "printed": 146,
+            "open": 15,
+            "entry": 9
+          }
+        },
+        {
+          "quantity": "finalDiameter",
+          "readings": 960,
+          "medianPercent": 0.772,
+          "p90Percent": 2.637,
+          "maxPercent": 102.323,
+          "excellent": 800,
+          "explain": 146,
+          "audit": 14,
+          "unexplained": 0,
+          "constantSign": false,
+          "explainBy": {
+            "printed": 129,
+            "entry": 6,
+            "open": 11
+          }
+        },
+        {
+          "quantity": "finalDepth",
+          "readings": 960,
+          "medianPercent": 0.91,
+          "p90Percent": 2.752,
+          "maxPercent": 101.98,
+          "excellent": 793,
+          "explain": 153,
+          "audit": 14,
+          "unexplained": 0,
+          "constantSign": false,
+          "explainBy": {
+            "printed": 119,
+            "open": 30,
+            "entry": 4
+          }
+        },
+        {
+          "quantity": "overpressure",
+          "readings": 958,
+          "medianPercent": 0.039,
+          "p90Percent": 0.291,
+          "maxPercent": 35.602,
+          "excellent": 923,
+          "explain": 22,
+          "audit": 13,
+          "unexplained": 0,
+          "constantSign": true,
+          "explainBy": {
+            "entry": 22
+          }
+        },
+        {
+          "quantity": "fireballRadius",
+          "readings": 958,
+          "medianPercent": 0.016,
+          "p90Percent": 0.099,
+          "maxPercent": 10.233,
+          "excellent": 953,
+          "explain": 4,
+          "audit": 1,
+          "unexplained": 0,
+          "constantSign": false,
+          "explainBy": {
+            "entry": 4
+          }
+        },
+        {
+          "quantity": "ejectaEdge",
+          "readings": 5081,
+          "medianPercent": 0.041,
+          "p90Percent": 0.853,
+          "maxPercent": 6485.352,
+          "excellent": 4689,
+          "explain": 52,
+          "audit": 340,
+          "unexplained": 0,
+          "constantSign": false,
+          "explainBy": {
+            "entry": 48,
+            "low-burst-crater": 4
+          }
+        }
+      ],
+      "auditsByDifference": {
+        "wind-printed-to-a-millimetre-per-second": 14,
+        "entry-paper-equations": 101,
+        "iron-crater-by-mass": 216,
+        "crater-field": 98,
+        "low-burst-crater": 8,
+        "program-map-edge": 60
+      },
+      "undocumented": []
     }
   },
   "golden": {

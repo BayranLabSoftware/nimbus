@@ -33,3 +33,7 @@ docs/BENCHMARK_REPORT.md
 # pretty-print it back to half a megabyte and rewrite the file on every
 # commit — which is a re-seal nobody asked for (rule 833).
 src/seal/impactSealData.json
+
+# The Earth Impact Effects Program's answers on level A's wide grid: written by
+# `scripts/eiep-grid.py`, one case per line, like the seal above.
+src/physics/validation/eiepGrid.json

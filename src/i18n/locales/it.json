@@ -2505,7 +2505,7 @@
     "heading": "Su che cosa poggia ogni numero",
     "intro": "Ogni numero che un impatto stampa porta una classe: con che cosa è stato confrontato, in quale dominio, con quale errore — e dove è soltanto uno scenario.",
     "tagTitle": "{{label}} — {{summary}}",
-    "checked": "Confrontato con l’{{program}} su {{impacts}} impatti ({{readings}} letture), ciascuna entro il {{worst}} %.",
+    "checked": "Confrontato caso per caso con l’{{program}} su {{impacts}} impatti ({{readings}} letture): il {{excellent}} % entro il 2 %, le altre entro il 10 % o — {{pastTen}} — ricondotte ciascuna a una differenza di progetto documentata (livello A).",
     "observedBolides": "Sui {{events}} bolidi misurati nel catalogo del JPL, l’ingresso sbaglia la quota di {{error}} km in mediana; la soglia di {{bar}} km non è raggiunta.",
     "columns": {
       "quantity": "Grandezza",
@@ -2544,43 +2544,43 @@
     "quantity": {
       "energy": {
         "name": "Energia cinetica",
-        "summary": "½ m v² degli ingressi; il programma di riferimento concorda entro il {{worst}} %.",
+        "summary": "½ m v² degli ingressi; il programma di riferimento la stampa a due cifre, e concorda.",
         "domain": "Qualunque corpo il pannello accetti: è l’aritmetica degli ingressi.",
         "error": "",
         "missing": "Nulla oltre agli ingressi stessi."
       },
       "entry": {
         "name": "Ingresso in atmosfera",
-        "summary": "L’ingresso del programma di riferimento, entro il {{worst}} %; entrambi sbagliano di {{error}} km in mediana le quote misurate in cielo.",
-        "domain": "Corpi da 10 m a 10 km, da 12 a 50 km/s, sulla griglia di riferimento: l’esplosione in aria, la frammentazione che arriva comunque al suolo, il corpo che arriva intero.",
+        "summary": "L’ingresso del programma di riferimento, caso per caso; entrambi sbagliano di {{error}} km in mediana le quote misurate in cielo.",
+        "domain": "Corpi da 1 m a 30 km, da cometa a ferro, da 12 a 70 km/s e da 15 a 90°, sulle griglie di riferimento: l’esplosione in aria, la frammentazione che arriva comunque al suolo, il corpo che arriva intero. I ferri lenti qui si rompono più in alto che nel programma, che raddoppia l’I_f del paper (BM-13), ed è scritto caso per caso.",
         "error": "",
         "missing": "Livello B: un ingresso che rispetti le quote osservate — la soglia di {{bar}} km sui bolidi, Čeljabinsk e Tunguska nel test in cieco."
       },
       "crater": {
         "name": "Cratere",
-        "summary": "Le leggi di scala del cratere del programma di riferimento, entro il {{worst}} %; non ancora confrontate con un cratere misurato.",
-        "domain": "Crateri semplici e complessi in roccia sedimentaria e cristallina, dai corpi della griglia di riferimento che arrivano al suolo.",
+        "summary": "Le leggi di scala del cratere del programma di riferimento, caso per caso, salvo il campo di crateri di un corpo disperso; non ancora confrontate con un cratere misurato.",
+        "domain": "Crateri semplici e complessi in roccia sedimentaria e cristallina, dai corpi delle griglie di riferimento che arrivano al suolo — salvo un corpo i cui frammenti cadono sparsi più largo del suo cratere: un campo di crateri nel programma, un cratere solo qui (B-123, aperto).",
         "error": "",
-        "missing": "Livello B: Meteor Crater nel test in cieco; livello C: risultati di hydrocode (iSALE, CTH) su angoli e bersagli diversi."
+        "missing": "Il campo di crateri di un corpo disperso (B-123); livello B: Meteor Crater nel test in cieco; livello C: risultati di hydrocode (iSALE, CTH) su angoli e bersagli diversi."
       },
       "blast": {
         "name": "Onda d’urto",
-        "summary": "L’onda d’urto del programma di riferimento, entro il {{worst}} %; le sue curve sono scalate da test nucleari.",
-        "domain": "Esplosioni in aria e impatti al suolo, da 1 a 1 000 km, sulla griglia di riferimento.",
+        "summary": "L’onda d’urto del programma di riferimento, caso per caso; le sue curve sono scalate da test nucleari.",
+        "domain": "Esplosioni in aria e impatti al suolo, da 1 a 20 000 km, sulle griglie di riferimento.",
         "error": "",
         "missing": "Livello B: i danni lasciati da Čeljabinsk e Tunguska, nel test in cieco."
       },
       "thermal": {
         "name": "Calore, ustioni e incendi",
         "summary": "Soglie di ustione e di accensione misurate su lampi nucleari di secondi, applicate a impulsi che possono durare minuti.",
-        "domain": "Il raggio della palla di fuoco è quello del programma di riferimento (entro il {{worst}} %); gli anelli di ustione, accensione e incendio che ne derivano non sono verificati.",
+        "domain": "Il raggio della palla di fuoco è quello del programma di riferimento (il {{excellent}} % delle letture entro il 2 %); gli anelli di ustione, accensione e incendio che ne derivano non sono verificati.",
         "error": "Non stabilito: nessuna ustione né incendio lasciati da un impatto è stato confrontato.",
         "missing": "Soglie per impulsi lunghi, e la foresta bruciata di Tunguska come verifica."
       },
       "ejecta": {
         "name": "Ejecta",
-        "summary": "La coltre di ejecta del programma di riferimento, entro il {{worst}} %; non ancora confrontata con una coltre misurata.",
-        "domain": "Il bordo della coltre da 1 mm a 100 m di spessore, attorno ai crateri della griglia di riferimento.",
+        "summary": "La coltre di ejecta del programma di riferimento, caso per caso; non ancora confrontata con una coltre misurata.",
+        "domain": "Il bordo della coltre da 1 cm a 100 m di spessore, attorno ai crateri delle griglie di riferimento; il campo disseminato di un ferro e un airburst basso scavano altri crateri da quelli che la mappa del programma disegna, per progetto.",
         "error": "",
         "missing": "Livello B: coltri misurate — Meteor Crater, il Ries."
       },
@@ -2612,6 +2612,7 @@
         "error": "Non stabilito: nessun impatto nella storia ha lasciato un bilancio di vittime, quindi è un’estrapolazione. Un ordine di grandezza, mai un conteggio.",
         "missing": "Nulla può validarlo finché un impatto non lascia un bilancio; si può portare la dispersione di ogni tasso che usa."
       }
-    }
+    },
+    "checkedClean": "Confrontato caso per caso con l’{{program}} su {{impacts}} impatti ({{readings}} letture): il {{excellent}} % entro il 2 %, le altre entro le cifre che il programma stampa, nessuna oltre il 10 % (livello A)."
   }
 }

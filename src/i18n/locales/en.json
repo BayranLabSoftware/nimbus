@@ -2252,7 +2252,7 @@
     "heading": "What each number rests on",
     "intro": "Every number an impact prints carries a class: what it has been checked against, in which domain, with what error — and where it is only a scenario.",
     "tagTitle": "{{label}} — {{summary}}",
-    "checked": "Checked against the {{program}} on {{impacts}} impacts ({{readings}} readings), every one within {{worst}} %.",
+    "checked": "Checked case by case against the {{program}} on {{impacts}} impacts ({{readings}} readings): {{excellent}} % within 2 %, the rest within 10 % or — {{pastTen}} of them — each traced to a documented difference of design (level A).",
     "observedBolides": "Against the {{events}} bolides JPL’s catalogue measured, the entry misses the altitude by a median {{error}} km; the {{bar}} km bar is not reached.",
     "columns": {
       "quantity": "Quantity",
@@ -2291,43 +2291,43 @@
     "quantity": {
       "energy": {
         "name": "Kinetic energy",
-        "summary": "½ m v² of the inputs; the reference program agrees within {{worst}} %.",
+        "summary": "½ m v² of the inputs; the reference program prints it to two figures, and agrees.",
         "domain": "Any body the panel accepts: it is the arithmetic of the inputs.",
         "error": "",
         "missing": "Nothing beyond the inputs themselves."
       },
       "entry": {
         "name": "Atmospheric entry",
-        "summary": "The reference program’s entry, within {{worst}} %; both miss the altitudes the sky measured by a median {{error}} km.",
-        "domain": "Bodies of 10 m to 10 km at 12 to 50 km/s on the reference grid: the airburst, the break-up that still strikes the ground, and the body that arrives whole.",
+        "summary": "The reference program’s entry, case by case; both miss the altitudes the sky measured by a median {{error}} km.",
+        "domain": "Bodies of 1 m to 30 km, comet to iron, at 12 to 70 km/s and 15 to 90°, on the reference grids: the airburst, the break-up that still strikes the ground, and the body that arrives whole. Slow irons break higher here than in the program, which doubles the paper’s I_f (BM-13), and that is written down case by case.",
         "error": "",
         "missing": "Level B: an entry that meets the observed altitudes — the {{bar}} km bar over the bolides, Chelyabinsk and Tunguska in the blind test."
       },
       "crater": {
         "name": "Crater",
-        "summary": "The reference program’s crater scaling, within {{worst}} %; not yet held to a measured crater.",
-        "domain": "Simple and complex craters in sedimentary and crystalline rock, from the bodies of the reference grid that reach the ground.",
+        "summary": "The reference program’s crater scaling, case by case, but for the crater field of a scattered body; not yet held to a measured crater.",
+        "domain": "Simple and complex craters in sedimentary and crystalline rock, from the bodies of the reference grids that reach the ground — except a body whose fragments land spread wider than its crater: a crater field in the program, one crater here (B-123, open).",
         "error": "",
-        "missing": "Level B: Meteor Crater in the blind test; level C: hydrocode results (iSALE, CTH) across angles and targets."
+        "missing": "The crater field of a scattered body (B-123); level B: Meteor Crater in the blind test; level C: hydrocode results (iSALE, CTH) across angles and targets."
       },
       "blast": {
         "name": "Air blast",
-        "summary": "The reference program’s air blast, within {{worst}} %; its curves are scaled from nuclear tests.",
-        "domain": "Airbursts and ground impacts, from 1 to 1 000 km, on the reference grid.",
+        "summary": "The reference program’s air blast, case by case; its curves are scaled from nuclear tests.",
+        "domain": "Airbursts and ground impacts from 1 to 20 000 km, on the reference grids.",
         "error": "",
         "missing": "Level B: the damage Chelyabinsk and Tunguska left, in the blind test."
       },
       "thermal": {
         "name": "Heat, burns and fire",
         "summary": "Burn and ignition thresholds measured on nuclear flashes of seconds, applied to pulses that can last minutes.",
-        "domain": "The fireball’s radius is the reference program’s (within {{worst}} %); the burn, ignition and fire rings drawn from it are not checked.",
+        "domain": "The fireball’s radius is the reference program’s ({{excellent}} % of its readings within 2 %); the burn, ignition and fire rings drawn from it are not checked.",
         "error": "Not established: no burn or fire an impact left has been compared.",
         "missing": "Thresholds for long pulses, and Tunguska’s burnt forest as a check."
       },
       "ejecta": {
         "name": "Ejecta",
-        "summary": "The reference program’s ejecta blanket, within {{worst}} %; not yet held to a measured blanket.",
-        "domain": "The blanket’s edge at 1 mm to 100 m of thickness, around the craters of the reference grid.",
+        "summary": "The reference program’s ejecta blanket, case by case; not yet held to a measured blanket.",
+        "domain": "The blanket’s edge at 1 cm to 100 m of thickness, around the craters of the reference grids; an iron’s strewn field and a low burst dig other craters than the program’s map draws, by design.",
         "error": "",
         "missing": "Level B: measured blankets — Meteor Crater, the Ries."
       },
@@ -2359,6 +2359,7 @@
         "error": "Not established: no impact in recorded history has left a death toll, so this is an extrapolation. An order of magnitude, never a count.",
         "missing": "Nothing can validate it until an impact leaves a toll; what can be done is to carry the spread of every rate it uses."
       }
-    }
+    },
+    "checkedClean": "Checked case by case against the {{program}} on {{impacts}} impacts ({{readings}} readings): {{excellent}} % within 2 %, the rest within the figures the program prints, none past 10 % (level A)."
   }
 }
