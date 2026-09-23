@@ -6,6 +6,7 @@ import {
   type StrengthLaw,
 } from '../effects/atmosphericEntry.js';
 import { J, kgPerM3, m, mps, Pa, rad } from '../units.js';
+import type { EntryAtmosphere } from './entryAtmosphereRules.js';
 import {
   FIREBALL_BODIES,
   FIREBALL_ENERGY_CELLS,
@@ -42,25 +43,35 @@ export interface FireballRow {
 }
 
 /** Rule 77: one bolide as the model runs it — under the product's law of
- *  strength, or the one named (rule 885(b) reads both). */
+ *  strength, or the one named (rule 885(b) reads both); on the product's
+ *  atmosphere, or the branch named, and at the strength named where rule
+ *  914(iii) reads a band. */
 export function fireballRow(
   event: FireballEvent,
   body: FireballBody,
-  law: StrengthLaw = DEFAULT_STRENGTH_LAW
+  law: StrengthLaw = DEFAULT_STRENGTH_LAW,
+  options: { atmosphere?: EntryAtmosphere; strengthPa?: number } = {}
 ): FireballRow {
   const angle = fireballEntryAngle(event);
   const diameter = fireballDiameterM(event.energyKt, event.speedKmS, body.densityKgM3);
   const entry = atmosphericEntry(
     m(diameter),
     mps(event.speedKmS * 1_000),
-    mainStageStrength(
-      law,
-      body.strengthPa === null ? undefined : Pa(body.strengthPa),
-      body.densityKgM3
-    ),
+    options.strengthPa === undefined
+      ? mainStageStrength(
+          law,
+          body.strengthPa === null ? undefined : Pa(body.strengthPa),
+          body.densityKgM3
+        )
+      : Pa(options.strengthPa),
     kgPerM3(body.densityKgM3),
     J(event.energyKt * 4.184e12),
-    rad(angle)
+    rad(angle),
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    options.atmosphere
   );
   const burst = (entry.burstAltitude as number) / 1_000;
   return {

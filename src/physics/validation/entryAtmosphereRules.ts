@@ -215,5 +215,31 @@ export const ENTRY_ATMOSPHERE_CRITERION = {
   bandStrengthsPa: [0.9e6 * (5 / 0.9) ** 0.1, 0.9e6 * (5 / 0.9) ** 0.9] as const,
 } as const;
 
+/**
+ * Rule 910's runs, 23 September 2026, on N as step 2 wrote it (dormant: the
+ * product stays on `closed`). The rules were pushed first (0713796).
+ *
+ *   Run 1 — the tables and the integral of ρ L² by the trapezoid rule, as
+ *   rule 909(g) wrote them: (a) failed on the speeds after the breakup, by up
+ *   to 9e-5 of their value — the trapezoid overstates the integral of that
+ *   convex integrand — while every altitude held; (b) and (c) failed with it.
+ *   Run 2 — the integral of ρ L² by Simpson's rule on each segment, the
+ *   profile read at its middle: (c) passed; (a) and (b) still failed on the
+ *   speeds of a cloud just below its burst, by up to 4e-5, from the column
+ *   mass read linearly between nodes.
+ *   Run 3 — the tables summed, and read between nodes, by Simpson's rule: (a),
+ *   (b) and (c) pass on all 4 068 cases, none on the edge of a regime; the
+ *   largest difference of an altitude from A* is 0.8 mm.
+ * These are mends of N's numerics as rule 910(e) allows; no tolerance moved,
+ * and rule 909(g)'s grid, its span and its tail stand.
+ *
+ * Reported, never deciding: A against A* on the same cases — the regime is
+ * the same in every case; Eq. 11 puts the breakup 34 m below Eq. 10's root on
+ * average, 40 m at most; the burst differs by 2.7 m in the median and 30 m at
+ * most. Eq. 11 is, as its authors wrote, an excellent approximation: what
+ * N-exp moves on I2 will be what these metres move. An entry costs 0.068 ms
+ * integrated, 0.008 ms closed (Apple M-series, Node 22).
+ */
+
 /** The outcome, written after the one run of rule 914. */
 export const ENTRY_ATMOSPHERE_OUTCOME: string | null = null;

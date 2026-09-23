@@ -20,6 +20,16 @@ import type {
   Radians,
 } from '../units.js';
 import { J, kgPerM3, m, mps, Pa } from '../units.js';
+import type { EntryAtmosphere } from '../validation/entryAtmosphereRules.js';
+import { DRAG_COEFFICIENT, GRAVITY, H_SCALE, PANCAKE_FACTOR, RHO_0 } from './entryConstants.js';
+import {
+  entryProfileOf,
+  entryTable,
+  integratedBreakup,
+  integratedFirstCrossing,
+  integratedPath,
+  integratedSpreadAtGround,
+} from './entryIntegrated.js';
 
 /**
  * Atmospheric entry of a cosmic impactor: Collins, Melosh & Marcus
@@ -52,18 +62,6 @@ import { J, kgPerM3, m, mps, Pa } from '../units.js';
  * (Chelyabinsk).
  */
 
-/** Surface atmospheric density, as Collins et al. take it (kg/m³). */
-const RHO_0 = 1;
-/** Atmospheric scale height (m). */
-const H_SCALE = 8_000;
-/** Drag coefficient. */
-const DRAG_COEFFICIENT = 2;
-/** Pancake factor: the spread, as a multiple of the body's diameter, at
- *  which the fragments go their own ways and the airburst is declared. */
-const PANCAKE_FACTOR = 7;
-/** Standard gravity, for the terminal velocity (m/s²). */
-const GRAVITY = 9.81;
-
 /**
  * Collins et al. 2005 Eq. 9: the yield strength an impactor of this
  * density is given when no strength class is chosen,
@@ -84,6 +82,21 @@ export function collinsStrength(density: KilogramPerCubicMeter): Pascals {
  */
 export type StrengthLaw = 'density' | 'twoStage';
 export const DEFAULT_STRENGTH_LAW: StrengthLaw = 'twoStage';
+
+/**
+ * Rules 908 to 918 (validation/entryAtmosphereRules.ts): the branch the entry
+ * runs on — `closed`, Collins et al.'s closed forms on their exponential (the
+ * legacy branch A), or the same model integrated on a profile of the
+ * atmosphere (`entryIntegrated.ts`), which follows the paper's equations and
+ * the switch boundary whatever the options say.
+ */
+export const DEFAULT_ENTRY_ATMOSPHERE: EntryAtmosphere = 'closed';
+
+/** The table of an integrated branch; null for the closed forms. */
+function tableOf(atmosphere: EntryAtmosphere): ReturnType<typeof entryTable> | null {
+  const profile = entryProfileOf(atmosphere);
+  return profile === null ? null : entryTable(profile);
+}
 
 /** Rule 882(c): the first phase's and the second's strengths, the geometric
  *  midpoints of 0.04–0.12 MPa and 0.9–5 MPa, and their intervals. */
@@ -132,11 +145,18 @@ export function firstFragmentationAltitude(input: {
   density: number;
   angle: number;
   strength: number;
+  atmosphere?: EntryAtmosphere;
 }): Meters {
   const { diameter, velocity, density, angle, strength } = input;
   const sinTheta = Math.sin(angle);
   if (![diameter, velocity, density, strength, sinTheta].every((v) => Number.isFinite(v) && v > 0))
     return m(0);
+  const table = tableOf(input.atmosphere ?? DEFAULT_ENTRY_ATMOSPHERE);
+  if (table !== null) {
+    // Rule 909(f): Eq. 10 at S1 on the branch's profile.
+    const z = integratedFirstCrossing(table, { diameter, velocity, density, sinTheta }, strength);
+    return m(z ?? 0);
+  }
   const a = (3 * DRAG_COEFFICIENT * H_SCALE) / (4 * density * diameter * sinTheta);
   const pressure = (x: number): number => x * velocity * velocity * Math.exp(-2 * a * x);
   const top = Math.min(RHO_0, 1 / (2 * a));
@@ -544,7 +564,8 @@ export function atmosphericEntry(
   equations: EntryEquations = DEFAULT_ENTRY_EQUATIONS,
   burstSpeed: BurstSpeed = DEFAULT_BURST_SPEED,
   boundary: EntryBoundary = DEFAULT_ENTRY_BOUNDARY,
-  airFlash: AirFlash = DEFAULT_AIR_FLASH
+  airFlash: AirFlash = DEFAULT_AIR_FLASH,
+  atmosphere: EntryAtmosphere = DEFAULT_ENTRY_ATMOSPHERE
 ): AtmosphericEntryResult {
   const program = equations === 'program';
   const joined = boundary === 'joined';
@@ -578,6 +599,45 @@ export function atmosphericEntry(
     sinTheta <= 0
   ) {
     return whole(Math.max(v0, 0));
+  }
+
+  const table = tableOf(atmosphere);
+  if (table !== null) {
+    // Rule 909: the same model integrated on the branch's profile.
+    const body = { diameter: L0, velocity: v0, density: rhoI, sinTheta };
+    const run = integratedBreakup(table, body, Y);
+    if (run.breakup === null) {
+      const groundDensity = table.profile.density(0);
+      const terminal = Math.sqrt(
+        (4 * rhoI * L0 * GRAVITY) / (3 * groundDensity * DRAG_COEFFICIENT)
+      );
+      return whole(Math.max(run.endVelocity, Math.min(terminal, v0)));
+    }
+    if (run.burst > 0) {
+      const blastYield = airburstBlastYield(J(totalKE), (run.endVelocity / v0) ** 2);
+      return {
+        burstAltitude: m(run.burst),
+        breakupAltitude: m(run.breakup),
+        virtualBurstAltitude: m(run.burst),
+        regime: 'COMPLETE_AIRBURST',
+        endVelocity: mps(run.endVelocity),
+        energyFractionToGround: 0,
+        atmosphericYieldMegatons: totalKE / JOULES_PER_MEGATON_TNT,
+        ...computeEntryDamage(totalKE, run.burst, blastYield, airFlash),
+      };
+    }
+    const share = Math.min(1, (run.endVelocity / v0) ** 2);
+    const yieldJ = (1 - share) * totalKE;
+    return {
+      burstAltitude: m(0),
+      breakupAltitude: m(run.breakup),
+      virtualBurstAltitude: m(run.burst),
+      regime: 'PARTIAL_AIRBURST',
+      endVelocity: mps(run.endVelocity),
+      energyFractionToGround: share,
+      atmosphericYieldMegatons: yieldJ / JOULES_PER_MEGATON_TNT,
+      ...computeEntryDamage(yieldJ, 0, yieldJ, airFlash),
+    };
   }
 
   const density = (z: number): number => RHO_0 * Math.exp(-z / H_SCALE);
@@ -684,9 +744,21 @@ export function swarmSpreadAtGround(input: {
   impactorDensity: number;
   impactAngle: number;
   breakupAltitude: number;
+  atmosphere?: EntryAtmosphere;
 }): Meters {
   const L0 = input.impactorDiameter;
   const zStar = input.breakupAltitude;
+  const table = tableOf(input.atmosphere ?? DEFAULT_ENTRY_ATMOSPHERE);
+  if (table !== null) {
+    // Rule 909(f): L(0) of rule 909(c).
+    const body = {
+      diameter: L0,
+      velocity: 0,
+      density: input.impactorDensity,
+      sinTheta: Math.sin(input.impactAngle),
+    };
+    return m(integratedSpreadAtGround(table, body, zStar));
+  }
   const rhoStar = RHO_0 * Math.exp(-zStar / H_SCALE);
   // Eq. 16*.
   const l =
@@ -729,6 +801,7 @@ export interface EntryPathOptions {
   radiusCap: number;
   equations?: EntryEquations;
   boundary?: EntryBoundary;
+  atmosphere?: EntryAtmosphere;
 }
 
 /**
@@ -785,6 +858,16 @@ export function entryPath(
   const altitudes: number[] = [];
   for (let z = options.top; z > 0; z -= options.step) altitudes.push(z);
   altitudes.push(0);
+  const table = tableOf(options.atmosphere ?? DEFAULT_ENTRY_ATMOSPHERE);
+  if (table !== null) {
+    // Rule 909 along the path, the radiating radius capped as below.
+    const body = { diameter: L0, velocity: v0, density: rhoI, sinTheta };
+    return integratedPath(table, body, Y, altitudes).map((p) => ({
+      altitude: p.altitude,
+      velocity: p.velocity,
+      radius: Math.min(p.diameter, cap) / 2,
+    }));
+  }
   if (If >= 1) {
     for (const z of altitudes)
       samples.push({ altitude: z, velocity: wholeSpeed(z), radius: L0 / 2 });

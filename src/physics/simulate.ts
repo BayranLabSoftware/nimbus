@@ -38,6 +38,7 @@ import {
   type AtmosphericEntryResult,
   type StrengthLaw,
 } from './effects/atmosphericEntry.js';
+import type { EntryAtmosphere } from './validation/entryAtmosphereRules.js';
 import {
   craterAsymmetry,
   ejectaButterflyAsymmetry,
@@ -199,6 +200,8 @@ export interface ImpactScenarioInput {
   /** Rule 882(c): the first phase's strength, where a draw gives one; the
    *  source's midpoint otherwise. Read under `twoStage` only. */
   firstStageStrength?: Pascals;
+  /** Rules 908 to 918: the branch of the entry's atmosphere. */
+  entryAtmosphere?: EntryAtmosphere;
   /** Compass azimuth (° clockwise from geographic North) the impactor
    *  is travelling toward at the moment of contact. Drives the down-
    *  range orientation of the asymmetric ejecta blanket for oblique
@@ -628,6 +631,7 @@ function withFirstStage(
       density: input.impactorDensity,
       angle: input.impactAngle,
       strength: input.firstStageStrength ?? FIRST_STAGE_STRENGTH,
+      ...(input.entryAtmosphere === undefined ? {} : { atmosphere: input.entryAtmosphere }),
     }),
     firstFragmentationMajorShare: FIRST_STAGE_MAJOR_SHARE,
   };
@@ -654,7 +658,8 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       input.entryEquations,
       undefined,
       input.entryBoundary,
-      input.airFlash
+      input.airFlash,
+      input.entryAtmosphere
     )
   );
   // Crater and ejecta come from the speed the body or its swarm strikes
@@ -775,6 +780,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
             impactorDensity: input.impactorDensity,
             impactAngle: input.impactAngle,
             breakupAltitude: entry.breakupAltitude,
+            ...(input.entryAtmosphere === undefined ? {} : { atmosphere: input.entryAtmosphere }),
           }),
           wholeCrater()
         )
@@ -917,6 +923,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
               radiusCap: ATAP_RADIUS_CAP,
               ...(input.entryEquations === undefined ? {} : { equations: input.entryEquations }),
               ...(input.entryBoundary === undefined ? {} : { boundary: input.entryBoundary }),
+              ...(input.entryAtmosphere === undefined ? {} : { atmosphere: input.entryAtmosphere }),
             }
           ),
           input.impactAngle,
