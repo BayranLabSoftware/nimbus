@@ -108,5 +108,46 @@ export const CRATER_FIELD_HELD_OUT_SEED = 'benchmark-2026-09-23-heldout-crater-f
 export const CRATER_FIELD_THRESHOLD = 1;
 export const CRATER_FIELD_LARGEST_FRAGMENT = 0.5;
 
-/** The outcome, written after the candidate was measured. */
-export const CRATER_FIELD_OUTCOME = 'PENDING: the rules are written; the candidate is not.';
+/**
+ * The outcome, written on 23 September 2026 after the candidate (cfb44ff) was
+ * measured once, on one commit. The rules were pushed in c3da9e9 first.
+ *
+ * REFUSED, by clauses (a) and (c). The default stays `single`; B-123 stays open.
+ *
+ * (a) NOT MET, by its letter. Of the 98 readings `crater-field` covers, 93 come
+ *     within 2 % of the program or inside its printed interval under `field`,
+ *     and no other reading of level A moves at all. Five no longer exist: the
+ *     10 m ring of the ejecta blanket around five of the halved craters. The
+ *     model's blanket is 9.25 m thick at its rim, so it draws no 10 m ring
+ *     outside the crater; the program's map draws one inside its own crater —
+ *     153.9 m against a rim at 158.0 m, and likewise on all five. The model is
+ *     right there, but "every reading comes within 2 %" was written, and a
+ *     reading the model no longer answers does not.
+ * (b) MET. No preset moves.
+ * (c) NOT MET. On the benchmark's own draw G5 reads 0 under both laws, the two
+ *     sweeps identical line for line (benchmark/results/invariants-2026-09-23
+ *     and -1). On the seed no run had used it reads 8 under `single` and 12
+ *     under `field` (-3 and -2), and the four new ones are exactly what the
+ *     clause forbade: the final crater, its rim and both ejecta edges of one
+ *     scenario shrink as the body grows by 0.1 % — 2 489.9 m to 1 276.1 m —
+ *     because the slightly larger body spreads wider than its crater and
+ *     becomes a field. The one crater that shrank under `single` (289.96 m to
+ *     282.98 m) is gone. The reference's rule is not monotone in the body's
+ *     size: it halves the crater the moment the swarm's spread passes it.
+ * (d) MET, trivially: no scenario of the seal becomes a field under `field`.
+ * (e) Not run: the default does not move.
+ *
+ * Read after the run, and declared so: level A compares a pair only where
+ * both the model and the program answer a number above zero, so a reading
+ * only one of them answers — as the five of (a) became — is not counted
+ * anywhere in it. That is a gap in level A, not in this candidate.
+ *
+ * What a second round would need, not asked here: a transition from one
+ * crater to a field that is monotone in the body's size and continuous — as
+ * rules 764 to 771 join an iron's strewn field to its single crater by mass —
+ * with the readings near the threshold, where it would part from the
+ * program's sharp halving, documented as a difference of design; and level A
+ * reading one-sided pairs.
+ */
+export const CRATER_FIELD_OUTCOME =
+  "REFUSED 23 September 2026 by rule 842 (a) and (c): the program's sharp halving is not monotone in the body's size — a body 0.1 % larger spreads into a field and digs a crater half as wide (G5 8 → 12 on a new seed) — and five ejecta readings became one-sided. The default stays `single`; B-123 stays open.";

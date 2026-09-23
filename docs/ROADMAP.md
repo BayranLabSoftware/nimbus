@@ -992,6 +992,20 @@ for — all below it — the crater's radii the program's own map carries
 unrounded: against them the complex craters of the wide grid agree within
 0.8 % and the simple ones in the median to 0.02 %.
 
+**B-123 asked first, and refused** (rules 838 to 845, the same morning, by
+Andrea's order). The program's crater field is read exactly — its criterion
+from the paper, the swarm's spread L(0) against the crater the whole swarm
+would dig, separating the program's 14 fields from its 887 single craters,
+and its largest fragment's crater, half the whole swarm's to 0.02 % — and
+under it 93 of the 98 readings agree with the program. It is refused by two of
+its own clauses: the halving is not monotone in the body's size — on a seed no
+run had used, a body 0.1 % larger spreads into a field and digs a crater half
+as wide, and G5 reads 12 against 8 — and five ejecta readings became
+one-sided, the program drawing a 10 m ring inside its own crater where the
+model draws none. The law stays at `single` and B-123 stays open; a second
+round wants a transition monotone in size, as an iron's field is joined by its
+mass. Read after that run: level A counts only pairs both sides answer.
+
 The evidence table now states level A on both grids — share within 2 %,
 readings past 10 %, each documented — and the crater's card names the crater
 field it lacks. `levelA.test.ts` runs the whole comparison in every CI run
