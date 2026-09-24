@@ -90,6 +90,22 @@ Unchanged: no class B with this set (no admitted ground case), none added after 
 performance has been seen; f1 = 0.50 for S; Winchcombe a control. The amendment authorizes no
 prediction and no adoption; F's specification may now be written, as a study of development.
 
+## The second amendment (rules 1057 to 1062)
+
+- **Measured, from the evidence.** A stone called «the main mass» is a lower bound unless its
+  source documents the completeness of the search; the class is fixed from the recovery's evidence
+  before any prediction. Above a lower bound the verdict is «not incompatible», never «compatible».
+- **O2's error.** The point prediction is the median of the largest piece at the ground (zero where
+  none arrives: an infinite error); the error is computed on measured masses whether or not the band
+  crosses them; baseline and model on the same measured bodies; the factor-of-two clause read on
+  the baseline's median error.
+- **O5.** The crater's worsening only on a fall and on the draws where the model is in the crater's
+  domain; C1 and C2 keep their gain of 0.10 and their floor of 0.90; O5's improvement can be claimed
+  only with C1 and C2 each assessable on three bodies, while a worsening always counts.
+- **The bands.** Compared on the same bodies and, when conditioned, on the same paired draws (at
+  least 50); the floors stabilize the ratio and license no widened band.
+- **The table of eligibility**, published empty: docs/INDEPENDENT_TEST_ELIGIBILITY.md.
+
 ## What may not happen
 
 No law of F, fragment size, upper edge of the strengths, f1 or closure is chosen, tuned or checked

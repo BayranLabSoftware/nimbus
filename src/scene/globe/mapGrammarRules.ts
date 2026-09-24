@@ -178,6 +178,27 @@
  *       so above everything: an extrapolation to a planetary scale, no
  *       prediction of broken glass, in no count of damage.
  *   (e) The observed note names its event, on the globe and in the report.
+ *
+ * RULE 1056. STEP 7, CLOSED ON ITS PRESENTATION. The reviewer, 24 September
+ * 2026, withdrew his request that the airburst's magnitude read «non
+ * calcolata»: the model computes an exploratory estimate of the coupling of the
+ * air wave to the ground, and it stays, told apart from the seismic waves of a
+ * crater. Nothing of the 308 results moves for it. What closes the step:
+ *   (a) Wherever an airburst's magnitude or its layer of shaking appears — the
+ *       report's first box and its rows, the panel, the legend, the timeline —
+ *       it is named an exploratory estimate from the coupling of the air wave
+ *       to the ground, never a seismic release; the first box no longer reads
+ *       «con l'efficienza sismica» for it, which is the crater's relation.
+ *   (b) The out-of-domain words read «Geometria e sorgente degli effetti sono
+ *       esplorative; …», and the fixed label is drawn legibly, set off from
+ *       the rings' values and the names on the coast.
+ *   (c) The warning of an extrapolation to a planetary scale is carried by the
+ *       structural overpressure and the wind as by the low overpressure,
+ *       wherever a layer's field reaches 2 000 km — a practical threshold for
+ *       the warning to appear, not a frontier of validity: the words say that
+ *       within it nothing is validated by that alone. In the report it goes
+ *       with the figures, the provenance cards and the rows of the numbers that
+ *       print those radii.
  */
 
 /** Rule 1030: the four visual states. */
