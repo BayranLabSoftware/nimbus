@@ -82,6 +82,16 @@ changes. With a cloud share of 1, F is the baseline.
 - The bound of 10⁵ components is checked at every creation, so it stops a cascade that does not
   end; that draw is declared not completed.
 
+## The flight solved exactly (rule 1091)
+
+With no ablation a fragment's diameter never changes, so its drag equation on the exponential
+atmosphere has an exact solution — Collins's Eq. 8 started from its own state — used in place of
+Runge–Kutta, and checked against it to 10⁻⁹; a break is found by bisection where ρv² reaches the
+fragment's strength. Convergence is then read on the profile's 100 m bin, halved and doubled, and on
+the floor. F reports its release altitude (the bin where the air receives the most energy), its
+regime (intact, complete airburst, partial), its share of energy at the ground, and beside them the
+baseline's burst altitude.
+
 ## Priors, drawn once per draw
 
 | Parameter          | Interval     | From                                  |

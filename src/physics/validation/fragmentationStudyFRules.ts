@@ -285,6 +285,35 @@
  *       completed (rule 1087 (b)).
  */
 
+/**
+ * RULE 1091. THE FLIGHT SOLVED EXACTLY, AND WHAT F REPORTS (amends rules 1066,
+ * 1071 and 1080; written before the code, to be declared to the reviewer).
+ *   (a) A fragment of F has no ablation, so its diameter stays what it was at
+ *       birth; on the product's exponential atmosphere its drag equation,
+ *       dv/dz = (3/4) C_D ρ(z) v / (ρ_i L sin θ), then has an exact solution —
+ *       Collins et al.'s Eq. 8 started from the fragment's state:
+ *       v(z) = v_b exp(−a (ρ(z) − ρ(z_b))), a = 3 C_D H / (4 ρ_i L sin θ).
+ *       The code uses it in place of the Runge–Kutta integration of rule 1066,
+ *       which S needed only because its core's diameter changed; a test checks
+ *       the two agree to 10⁻⁹. A break is found where ρ v² first reaches the
+ *       fragment's strength, by bisection on ρ to machine precision, as S found
+ *       the whole body's crossing; past the maximum of ρ v² a fragment never
+ *       breaks again.
+ *   (b) With no step to halve, rule 1080's convergence is read on the energy
+ *       profile's bin — 100 m, halved and doubled — and on the floor, 1 g
+ *       against 0.1 g, with the same criteria.
+ *   (c) What F reports: the release altitude, the centre of the profile's bin
+ *       in which the air receives the most energy (the energy of drag, of the
+ *       dust and of the clouds' bursts); the regime — INTACT where the body
+ *       never breaks, COMPLETE_AIRBURST where nothing reaches the ground, and
+ *       PARTIAL_AIRBURST where a fragment or a cloud's swarm does; the share of
+ *       energy at the ground, E_ground / E0; and, beside them, the baseline's
+ *       own burst altitude, today's m2.
+ */
+
+/** Rule 1091 (b): the energy profile's bin (m), and its halving and doubling. */
+export const F_PROFILE_BIN_M = 100;
+
 /** Rule 1065 (a): fragments per break, besides the cloud. */
 export const F_FRAGMENTS_PER_BREAK = 2;
 
