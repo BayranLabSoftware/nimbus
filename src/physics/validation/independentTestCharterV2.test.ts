@@ -29,7 +29,14 @@ describe('rule 1099: the first charter suspended as a judge', () => {
   it('is kept frozen, and not run to decide an adoption', () => {
     expect(CHARTER_V1_STATUS.frozen).toBe(true);
     expect(CHARTER_V1_STATUS.executableForAdoption).toBe(false);
-    expect(CHARTER_V2.frozen).toBe(false);
+  });
+});
+
+describe('rule 1119: the second version frozen', () => {
+  it('is the judge as written, its predictions not yet authorized', () => {
+    expect(CHARTER_V2.frozen).toBe(true);
+    expect(CHARTER_V2.frozenBy).toBe(1119);
+    expect(CHARTER_V2.predictionsAuthorized).toBe(false);
   });
 });
 

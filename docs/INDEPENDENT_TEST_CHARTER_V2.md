@@ -1,6 +1,6 @@
-# The independent test — protocol, version 2 (draft, amended twice)
+# The independent test — protocol, version 2 (frozen)
 
-Rules 1100–1118, `src/physics/validation/independentTestCharterV2.ts`, written on 24 September 2026
+Rules 1100–1119, `src/physics/validation/independentTestCharterV2.ts`, written on 24 September 2026
 before any source of the third set was opened. A draft: frozen only when the reviewer approves it,
 run only after. The first version ([INDEPENDENT_TEST_CHARTER.md](INDEPENDENT_TEST_CHARTER.md)) stays
 as written, a historical version suspended as a judge (rule 1099). This version corrects how the
@@ -11,6 +11,18 @@ arrivals made exhaustive, the joint outcome added, the clause of 0.90 withdrawn,
 draws accounted for, the decision's edge cases, and what each observed answer rests on. Rules
 1114–1118 amend it on his second: O2 diagnostic for all three models, the two decisive observables
 that remain, and arrivals at the crater law's speeds that the law does not resolve.
+
+## Frozen (rule 1119)
+
+On 24 September 2026 the reviewer approved rules 1100–1118 as the judge, with four precisions: where
+the sources admit fewer than three bodies for O1 or the ground outcome, the verdict is «adoption not
+assessable under version 2», never a threshold loosened; D2's check keeps its declared name in every
+result — the share of arrivals at the law's speeds, for S and F the share of fast arrivals, never a
+share of craters they predict; J is admissible only where the sources document the regime on three
+bodies, never by supposition; and the comparison gives limited evidence of compatibility, distinct
+from physical validation. The sources may now be opened, with Andrea's leave for each download, and
+the table of eligibility fixed before any prediction, exclusions kept with their reason. The
+predictions are not authorized: the next review is that table.
 
 ## What is kept and what is dropped (rule 1100)
 

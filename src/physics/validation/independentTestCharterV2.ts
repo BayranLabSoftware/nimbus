@@ -285,6 +285,33 @@
  * observables admitted — never a class B, the set lacking its ground case.
  */
 
+/**
+ * RULE 1119. THE SECOND VERSION FROZEN (the reviewer, 24 September 2026, on
+ * rules 1114 to 1118 as written). Rules 1100 to 1118 are the judge as
+ * written, with his precisions:
+ *   (a) where the sources admit fewer than three bodies for O1 or for the
+ *       ground outcome, the verdict is «adoption not assessable under version
+ *       2» — never a threshold loosened; F is not adoptable in this round, and
+ *       S is judged only on the conditions fixed;
+ *   (b) D2's check keeps exactly its declared name in every result: the share
+ *       of arrivals at the law's speeds — for S and F the share of fast
+ *       arrivals — never a share of craters predicted by S or F; Nimbus's
+ *       operational classes are not by themselves a domain of physical
+ *       validation;
+ *   (c) J is admissible only where the sources document the regime on three
+ *       bodies, never by supposition; otherwise rule 1108 (d)'s reading of D1
+ *       applies, unchanged after the sources are read;
+ *   (d) the comparison can give limited evidence of compatibility with the
+ *       observations admitted; numerical stability, the labels and any
+ *       improvement of a score are questions distinct from the physical
+ *       validation of a model in its domain of use.
+ * The reviewer authorizes opening the third set's sources, with Andrea's leave
+ * for each download, and fixing before any prediction the table of
+ * eligibility, observable by observable, the exclusions kept with their
+ * reason. The predictions are not authorized: the next review is that table.
+ * The historical charter stays suspended; no class B from this set.
+ */
+
 /** Rule 1102: a model's outcome at the ground on one draw. */
 export type GroundState = 'nothing' | 'crater' | 'fast' | 'darkFlight' | 'between';
 
@@ -529,10 +556,12 @@ export function verdictV2(
 /** Rules 1112 (c) and 1115 (a): F cannot be adopted in this round. */
 export const F_ADOPTABLE_THIS_ROUND = false;
 
-/** Rules 1100, 1106, 1113 and 1118: this version's status. */
+/** Rules 1100, 1106, 1113, 1118 and 1119: this version's status. */
 export const CHARTER_V2 = {
   version: 2,
-  rules: '1100–1118',
-  frozen: false,
+  rules: '1100–1119',
+  frozen: true,
+  frozenBy: 1119,
+  predictionsAuthorized: false,
   predecessor: 'independentTestCharter.ts (rule 1099: suspended as a judge)',
 } as const;
