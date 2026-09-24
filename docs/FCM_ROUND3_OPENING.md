@@ -28,3 +28,34 @@ the search may continue from metadata — the compilation «Bolide light curve s
 recovered meteorites» (Jenniskens 2026, MAPS), named in rule 943 and never read, is the one source that
 might give light curves for many falls at once — and if the minimum is not met, round 3's verdict is
 «inconclusive» by rule, not a reason to loosen it.
+
+## The final preparation dossier (rules 1169 to 1174)
+
+The reviewer approved rules 1162 to 1168 with two corrections, written before any value is read:
+
+- **1169** — a single severe structural failure of any configuration on one primary event of quality A
+  makes the verdict at most «inconclusive» (beside rule 1166's clause on a third of the events).
+- **1170** — an event whose drawn diameter leaves 0.1–10 m at its 5th or 95th percentile (or whose
+  median density, speed or angle leaves its range) is out of the domain: not assessable, not counted
+  toward the five events or the three strong ones; its predictions published as a diagnostic outside
+  the domain; decided from the inputs alone, finally, before any target.
+
+And the checks he asked for, from metadata and from what the project has already read:
+
+- **1171, the exposure** — the repository and every source text the project read searched for each
+  candidate's name, each line classified by the kinds of numbers beside it, and where one could be a
+  target, read with every digit masked. Criterion: a candidate is excluded where a read source shows an
+  altitude of its release beside its name; nothing else excludes. None excluded: Grimsby's one such
+  line is the town, under 2022 WJ1's flares; Neuschwanstein has a strength and an entry mass in Kenkmann
+  et al. (2009), registered, and is not in Borovička et al. (2020)'s sample.
+- **1172, the «to check»** — Neuschwanstein, Benenitra, Ischgl and the Central Italy bolide candidates;
+  Tighert excluded (a CNEOS row the project read on its date). Jenniskens (2026), doi:10.1111/maps.70203:
+  no candidate and no target number in its abstract; it enters only as a source of targets for events
+  already listed, never to add one.
+- **1173, the list** — Benenitra (primary); Grimsby, Bunburra Rockhole, Mason Gully, Aguas Zarcas,
+  Neuschwanstein (proxies): six events, nothing added after. If two kinds fall at extraction or two events
+  leave the domain, the verdict is «inconclusive» by rule.
+- **1174, the procedures** — the inputs (speed, angle, initial mass, bulk density or its type's range
+  from Flynn et al. 2018, each with its place in the source; 200 draws per event) extracted first; the
+  targets (the deposition maximum, or the brightest flare's altitude, with its uncertainty and quality)
+  only after the predictions are pushed.

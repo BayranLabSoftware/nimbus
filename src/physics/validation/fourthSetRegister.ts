@@ -169,8 +169,8 @@ export const FOURTH_SET_CANDIDATES: readonly FourthSetCandidate[] = [
     exposed: ['altitudeKm', 'mass'],
     widelyReported: true,
     instruments: 'photographic (European Fireball Network), infrasound, seismic',
-    status: 'to check',
-    note: 'a fall of the European network: whether it is in Borovička et al. (2020)’s sample, excluded by rule 1145 (a), is to be checked before admission',
+    status: 'candidate',
+    note: 'rule 1171 (c): not in Borovička et al. (2020)’s sample, neither by name nor by its network code; a strength and an entry mass in Kenkmann et al. (2009), registered',
   },
   {
     event: 'Park Forest',
@@ -223,8 +223,8 @@ export const FOURTH_SET_CANDIDATES: readonly FourthSetCandidate[] = [
     exposed: ['altitudeKm', 'mass'],
     widelyReported: false,
     instruments: null,
-    status: 'to check',
-    note: 'not among the 357 CNEOS rows the repository read; whether a government-sensor light curve is its source of the deposition is to be checked',
+    status: 'candidate',
+    note: 'rule 1172 (a): a candidate, its kind primary, falling at extraction if its deposition is not reconstructed from a calibrated light curve',
   },
   {
     event: 'Antonin',
@@ -277,8 +277,8 @@ export const FOURTH_SET_CANDIDATES: readonly FourthSetCandidate[] = [
     exposed: ['altitudeKm', 'mass'],
     widelyReported: false,
     instruments: 'photographic (a historic fireball)',
-    status: 'to check',
-    note: 'the meteorite found later and tied to the fireball by probability: whether the association is secure enough for a ground outcome is to be checked',
+    status: 'candidate',
+    note: 'rule 1172 (a): the fireball’s tie to the meteorite concerns the ground, which round 3 does not judge',
   },
   {
     event: 'Annama',
@@ -367,22 +367,8 @@ export const FOURTH_SET_CANDIDATES: readonly FourthSetCandidate[] = [
     exposed: ['altitudeKm', 'mass'],
     widelyReported: false,
     instruments: 'optical, seismic, infrasound',
-    status: 'to check',
-    note: 'whether meteorites were recovered is not clear from the title and flags',
-  },
-  {
-    event: 'Tighert',
-    date: '2014-06-28',
-    type: 'eucrite',
-    sources: [
-      { doi: null, year: 2014, title: 'Tighert: A new eucrite meteorite fall from Morocco' },
-    ],
-    mentions: ['trajectory', 'fragmentation'],
-    exposed: [],
-    widelyReported: false,
-    instruments: null,
-    status: 'to check',
-    note: 'one of the 357 CNEOS rows the repository read falls on the same date: if it is this event, it is excluded (rule 1145 (a))',
+    status: 'candidate',
+    note: 'rule 1172 (a): whether meteorites were recovered concerns the ground, which round 3 does not judge',
   },
   {
     event: 'Puerto Lápice',
@@ -452,6 +438,11 @@ export const FOURTH_SET_LEFT_OUT: readonly { readonly event: string; readonly re
     event: 'Ciechanów fireball, 10 October 2013',
     reason:
       'no meteorite in its title or flags; kept for a later search of credible negatives, not as an entry event',
+  },
+  {
+    event: 'Tighert (28 June 2014)',
+    reason:
+      'rule 1172 (a): a CNEOS row the repository read (I2) falls on its date, and its metadata cannot tell the two apart',
   },
   {
     event: 'Sariçiçek (2 September 2015)',

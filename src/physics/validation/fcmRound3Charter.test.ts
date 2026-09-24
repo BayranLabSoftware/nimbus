@@ -1,7 +1,13 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { FCM_ROUND3, FCM_ROUND3_OBSERVABLES, FCM_ROUND3_SEAL } from './fcmRound3Charter.js';
+import {
+  FCM_ROUND3,
+  FCM_ROUND3_LIST,
+  FCM_ROUND3_OBSERVABLES,
+  FCM_ROUND3_SEAL,
+  FCM_ROUND3_STRUCTURAL_A,
+} from './fcmRound3Charter.js';
 import { FOURTH_SET_CANDIDATES } from './fourthSetRegister.js';
 
 describe('rules 1162 to 1168: the opening document of round 3', () => {
@@ -31,5 +37,16 @@ describe('rules 1162 to 1168: the opening document of round 3', () => {
     expect(FCM_ROUND3.severe.proxyKm).toBeGreaterThan(FCM_ROUND3.margins.proxyKm);
     expect(FCM_ROUND3.weights.mixture.reduce((a, b) => a + b, 0)).toBeCloseTo(1, 12);
     expect(FCM_ROUND3.weights.rotated.reduce((a, b) => a + b, 0)).toBeCloseTo(1, 12);
+  });
+
+  it('freezes the list as the primary and proxy candidates, and nothing else (rule 1173)', () => {
+    const strong = Object.entries(FCM_ROUND3_OBSERVABLES).filter(([, k]) => k !== 'diagnostic');
+    expect(strong.map(([e]) => e).sort()).toEqual(
+      [...FCM_ROUND3_LIST.primary, ...FCM_ROUND3_LIST.proxy].sort()
+    );
+    for (const e of FCM_ROUND3_LIST.primary) expect(FCM_ROUND3_OBSERVABLES[e]).toBe('primary');
+    for (const e of FCM_ROUND3_LIST.proxy) expect(FCM_ROUND3_OBSERVABLES[e]).toBe('proxy');
+    expect(FOURTH_SET_CANDIDATES.some((c) => c.status === 'to check')).toBe(false);
+    expect(FCM_ROUND3_STRUCTURAL_A.severeOnPrimaryA).toBe(1);
   });
 });
