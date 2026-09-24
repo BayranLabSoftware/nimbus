@@ -88,20 +88,33 @@ export interface FcmOptions {
   bundle?: boolean;
 }
 
+/** A structure group (W18): identical pieces with their own strength and,
+ *  where given, their own material density and fragmentation parameters,
+ *  which their descendants keep. */
+export interface FcmGroup {
+  massShare: number;
+  pieces: number;
+  strength: number;
+  materialDensity?: number;
+  alpha?: number;
+  split?: FcmSplit;
+}
+
 /** W18's structured body (rule 1140, M2): groups released at an initial
  *  strength, each piece with its own. */
 export interface FcmStructure {
   initialStrength: number;
   /** The groups' shares of the mass; the remainder is the initial debris,
    *  released as one cloud (W18). They may not exceed 1. */
-  groups: readonly { massShare: number; pieces: number; strength: number }[];
+  groups: readonly FcmGroup[];
 }
 
 export interface FcmBody {
   diameter: number;
   velocity: number;
-  /** Bulk density of the body (kg/m³); the material density of its pieces
-   *  and clouds unless `materialDensity` says otherwise. */
+  /** Bulk density of the body (kg/m³), which with the diameter gives its mass
+   *  and its area until it first breaks; the material density of its pieces
+   *  and clouds unless `materialDensity` says otherwise (W18). */
   density: number;
   materialDensity?: number;
   /** Entry angle below the horizontal (rad). */
@@ -118,6 +131,9 @@ export interface FcmPiece {
   speed: number;
   /** The speed is within 1 % of the piece's terminal speed at the ground. */
   atTerminal: boolean;
+  /** The structure group it descends from (its index), or −1 for a body
+   *  without structure. */
+  group: number;
 }
 
 export interface FcmResult {
@@ -130,6 +146,9 @@ export interface FcmResult {
   binM: number;
   /** The first break's altitude (m), or null. */
   firstBreakAltitude: number | null;
+  /** Each structure group's first break (m), null where its pieces never
+   *  broke; empty for a body without structure. */
+  firstBreakByGroup: (number | null)[];
   pieces: FcmPiece[];
   /** Clouds that reached the ground: their mass and kinetic energy. */
   swarm: { mass: number; energy: number };
@@ -159,6 +178,15 @@ interface Component {
   radius: number;
   radiusCap: number;
   strength: number;
+  /** The density its area follows (a solid) or its debris has (a cloud). */
+  rho: number;
+  /** The body itself, not yet broken: its pieces take the material's density. */
+  whole: boolean;
+  /** The structure group it descends from, −1 for none. */
+  group: number;
+  /** The fragmentation parameters its breaks follow, inherited. */
+  alpha: number;
+  split: FcmSplit;
 }
 
 /** The state carried through a step: v, γ, m, r, gravity's work W and its
@@ -203,8 +231,8 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
       : ussaDensity;
   const gravityAt = (h: number): number =>
     withGravity ? G0 * (EARTH_RADIUS_M / (EARTH_RADIUS_M + h)) ** 2 : 0;
-  const solidArea = (m: number): number =>
-    Math.PI * Math.cbrt((3 * m) / (4 * Math.PI * rhoMat)) ** 2;
+  const solidArea = (m: number, rho: number): number =>
+    Math.PI * Math.cbrt((3 * m) / (4 * Math.PI * rho)) ** 2;
 
   const m0 = (Math.PI / 6) * body.density * body.diameter ** 3;
   const E0 = 0.5 * m0 * body.velocity ** 2;
@@ -231,6 +259,7 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
   const swarm = { mass: 0, energy: 0 };
   let components = 1;
   let firstBreak: number | null = null;
+  const firstBreakByGroup: (number | null)[] = (body.structure?.groups ?? []).map(() => null);
 
   const count = (members: number): void => {
     components += members;
@@ -238,21 +267,22 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
   };
 
   /** d(state)/dh for a component at altitude h, written into `out`. */
-  const derivative = (cloud: boolean, radiusCap: number, h: number, y: State, out: State): void => {
+  const derivative = (c: Component, h: number, y: State, out: State): void => {
     const v = y[0];
     const gamma = y[1];
     const m = y[2];
     const r = y[3];
     const rho = density(h);
     const g = gravityAt(h);
-    const area = cloud ? Math.PI * r * r : solidArea(m);
+    const cloud = c.cloud;
+    const area = cloud ? Math.PI * r * r : solidArea(m, c.rho);
     const sinG = Math.sin(gamma);
     const cosG = Math.cos(gamma);
     const inv = -1 / (v * sinG);
     out[0] = ((-0.5 * Cd * area * rho * v * v) / m + g * sinG) * inv;
     out[1] = (g / v - (withCurvature ? v / (EARTH_RADIUS_M + h) : 0)) * cosG * inv;
     out[2] = -0.5 * sigma * rho * area * v * v * v * inv;
-    out[3] = cloud && r < radiusCap ? v * Math.sqrt((cDisp * rho) / rhoMat) * inv : 0;
+    out[3] = cloud && r < c.radiusCap ? v * Math.sqrt((cDisp * rho) / c.rho) * inv : 0;
     out[4] = m * g * v * sinG * inv;
     out[5] = m * g * inv;
     out[6] = inv;
@@ -278,17 +308,17 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
   /** One step from h down by dh (> 0), by the chosen scheme. */
   const advance = (c: Component, h: number, y: State, dh: number): State => {
     const out: State = [0, 0, 0, 0, 0, 0, 0];
-    derivative(c.cloud, c.radiusCap, h, y, k1);
+    derivative(c, h, y, k1);
     if (euler) {
       axpy(out, y, -dh, k1);
       return out;
     }
     axpy(tmp, y, -dh / 2, k1);
-    derivative(c.cloud, c.radiusCap, h - dh / 2, tmp, k2);
+    derivative(c, h - dh / 2, tmp, k2);
     axpy(tmp, y, -dh / 2, k2);
-    derivative(c.cloud, c.radiusCap, h - dh / 2, tmp, k3);
+    derivative(c, h - dh / 2, tmp, k3);
     axpy(tmp, y, -dh, k3);
-    derivative(c.cloud, c.radiusCap, h - dh, tmp, k4);
+    derivative(c, h - dh, tmp, k4);
     // k1 + 2 k2 + 2 k3 + k4, gathered in k1.
     k1[0] += 2 * k2[0] + 2 * k3[0] + k4[0];
     k1[1] += 2 * k2[1] + 2 * k3[1] + k4[1];
@@ -328,34 +358,38 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
     into.add(c.n * c.mass);
   };
 
-  const children = (p: Component): Component[] => {
-    const cloudOf = (mass: number): Component => {
-      const r = Math.cbrt((3 * mass) / (4 * Math.PI * rhoMat));
-      return {
-        cloud: true,
-        n: p.n,
-        mass,
-        v: p.v,
-        gamma: p.gamma,
-        h: p.h,
-        radius: r,
-        radiusCap: capRadii === null ? Infinity : capRadii * r,
-        strength: Infinity,
-      };
+  /** A cloud of a parent's debris, the sphere of its mass at first. */
+  const cloudOf = (p: Component, mass: number, n: number, rho: number): Component => {
+    const r = Math.cbrt((3 * mass) / (4 * Math.PI * rho));
+    return {
+      ...p,
+      whole: false,
+      cloud: true,
+      n,
+      mass,
+      radius: r,
+      radiusCap: capRadii === null ? Infinity : capRadii * r,
+      strength: Infinity,
+      rho,
     };
+  };
+
+  const children = (p: Component): Component[] => {
+    // The body not yet broken (its bulk density) breaks into the material's.
+    const rho = p.whole ? rhoMat : p.rho;
     const solid = (mass: number, k: number): Component => ({
+      ...p,
+      whole: false,
       cloud: false,
       n: p.n * k,
       mass,
-      v: p.v,
-      gamma: p.gamma,
-      h: p.h,
       radius: 0,
       radiusCap: 0,
-      strength: Math.min(p.strength * (p.mass / mass) ** options.alpha, ceiling),
+      strength: Math.min(p.strength * (p.mass / mass) ** p.alpha, ceiling),
+      rho,
     });
-    const s = options.split;
-    if (s.kind === 'cloud') return [cloudOf(p.mass)];
+    const s = p.split;
+    if (s.kind === 'cloud') return [cloudOf(p, p.mass, p.n, rho)];
     let fragments: number[];
     let cloudMass: number;
     if (s.kind === 'radius') {
@@ -371,7 +405,7 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
       fragments = [first, ...Array.from({ length: s.fragments - 1 }, () => others)];
     }
     const out: Component[] = [];
-    if (cloudMass > 0) out.push(cloudOf(cloudMass));
+    if (cloudMass > 0) out.push(cloudOf(p, cloudMass, p.n, rho));
     // Fragments of the same mass, born together, fly as one with their number.
     if (options.bundle === false) {
       for (const f of fragments)
@@ -456,6 +490,7 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
           h: hNext,
         };
         firstBreak ??= hNext;
+        if (c.group >= 0) firstBreakByGroup[c.group] ??= hNext;
         release(children(parent), parent);
         return;
       }
@@ -476,13 +511,14 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
           swarm.mass += c.n * y[2];
           swarm.energy += c.n * ke;
         } else {
-          const area = solidArea(y[2]);
+          const area = solidArea(y[2], c.rho);
           const terminal = Math.sqrt((2 * y[2] * gravityAt(0)) / (Cd * density(0) * area));
           pieces.push({
             count: c.n,
             mass: y[2],
             speed: y[0],
             atTerminal: y[0] <= terminal * 1.01,
+            group: c.group,
           });
         }
         return;
@@ -502,6 +538,11 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
       radius: 0,
       radiusCap: 0,
       strength: body.structure?.initialStrength ?? body.strength,
+      rho: body.density,
+      whole: true,
+      group: -1,
+      alpha: options.alpha,
+      split: options.split,
     };
     if (body.structure === undefined) {
       queue.push(start);
@@ -514,33 +555,23 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
         if (shares > 1 + 1e-12) throw new Error('FCM: the groups exceed the body');
         const grouped = s.groups.map((g) => (g.massShare * p.mass) / g.pieces);
         const groupedMass = s.groups.reduce((a, g, k) => a + (grouped[k] ?? 0) * g.pieces, 0);
-        if (p.mass - groupedMass > 0) {
-          const mass = p.mass - groupedMass;
-          const r = Math.cbrt((3 * mass) / (4 * Math.PI * rhoMat));
-          out.push({
-            cloud: true,
-            n: 1,
-            mass,
-            v: p.v,
-            gamma: p.gamma,
-            h: p.h,
-            radius: r,
-            radiusCap: capRadii === null ? Infinity : capRadii * r,
-            strength: Infinity,
-          });
-        }
-        // A group's identical pieces fly as one with their number.
+        if (p.mass - groupedMass > 0) out.push(cloudOf(p, p.mass - groupedMass, 1, rhoMat));
+        // A group's identical pieces fly as one with their number, with the
+        // group's density and fragmentation parameters where it gives them.
         s.groups.forEach((g, k) =>
           out.push({
+            ...p,
+            whole: false,
             cloud: false,
             n: g.pieces,
             mass: grouped[k] ?? 0,
-            v: p.v,
-            gamma: p.gamma,
-            h: p.h,
             radius: 0,
             radiusCap: 0,
             strength: g.strength,
+            rho: g.materialDensity ?? rhoMat,
+            group: k,
+            alpha: g.alpha ?? p.alpha,
+            split: g.split ?? p.split,
           })
         );
         return out;
@@ -608,6 +639,7 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
     energyPerBin,
     binM,
     firstBreakAltitude: firstBreak,
+    firstBreakByGroup,
     pieces,
     swarm,
     ledger: {

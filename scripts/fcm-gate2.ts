@@ -63,7 +63,6 @@ const CASES = [
 
 const results = CASES.map((c) =>
   (['rk4', 'euler'] as const).map((scheme) => {
-    const t0 = performance.now();
     const r = fcmEntry(body(c.strength), {
       ...base,
       alpha: c.alpha,
@@ -83,7 +82,6 @@ const results = CASES.map((c) =>
       scheme,
       completed: r.completed,
       components: r.components,
-      ms: Math.round(performance.now() - t0),
       peakKtKm: Number(p.peak.ktPerKm.toPrecision(4)),
       peakAltitudeKm: p.peak.altitudeKm,
       excessOverObserved: excess.map((x) => Number(x.toPrecision(3))),

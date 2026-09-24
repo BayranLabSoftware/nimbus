@@ -60,6 +60,60 @@ describe('rule 1141 (b): the branch’s limits', () => {
   });
 });
 
+describe('W18’s bulk and material densities', () => {
+  it('flies the unbroken body on its bulk diameter, whatever its material', () => {
+    const b = { diameter: 4, velocity: 17_000, density: 2_400, angle: rad(35), strength: Infinity };
+    const bulk = fcmEntry(b, plain);
+    const porous = fcmEntry({ ...b, materialDensity: 3_400 }, plain);
+    expect(porous.pieces[0]?.speed).toBe(bulk.pieces[0]?.speed);
+  });
+
+  it('breaks it into pieces of the material’s density, smaller and so faster', () => {
+    const b = { diameter: 4, velocity: 17_000, density: 2_400, angle: rad(35), strength: 1e6 };
+    const o: FcmOptions = {
+      ...plain,
+      alpha: 0.2,
+      split: { kind: 'mass', fragments: 2, larger: 0.5, cloud: 0 },
+      gravity: true,
+      curvature: true,
+    };
+    const bulk = fcmEntry(b, o);
+    const dense = fcmEntry({ ...b, materialDensity: 3_400 }, o);
+    const fastest = (r: typeof bulk): number => Math.max(...r.pieces.map((p) => p.speed));
+    expect(fastest(dense)).toBeGreaterThan(fastest(bulk));
+  });
+});
+
+describe('W18’s structure groups', () => {
+  it('keeps each group’s parameters in its descendants and tags what lands', () => {
+    const r = fcmEntry(
+      {
+        diameter: 2,
+        velocity: 15_000,
+        density: 2_500,
+        materialDensity: 3_400,
+        angle: rad(60),
+        strength: Infinity,
+        structure: {
+          initialStrength: 2_000,
+          groups: [
+            // Never breaks: lands whole, as one piece of group 0.
+            { massShare: 0.5, pieces: 1, strength: 1e9 },
+            // Breaks, all to one cloud: nothing of group 1 lands.
+            { massShare: 0.5, pieces: 1, strength: 1e5, split: { kind: 'cloud' } },
+          ],
+        },
+      },
+      { ablation: 1e-8, cloudDispersion: 2, alpha: 0.3, split: { kind: 'radius', f: 0.5 } }
+    );
+    expect(r.firstBreakByGroup[0]).toBeNull();
+    expect(r.firstBreakByGroup[1]).toBeGreaterThan(40_000);
+    expect(r.pieces.length).toBeGreaterThan(0);
+    for (const p of r.pieces) expect(p.group).toBe(0);
+    expect(r.pieces.reduce((a, p) => a + p.count, 0)).toBe(1);
+  });
+});
+
 describe('rule 1141 (a): the ledger closes at every break and at the end', () => {
   it('on random bodies, splits, structures and clouds, gravity and curvature on', () => {
     const r = lcg(1_141);
@@ -81,12 +135,19 @@ describe('rule 1141 (a): the ledger closes at every break and at the end', () =>
           strength: 1e5 * 50 ** r(),
           ...(structured
             ? {
+                materialDensity: 3_300,
                 structure: {
                   initialStrength: 5e4 * 4 ** r(),
                   groups: [
                     { massShare: 0.5, pieces: 1, strength: 1e6 * 5 ** r() },
-                    { massShare: 0.3, pieces: 3, strength: 2e6 },
-                    { massShare: 0.1, pieces: 10, strength: 4e6 },
+                    {
+                      massShare: 0.3,
+                      pieces: 3,
+                      strength: 2e6,
+                      alpha: 0.05,
+                      split: { kind: 'mass', fragments: 2, larger: 0.8, cloud: 0.75 },
+                    },
+                    { massShare: 0.1, pieces: 10, strength: 4e6, materialDensity: 3_400, alpha: 1 },
                   ],
                 },
               }
@@ -158,5 +219,7 @@ describe('identical fragments flying as one', () => {
       sum(r.pieces.map((p) => p.count * p.mass)) + r.swarm.mass;
     expect(Math.abs(ground(together) - ground(apart))).toBeLessThanOrEqual(1e-12 * together.mass);
     expect(sum(together.pieces.map((p) => p.count))).toBe(sum(apart.pieces.map((p) => p.count)));
-  });
+    // Flying every member apart is the slow way, by design: 2 s here, more
+    // than vitest's default 5 s on the CI runner under the whole suite.
+  }, 60_000);
 });
