@@ -6,6 +6,7 @@ import {
   FCM_DOMAIN_MAP,
   FCM_FLOOR_BODY,
   FCM_PEAKS,
+  FCM_TUNING,
 } from './fcmRound1Rules.js';
 import { FCM_DOMAIN, FCM_GATE1 } from './fcmRoundRules.js';
 
@@ -43,5 +44,14 @@ describe('rules 1148 to 1159: round 1 of the FCM branch, on the reviewer’s lea
     expect(FCM_DEV_RUN.releaseMarginM).toBe(1_000);
     expect(FCM_DEV_RUN.shareMargin).toBe(0.1);
     expect(Object.keys(FCM_DEV_RUN.w18Cases)).toEqual(['Košice', 'Benešov', 'Tagish Lake']);
+  });
+});
+
+describe('rule 1160: one registered tuning', () => {
+  it('declares its objective and two candidates before any tuned run', () => {
+    expect(Object.keys(FCM_TUNING.candidates)).toEqual(['T1', 'T2']);
+    const [lo, hi] = FCM_TUNING.objective.Chelyabinsk;
+    expect(hi / 5_000).toBeCloseTo(3, 12);
+    expect(5_000 / lo).toBeCloseTo(3, 2);
   });
 });

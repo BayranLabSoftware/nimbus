@@ -1,0 +1,6298 @@
+{
+  "rule": "1156",
+  "tail": null,
+  "draws": 200,
+  "tally": {
+    "M1/unlimited": {
+      "favourable": 21,
+      "unfavourable": 2,
+      "equal": 19,
+      "not assessable": 48
+    },
+    "M1/capped": {
+      "favourable": 20,
+      "unfavourable": 2,
+      "equal": 20,
+      "not assessable": 48
+    },
+    "M2/unlimited": {
+      "favourable": 21,
+      "unfavourable": 0,
+      "equal": 21,
+      "not assessable": 48
+    },
+    "M2/capped": {
+      "favourable": 21,
+      "unfavourable": 0,
+      "equal": 21,
+      "not assessable": 48
+    }
+  },
+  "contradicted": [],
+  "results": [
+    {
+      "case": "Chelyabinsk",
+      "family": "rule 961",
+      "drawn": "one run at the preset's inputs; the first 1",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": null,
+        "otherFlaresKm": [],
+        "recovery": "W18 p. 8, after Popova et al. (2013): fallen masses of 4 000–6 000 kg",
+        "noCrater": "the development table, m3 (simulate.ts)",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 68.6,
+        "burstMedianKm": 27.12,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 33.06,
+            "p5Km": 33.06,
+            "p95Km": 33.06,
+            "medianKtKm": 90.78,
+            "medianFinestRatio": 1.014
+          },
+          "firstBreakMedianKm": 42.95,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 24200,
+            "p95": 24200
+          },
+          "largestMedianKg": 131.8,
+          "energyToGroundMedian": 7.117e-8,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 27.91,
+            "p5Km": 27.91,
+            "p95Km": 27.91,
+            "medianKtKm": 89.16,
+            "medianFinestRatio": 1.021
+          },
+          "firstBreakMedianKm": 36.44,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 452800,
+            "p95": 452800
+          },
+          "largestMedianKg": 18070,
+          "energyToGroundMedian": 0.0000174,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 30.15,
+            "p5Km": 30.15,
+            "p95Km": 30.15,
+            "medianKtKm": 121.7,
+            "medianFinestRatio": 1.018
+          },
+          "firstBreakMedianKm": 61.28,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 425000,
+            "p95": 425000
+          },
+          "largestMedianKg": 2564,
+          "energyToGroundMedian": 0.000002342,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 33.2,
+            "p5Km": 33.2,
+            "p95Km": 33.2,
+            "medianKtKm": 89.42,
+            "medianFinestRatio": 1.012
+          },
+          "firstBreakMedianKm": 59.63,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 382500,
+            "p95": 382500
+          },
+          "largestMedianKg": 2938,
+          "energyToGroundMedian": 0.000001893,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 5.29,
+        "firstBreakMedianKm": 24.84,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 36.58,
+          "firstBreakMedianKm": 47.57,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 25030,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 26.37,
+          "firstBreakMedianKm": 42.95,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 24200,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.08,
+          "firstBreakMedianKm": 42.95,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 63860,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.98,
+          "firstBreakMedianKm": 42.95,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 92040,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 58.33,
+          "firstBreakMedianKm": 57.83,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 3369,
+          "mainFlare": "not assessable"
+        }
+      ]
+    },
+    {
+      "case": "Tunguska",
+      "family": "rule 961",
+      "drawn": "one run at the preset's inputs; the first 1",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": null,
+        "otherFlaresKm": [],
+        "recovery": null,
+        "noCrater": "the development table, m3 (simulate.ts)",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 64.68,
+        "burstMedianKm": 8.158,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 40.39,
+            "p5Km": 40.39,
+            "p95Km": 40.39,
+            "medianKtKm": 6379,
+            "medianFinestRatio": 99.99
+          },
+          "firstBreakMedianKm": 39.89,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 857000,
+            "p95": 857000
+          },
+          "largestMedianKg": 72340,
+          "energyToGroundMedian": 0.0001177,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 34.91,
+            "p5Km": 34.91,
+            "p95Km": 34.91,
+            "medianKtKm": 7713,
+            "medianFinestRatio": 99.98
+          },
+          "firstBreakMedianKm": 34.42,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 763.6,
+            "p95": 763.6
+          },
+          "largestMedianKg": 18.24,
+          "energyToGroundMedian": 0.000003189,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 37.92,
+            "p5Km": 37.92,
+            "p95Km": 37.92,
+            "medianKtKm": 4924,
+            "medianFinestRatio": 99.94
+          },
+          "firstBreakMedianKm": 63.17,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 911200,
+            "p95": 911200
+          },
+          "largestMedianKg": 33840,
+          "energyToGroundMedian": 0.00004142,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 1,
+          "statuses": {
+            "completed": 0,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 1
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": null,
+            "p5Km": null,
+            "p95Km": null,
+            "medianKtKm": null,
+            "medianFinestRatio": null
+          },
+          "firstBreakMedianKm": null,
+          "survivalShare": 0,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": null,
+            "p95": null
+          },
+          "largestMedianKg": null,
+          "energyToGroundMedian": null,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 5.48,
+        "firstBreakMedianKm": 28.75,
+        "survivalShare": 1,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 44.55,
+          "firstBreakMedianKm": 44.05,
+          "survivalShare": 1,
+          "lawSpeedShare": 1,
+          "landedMedianKg": 874000,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 40.39,
+          "firstBreakMedianKm": 39.89,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 857000,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 40.39,
+          "firstBreakMedianKm": 39.89,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 1542000,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 40.39,
+          "firstBreakMedianKm": 39.89,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 1988000,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 87.26,
+          "firstBreakMedianKm": 86.77,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 5013,
+          "mainFlare": "not assessable"
+        }
+      ]
+    },
+    {
+      "case": "2008 TC3",
+      "family": "rule 961",
+      "drawn": "level B's first round: level-b-2026-09-23/2008 TC3/scored, 1000 draws; the first 200",
+      "documented": {
+        "firstEvent": {
+          "lowM": 43500,
+          "highM": 45500,
+          "source": "borovicka2009 Sect. 4.2 and Sect. 5: \"Another flare was detected by Meteosat at 45-44 km\" — the first major fragmentation (rule 866(e))",
+          "counted": false
+        },
+        "mainFlare": {
+          "lowM": 36500,
+          "highM": 37500,
+          "source": "borovicka2009 Sect. 5: \"the main flare occurred at a height of 37 km\"",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": "borovicka2009, Sect. 5: \"only small meteorites (≤283 g) were found\"",
+        "noCrater": "the development table, m3 (borovicka2009)",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": null,
+        "burstMedianKm": 48.22,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 5,
+          "peak": {
+            "medianKm": 30.73,
+            "p5Km": 25.47,
+            "p95Km": 34.75,
+            "medianKtKm": 0.4048,
+            "medianFinestRatio": 1.172
+          },
+          "firstBreakMedianKm": 31.93,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 7079,
+            "p95": 32270
+          },
+          "largestMedianKg": 1028,
+          "energyToGroundMedian": 0.0000154,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 30.73,
+              "baseline": 48.22,
+              "why": "distance 5.77 km against 10.7 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": 31.93,
+              "baseline": null,
+              "why": "produced in 200 of the branch's draws and 0 of the baseline's"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 2,
+          "peak": {
+            "medianKm": 30.34,
+            "p5Km": 25.46,
+            "p95Km": 34.39,
+            "medianKtKm": 0.3781,
+            "medianFinestRatio": 1.248
+          },
+          "firstBreakMedianKm": 31.68,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 6975,
+            "p95": 25520
+          },
+          "largestMedianKg": 1015,
+          "energyToGroundMedian": 0.00001592,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 30.34,
+              "baseline": 48.22,
+              "why": "distance 6.16 km against 10.7 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": 31.68,
+              "baseline": null,
+              "why": "produced in 200 of the branch's draws and 0 of the baseline's"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 3,
+          "peak": {
+            "medianKm": 30.06,
+            "p5Km": 25.29,
+            "p95Km": 34.5,
+            "medianKtKm": 0.4113,
+            "medianFinestRatio": 1.217
+          },
+          "firstBreakMedianKm": 57.2,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 10350,
+            "p95": 36560
+          },
+          "largestMedianKg": 1290,
+          "energyToGroundMedian": 0.00002085,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 30.06,
+              "baseline": 48.22,
+              "why": "distance 6.44 km against 10.7 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": 57.2,
+              "baseline": null,
+              "why": "produced in 200 of the branch's draws and 0 of the baseline's"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 6,
+          "peak": {
+            "medianKm": 30.3,
+            "p5Km": 25.29,
+            "p95Km": 34.59,
+            "medianKtKm": 0.3527,
+            "medianFinestRatio": 1.284
+          },
+          "firstBreakMedianKm": 57,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 10040,
+            "p95": 31980
+          },
+          "largestMedianKg": 1317,
+          "energyToGroundMedian": 0.00001826,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 30.3,
+              "baseline": 48.22,
+              "why": "distance 6.2 km against 10.7 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": 57,
+              "baseline": null,
+              "why": "produced in 200 of the branch's draws and 0 of the baseline's"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 0.67,
+        "firstBreakMedianKm": 25.52,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.03,
+          "firstBreakMedianKm": 34.26,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 8202,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 29.06,
+          "firstBreakMedianKm": 31.93,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 7079,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 30.72,
+          "firstBreakMedianKm": 31.93,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 8945,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 30.72,
+          "firstBreakMedianKm": 31.93,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 9952,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 37.75,
+          "firstBreakMedianKm": 40.83,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 2795,
+          "mainFlare": "favourable"
+        }
+      ]
+    },
+    {
+      "case": "2018 LA",
+      "family": "rule 961",
+      "drawn": "level B's first round: level-b-2026-09-23/2018 LA/scored, 1000 draws; the first 200",
+      "documented": {
+        "firstEvent": {
+          "lowM": 26900,
+          "highM": 28700,
+          "source": "jenniskens2021 p. 12: the one flare, triangulated from video, \"altitude = 27.8 ± 0.9 km\"",
+          "counted": true
+        },
+        "mainFlare": {
+          "lowM": 28650,
+          "highM": 28750,
+          "source": "jenniskens2021 p. 13: U.S. Government sensors, \"peaking in brightness at 28.7 km altitude\"",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": "jenniskens2021: twenty-three meteorites recovered",
+        "noCrater": "the development table, m3 (jenniskens2021)",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 66.65,
+        "burstMedianKm": 36.79,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 2,
+          "peak": {
+            "medianKm": 34.9,
+            "p5Km": 29.43,
+            "p95Km": 39.81,
+            "medianKtKm": 0.02858,
+            "medianFinestRatio": 1.534
+          },
+          "firstBreakMedianKm": 35.68,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 168.5,
+            "p95": 923.7
+          },
+          "largestMedianKg": 32.26,
+          "energyToGroundMedian": 0.000002434,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 34.9,
+              "baseline": 36.79,
+              "why": "distance 6.15 km against 8.04 km"
+            },
+            "firstEvent": {
+              "verdict": "favourable",
+              "model": 35.68,
+              "baseline": 66.65,
+              "why": "distance 6.98 km against 38 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 6,
+          "peak": {
+            "medianKm": 35.25,
+            "p5Km": 29.59,
+            "p95Km": 39.53,
+            "medianKtKm": 0.02284,
+            "medianFinestRatio": 1.6
+          },
+          "firstBreakMedianKm": 36.2,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 163.3,
+            "p95": 1069
+          },
+          "largestMedianKg": 29.31,
+          "energyToGroundMedian": 0.000002026,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 35.25,
+              "baseline": 36.79,
+              "why": "distance 6.5 km against 8.04 km"
+            },
+            "firstEvent": {
+              "verdict": "favourable",
+              "model": 36.2,
+              "baseline": 66.65,
+              "why": "distance 7.5 km against 38 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 2,
+          "peak": {
+            "medianKm": 34.2,
+            "p5Km": 29.4,
+            "p95Km": 39.48,
+            "medianKtKm": 0.02251,
+            "medianFinestRatio": 1.623
+          },
+          "firstBreakMedianKm": 61.69,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 329.6,
+            "p95": 1564
+          },
+          "largestMedianKg": 49.63,
+          "energyToGroundMedian": 0.000004194,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 34.2,
+              "baseline": 36.79,
+              "why": "distance 5.45 km against 8.04 km"
+            },
+            "firstEvent": {
+              "verdict": "favourable",
+              "model": 61.69,
+              "baseline": 66.65,
+              "why": "distance 33 km against 38 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 7,
+          "peak": {
+            "medianKm": 34.88,
+            "p5Km": 29.71,
+            "p95Km": 39.64,
+            "medianKtKm": 0.02101,
+            "medianFinestRatio": 1.629
+          },
+          "firstBreakMedianKm": 62.19,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 274.3,
+            "p95": 1189
+          },
+          "largestMedianKg": 37.74,
+          "energyToGroundMedian": 0.000003425,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 34.88,
+              "baseline": 36.79,
+              "why": "distance 6.13 km against 8.04 km"
+            },
+            "firstEvent": {
+              "verdict": "favourable",
+              "model": 62.19,
+              "baseline": 66.65,
+              "why": "distance 33.5 km against 38 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 1.05,
+        "firstBreakMedianKm": 26.51,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 38.2,
+          "firstBreakMedianKm": 38.94,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 203.8,
+          "mainFlare": "unfavourable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.69,
+          "firstBreakMedianKm": 35.68,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 168.5,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 34.78,
+          "firstBreakMedianKm": 35.68,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 227.3,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 34.78,
+          "firstBreakMedianKm": 35.68,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 264.2,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 35.48,
+          "firstBreakMedianKm": 36.2,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 152.2,
+          "mainFlare": "favourable"
+        }
+      ]
+    },
+    {
+      "case": "2022 EB5",
+      "family": "rule 961",
+      "drawn": "one run at the body I2 reads from its CNEOS row (rule 77); the first 1",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": {
+          "lowM": 33250,
+          "highM": 33350,
+          "source": "fireballSetData.ts the CNEOS row 2022-03-11T21:22:45Z, altitude of peak brightness 33.3 km, no uncertainty given: the half-unit (rule 866(b))",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": null,
+        "noCrater": null,
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 66.87,
+        "burstMedianKm": 31.05,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 32.46,
+            "p5Km": 32.46,
+            "p95Km": 32.46,
+            "medianKtKm": 1.427,
+            "medianFinestRatio": 1.116
+          },
+          "firstBreakMedianKm": 35.81,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 512.8,
+            "p95": 512.8
+          },
+          "largestMedianKg": 0.6458,
+          "energyToGroundMedian": 3.312e-8,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 32.46,
+              "baseline": 31.05,
+              "why": "distance 0.79 km against 2.2 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 32.36,
+            "p5Km": 32.36,
+            "p95Km": 32.36,
+            "medianKtKm": 0.5594,
+            "medianFinestRatio": 1.012
+          },
+          "firstBreakMedianKm": 36.02,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 3244,
+            "p95": 3244
+          },
+          "largestMedianKg": 109.6,
+          "energyToGroundMedian": 0.000001184,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 32.36,
+              "baseline": 31.05,
+              "why": "distance 0.89 km against 2.2 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 30.55,
+            "p5Km": 30.55,
+            "p95Km": 30.55,
+            "medianKtKm": 1.056,
+            "medianFinestRatio": 1.035
+          },
+          "firstBreakMedianKm": 64.71,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 1414,
+            "p95": 1414
+          },
+          "largestMedianKg": 154.8,
+          "energyToGroundMedian": 3.53e-7,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 30.55,
+              "baseline": 31.05,
+              "why": "distance 2.7 km against 2.2 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 1,
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 34.98,
+            "p5Km": 34.98,
+            "p95Km": 34.98,
+            "medianKtKm": 0.6565,
+            "medianFinestRatio": 1.045
+          },
+          "firstBreakMedianKm": 63.5,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 591,
+            "p95": 591
+          },
+          "largestMedianKg": 78.27,
+          "energyToGroundMedian": 1.679e-7,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 34.98,
+              "baseline": 31.05,
+              "why": "distance 1.63 km against 2.2 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 4.43,
+        "firstBreakMedianKm": 28.9,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 35.37,
+          "firstBreakMedianKm": 39.17,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 643.9,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.4,
+          "firstBreakMedianKm": 35.81,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 512.8,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.47,
+          "firstBreakMedianKm": 35.81,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 1302,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.44,
+          "firstBreakMedianKm": 35.81,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 1986,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 1,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 34.11,
+          "firstBreakMedianKm": 37.77,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 394.7,
+          "mainFlare": "favourable"
+        }
+      ]
+    },
+    {
+      "case": "2023 CX1",
+      "family": "rule 961",
+      "drawn": "level B's second round: level-b2-2026-09-23/2023 CX1, 1000 draws; the first 200",
+      "documented": {
+        "firstEvent": {
+          "lowM": 29350,
+          "highM": 29450,
+          "source": "egal2025 p. 9: \"the first fragmentation event at 29.4 km altitude\"",
+          "counted": true
+        },
+        "mainFlare": {
+          "lowM": 27050,
+          "highM": 28150,
+          "source": "egal2025 p. 8: the second event at 27.1 km; p. 9: \"the second, more prominent fragmentation phase around 28.1 km\" (rule 866(e))",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": "egal2025: Saint-Pierre-le-Viger meteorites recovered",
+        "noCrater": "the development table, m3 (egal2025)",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 63.6,
+        "burstMedianKm": 33.57,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 5,
+          "peak": {
+            "medianKm": 32.22,
+            "p5Km": 27.07,
+            "p95Km": 36.61,
+            "medianKtKm": 0.01035,
+            "medianFinestRatio": 1.294
+          },
+          "firstBreakMedianKm": 33.32,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 127.8,
+            "p95": 573.5
+          },
+          "largestMedianKg": 19.16,
+          "energyToGroundMedian": 0.000003497,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 32.22,
+              "baseline": 33.57,
+              "why": "distance 4.07 km against 5.42 km"
+            },
+            "firstEvent": {
+              "verdict": "favourable",
+              "model": 33.32,
+              "baseline": 63.6,
+              "why": "distance 3.87 km against 34.1 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 12,
+          "peak": {
+            "medianKm": 32.65,
+            "p5Km": 27.26,
+            "p95Km": 36.54,
+            "medianKtKm": 0.008985,
+            "medianFinestRatio": 1.343
+          },
+          "firstBreakMedianKm": 33.9,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 107.8,
+            "p95": 616.9
+          },
+          "largestMedianKg": 16.24,
+          "energyToGroundMedian": 0.000003187,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 32.65,
+              "baseline": 33.57,
+              "why": "distance 4.5 km against 5.42 km"
+            },
+            "firstEvent": {
+              "verdict": "favourable",
+              "model": 33.9,
+              "baseline": 63.6,
+              "why": "distance 4.45 km against 34.1 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 5,
+          "peak": {
+            "medianKm": 32.49,
+            "p5Km": 26.98,
+            "p95Km": 36.69,
+            "medianKtKm": 0.01048,
+            "medianFinestRatio": 1.302
+          },
+          "firstBreakMedianKm": 59.4,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 166.5,
+            "p95": 532.7
+          },
+          "largestMedianKg": 22.73,
+          "energyToGroundMedian": 0.000004536,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 32.49,
+              "baseline": 33.57,
+              "why": "distance 4.34 km against 5.42 km"
+            },
+            "firstEvent": {
+              "verdict": "favourable",
+              "model": 59.4,
+              "baseline": 63.6,
+              "why": "distance 30 km against 34.1 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 9,
+          "peak": {
+            "medianKm": 31.93,
+            "p5Km": 26.98,
+            "p95Km": 36.86,
+            "medianKtKm": 0.00916,
+            "medianFinestRatio": 1.397
+          },
+          "firstBreakMedianKm": 59.22,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 180.6,
+            "p95": 606.5
+          },
+          "largestMedianKg": 24.65,
+          "energyToGroundMedian": 0.000004781,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 31.93,
+              "baseline": 33.57,
+              "why": "distance 3.78 km against 5.42 km"
+            },
+            "firstEvent": {
+              "verdict": "favourable",
+              "model": 59.22,
+              "baseline": 63.6,
+              "why": "distance 29.8 km against 34.1 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 0.72,
+        "firstBreakMedianKm": 26.08,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 34.86,
+          "firstBreakMedianKm": 36.01,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 159,
+          "mainFlare": "unfavourable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 30.7,
+          "firstBreakMedianKm": 33.32,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 127.8,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.21,
+          "firstBreakMedianKm": 33.32,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 170.6,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.19,
+          "firstBreakMedianKm": 33.32,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 176.8,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.63,
+          "firstBreakMedianKm": 32.77,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 135.2,
+          "mainFlare": "favourable"
+        }
+      ]
+    },
+    {
+      "case": "2024 BX1",
+      "family": "rule 961",
+      "drawn": "level B's second round: level-b2-2026-09-23/2024 BX1, 1000 draws; the first 200",
+      "documented": {
+        "firstEvent": {
+          "lowM": 54500,
+          "highM": 55500,
+          "source": "spurny2024 p. 4: \"fragmentation started at a height of 55 km\" (half-unit, rule 866(b))",
+          "counted": true
+        },
+        "mainFlare": {
+          "lowM": 33850,
+          "highM": 35250,
+          "source": "spurny2024 p. 4: \"two almost equally bright flares at heights of 35.2 and 33.9 km\" (rule 866(e))",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": "spurny2024: meteorites recovered in the predicted strewn field",
+        "noCrater": "the development table, m3 (spurny2024)",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 64.86,
+        "burstMedianKm": 34.94,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 2,
+          "peak": {
+            "medianKm": 33.58,
+            "p5Km": 28.03,
+            "p95Km": 38.09,
+            "medianKtKm": 0.002371,
+            "medianFinestRatio": 1.485
+          },
+          "firstBreakMedianKm": 34.28,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 21.18,
+            "p95": 95.95
+          },
+          "largestMedianKg": 4.004,
+          "energyToGroundMedian": 0.000001777,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 33.58,
+              "baseline": 34.94,
+              "why": "distance 0.275 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "unfavourable",
+              "model": 34.28,
+              "baseline": 64.86,
+              "why": "distance 20.2 km against 9.36 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 5,
+          "peak": {
+            "medianKm": 33.19,
+            "p5Km": 28.14,
+            "p95Km": 38.19,
+            "medianKtKm": 0.001943,
+            "medianFinestRatio": 1.582
+          },
+          "firstBreakMedianKm": 34.03,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 21.27,
+            "p95": 93.78
+          },
+          "largestMedianKg": 4.903,
+          "energyToGroundMedian": 0.000002128,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 33.19,
+              "baseline": 34.94,
+              "why": "distance 0.66 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "unfavourable",
+              "model": 34.03,
+              "baseline": 64.86,
+              "why": "distance 20.5 km against 9.36 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 3,
+          "peak": {
+            "medianKm": 33.14,
+            "p5Km": 27.76,
+            "p95Km": 38.25,
+            "medianKtKm": 0.002071,
+            "medianFinestRatio": 1.523
+          },
+          "firstBreakMedianKm": 60.38,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 35.45,
+            "p95": 101.4
+          },
+          "largestMedianKg": 4.65,
+          "energyToGroundMedian": 0.000002414,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 33.14,
+              "baseline": 34.94,
+              "why": "distance 0.71 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "favourable",
+              "model": 60.38,
+              "baseline": 64.86,
+              "why": "distance 4.88 km against 9.36 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 12,
+          "peak": {
+            "medianKm": 33.26,
+            "p5Km": 28.38,
+            "p95Km": 38.04,
+            "medianKtKm": 0.001941,
+            "medianFinestRatio": 1.605
+          },
+          "firstBreakMedianKm": 60.32,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 28.74,
+            "p95": 115.6
+          },
+          "largestMedianKg": 4.04,
+          "energyToGroundMedian": 0.000001998,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 33.26,
+              "baseline": 34.94,
+              "why": "distance 0.59 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "favourable",
+              "model": 60.32,
+              "baseline": 64.86,
+              "why": "distance 4.82 km against 9.36 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 0.44,
+        "firstBreakMedianKm": 26.35,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 36.48,
+          "firstBreakMedianKm": 37.18,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 27.64,
+          "mainFlare": "unfavourable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.34,
+          "firstBreakMedianKm": 34.28,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 21.18,
+          "mainFlare": "unfavourable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.57,
+          "firstBreakMedianKm": 34.28,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 26.46,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.56,
+          "firstBreakMedianKm": 34.28,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 29.45,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 28.47,
+          "firstBreakMedianKm": 29.4,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 34.48,
+          "mainFlare": "unfavourable"
+        }
+      ]
+    },
+    {
+      "case": "2022 WJ1",
+      "family": "rule 961",
+      "drawn": "level B's second round: level-b2-2026-09-23/2022 WJ1, 1000 draws; the first 200",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": {
+          "lowM": 33995,
+          "highM": 38655,
+          "source": "kareta2024 Table 7, p. 19: the two brightest flares of the Caistor light curve, 38.65 and 34.00 km (rule 866(e))",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": null,
+        "noCrater": "the development table, m3 (kareta2024)",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 63.46,
+        "burstMedianKm": 30.18,
+        "burstShare": 0.045,
+        "survivalShare": 0.955,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0.00004808
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 1,
+          "peak": {
+            "medianKm": 31.94,
+            "p5Km": 24.42,
+            "p95Km": 37.28,
+            "medianKtKm": 0.00118,
+            "medianFinestRatio": 3.454
+          },
+          "firstBreakMedianKm": 32.94,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 49.55,
+            "p95": 150.6
+          },
+          "largestMedianKg": 24.18,
+          "energyToGroundMedian": 0.000012,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": 31.94,
+              "baseline": 30.18,
+              "why": "produced in 199 of the branch's draws and 9 of the baseline's"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0.955
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 32.44,
+            "p5Km": 24.9,
+            "p95Km": 37.34,
+            "medianKtKm": 0.001296,
+            "medianFinestRatio": 3.019
+          },
+          "firstBreakMedianKm": 33.41,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 43.51,
+            "p95": 128.4
+          },
+          "largestMedianKg": 17.54,
+          "energyToGroundMedian": 0.00000876,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": 32.44,
+              "baseline": 30.18,
+              "why": "produced in 200 of the branch's draws and 9 of the baseline's"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0.955
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 30.71,
+            "p5Km": 24.91,
+            "p95Km": 36.99,
+            "medianKtKm": 0.0009793,
+            "medianFinestRatio": 3.322
+          },
+          "firstBreakMedianKm": 58.55,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 61.4,
+            "p95": 160.8
+          },
+          "largestMedianKg": 22.82,
+          "energyToGroundMedian": 0.00001054,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": 30.71,
+              "baseline": 30.18,
+              "why": "produced in 200 of the branch's draws and 9 of the baseline's"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0.955
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 31.74,
+            "p5Km": 25.57,
+            "p95Km": 36.85,
+            "medianKtKm": 0.001052,
+            "medianFinestRatio": 3.204
+          },
+          "firstBreakMedianKm": 58.64,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 62.32,
+            "p95": 156.5
+          },
+          "largestMedianKg": 21.4,
+          "energyToGroundMedian": 0.00001119,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": 31.74,
+              "baseline": 30.18,
+              "why": "produced in 200 of the branch's draws and 9 of the baseline's"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0.955
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 1.73,
+        "firstBreakMedianKm": 25.7,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 34.03,
+          "firstBreakMedianKm": 35.86,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 57.93,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.44,
+          "firstBreakMedianKm": 32.94,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 49.55,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.93,
+          "firstBreakMedianKm": 32.94,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 51.75,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.89,
+          "firstBreakMedianKm": 32.94,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 52.32,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 26.91,
+          "firstBreakMedianKm": 29.86,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 85.36,
+          "mainFlare": "not assessable"
+        }
+      ]
+    },
+    {
+      "case": "Carancas",
+      "family": "rule 961",
+      "drawn": "level B's second round: level-b2-2026-09-23/Carancas, 1000 draws; the first 200",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": null,
+        "otherFlaresKm": [],
+        "recovery": null,
+        "noCrater": null,
+        "crater": "the development table, m3 (kenkmann2009 Abstract, p. 985: an H4–5 chondrite struck the ground and formed a crater)",
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 64.09,
+        "burstMedianKm": 33.1,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 8,
+          "peak": {
+            "medianKm": 31.55,
+            "p5Km": 26.61,
+            "p95Km": 35.72,
+            "medianKtKm": 0.03686,
+            "medianFinestRatio": 1.093
+          },
+          "firstBreakMedianKm": 33.57,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 275.7,
+            "p95": 1985
+          },
+          "largestMedianKg": 27.78,
+          "energyToGroundMedian": 0.000002246,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 13,
+          "peak": {
+            "medianKm": 31.48,
+            "p5Km": 26.71,
+            "p95Km": 35.94,
+            "medianKtKm": 0.0327,
+            "medianFinestRatio": 1.148
+          },
+          "firstBreakMedianKm": 33.58,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 235.8,
+            "p95": 1737
+          },
+          "largestMedianKg": 27.13,
+          "energyToGroundMedian": 0.000001886,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 7,
+          "peak": {
+            "medianKm": 31.36,
+            "p5Km": 27.25,
+            "p95Km": 36.14,
+            "medianKtKm": 0.03778,
+            "medianFinestRatio": 1.131
+          },
+          "firstBreakMedianKm": 59.53,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 430.1,
+            "p95": 2083
+          },
+          "largestMedianKg": 54.43,
+          "energyToGroundMedian": 0.000003673,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 12,
+          "peak": {
+            "medianKm": 31.02,
+            "p5Km": 26.04,
+            "p95Km": 35.46,
+            "medianKtKm": 0.03188,
+            "medianFinestRatio": 1.213
+          },
+          "firstBreakMedianKm": 59.4,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 450.3,
+            "p95": 2062
+          },
+          "largestMedianKg": 62.43,
+          "energyToGroundMedian": 0.000003621,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 0.53,
+        "firstBreakMedianKm": 25.96,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 34.18,
+          "firstBreakMedianKm": 36.36,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 320.3,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 29.2,
+          "firstBreakMedianKm": 33.57,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 275.7,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.48,
+          "firstBreakMedianKm": 33.57,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 389.2,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.52,
+          "firstBreakMedianKm": 33.57,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 490.1,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.33,
+          "firstBreakMedianKm": 35.97,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 213.5,
+          "mainFlare": "not assessable"
+        }
+      ]
+    },
+    {
+      "case": "Winchcombe",
+      "family": "third set",
+      "drawn": "rule 1126's stream third-set-v2/Winchcombe; the first 200",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": null,
+        "otherFlaresKm": [],
+        "recovery": "pp. 927–928: meteorites recovered, dropped by the fireball",
+        "noCrater": "p. 928: the main mass a rubble pile on a driveway",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": null,
+        "burstMedianKm": 59.47,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 31.41,
+            "p5Km": 26.87,
+            "p95Km": 36.61,
+            "medianKtKm": 0.00002716,
+            "medianFinestRatio": 3.049
+          },
+          "firstBreakMedianKm": 34.44,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 5.351,
+            "p95": 12.18
+          },
+          "largestMedianKg": 3.669,
+          "energyToGroundMedian": 0.000006938,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 30.05,
+            "p5Km": 26.91,
+            "p95Km": 36.48,
+            "medianKtKm": 0.00001936,
+            "medianFinestRatio": 1.001
+          },
+          "firstBreakMedianKm": 33.66,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 5.954,
+            "p95": 11.93
+          },
+          "largestMedianKg": 4.466,
+          "energyToGroundMedian": 0.000009168,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 1,
+          "peak": {
+            "medianKm": 32.01,
+            "p5Km": 27.97,
+            "p95Km": 36.54,
+            "medianKtKm": 0.00002191,
+            "medianFinestRatio": 2.847
+          },
+          "firstBreakMedianKm": 58.38,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 5.124,
+            "p95": 11.14
+          },
+          "largestMedianKg": 2.949,
+          "energyToGroundMedian": 0.000005769,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 30.77,
+            "p5Km": 27.92,
+            "p95Km": 36.36,
+            "medianKtKm": 0.00001654,
+            "medianFinestRatio": 1.001
+          },
+          "firstBreakMedianKm": 58.47,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 6.284,
+            "p95": 12.12
+          },
+          "largestMedianKg": 4.599,
+          "energyToGroundMedian": 0.000009115,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 1.96,
+        "firstBreakMedianKm": 24.81,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.92,
+          "firstBreakMedianKm": 37.88,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 5.856,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.27,
+          "firstBreakMedianKm": 34.44,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 5.351,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.38,
+          "firstBreakMedianKm": 34.44,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 5.351,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.21,
+          "firstBreakMedianKm": 34.44,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 5.351,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 28.41,
+          "firstBreakMedianKm": 31.99,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 7.892,
+          "mainFlare": "not assessable"
+        }
+      ]
+    },
+    {
+      "case": "Golden",
+      "family": "third set",
+      "drawn": "rule 1126's stream third-set-v2/Golden; the first 200",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": {
+          "lowM": 24500,
+          "highM": 39500,
+          "source": "the third set's O1, p. 18: the main flare near 30 km (p. 3: near 31 km) and a smaller one at 34 km; one near 45 km «less certain», left out; heights from time at a constant speed, less accurate below 30 km, widened as rule 1126",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": "pp. 8, 15–16: the finds match the dark-flight footprint and the finder’s clock",
+        "noCrater": "pp. 12–13: one stone through a roof onto a bed, one on a roadway",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 67.5,
+        "burstMedianKm": 37.72,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 4,
+          "peak": {
+            "medianKm": 35.72,
+            "p5Km": 30.1,
+            "p95Km": 40.14,
+            "medianKtKm": 0.001636,
+            "medianFinestRatio": 1.751
+          },
+          "firstBreakMedianKm": 36.33,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 9.615,
+            "p95": 54.32
+          },
+          "largestMedianKg": 1.703,
+          "energyToGroundMedian": 7.314e-7,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 35.72,
+              "baseline": 37.72,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 8,
+          "peak": {
+            "medianKm": 34.46,
+            "p5Km": 30.18,
+            "p95Km": 40.24,
+            "medianKtKm": 0.00142,
+            "medianFinestRatio": 1.869
+          },
+          "firstBreakMedianKm": 35.15,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 9.964,
+            "p95": 48.7
+          },
+          "largestMedianKg": 1.967,
+          "energyToGroundMedian": 0.000001003,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 34.46,
+              "baseline": 37.72,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 2,
+          "peak": {
+            "medianKm": 36.48,
+            "p5Km": 30.35,
+            "p95Km": 40.48,
+            "medianKtKm": 0.001574,
+            "medianFinestRatio": 1.724
+          },
+          "firstBreakMedianKm": 62.86,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 13.12,
+            "p95": 43.2
+          },
+          "largestMedianKg": 1.744,
+          "energyToGroundMedian": 8.48e-7,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 36.48,
+              "baseline": 37.72,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 8,
+          "peak": {
+            "medianKm": 35.36,
+            "p5Km": 30.33,
+            "p95Km": 40.7,
+            "medianKtKm": 0.001356,
+            "medianFinestRatio": 1.835
+          },
+          "firstBreakMedianKm": 62.99,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 15.71,
+            "p95": 54.15
+          },
+          "largestMedianKg": 2.091,
+          "energyToGroundMedian": 0.000001081,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 35.36,
+              "baseline": 37.72,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 2.02,
+        "firstBreakMedianKm": 27.84,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 39.16,
+          "firstBreakMedianKm": 39.73,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 11.32,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 34.77,
+          "firstBreakMedianKm": 36.33,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 9.615,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 35.61,
+          "firstBreakMedianKm": 36.33,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 12.27,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 35.57,
+          "firstBreakMedianKm": 36.33,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 13.28,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 29.41,
+          "firstBreakMedianKm": 30.86,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 17.42,
+          "mainFlare": "equal"
+        }
+      ]
+    },
+    {
+      "case": "Madura Cave",
+      "family": "third set",
+      "drawn": "rule 1126's stream third-set-v2/Madura Cave; the first 200",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": {
+          "lowM": 20750,
+          "highM": 40850,
+          "source": "the third set's O1, p. 3 and Fig. 2, p. 5: two break-ups, the peaks of the video light curve placed on the triangulated trajectory, widened as rule 1126",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": "pp. 8–9: found inside the dark-flight Monte Carlo cloud",
+        "noCrater": "Fig. 7, p. 11: found on an old telegraph track",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 63.51,
+        "burstMedianKm": 31.2,
+        "burstShare": 0.8,
+        "survivalShare": 0.2,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 2,
+          "peak": {
+            "medianKm": 31.73,
+            "p5Km": 25.6,
+            "p95Km": 37.42,
+            "medianKtKm": 0.0003713,
+            "medianFinestRatio": 2.851
+          },
+          "firstBreakMedianKm": 32.28,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 8.911,
+            "p95": 30.7
+          },
+          "largestMedianKg": 3.212,
+          "energyToGroundMedian": 0.000003969,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 31.73,
+              "baseline": 31.2,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0.2
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 31.84,
+            "p5Km": 25.44,
+            "p95Km": 37.18,
+            "medianKtKm": 0.0003753,
+            "medianFinestRatio": 2.632
+          },
+          "firstBreakMedianKm": 32.39,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 8.608,
+            "p95": 26.92
+          },
+          "largestMedianKg": 2.94,
+          "energyToGroundMedian": 0.000003884,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 31.84,
+              "baseline": 31.2,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0.2
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 2,
+          "peak": {
+            "medianKm": 32.36,
+            "p5Km": 25.59,
+            "p95Km": 37.58,
+            "medianKtKm": 0.0003047,
+            "medianFinestRatio": 2.834
+          },
+          "firstBreakMedianKm": 58.78,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 10.75,
+            "p95": 30.01
+          },
+          "largestMedianKg": 2.407,
+          "energyToGroundMedian": 0.000004057,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 32.36,
+              "baseline": 31.2,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0.2
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 6,
+          "peak": {
+            "medianKm": 31.69,
+            "p5Km": 24.84,
+            "p95Km": 37.35,
+            "medianKtKm": 0.0002899,
+            "medianFinestRatio": 2.736
+          },
+          "firstBreakMedianKm": 59.15,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 11.54,
+            "p95": 30.43
+          },
+          "largestMedianKg": 2.898,
+          "energyToGroundMedian": 0.000004241,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 31.69,
+              "baseline": 31.2,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0.2
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 0.67,
+        "firstBreakMedianKm": 26.87,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.88,
+          "firstBreakMedianKm": 34.64,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 9.874,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.36,
+          "firstBreakMedianKm": 32.28,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 8.911,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.75,
+          "firstBreakMedianKm": 32.28,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 9.704,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.73,
+          "firstBreakMedianKm": 32.28,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 9.869,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 23.57,
+          "firstBreakMedianKm": 28.28,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 21.51,
+          "mainFlare": "equal"
+        }
+      ]
+    },
+    {
+      "case": "Hamburg",
+      "family": "third set",
+      "drawn": "rule 1126's stream third-set-v2/Hamburg; the first 200",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": {
+          "lowM": 16650,
+          "highM": 29150,
+          "source": "the third set's O1, p. 10: two flares at 24.1 and 21.7 km; p. 13: GLM recorded both, widened as rule 1126",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": "pp. 15–18: the finds match the dark flight and the radar’s debris",
+        "noCrater": "p. 13: nearly all found on the surface of frozen lakes",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 65.5,
+        "burstMedianKm": 35.59,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 33.71,
+            "p5Km": 28.19,
+            "p95Km": 38.83,
+            "medianKtKm": 0.001154,
+            "medianFinestRatio": 1.671
+          },
+          "firstBreakMedianKm": 34.41,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 12.23,
+            "p95": 52.33
+          },
+          "largestMedianKg": 2.604,
+          "energyToGroundMedian": 0.000001593,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 33.71,
+              "baseline": 35.59,
+              "why": "distance 4.56 km against 6.44 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 7,
+          "peak": {
+            "medianKm": 33.51,
+            "p5Km": 28.28,
+            "p95Km": 39.08,
+            "medianKtKm": 0.001147,
+            "medianFinestRatio": 1.758
+          },
+          "firstBreakMedianKm": 34.39,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 10.35,
+            "p95": 56.81
+          },
+          "largestMedianKg": 2.463,
+          "energyToGroundMedian": 0.000001383,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 33.51,
+              "baseline": 35.59,
+              "why": "distance 4.36 km against 6.44 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 5,
+          "peak": {
+            "medianKm": 33.63,
+            "p5Km": 28.48,
+            "p95Km": 38.64,
+            "medianKtKm": 0.001015,
+            "medianFinestRatio": 1.928
+          },
+          "firstBreakMedianKm": 61.44,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 17.57,
+            "p95": 71.31
+          },
+          "largestMedianKg": 2.794,
+          "energyToGroundMedian": 0.000002259,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 33.63,
+              "baseline": 35.59,
+              "why": "distance 4.48 km against 6.44 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 5,
+          "peak": {
+            "medianKm": 34.25,
+            "p5Km": 28.68,
+            "p95Km": 38.96,
+            "medianKtKm": 0.001014,
+            "medianFinestRatio": 1.665
+          },
+          "firstBreakMedianKm": 60.96,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 12.63,
+            "p95": 52.76
+          },
+          "largestMedianKg": 2.104,
+          "energyToGroundMedian": 0.000001515,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 34.25,
+              "baseline": 35.59,
+              "why": "distance 5.1 km against 6.44 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 0.74,
+        "firstBreakMedianKm": 27.05,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 36.72,
+          "firstBreakMedianKm": 37.34,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 14.97,
+          "mainFlare": "unfavourable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.68,
+          "firstBreakMedianKm": 34.41,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 12.23,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.71,
+          "firstBreakMedianKm": 34.41,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 15.36,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.71,
+          "firstBreakMedianKm": 34.41,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 17.52,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 27.99,
+          "firstBreakMedianKm": 29.81,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 22.97,
+          "mainFlare": "favourable"
+        }
+      ]
+    },
+    {
+      "case": "Traspena",
+      "family": "third set",
+      "drawn": "rule 1126's stream third-set-v2/Traspena; the first 200",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": {
+          "lowM": 23535,
+          "highM": 40325,
+          "source": "the third set's O1, Table 6, p. 3863: the three flares of normalised intensity 1.0 at 35.32, 31.94 and 28.54 km; ten fainter ones (0.0 to 0.3) from 63.61 to 16.59 km, beside; the light curve uncalibrated, taken in fog, widened as rule 1126",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": "pp. 3865–3867: 31 m from the computed impact point, its crust fresh",
+        "noCrater": "p. 3867: lying near a dirt track, «no traces of impact except for a small nick»",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 66.13,
+        "burstMedianKm": 35.21,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 3,
+          "peak": {
+            "medianKm": 33.49,
+            "p5Km": 29.08,
+            "p95Km": 37.47,
+            "medianKtKm": 0.02342,
+            "medianFinestRatio": 1.101
+          },
+          "firstBreakMedianKm": 35.61,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 125.1,
+            "p95": 705
+          },
+          "largestMedianKg": 11.43,
+          "energyToGroundMedian": 9.95e-7,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 33.49,
+              "baseline": 35.21,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 16,
+          "peak": {
+            "medianKm": 33.55,
+            "p5Km": 29.55,
+            "p95Km": 37.34,
+            "medianKtKm": 0.01982,
+            "medianFinestRatio": 1.158
+          },
+          "firstBreakMedianKm": 35.8,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 107.7,
+            "p95": 897.4
+          },
+          "largestMedianKg": 9.004,
+          "energyToGroundMedian": 7.211e-7,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 33.55,
+              "baseline": 35.21,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 7,
+          "peak": {
+            "medianKm": 33.32,
+            "p5Km": 29.07,
+            "p95Km": 37.48,
+            "medianKtKm": 0.02309,
+            "medianFinestRatio": 1.139
+          },
+          "firstBreakMedianKm": 61.27,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 165.4,
+            "p95": 960.6
+          },
+          "largestMedianKg": 21.18,
+          "energyToGroundMedian": 0.000001341,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 33.32,
+              "baseline": 35.21,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 14,
+          "peak": {
+            "medianKm": 32.72,
+            "p5Km": 28.71,
+            "p95Km": 36.95,
+            "medianKtKm": 0.01776,
+            "medianFinestRatio": 1.217
+          },
+          "firstBreakMedianKm": 61.18,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 177.6,
+            "p95": 939.7
+          },
+          "largestMedianKg": 21.13,
+          "energyToGroundMedian": 0.000001416,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "equal",
+              "model": 32.72,
+              "baseline": 35.21,
+              "why": "distance 0 km against 0 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 0.83,
+        "firstBreakMedianKm": 25.66,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 36.68,
+          "firstBreakMedianKm": 38.9,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 144.7,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 31.19,
+          "firstBreakMedianKm": 35.61,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 125.1,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.51,
+          "firstBreakMedianKm": 35.61,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 175.4,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 33.51,
+          "firstBreakMedianKm": 35.61,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 199.7,
+          "mainFlare": "equal"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 34.31,
+          "firstBreakMedianKm": 36.46,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 108.8,
+          "mainFlare": "equal"
+        }
+      ]
+    },
+    {
+      "case": "Cavezzo",
+      "family": "third set",
+      "drawn": "rule 1126's stream third-set-v2/Cavezzo; the first 200",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": {
+          "lowM": 25650,
+          "highM": 37650,
+          "source": "the third set's O1, p. 1222: two flares at about 32.6 (the brightest) and 30.7 km, widened as rule 1126",
+          "counted": true
+        },
+        "otherFlaresKm": [],
+        "recovery": "pp. 1219, 1225: ⁴⁸V proves a fall of days before",
+        "noCrater": "p. 1218: at the border of a country road on an embankment",
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 61.92,
+        "burstMedianKm": null,
+        "burstShare": 0,
+        "survivalShare": 1,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0.00001718
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 29.56,
+            "p5Km": 25.4,
+            "p95Km": 35.58,
+            "medianKtKm": 0.0000106,
+            "medianFinestRatio": 3.51
+          },
+          "firstBreakMedianKm": 32.61,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 1.686,
+            "p95": 3.443
+          },
+          "largestMedianKg": 1.098,
+          "energyToGroundMedian": 0.000007675,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": 29.56,
+              "baseline": null,
+              "why": "produced in 200 of the branch's draws and 0 of the baseline's"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "equal",
+              "model": 1,
+              "baseline": 1
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 29.66,
+            "p5Km": 25.28,
+            "p95Km": 35,
+            "medianKtKm": 0.00001055,
+            "medianFinestRatio": 3.326
+          },
+          "firstBreakMedianKm": 32.59,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 1.737,
+            "p95": 3.636
+          },
+          "largestMedianKg": 1.129,
+          "energyToGroundMedian": 0.000008535,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": 29.66,
+              "baseline": null,
+              "why": "produced in 200 of the branch's draws and 0 of the baseline's"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "equal",
+              "model": 1,
+              "baseline": 1
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 30.18,
+            "p5Km": 25.96,
+            "p95Km": 35.59,
+            "medianKtKm": 0.000008505,
+            "medianFinestRatio": 3.35
+          },
+          "firstBreakMedianKm": 56.93,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 1.745,
+            "p95": 3.697
+          },
+          "largestMedianKg": 0.9535,
+          "energyToGroundMedian": 0.000007161,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": 30.18,
+              "baseline": null,
+              "why": "produced in 200 of the branch's draws and 0 of the baseline's"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "equal",
+              "model": 1,
+              "baseline": 1
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 0,
+          "peak": {
+            "medianKm": 29.2,
+            "p5Km": 26.12,
+            "p95Km": 35.37,
+            "medianKtKm": 0.000007575,
+            "medianFinestRatio": 2.677
+          },
+          "firstBreakMedianKm": 57.33,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 1.993,
+            "p95": 3.687
+          },
+          "largestMedianKg": 1.203,
+          "energyToGroundMedian": 0.00000938,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": 29.2,
+              "baseline": null,
+              "why": "produced in 200 of the branch's draws and 0 of the baseline's"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "equal",
+              "model": 1,
+              "baseline": 1
+            },
+            "noCrater": {
+              "verdict": "equal",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 0.98,
+        "firstBreakMedianKm": 24.74,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.05,
+          "firstBreakMedianKm": 35.92,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 1.891,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 29.52,
+          "firstBreakMedianKm": 32.61,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 1.686,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 29.56,
+          "firstBreakMedianKm": 32.61,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 1.702,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 29.56,
+          "firstBreakMedianKm": 32.61,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 1.702,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 26.48,
+          "firstBreakMedianKm": 29.34,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 2.606,
+          "mainFlare": "not assessable"
+        }
+      ]
+    },
+    {
+      "case": "Košice",
+      "family": "W18",
+      "drawn": "W18's ranges on fcm-round1/Košice/inputs, 200 draws",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": {
+          "lowM": 36000,
+          "highM": 38000,
+          "source": "W18: the main flare near 37 km, read ±1 km",
+          "counted": true
+        },
+        "otherFlaresKm": [53],
+        "recovery": null,
+        "noCrater": null,
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 64.67,
+        "burstMedianKm": 50.72,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 9,
+          "peak": {
+            "medianKm": 32.29,
+            "p5Km": 27.63,
+            "p95Km": 36.89,
+            "medianKtKm": 0.02586,
+            "medianFinestRatio": 1.147
+          },
+          "firstBreakMedianKm": 34.05,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 247.7,
+            "p95": 1827
+          },
+          "largestMedianKg": 29.62,
+          "energyToGroundMedian": 0.000001771,
+          "otherFlares": [
+            {
+              "km": 53,
+              "share": 0
+            }
+          ],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 32.29,
+              "baseline": 50.72,
+              "why": "distance 3.71 km against 12.7 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 15,
+          "peak": {
+            "medianKm": 32.4,
+            "p5Km": 28.17,
+            "p95Km": 36.79,
+            "medianKtKm": 0.02606,
+            "medianFinestRatio": 1.194
+          },
+          "firstBreakMedianKm": 34.33,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 233,
+            "p95": 2157
+          },
+          "largestMedianKg": 27.46,
+          "energyToGroundMedian": 0.000001775,
+          "otherFlares": [
+            {
+              "km": 53,
+              "share": 0
+            }
+          ],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 32.4,
+              "baseline": 50.72,
+              "why": "distance 3.6 km against 12.7 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 6,
+          "peak": {
+            "medianKm": 31.6,
+            "p5Km": 27.93,
+            "p95Km": 36.63,
+            "medianKtKm": 0.02509,
+            "medianFinestRatio": 1.174
+          },
+          "firstBreakMedianKm": 59.84,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 378.5,
+            "p95": 2331
+          },
+          "largestMedianKg": 54.99,
+          "energyToGroundMedian": 0.000002954,
+          "otherFlares": [
+            {
+              "km": 53,
+              "share": 0
+            }
+          ],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 31.6,
+              "baseline": 50.72,
+              "why": "distance 4.4 km against 12.7 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 10,
+          "peak": {
+            "medianKm": 31.9,
+            "p5Km": 27.83,
+            "p95Km": 36.2,
+            "medianKtKm": 0.02335,
+            "medianFinestRatio": 1.282
+          },
+          "firstBreakMedianKm": 60.45,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 346.4,
+            "p95": 2307
+          },
+          "largestMedianKg": 49.69,
+          "energyToGroundMedian": 0.000002791,
+          "otherFlares": [
+            {
+              "km": 53,
+              "share": 0
+            }
+          ],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 31.9,
+              "baseline": 50.72,
+              "why": "distance 4.1 km against 12.7 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "not assessable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 0.8,
+        "firstBreakMedianKm": 26.4,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 35.36,
+          "firstBreakMedianKm": 36.94,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 294.6,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 30.26,
+          "firstBreakMedianKm": 34.05,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 247.7,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.1,
+          "firstBreakMedianKm": 34.05,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 323.4,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.11,
+          "firstBreakMedianKm": 34.05,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 383.4,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 34.44,
+          "firstBreakMedianKm": 36.43,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 169,
+          "mainFlare": "favourable"
+        }
+      ]
+    },
+    {
+      "case": "Benešov",
+      "family": "W18",
+      "drawn": "W18's ranges on fcm-round1/Benešov/inputs, 200 draws",
+      "documented": {
+        "firstEvent": {
+          "lowM": 65000,
+          "highM": 70000,
+          "source": "W18 pp. 13–14: initial disruption at 65–67 km (FCM) and 70 km (Borovička 2015)",
+          "counted": true
+        },
+        "mainFlare": null,
+        "otherFlaresKm": [],
+        "recovery": "W18 p. 14: meteorite finds typed by Spurný et al. (2014)",
+        "noCrater": null,
+        "crater": null,
+        "recordedMassKg": null
+      },
+      "baseline": {
+        "firstMedianKm": 70.06,
+        "burstMedianKm": 38.26,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 199,
+            "completed at 10⁶": 1,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 7,
+          "peak": {
+            "medianKm": 35.76,
+            "p5Km": 31.96,
+            "p95Km": 40.12,
+            "medianKtKm": 0.05312,
+            "medianFinestRatio": 1.07
+          },
+          "firstBreakMedianKm": 39.06,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 70.26,
+            "p95": 1170
+          },
+          "largestMedianKg": 4.025,
+          "energyToGroundMedian": 1.282e-7,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "unfavourable",
+              "model": 39.06,
+              "baseline": 70.06,
+              "why": "distance 25.9 km against 0.0616 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 6,
+          "peak": {
+            "medianKm": 35.75,
+            "p5Km": 31.54,
+            "p95Km": 39.97,
+            "medianKtKm": 0.04942,
+            "medianFinestRatio": 1.097
+          },
+          "firstBreakMedianKm": 38.82,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 79.32,
+            "p95": 896.5
+          },
+          "largestMedianKg": 3.846,
+          "energyToGroundMedian": 1.585e-7,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "unfavourable",
+              "model": 38.82,
+              "baseline": 70.06,
+              "why": "distance 26.2 km against 0.0616 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 6,
+          "peak": {
+            "medianKm": 35.43,
+            "p5Km": 31.44,
+            "p95Km": 40.16,
+            "medianKtKm": 0.05241,
+            "medianFinestRatio": 1.108
+          },
+          "firstBreakMedianKm": 65.14,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 135.4,
+            "p95": 1128
+          },
+          "largestMedianKg": 16.5,
+          "energyToGroundMedian": 2.991e-7,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "equal",
+              "model": 65.14,
+              "baseline": 70.06,
+              "why": "distance 0 km against 0.0616 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 13,
+          "peak": {
+            "medianKm": 35.97,
+            "p5Km": 31.94,
+            "p95Km": 40.44,
+            "medianKtKm": 0.04623,
+            "medianFinestRatio": 1.157
+          },
+          "firstBreakMedianKm": 65.08,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 102.3,
+            "p95": 1253
+          },
+          "largestMedianKg": 8.724,
+          "energyToGroundMedian": 2.095e-7,
+          "otherFlares": [],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "firstEvent": {
+              "verdict": "equal",
+              "model": 65.08,
+              "baseline": 70.06,
+              "why": "distance 0 km against 0.0616 km"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": null
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 0.54,
+        "firstBreakMedianKm": 26.32,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 39.66,
+          "firstBreakMedianKm": 43.07,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 80.51,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 199,
+            "completed at 10⁶": 1,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.89,
+          "firstBreakMedianKm": 39.06,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 70.26,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 199,
+            "completed at 10⁶": 1,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 35.62,
+          "firstBreakMedianKm": 39.06,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 111.2,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 199,
+            "completed at 10⁶": 1,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 35.59,
+          "firstBreakMedianKm": 39.06,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 128.8,
+          "mainFlare": "not assessable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 199,
+            "completed at 10⁶": 1,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 37.74,
+          "firstBreakMedianKm": 41.43,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 53.76,
+          "mainFlare": "not assessable"
+        }
+      ]
+    },
+    {
+      "case": "Tagish Lake",
+      "family": "W18",
+      "drawn": "W18's ranges on fcm-round1/Tagish Lake/inputs, 200 draws",
+      "documented": {
+        "firstEvent": null,
+        "mainFlare": {
+          "lowM": 31000,
+          "highM": 33000,
+          "source": "W18: the main flare near 32 km, read ±1 km",
+          "counted": true
+        },
+        "otherFlaresKm": [36, 47],
+        "recovery": "W18 p. 18, after Hildebrand et al. (2006): 16.3 kg of recorded fragments",
+        "noCrater": null,
+        "crater": null,
+        "recordedMassKg": 16.3
+      },
+      "baseline": {
+        "firstMedianKm": null,
+        "burstMedianKm": 55.07,
+        "burstShare": 1,
+        "survivalShare": 0,
+        "lawSpeedShare": 0,
+        "energyToGroundMedian": 0
+      },
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 7,
+          "peak": {
+            "medianKm": 32.05,
+            "p5Km": 28.55,
+            "p95Km": 37.47,
+            "medianKtKm": 0.853,
+            "medianFinestRatio": 1.191
+          },
+          "firstBreakMedianKm": 33.41,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 6754,
+            "p95": 45760
+          },
+          "largestMedianKg": 880.5,
+          "energyToGroundMedian": 0.000004713,
+          "otherFlares": [
+            {
+              "km": 36,
+              "share": 0.205
+            },
+            {
+              "km": 47,
+              "share": 0
+            }
+          ],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 32.05,
+              "baseline": 55.07,
+              "why": "distance 0 km against 22.1 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": {
+              "recordedKg": 16.3,
+              "p95Kg": 45760,
+              "contradicted": false
+            }
+          }
+        },
+        {
+          "configuration": "M1/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 8,
+          "peak": {
+            "medianKm": 32.75,
+            "p5Km": 28.37,
+            "p95Km": 37.49,
+            "medianKtKm": 0.7865,
+            "medianFinestRatio": 1.234
+          },
+          "firstBreakMedianKm": 34.29,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 6747,
+            "p95": 41250
+          },
+          "largestMedianKg": 1072,
+          "energyToGroundMedian": 0.000005206,
+          "otherFlares": [
+            {
+              "km": 36,
+              "share": 0.175
+            },
+            {
+              "km": 47,
+              "share": 0
+            }
+          ],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 32.75,
+              "baseline": 55.07,
+              "why": "distance 0 km against 22.1 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": {
+              "recordedKg": 16.3,
+              "p95Kg": 41250,
+              "contradicted": false
+            }
+          }
+        },
+        {
+          "configuration": "M2/unlimited",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 9,
+          "peak": {
+            "medianKm": 33.64,
+            "p5Km": 28.69,
+            "p95Km": 38,
+            "medianKtKm": 0.8157,
+            "medianFinestRatio": 1.193
+          },
+          "firstBreakMedianKm": 60.66,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 8608,
+            "p95": 43300
+          },
+          "largestMedianKg": 1303,
+          "energyToGroundMedian": 0.000006568,
+          "otherFlares": [
+            {
+              "km": 36,
+              "share": 0.235
+            },
+            {
+              "km": 47,
+              "share": 0
+            }
+          ],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 33.64,
+              "baseline": 55.07,
+              "why": "distance 0.64 km against 22.1 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": {
+              "recordedKg": 16.3,
+              "p95Kg": 43300,
+              "contradicted": false
+            }
+          }
+        },
+        {
+          "configuration": "M2/capped",
+          "draws": 200,
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "notRobust": 9,
+          "peak": {
+            "medianKm": 32.65,
+            "p5Km": 28.55,
+            "p95Km": 37.48,
+            "medianKtKm": 0.7478,
+            "medianFinestRatio": 1.264
+          },
+          "firstBreakMedianKm": 61.31,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedKg": {
+            "median": 10040,
+            "p95": 47580
+          },
+          "largestMedianKg": 1333,
+          "energyToGroundMedian": 0.000006624,
+          "otherFlares": [
+            {
+              "km": 36,
+              "share": 0.205
+            },
+            {
+              "km": 47,
+              "share": 0
+            }
+          ],
+          "judgement": {
+            "mainFlare": {
+              "verdict": "favourable",
+              "model": 32.65,
+              "baseline": 55.07,
+              "why": "distance 0 km against 22.1 km"
+            },
+            "firstEvent": {
+              "verdict": "not assessable",
+              "model": null,
+              "baseline": null,
+              "why": "no observed interval"
+            },
+            "survival": {
+              "verdict": "favourable",
+              "model": 1,
+              "baseline": 0
+            },
+            "noCrater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "crater": {
+              "verdict": "not assessable",
+              "model": 0,
+              "baseline": 0
+            },
+            "recordedMass": {
+              "recordedKg": 16.3,
+              "p95Kg": 47580,
+              "contradicted": false
+            }
+          }
+        }
+      ],
+      "structuralSpread": {
+        "peakMedianKm": 1.59,
+        "firstBreakMedianKm": 27.9,
+        "survivalShare": 0,
+        "lawSpeedShare": 0
+      },
+      "sensitivities": [
+        {
+          "sensitivity": "exponential atmosphere",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 34.88,
+          "firstBreakMedianKm": 36.12,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 7868,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "C_disp 0.1",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 30.45,
+          "firstBreakMedianKm": 33.41,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 6754,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "3 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.1,
+          "firstBreakMedianKm": 33.41,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 8788,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "4 fragments per break",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 32.04,
+          "firstBreakMedianKm": 33.41,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 9662,
+          "mainFlare": "favourable"
+        },
+        {
+          "sensitivity": "strength scaled with size",
+          "statuses": {
+            "completed": 200,
+            "completed at 10⁶": 0,
+            "completed by the tail": 0,
+            "not completed": 0
+          },
+          "peakMedianKm": 40.74,
+          "firstBreakMedianKm": 44.97,
+          "survivalShare": 1,
+          "lawSpeedShare": 0,
+          "landedMedianKg": 2272,
+          "mainFlare": "favourable"
+        }
+      ]
+    }
+  ]
+}

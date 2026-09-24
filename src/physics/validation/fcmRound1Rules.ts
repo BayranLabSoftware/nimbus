@@ -229,6 +229,38 @@
  * selected afterwards to make gate 2 green: the six of 512 that meet
  * Chelyabinsk's two targets may inform the development tuning, shown with the
  * other 506.
+ *
+ * RULE 1160. ONE REGISTERED TUNING, T, written after the untuned development
+ * runs (rule 1156, fcmDevRuns.json) and before any tuned one. What the untuned
+ * runs showed: in every case and every draw something reaches the ground, and
+ * the landed mass is far above what is known — Chelyabinsk 24 to 450 t at the
+ * median against the 4 to 6 t W18 cites from Popova et al. (2013), Tagish Lake 7
+ * to 10 t against W18's 190 kg, 2008 TC3 7 to 10 t, Tunguska some 850 t. The
+ * priors of rule 1139 let half the draws take α above 0.33 and a cloud share
+ * below 0.45, where the fragments grow strong fast and little goes to clouds;
+ * W18's fits of main flares used cloud shares of 40 to 100 % (Košice 40–60,
+ * Benešov ~50, Chelyabinsk 75–85, Tagish Lake 80–100).
+ *   (a) The objective, on two cases whose landed mass has a published
+ *       reference: Chelyabinsk's median landed mass within a factor of three
+ *       about 5 000 kg (1 667 to 15 000 kg; Popova's 4 000–6 000 kg and W18's
+ *       fits of 5 000–6 500 kg); Tagish Lake's within 60 to 1 300 kg
+ *       (Hildebrand et al.'s areal estimate to Brown et al.'s, both as W18
+ *       gives them). A candidate meets it in a configuration where both
+ *       medians are inside.
+ *   (b) The constraint: no case's main-flare verdict worse than under the
+ *       untuned priors, in that configuration.
+ *   (c) The candidates, declared now and both run on every development case
+ *       under the four configurations, on the same streams: T1, the cloud
+ *       share uniform on 0.5–0.85; T2, the same and α uniform on 0.05–0.3.
+ *       Nothing else changes.
+ *   (d) The choice: the candidate meeting (a) and (b) in the most
+ *       configurations, T1 on a tie (the smaller change). If neither meets
+ *       (a) in any configuration, the untuned priors stay, the ground outcome
+ *       is declared not credible in mass, and the proposal limits the claim
+ *       to the atmosphere.
+ *   (e) The tuned runs are shown beside the untuned, never in their place;
+ *       the choice is frozen in the package. The other cases' landed masses
+ *       are reported, and judged by nothing new.
  */
 
 /** Rule 1149: the map of the perimeter. */
@@ -323,5 +355,17 @@ export const FCM_DEV_RUN = {
       flaresKm: [32, 36, 47],
       recordedMassKg: 16.3,
     },
+  },
+} as const;
+
+/** Rule 1160: the registered tuning's objective and candidates. */
+export const FCM_TUNING = {
+  objective: {
+    Chelyabinsk: [1_667, 15_000],
+    'Tagish Lake': [60, 1_300],
+  },
+  candidates: {
+    T1: { cloudShare: [0.5, 0.85] },
+    T2: { cloudShare: [0.5, 0.85], alpha: [0.05, 0.3] },
   },
 } as const;
