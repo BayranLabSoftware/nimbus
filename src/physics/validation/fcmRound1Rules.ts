@@ -261,6 +261,39 @@
  *   (e) The tuned runs are shown beside the untuned, never in their place;
  *       the choice is frozen in the package. The other cases' landed masses
  *       are reported, and judged by nothing new.
+ *
+ * RULE 1161. THE VERDICT ON ROUND 1 (the reviewer, 24 September 2026,
+ * evening): «ready in a restricted domain for an independent test of the
+ * atmospheric release only» — a decision on the testability of one bounded
+ * prediction, not a validation and not an adoption; no class B; the product's
+ * engine unchanged. The development cases are read, the landed mass is
+ * systematically too large, and W18 stays a partial comparison with its
+ * discrepancies unresolved. The path, the reviewer's preference: the
+ * atmosphere first — the branch frozen at its untuned priors, both structures
+ * and both clouds, and tested alone on the release; a round on survival,
+ * mandatory before any adoption of the full branch, run apart with its own
+ * commits, versions and targets, asking which physical process or
+ * representation is missing — never which interval brings Chelyabinsk and
+ * Tagish Lake inside their targets; round 3's atmospheric outcome never used
+ * to retouch the candidate judged in it. Before any reserved target, one
+ * opening document of round 3 freezes, together: the exact version, the priors,
+ * the four configurations with each one's results obligatory beside the
+ * equal-weight mixture, and a decision rule that no mixture can make up for a
+ * predefined severe structural failure, with the sensitivity to the weights
+ * published and never chosen on the new events; the domain of 0.1 to 10 m —
+ * the proposed upper bound of the candidate, not a domain verified in every
+ * combination: the points exercised told from the perimeter, double peaks and
+ * the atmosphere's sensitivity kept visible below 10 m — its boundary, its
+ * non-completions and its nearly equal peaks; the reference atmosphere and
+ * its uncertainty; the observable — the maximum of a reconstructed energy
+ * deposition, primary where an event has one with its uncertainty, and a
+ * luminous flare's altitude only as a qualified proxy with its own uncertainty
+ * and weight, never one threshold for both — named event by event without
+ * reading the reserved values; thresholds grounded on the sources' quality,
+ * the pairing with Collins, and a rule against bands made wide; and a verdict
+ * allowed on the atmospheric release only. Andrea's word: the opening
+ * document, and the reconnaissance of round 2 now (rule 1158, metadata only,
+ * no download), since the document must name each event's observables.
  */
 
 /** Rule 1149: the map of the perimeter. */
@@ -368,4 +401,14 @@ export const FCM_TUNING = {
     T1: { cloudShare: [0.5, 0.85] },
     T2: { cloudShare: [0.5, 0.85], alpha: [0.05, 0.3] },
   },
+} as const;
+
+/** Rule 1161: the verdict on round 1, and what it does not give. */
+export const FCM_ROUND1_VERDICT = {
+  verdict: 'ready in a restricted domain for an independent test of the atmospheric release only',
+  domainUpperBoundM: 10,
+  adoption: false,
+  classB: false,
+  productUnchanged: true,
+  path: 'atmosphere first; survival as its own round, before any adoption',
 } as const;

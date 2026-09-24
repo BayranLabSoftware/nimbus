@@ -6,6 +6,7 @@ import {
   FCM_DOMAIN_MAP,
   FCM_FLOOR_BODY,
   FCM_PEAKS,
+  FCM_ROUND1_VERDICT,
   FCM_TUNING,
 } from './fcmRound1Rules.js';
 import { FCM_DOMAIN, FCM_GATE1 } from './fcmRoundRules.js';
@@ -53,5 +54,14 @@ describe('rule 1160: one registered tuning', () => {
     const [lo, hi] = FCM_TUNING.objective.Chelyabinsk;
     expect(hi / 5_000).toBeCloseTo(3, 12);
     expect(5_000 / lo).toBeCloseTo(3, 2);
+  });
+});
+
+describe('rule 1161: the verdict on round 1', () => {
+  it('tests the release only, adopts nothing, and leaves the product as it is', () => {
+    expect(FCM_ROUND1_VERDICT.adoption).toBe(false);
+    expect(FCM_ROUND1_VERDICT.classB).toBe(false);
+    expect(FCM_ROUND1_VERDICT.productUnchanged).toBe(true);
+    expect(FCM_ROUND1_VERDICT.domainUpperBoundM).toBe(10);
   });
 });
