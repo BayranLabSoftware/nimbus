@@ -55,6 +55,23 @@ changes. With a cloud share of 1, F is the baseline.
 - **What F cannot claim.** No strewn field, no place of recovery, no ablation's loss in its masses;
   a run past 10⁵ components is declared not completed and enters no comparison.
 
+## Made verifiable (rules 1085 to 1088)
+
+- **The dust below 1 g** leaves flight at once: its mass to the dust's account at its altitude,
+  its kinetic energy laid down there as E_dust, its momentum given to the air as an impulse J_dust,
+  each apart from drag's energy and impulse.
+- **The budgets' exact quantities:** mass within 10⁻¹² m0; energy E0 + W_g against E_drag + E_dust +
+  E_ground + E_flight within 10⁻¹² (E0 + |W_g|); momentum as a vector in the entry's vertical plane
+  (all paths lie in it), p0 + J_g − J_drag − J_dust against what is in flight and on the ground,
+  within 10⁻¹² |p0|. Denominators are the entry's values; a failed budget voids the run.
+- **Cascades** resolved breadth-first at one altitude; every component ever created counts toward
+  10⁵, within a cascade too. **Convergence** on the same paired draws, the step or floor alone
+  changed; a relative criterion against the finer run, and where that value is zero or absent, both
+  must be.
+- **The baseline's limit at the same event:** the main fragmentation found by the baseline's own
+  function, the pancake started from the identical state, profiles on the same bins, zeros with
+  their own absolute tolerances. A regression check, not a validation against observations.
+
 ## Priors, drawn once per draw
 
 | Parameter          | Interval     | From                                  |

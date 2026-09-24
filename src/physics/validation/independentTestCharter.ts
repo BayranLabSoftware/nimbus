@@ -364,6 +364,67 @@ export function charterReading(
  * is.
  */
 
+/**
+ * Rule 1084 — the last clause before the judge is frozen, on the reviewer's
+ * reply of 24 September 2026: rule 1075 publishes the three shares and counts
+ * craters on every draw, but does not yet say, mechanically, what a move out of
+ * the domain does to O5. Andrea's word: this clause and F's last precisions,
+ * then the text.
+ *
+ * RULE 1084. O5 AND THE FLIGHT OUT OF THE DOMAIN (`o5DomainFlight`). On each
+ * fall, the paired draws are read as transitions, baseline state → variant
+ * state, among crater computed, no crater and out of the domain; the 3 × 3
+ * table of their counts is published with the three shares.
+ *   (a) A draw going from crater computed to out of the domain earns nothing:
+ *       it lowers the variant's share of craters without counting as a gain.
+ *   (b) A draw going from no crater to out of the domain is a loss, as a draw
+ *       going to a crater would be.
+ *   (c) The only crater gain is a draw going from crater computed to no
+ *       crater, net of the draws going the other way.
+ *   (d) Where, on any fall, the net share of draws moved out of the domain —
+ *       those going there minus those coming back, over the paired draws —
+ *       exceeds 0.10, the variant earns no credit of improvement on O5 at all,
+ *       whatever its crater share and its other components do. This holds
+ *       whether the craters fall or not.
+ */
+
+/** Rule 1084 (d): the net share of draws moved out of the domain that denies
+ *  O5's credit. */
+export const O5_DOMAIN_FLIGHT = 0.1;
+
+type CraterState = 'computed' | 'none' | 'outOfDomain';
+
+/** Rule 1084: a fall's paired transitions, its crater gain, its net flight out
+ *  of the domain, and whether that flight denies O5's credit. */
+export function o5DomainFlight(
+  baseline: readonly CraterState[],
+  variant: readonly CraterState[]
+): {
+  transitions: Record<CraterState, Record<CraterState, number>>;
+  craterGain: number;
+  netFlightOut: number;
+  deniesCredit: boolean;
+} {
+  if (baseline.length !== variant.length || baseline.length === 0)
+    throw new Error('rule 1084: the draws must be paired, one for one');
+  const zero = (): Record<CraterState, number> => ({ computed: 0, none: 0, outOfDomain: 0 });
+  const transitions: Record<CraterState, Record<CraterState, number>> = {
+    computed: zero(),
+    none: zero(),
+    outOfDomain: zero(),
+  };
+  baseline.forEach((b, i) => {
+    const v = variant[i];
+    if (v !== undefined) transitions[b][v] += 1;
+  });
+  const n = baseline.length;
+  const t = transitions;
+  const craterGain = (t.computed.none - t.none.computed) / n;
+  const netFlightOut =
+    (t.computed.outOfDomain + t.none.outOfDomain - t.outOfDomain.computed - t.outOfDomain.none) / n;
+  return { transitions, craterGain, netFlightOut, deniesCredit: netFlightOut > O5_DOMAIN_FLIGHT };
+}
+
 /** Rule 1062: the columns of the table of eligibility. */
 export const ELIGIBILITY_COLUMNS = ['type', 'O1', 'O2', 'C1', 'C2', 'C3'] as const;
 
@@ -529,7 +590,10 @@ export interface O5Component {
  *  counting. */
 export function o5Verdict(
   components: readonly O5Component[],
-  craterWorsening: readonly boolean[]
+  craterWorsening: readonly boolean[],
+  /** Rule 1084 (d): on each fall, whether its flight out of the domain denies
+   *  O5's credit. */
+  domainFlightDenies: readonly boolean[] = []
 ): { improves: boolean; worsens: boolean; improvementClaimable: boolean } {
   let worsens = craterWorsening.some(Boolean);
   let gained = false;
@@ -548,7 +612,12 @@ export function o5Verdict(
     if (fellBelow || delta < -CHARTER.outcomeWorsening) worsens = true;
     if (delta >= CHARTER.outcomeGain) gained = true;
   }
-  return { improves: claimable && gained && !worsens, worsens, improvementClaimable: claimable };
+  const denied = domainFlightDenies.some(Boolean);
+  return {
+    improves: claimable && gained && !worsens && !denied,
+    worsens,
+    improvementClaimable: claimable && !denied,
+  };
 }
 
 /** Rules 1053 and 1061: whether a model's band voids a body's improvement —

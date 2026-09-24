@@ -202,6 +202,67 @@
  * outputs are published with that mark and enter no comparison.
  */
 
+/**
+ * Rules 1085 to 1088 — F's specification made verifiable, on the reviewer's
+ * reply of 24 September 2026: the structure is settled; the dust below the
+ * floor, the budgets' quantities and tolerances, the immediate cascades and
+ * the limit of the baseline are fixed here without ambiguity, before any code.
+ * They change no result and tune nothing on any case.
+ *
+ * RULE 1085. THE DUST BELOW THE FLOOR (amends rules 1065 (d) and 1078). A piece
+ * lighter than 1 g born at altitude z with speed v along direction u leaves
+ * the components in flight at that instant and is never among them again. Its
+ * mass is written to the dust's account at z. Its kinetic energy ½ m v² is laid
+ * down in the air at z, in the energy profile's bin of z, and written as the
+ * dust's energy E_dust, apart from the energy drag lays down, E_drag. Its
+ * momentum m v u is given to the air at z as an impulse J_dust, written apart
+ * from drag's impulse J_drag: the two are never confused.
+ *
+ * RULE 1086. THE BUDGETS' QUANTITIES AND TOLERANCES (amends rule 1078). With m0,
+ * E0 and p0 the entry's mass, kinetic energy and momentum vector at the top of
+ * the atmosphere:
+ *   MASS — |m_flight + m_ground + m_dust − m0| ≤ 10⁻¹² m0;
+ *   ENERGY — with W_g gravity's work on every component,
+ *     |(E0 + W_g) − (E_drag + E_dust + E_ground + E_flight)| ≤ 10⁻¹² (E0 + |W_g|);
+ *   MOMENTUM — a vector in the vertical plane of the entry, where every path
+ *     lies (no lateral speed, rule 1065 (c)): with J_g gravity's impulse on every
+ *     component, |p0 + J_g − J_drag − J_dust − (p_flight + p_ground)| ≤ 10⁻¹² |p0|,
+ *     the norm Euclidean; where every path keeps the entry's angle it is that
+ *     vector's projection on the path, and the same test.
+ * The denominators are the entry's own values, never zero for a body that
+ * enters; a run whose budget fails is void and is published as void.
+ *
+ * RULE 1087. CASCADES AND CONVERGENCE (amends rules 1079 and 1080).
+ *   (a) The breaks at one altitude are resolved breadth-first: a child whose
+ *       pressure already reaches its strength is replaced at once by its own
+ *       children, at the same altitude, until none of them breaks there or it
+ *       falls below the floor. The pieces' strengths grow and their masses
+ *       shrink geometrically at each break, so a cascade ends.
+ *   (b) The count of components is every fragment and cloud ever created in a
+ *       draw; where it passes 10⁵ at any moment — within a cascade too — the
+ *       draw stops and is declared not completed (rule 1083), its outputs
+ *       entering no comparison.
+ *   (c) Convergence is read on the same paired draws — the same drawn inputs
+ *       and priors — the step or the floor alone changed, so that numerical
+ *       change and Monte Carlo change never mix. A relative criterion reads
+ *       |a − b| / |b|, b the finer run's value; where b is zero or absent (no
+ *       break, no piece on the ground), the two runs converge only if a is zero
+ *       or absent too. The survival share is judged absolutely, within 0.01.
+ *
+ * RULE 1088. THE LIMIT OF THE BASELINE, at the same event (amends rule 1081).
+ * With f_c = 1, F and the baseline are compared on the same drawn inputs; the
+ * main fragmentation is found by the very function the baseline uses, so that
+ * the state that starts the pancake — its altitude, speed, angle and diameter
+ * — is the same to the bit, and the identity of the pancake's code applies to
+ * the identity of the event that starts it. The profiles are compared on the
+ * same altitude bins. Continuous quantities within 10⁻⁹ relative; a value that
+ * is zero in the baseline within its own absolute tolerance — 10⁻⁶ m for an
+ * altitude, 10⁻⁹ E0 for an energy, 10⁻⁹ m0 for a mass; discrete ones — the
+ * regime, the crater's state — equal. This checks the numbers against the
+ * baseline's, which is a regression; it is no validation against what was
+ * observed, which stays a separate step.
+ */
+
 /** Rule 1065 (a): fragments per break, besides the cloud. */
 export const F_FRAGMENTS_PER_BREAK = 2;
 

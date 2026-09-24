@@ -9,6 +9,7 @@ import {
   craterAnswer,
   craterShares,
   craterWorsens,
+  o5DomainFlight,
   ELIGIBILITY_COLUMNS,
   o2Compatible,
   o2Improves,
@@ -212,5 +213,32 @@ describe('rules 1049 to 1062: the charter amended, operationally', () => {
       model: band(5, 12, 30),
     }));
     expect(o2Improves(better).improves).toBe(true);
+  });
+
+  it('1084: a flight out of the domain is no gain, a loss from «no crater», and past 0.10 no credit', () => {
+    type St = 'computed' | 'none' | 'outOfDomain';
+    const rep = (st: St, k: number): St[] => Array.from({ length: k }, () => st);
+    // Baseline: 5 craters, 5 none. Variant: the 5 craters moved out of the domain.
+    const baseline = [...rep('computed', 5), ...rep('none', 5)];
+    const fled = [...rep('outOfDomain', 5), ...rep('none', 5)];
+    const f = o5DomainFlight(baseline, fled);
+    expect(f.transitions.computed.outOfDomain).toBe(5);
+    expect(f.craterGain).toBe(0);
+    expect(f.netFlightOut).toBeCloseTo(0.5, 12);
+    expect(f.deniesCredit).toBe(true);
+    // The same craters turned into «no crater»: a real gain, no flight.
+    const mended = o5DomainFlight(baseline, rep('none', 10));
+    expect(mended.craterGain).toBeCloseTo(0.5, 12);
+    expect(mended.deniesCredit).toBe(false);
+    // A flight that denies the credit, whatever the components gained.
+    const survival = { baseline: [0.5, 0.6, 0.7], model: [0.7, 0.7, 0.8] };
+    const regime = { baseline: [0.4, 0.5, 0.5], model: [0.5, 0.6, 0.6] };
+    expect(
+      o5Verdict([survival, regime], [false, false, false], [false, true, false])
+    ).toMatchObject({
+      improves: false,
+      improvementClaimable: false,
+    });
+    expect(() => o5DomainFlight(baseline, ['none'])).toThrow();
   });
 });

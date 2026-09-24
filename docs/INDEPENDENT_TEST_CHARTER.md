@@ -119,6 +119,13 @@ prediction and no adoption; F's specification may now be written, as a study of 
   all draws, so a body with survivors in fewer than half its draws has an infinite error and, on a
   measured mass, is incompatible; its survival share is published beside, survival judged by C1.
 
+## O5 and the flight out of the domain (rule 1084)
+
+On each fall the paired draws are read as transitions — crater, no crater, out of the domain —
+and the 3 × 3 table is published. Crater → out earns nothing; no crater → out is a loss; the only
+crater gain is crater → no crater, net. Where the net share of draws moved out of the domain exceeds
+0.10 on any fall, the variant earns no credit on O5 at all, whether its craters fall or not.
+
 ## What may not happen
 
 No law of F, fragment size, upper edge of the strengths, f1 or closure is chosen, tuned or checked
