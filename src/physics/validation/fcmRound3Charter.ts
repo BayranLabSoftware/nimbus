@@ -263,6 +263,47 @@
  *       measured trajectory, no deposition reconstructed from a calibrated
  *       light curve, its speed and angle assumed («likely ≤ 17 km/s and
  *       45°»). By rule 1164 (d) its kind falls to diagnostic: not assessable.
+ *
+ * RULE 1177. JENNISKENS (2026) AS THE FOUR EVENTS' SOURCE, AND A FULL
+ * EXPOSURE. Written on 24 September 2026, evening, before any input draw of
+ * those events is built.
+ *   (a) The exposure. The publisher's site refused the article to a script;
+ *       Andrea, to give it, pasted its whole text into the conversation. The
+ *       analyst therefore read all of its Table 2 — among the rest the onset
+ *       of fragmentation Hf, the disruption (end flare) Hd and the end He,
+ *       with σH, for all 75 falls: Grimsby, Bunburra Rockhole, Mason Gully,
+ *       Neuschwanstein and Aguas Zarcas among them. For those events round 3
+ *       is no longer blind to its analyst. The candidate is sealed (rule 1162)
+ *       and its predictions are computed by a script from the inputs alone,
+ *       so they cannot follow what was seen; the judgements of extraction can,
+ *       and so every one left is fixed here, uniformly and against the branch
+ *       where it can be. The reviewer is told before any target is extracted.
+ *   (b) The inputs of Grimsby, Bunburra Rockhole, Mason Gully and
+ *       Neuschwanstein (rule 1175 (b)): Jenniskens's Table 2 — the initial
+ *       mass, the density, the entry angle h and the entry speed V∞ — which
+ *       prints no uncertainty for them. The speed and the angle are taken as
+ *       printed, without spread; the mass by rule 1176 (a); the density as
+ *       printed (a bracketed one being the type's generic value, said so).
+ *   (c) The quality of every height taken from Jenniskens (2026): B at best
+ *       (rule 1165 (a)) — a compilation that re-derived the light curves from
+ *       reports, photographs, scans and video frames and placed them on the
+ *       trajectories, not a measurement of its own; its σH is kept as the
+ *       uncertainty, widened to 1 km where smaller.
+ *   (d) The kind of those four events, by rule 1174 (b): a proxy needs the
+ *       altitude of the brightest flare — the source's word for it, or the
+ *       light curve's maximum. Jenniskens's text names the end flare Hd and
+ *       the onset of flares Hf but not which is brightest, and gives the light
+ *       curves only as figures. Read from its figures (the PDF, if Andrea can
+ *       download it), the maximum is a proxy of quality B; without them, the
+ *       kind falls to diagnostic. Hd is never taken for the brightest flare
+ *       unless the figure shows it so.
+ *   (e) The consequence, said before any prediction: with Benenitra fallen
+ *       (rule 1176 (c)) and these four of quality B at best, rule 1167 (b)'s
+ *       three strong events cannot be reached — only Aguas Zarcas, from its
+ *       own source, can be of quality A. Round 3 can come out «unfavourable»
+ *       or «inconclusive», never «favourable». It is still run: it can refute
+ *       the apparent improvement of the flares, which is what the reviewer
+ *       asked it to be able to do. Nothing is loosened to reach the minimum.
  */
 
 /** Rule 1162: the SHA-256 of the files that make the candidate. */
@@ -349,3 +390,6 @@ export const FCM_ROUND3_CLOSED_SOURCES = [
   // ResearchGate only, on request — no open copy; rule 1175 (b) applies.
   'Mason Gully',
 ] as const;
+
+/** Rule 1177 (c): the least uncertainty of a height from Jenniskens (2026). */
+export const FCM_ROUND3_COMPILATION_MIN_SIGMA_KM = 1;
