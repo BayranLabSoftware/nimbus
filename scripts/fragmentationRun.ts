@@ -77,7 +77,11 @@ function draw(value: LevelBInputValue, u: () => number): number {
 }
 
 /** A level B event's inputs, in the rounds' order, on its stream. */
-function drawnInputs(event: LevelBEvent, seed: string, count: number): ImpactScenarioInput[] {
+export function drawnInputs(
+  event: LevelBEvent,
+  seed: string,
+  count: number
+): ImpactScenarioInput[] {
   const u = stream(seed);
   const out: ImpactScenarioInput[] = [];
   for (let i = 0; i < count; i++) {
