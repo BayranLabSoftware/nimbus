@@ -226,6 +226,23 @@
  *       rule 1165 (a), a value read from a figure being B with its reading
  *       uncertainty. Each value's table, figure or section recorded; the kind
  *       falls where rule 1164 (d) says.
+ *
+ * RULE 1175. A SOURCE THAT CANNOT BE OPENED, decided before any download and
+ * before anything of Jenniskens (2026) is seen. Sources are taken only from
+ * open copies — the publisher's open access, arXiv, a public repository —
+ * never past a paywall or a check against robots. By OpenAlex's metadata, the
+ * register's sources of Grimsby, Bunburra Rockhole and Neuschwanstein have no
+ * open copy; Mason Gully's trajectory paper is to be located. For such an
+ * event:
+ *   (a) an open copy of the same work found by metadata (arXiv, a repository)
+ *       is taken as its source;
+ *   (b) failing that, Jenniskens (2026) — open access — is its source, of
+ *       inputs and of targets alike, where that compilation holds the event:
+ *       the event stays in the list it is already in; its kind falls where the
+ *       compilation lacks what the kind needs (rule 1164 (d)); its quality is
+ *       what the compilation prints (rule 1165 (a));
+ *   (c) failing both, the event is not assessable, and counts toward no
+ *       minimum. No other source replaces it, and no event replaces it.
  */
 
 /** Rule 1162: the SHA-256 of the files that make the candidate. */
@@ -302,3 +319,10 @@ export const FCM_ROUND3_LIST = {
 
 /** Rule 1169: one severe structural failure on a primary event of quality A. */
 export const FCM_ROUND3_STRUCTURAL_A = { severeOnPrimaryA: 1 } as const;
+
+/** Rule 1175: the register's sources with no open copy, by OpenAlex. */
+export const FCM_ROUND3_CLOSED_SOURCES = [
+  'Grimsby',
+  'Bunburra Rockhole',
+  'Neuschwanstein',
+] as const;
