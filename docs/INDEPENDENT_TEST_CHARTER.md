@@ -126,6 +126,18 @@ and the 3 × 3 table is published. Crater → out earns nothing; no crater → o
 crater gain is crater → no crater, net. Where the net share of draws moved out of the domain exceeds
 0.10 on any fall, the variant earns no credit on O5 at all, whether its craters fall or not.
 
+## The nine transitions (rule 1089)
+
+| baseline \ variant | computed | no crater | out of domain |
+| ------------------ | -------- | --------- | ------------- |
+| computed           | 0        | +1        | 0             |
+| no crater          | −1       | 0         | −1            |
+| out of domain      | 0        | +1        | 0             |
+
+C3's score is the sum over the paired draws divided by their number — the change of the share of
+«no crater»; below −0.10 on any fall it worsens O5. The veto on a net flight out of the domain
+(rule 1084) and the test on computed craters (rule 1075) apply in addition, never in its place.
+
 ## What may not happen
 
 No law of F, fragment size, upper edge of the strengths, f1 or closure is chosen, tuned or checked

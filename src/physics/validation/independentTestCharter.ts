@@ -388,6 +388,35 @@ export function charterReading(
  *       whether the craters fall or not.
  */
 
+/**
+ * RULE 1089. THE NINE TRANSITIONS, SCORED (completes rule 1084; the reviewer,
+ * 24 September 2026). Each paired draw of a fall contributes to C3's score the
+ * change of its right answer — «no crater» is right, «crater computed» and «out
+ * of the domain» are not:
+ *
+ *                      variant: computed   no crater   out of domain
+ *   baseline computed:              0         +1              0
+ *   baseline no crater:            −1          0             −1
+ *   baseline out of domain:         0         +1              0
+ *
+ * The score is the sum over the paired draws divided by their number — the
+ * change of the share of «no crater». It is published beside the table. C3
+ * stays diagnostic for improvement; a score below −0.10 on any fall worsens
+ * O5. The veto of rule 1084 (d) on a net flight out of the domain is in
+ * addition to this score, never in its place, and so is rule 1075's test on
+ * the share of computed craters.
+ */
+
+/** Rule 1089: each transition's contribution to C3's score. */
+export const C3_TRANSITION_SCORE = {
+  computed: { computed: 0, none: 1, outOfDomain: 0 },
+  none: { computed: -1, none: 0, outOfDomain: -1 },
+  outOfDomain: { computed: 0, none: 1, outOfDomain: 0 },
+} as const;
+
+/** Rule 1089: a score below this on any fall worsens O5. */
+export const C3_SCORE_WORSENING = -0.1;
+
 /** Rule 1084 (d): the net share of draws moved out of the domain that denies
  *  O5's credit. */
 export const O5_DOMAIN_FLIGHT = 0.1;
@@ -404,6 +433,9 @@ export function o5DomainFlight(
   craterGain: number;
   netFlightOut: number;
   deniesCredit: boolean;
+  /** Rule 1089: C3's score, and whether it worsens O5. */
+  score: number;
+  worsens: boolean;
 } {
   if (baseline.length !== variant.length || baseline.length === 0)
     throw new Error('rule 1084: the draws must be paired, one for one');
@@ -422,7 +454,18 @@ export function o5DomainFlight(
   const craterGain = (t.computed.none - t.none.computed) / n;
   const netFlightOut =
     (t.computed.outOfDomain + t.none.outOfDomain - t.outOfDomain.computed - t.outOfDomain.none) / n;
-  return { transitions, craterGain, netFlightOut, deniesCredit: netFlightOut > O5_DOMAIN_FLIGHT };
+  let score = 0;
+  for (const b of ['computed', 'none', 'outOfDomain'] as const)
+    for (const v of ['computed', 'none', 'outOfDomain'] as const)
+      score += C3_TRANSITION_SCORE[b][v] * t[b][v];
+  return {
+    transitions,
+    craterGain,
+    netFlightOut,
+    deniesCredit: netFlightOut > O5_DOMAIN_FLIGHT,
+    score: score / n,
+    worsens: score / n < C3_SCORE_WORSENING,
+  };
 }
 
 /** Rule 1062: the columns of the table of eligibility. */

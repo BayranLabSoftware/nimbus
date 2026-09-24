@@ -72,6 +72,16 @@ changes. With a cloud share of 1, F is the baseline.
   function, the pancake started from the identical state, profiles on the same bins, zeros with
   their own absolute tolerances. A regression check, not a validation against observations.
 
+## The code's three checks (rule 1090)
+
+- Energy and momentum at the ground are each piece's at the instant before contact, after the
+  terminal floor; nothing rests on the ground, so no energy or impulse of contact is left out.
+- The vector balance decides: F keeps each path on the entry's straight line (gravity only through
+  the terminal floor, along that line), and that the vector test equals the projection is checked,
+  not assumed.
+- The bound of 10⁵ components is checked at every creation, so it stops a cascade that does not
+  end; that draw is declared not completed.
+
 ## Priors, drawn once per draw
 
 | Parameter          | Interval     | From                                  |

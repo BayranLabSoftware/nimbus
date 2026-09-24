@@ -263,6 +263,28 @@
  * observed, which stays a separate step.
  */
 
+/**
+ * RULE 1090. THE CODE'S THREE CHECKS (the reviewer, 24 September 2026, who
+ * authorizes F's code as a study of development only — no independent test, no
+ * class B, no conclusion of observational compatibility):
+ *   (a) CONTACT WITH THE GROUND. E_ground and p_ground are each piece's kinetic
+ *       energy and momentum at the instant before it touches the ground — its
+ *       speed there, after the terminal floor — and a swarm's likewise; no piece
+ *       is kept on the ground at rest, so no energy or impulse of contact
+ *       enters the budgets beyond them.
+ *   (b) THE VECTOR BALANCE IS THE ONE THAT DECIDES. F's equations, as Collins
+ *       et al.'s, keep every path on the entry's straight line at its angle
+ *       (gravity enters only through the terminal floor, rule 1026, written as
+ *       an impulse and a work along that line); the code keeps the momentum as
+ *       a vector in the entry's vertical plane, and the vector test of rule
+ *       1086 is the one applied — that it equals the projection is a property
+ *       of these equations, checked, never assumed.
+ *   (c) THE BOUND STOPS WHAT DOES NOT END. The count of components is checked
+ *       at every creation, inside a cascade too: a cascade that does not
+ *       resolve is stopped by the bound of 10⁵, and its draw is declared not
+ *       completed (rule 1087 (b)).
+ */
+
 /** Rule 1065 (a): fragments per break, besides the cloud. */
 export const F_FRAGMENTS_PER_BREAK = 2;
 

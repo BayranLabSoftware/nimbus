@@ -241,4 +241,29 @@ describe('rules 1049 to 1062: the charter amended, operationally', () => {
     });
     expect(() => o5DomainFlight(baseline, ['none'])).toThrow();
   });
+
+  it('1089: every one of the nine transitions has its score, the veto apart', () => {
+    type St = 'computed' | 'none' | 'outOfDomain';
+    const states: St[] = ['computed', 'none', 'outOfDomain'];
+    const expected: Record<St, Record<St, number>> = {
+      computed: { computed: 0, none: 1, outOfDomain: 0 },
+      none: { computed: -1, none: 0, outOfDomain: -1 },
+      outOfDomain: { computed: 0, none: 1, outOfDomain: 0 },
+    };
+    for (const b of states)
+      for (const v of states) expect(o5DomainFlight([b], [v]).score).toBe(expected[b][v]);
+    // The score is the change of the share of «no crater».
+    const f = o5DomainFlight(
+      ['none', 'none', 'computed', 'outOfDomain'],
+      ['outOfDomain', 'none', 'none', 'none']
+    );
+    expect(f.score).toBeCloseTo(0.25, 12);
+    expect(f.worsens).toBe(false);
+    // Fleeing out of the domain: the score does not go up, the veto still acts.
+    const fled = o5DomainFlight(['computed', 'computed'], ['outOfDomain', 'outOfDomain']);
+    expect(fled.score).toBe(0);
+    expect(fled.deniesCredit).toBe(true);
+    // Losing «no crater» on more than a tenth of the draws worsens O5.
+    expect(o5DomainFlight(['none', 'none'], ['outOfDomain', 'none']).worsens).toBe(true);
+  });
 });
