@@ -2,6 +2,15 @@
 
 > Studio F: la variante mostra come una frammentazione progressiva in frammenti che rallentano e si rompono secondo la propria taglia, con nubi di detriti, modifica quota di rilascio, deposito di energia, sopravvivenza, massa dei pezzi al suolo e regime d’arrivo nel dominio delle condriti ordinarie. Non viene adottata in questo round e non riceve una classe B; la decisione resta riservata al test indipendente della carta (regole 1038–1062).
 
+> **Warning, added on closing the study (rule 1097).** In every completed draw of every case F brings
+> a piece to the ground; on Chelyabinsk it leaves 48 % of the initial mass there, where Popova et al.
+> (2013, Science 342, 1069) reconstruct 4–6 t surviving as meteorites, about 0.03–0.05 % of it, the
+> loss largely to evaporation. F's masses carry no ablation and are not comparable with a recovered
+> mass — Chelyabinsk also fed F's priors — but the distance is a signal of physical incompatibility
+> to investigate, not a measure of F's error. With it go the run's two qualifications: 33 release
+> altitudes do not converge and are not comparable; the floor's sensitivity is not exercised —
+> never «converged», never «zero computed».
+
 Rules 1063 to 1096 (`src/physics/validation/fragmentationStudyFRules.ts`), run once by
 `scripts/fragmentation-study-f.ts` on the development cases’ draws of rule 978, authorized by the
 reviewer on 24 September 2026 as a study of development only. Nothing here adopts F, gives a class B

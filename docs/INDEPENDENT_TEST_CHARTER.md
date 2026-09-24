@@ -146,6 +146,33 @@ and 1089 are the judge as written: no threshold, definition or scoring changes, 
 is opened or after. F is not adopted and no class B is given; the frozen set still lacks the
 admissible ground case, so no outcome of it alone promotes the cratering.
 
+## The administrative check, before the set is opened (rule 1098)
+
+The reviewer authorized the set's opening and the charter's execution on the variants already
+specified, after a check that changes nothing of the charter. The models are frozen and named: the
+baseline at the rule's commit (the seal's numbers), S as its study ran (0c59e87) at f1 = 0.50, F at
+3586988 as its study ran it (9eeed0a); S + F is not built and not judged.
+
+| Observable     | Baseline                | S                          | F                    |
+| -------------- | ----------------------- | -------------------------- | -------------------- |
+| O1 (E3 on E1)  | burst altitude          | its m2, the shares' bursts | none (rule 1094)     |
+| O2             | the whole body, or zero | its core                   | its largest fragment |
+| O3, diagnostic | its pieces              | its pieces                 | its pieces           |
+| O4, diagnostic | none                    | none                       | none                 |
+| O5: C1, C2, C3 | yes                     | yes                        | yes                  |
+
+What follows, said before the set is seen. With O1 not assessable for F wherever it is for the
+baseline (rule 1076), F can be adopted only by improving both O2 and O5 and worsening neither. On a
+fall where the baseline bursts in the air, a variant that brings pieces down in dark flight — the
+outcome a fall shows — moves those draws from «no crater» to «out of the domain», the reading the
+product shares: −1 each on C3 (rule 1089), no credit on O5 past a net share of 0.10 (rule 1084
+(d)), and O5 worsened below −0.10; those draws also satisfy no E1, so O1's conditioned band loses
+them. On the development cases F did so in every completed draw of every case, and S at f1 = 0.50
+on the metre-sized ones: where the same happens on a fall of the set on which the baseline bursts,
+neither can be adopted. Said plainly: with rule 1011's reading no draw that brings a fall's
+meteorites down in dark flight is ever right on C3. The charter is frozen; this is stated, not
+corrected.
+
 ## What may not happen
 
 No law of F, fragment size, upper edge of the strengths, f1 or closure is chosen, tuned or checked

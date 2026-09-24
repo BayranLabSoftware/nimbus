@@ -116,6 +116,17 @@ draws where it acts; where it acts on none, «the floor's sensitivity not exerci
 the rounds' stream seeded "study F/" and the case's name; the f_c = 1 limit is checked on every
 draw; S's row at f1 = 0.50 is read from its record.
 
+## Closed (rule 1097)
+
+The reviewer closed the study with rule 1072's outcome: F not adopted, no class B, no S + F in this
+round. Its warning goes with F's results wherever they are reported: F brings a piece to the ground
+in every completed draw of every development case, and on Chelyabinsk leaves 48 % of the initial
+mass there, where Popova et al. (2013) reconstruct 4–6 t, about 0.03–0.05 %, the rest lost largely
+to evaporation — not comparable, F having no ablation, but a signal of physical incompatibility to
+investigate. With it go the run's two qualifications: 33 release altitudes that do not converge,
+not comparable; the floor's sensitivity not exercised. The ablation of the fragments is a later,
+separate strand, never a retroactive correction of F.
+
 ## Priors, drawn once per draw
 
 | Parameter          | Interval     | From                                  |

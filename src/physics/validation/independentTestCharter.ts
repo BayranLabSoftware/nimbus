@@ -435,6 +435,78 @@ export const CHARTER_FROZEN = {
   executionAuthorized: false,
 } as const;
 
+/**
+ * RULE 1098. THE ADMINISTRATIVE CHECK, before the third set is opened (the
+ * reviewer, 24 September 2026, authorizing the set's opening and the frozen
+ * charter's execution on the variants already specified: first say which
+ * frozen observables each variant can produce, apply rule 1094 to the clause
+ * on decisive observables not assessable, and say before the set is seen if F
+ * cannot earn enough credit). It changes nothing of the charter and adds no
+ * observable, threshold, parameter or metric.
+ *   (a) THE MODELS, frozen and named (rule 1039). The baseline: the product at
+ *       this rule's commit, whose numbers the seal of the 308 scenarios holds.
+ *       S: its study as it ran (0c59e87), at f1 = 0.50. F: fragmentationStudyF
+ *       at 3586988, run as its study ran it (9eeed0a) — rule 1068's priors,
+ *       drawn per draw on the stream "study F/" and the event's name (rule
+ *       1096 (a)). S + F: not built (rule 1097) and not judged. The last model
+ *       is frozen: the sources may now be pinned (rule 1040).
+ *   (b) WHAT EACH PRODUCES (`CHARTER_PRODUCIBLE`).
+ *       O1, E3 on the draws that dig no crater (rules 928 to 930, 1053): the
+ *       baseline, its burst altitude; S, the burst altitude its study
+ *       published as m2; F, nothing — rule 1094 forbids any aggregate of F's
+ *       release altitude as a comparable result, and O1's band is one. By
+ *       rule 1076, wherever O1 is assessable for the baseline it stays in the
+ *       count and counts against F's clause of two; no other metric stands in.
+ *       O2: the baseline's whole body where it arrives, else zero; S's core;
+ *       F's largest fragment — S's and F's masses carrying no ablation (rules
+ *       1083, 1097).
+ *       O3, diagnostic: the pieces' masses, for all three.
+ *       O4, diagnostic: none — no frozen model gives a piece's speed at a
+ *       height above the ground, and none is given a new output.
+ *       O5: C1, C2 and C3 for all three, with rule 1011's reading, which the
+ *       product shares: an arrival in dark flight or below the crater law's
+ *       speeds is «out of the domain» (the product: state out of the domain,
+ *       origin impact).
+ *   (c) WHAT FOLLOWS, said before the set is seen.
+ *       - F can be adopted only by improving both O2 and O5 and worsening
+ *         neither, wherever O1 is assessable for the baseline.
+ *       - On a fall where the baseline bursts in the air — no crater — a
+ *         variant that brings pieces to the ground in dark flight, the
+ *         outcome a fall shows, moves those draws from «no crater» to «out of
+ *         the domain»: each scores −1 on C3 (rule 1089); past a net share of
+ *         0.10 they deny all credit on O5 (rule 1084 (d)); a C3 score below
+ *         −0.10 worsens O5. C1 and C2 cannot then lift the variant. The same
+ *         draws dig a crater of some origin and satisfy no E1, so O1's
+ *         conditioned band loses them; with fewer than 50 left, O1 is not
+ *         assessable for that variant on that body (rules 930, 1061).
+ *       - On the development cases F brought pieces down in dark flight or
+ *         below 5 km/s in every completed draw of every case, and S at
+ *         f1 = 0.50 in every draw of the metre-sized ones. Where the same
+ *         happens on a fall of the set on which the baseline bursts, neither
+ *         can be adopted, whatever its C1 and C2. Whether it happens depends
+ *         on the baseline's answer on the set's bodies, which no one knows
+ *         before they are run.
+ *       - Said plainly: with rule 1011's reading, no draw that brings a fall's
+ *         meteorites down in dark flight is ever right on C3 — the observed
+ *         outcome of a fall reads «out of the domain». The charter is frozen
+ *         and stays as written; this is stated, not corrected.
+ *   (d) THE ORDER. This rule pushed; then the set's sources located and, with
+ *       Andrea's leave for each download, opened and pinned into the table of
+ *       eligibility (rule 1062); then the predictions, the charter run once,
+ *       every outcome published even if negative or not assessable. No class
+ *       B from this set (rule 1055); «out of the domain» never «no crater».
+ */
+
+/** Rule 1098 (b): what each frozen model can produce for each observable of
+ *  the charter; null where it produces nothing comparable. */
+export const CHARTER_PRODUCIBLE = {
+  O1: { baseline: 'burst altitude', S: 'm2 burst altitude of its shares', F: null },
+  O2: { baseline: 'the whole body, or zero', S: 'its core', F: 'its largest fragment' },
+  O3: { baseline: 'its pieces', S: 'its pieces', F: 'its pieces' },
+  O4: { baseline: null, S: null, F: null },
+  O5: { baseline: 'C1, C2, C3', S: 'C1, C2, C3', F: 'C1, C2, C3' },
+} as const;
+
 /** Rule 1084 (d): the net share of draws moved out of the domain that denies
  *  O5's credit. */
 export const O5_DOMAIN_FLIGHT = 0.1;

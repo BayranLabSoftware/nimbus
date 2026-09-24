@@ -401,6 +401,28 @@
  *   (f) The outcome in rule 1072's words, and nothing adopted.
  */
 
+/**
+ * RULE 1097. THE STUDY CLOSED, AND THE WARNING THAT GOES WITH IT (the
+ * reviewer, 24 September 2026: the study of F closed, with rule 1072's
+ * outcome; route (b), the evaluation with the frozen charter). In every
+ * completed draw of every development case F brings a piece to the ground;
+ * on Chelyabinsk its single run leaves 48 % of the initial mass there, where
+ * Popova et al. (2013, Science 342, 1069) reconstruct 4 to 6 t surviving as
+ * meteorites — about 0.03 to 0.05 % of the initial mass — and ascribe much of
+ * the loss to evaporation. F's masses carry no ablation and are not comparable
+ * with a recovered mass, and Chelyabinsk also fed F's priors; but the distance
+ * is large enough to be a signal of physical incompatibility to investigate —
+ * not a quantitative measure of F's error. This warning and the two
+ * qualifications of the run — 33 release altitudes that do not converge, and
+ * are not comparable; the floor's sensitivity not exercised — go with F's
+ * results wherever they are reported, never read as «converged» or «zero
+ * computed». F is not adopted and earns no class B. S + F is not built in
+ * this round: nothing in the two studies gives a reason to expect it to lift
+ * their common limit (rule 1073). The ablation of the fragments is a later
+ * strand of its own, motivated by the physics, never a retroactive correction
+ * of F to pass the test.
+ */
+
 /** Rule 1094: the three bins the release altitude is published at (m). */
 export const F_RELEASE_BINS_M = [50, 100, 200] as const;
 

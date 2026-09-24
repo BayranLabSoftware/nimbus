@@ -4,6 +4,7 @@ import {
   bandVoids,
   CHARTER,
   CHARTER_FROZEN,
+  CHARTER_PRODUCIBLE,
   CHARTER_ROLES,
   charterReading,
   charterVerdict,
@@ -274,5 +275,25 @@ describe('rule 1093: the charter frozen', () => {
     expect(CHARTER_FROZEN.rule).toBe(1093);
     expect(CHARTER_FROZEN.executionAuthorized).toBe(false);
     expect(CHARTER_FROZEN.rules).toContain('1089');
+  });
+});
+
+describe('rule 1098: the administrative check before the set is opened', () => {
+  it('gives F no release altitude to judge O1 on, and no model a speed aloft', () => {
+    expect(CHARTER_PRODUCIBLE.O1.F).toBeNull();
+    expect(CHARTER_PRODUCIBLE.O1.baseline).not.toBeNull();
+    expect(Object.values(CHARTER_PRODUCIBLE.O4)).toEqual([null, null, null]);
+  });
+
+  it('scores a fall’s dark-flight arrival against a burst as a loss on C3', () => {
+    // The baseline bursts (no crater); the variant brings the pieces down in
+    // dark flight, read «out of the domain»: −1 a draw, and past 0.10 the veto.
+    const flight = o5DomainFlight(
+      Array.from({ length: 10 }, () => 'none' as const),
+      Array.from({ length: 10 }, () => 'outOfDomain' as const)
+    );
+    expect(flight.score).toBe(-1);
+    expect(flight.deniesCredit).toBe(true);
+    expect(flight.worsens).toBe(true);
   });
 });
