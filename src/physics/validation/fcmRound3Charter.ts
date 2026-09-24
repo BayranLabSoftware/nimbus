@@ -242,7 +242,27 @@
  *       compilation lacks what the kind needs (rule 1164 (d)); its quality is
  *       what the compilation prints (rule 1165 (a));
  *   (c) failing both, the event is not assessable, and counts toward no
- *       minimum. No other source replaces it, and no event replaces it.
+ *       minimum. No other source replaces it, and no event replaces it. *
+ * RULE 1176. WHAT THE INPUT PROCEDURE DID NOT SAY, and an exposure,
+ * written on the first two sources pinned (fcmRound3Sources.ts).
+ *   (a) A preferred mass the source gives without an uncertainty or a range is
+ *       drawn log-uniform between half and twice it — the factor of two a
+ *       photometric mass usually carries. A bulk density the source gives
+ *       without a range is taken as it is.
+ *   (b) The exposure: reading Aguas Zarcas's inputs through lines with every
+ *       altitude masked, one hyphenated altitude («25-km») and one member of
+ *       a list escaped the mask; the analyst saw the altitude of its final
+ *       shattering, and an altitude where a speed was measured. The candidate
+ *       is sealed (rule 1162) and no parameter is chosen afterwards, so the
+ *       prediction cannot follow it; it is registered, and the mask was
+ *       hardened before any other source was read (every number on a line
+ *       that may hold an altitude masked, save speeds, angles, masses,
+ *       densities and times). Rule (a) was written after that exposure, and
+ *       is said to have been.
+ *   (c) Benenitra: its source is an infrasound and seismic investigation — no
+ *       measured trajectory, no deposition reconstructed from a calibrated
+ *       light curve, its speed and angle assumed («likely ≤ 17 km/s and
+ *       45°»). By rule 1164 (d) its kind falls to diagnostic: not assessable.
  */
 
 /** Rule 1162: the SHA-256 of the files that make the candidate. */
