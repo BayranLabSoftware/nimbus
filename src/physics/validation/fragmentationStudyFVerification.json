@@ -1,0 +1,306 @@
+{
+  "rules": "1070, 1078 to 1092",
+  "bodiesPerSet": 90,
+  "tolerances": {
+    "budget": 1e-12,
+    "baselineLimit": 1e-9,
+    "convergence": 0.01,
+    "maxComponents": 100000,
+    "floorMinActing": 10
+  },
+  "sets": {
+    "rule1070": {
+      "seed": 1070,
+      "minD": 0.3,
+      "maxD": 30,
+      "budgets": {
+        "completed": 89,
+        "notCompleted": 1,
+        "notCompletedDraws": [
+          {
+            "draw": 35,
+            "diameterM": 17.15,
+            "cloudShare": 0.0546,
+            "largerSplit": 0.528,
+            "strengthScaling": 0.129
+          }
+        ],
+        "worstMassResidual": 1.6313188325441155e-16,
+        "worstEnergyResidual": 2.4882413102730586e-16,
+        "worstMomentumResidual": 2.482513653239358e-16,
+        "worstNormMinusProjection": 1.0276493789018377e-16,
+        "medianComponents": 33,
+        "maxComponents": 31113,
+        "withPieceOnGround": 89,
+        "lightestPieceKg": 0.1161711232600448
+      },
+      "dust": {
+        "floor1g": {
+          "drawsActing": 0,
+          "massShareMedian": null,
+          "massShareMax": null,
+          "energyShareMax": null,
+          "lowestAltitudeM": null,
+          "highestAltitudeM": null,
+          "perBinClosureWorst": 0
+        },
+        "floor01g": {
+          "drawsActing": 0,
+          "massShareMedian": null,
+          "massShareMax": null,
+          "energyShareMax": null,
+          "lowestAltitudeM": null,
+          "highestAltitudeM": null,
+          "perBinClosureWorst": 0
+        }
+      },
+      "convergence": {
+        "bin 50 m": {
+          "pairs": 89,
+          "releaseWorst": 0.001575,
+          "releaseOverOnePercent": 0,
+          "releaseDrawsOver": [],
+          "largestMedianChange": 0,
+          "largestPerDrawWorst": 0,
+          "largestPerDrawOver": 0,
+          "survivalChange": 0,
+          "converged": {
+            "release": true,
+            "largest": true,
+            "survival": true
+          }
+        },
+        "bin 200 m": {
+          "pairs": 89,
+          "releaseWorst": 0.4127,
+          "releaseOverOnePercent": 1,
+          "releaseDrawsOver": [
+            {
+              "draw": 84,
+              "diameterM": 29.4,
+              "cloudShare": 0.13,
+              "strengthScaling": 0.17,
+              "components": 31113,
+              "primaryBurstM": 19793,
+              "finer": {
+                "release": 19750,
+                "maxima": [
+                  {
+                    "altitude": 19750,
+                    "share": 0.04748
+                  },
+                  {
+                    "altitude": 27950,
+                    "share": 0.0398
+                  }
+                ]
+              },
+              "coarser": {
+                "release": 27900,
+                "maxima": [
+                  {
+                    "altitude": 27900,
+                    "share": 0.05673
+                  },
+                  {
+                    "altitude": 19700,
+                    "share": 0.04858
+                  }
+                ]
+              }
+            }
+          ],
+          "largestMedianChange": 0,
+          "largestPerDrawWorst": 0,
+          "largestPerDrawOver": 0,
+          "survivalChange": 0,
+          "converged": {
+            "release": false,
+            "largest": true,
+            "survival": true
+          }
+        },
+        "floor 0.1 g": {
+          "pairs": 89,
+          "releaseWorst": 0,
+          "releaseOverOnePercent": 0,
+          "releaseDrawsOver": [],
+          "largestMedianChange": 0,
+          "largestPerDrawWorst": 0,
+          "largestPerDrawOver": 0,
+          "survivalChange": 0,
+          "converged": {
+            "release": true,
+            "largest": true,
+            "survival": true
+          }
+        }
+      },
+      "baselineLimit": {
+        "regimes": {
+          "COMPLETE_AIRBURST": 85,
+          "INTACT": 5
+        },
+        "regimeMismatches": 0,
+        "worstRelative": 2.217965457002096e-16,
+        "zeroCases": 85,
+        "zeroWorstOverTolerance": 0,
+        "profileWorstOverE0": 1.3545126170438315e-12,
+        "eq17AtBurstWorst": 1.1931243277448183e-12
+      },
+      "twoFragments": {
+        "checked": 81,
+        "worst": 5.76534442194093e-16
+      },
+      "exactVersusRk4": {
+        "bodies": 30,
+        "worst": 1.3943971132935475e-13
+      }
+    },
+    "rule1092": {
+      "seed": 1092,
+      "minD": 0.05,
+      "maxD": 0.5,
+      "budgets": {
+        "completed": 90,
+        "notCompleted": 0,
+        "notCompletedDraws": [],
+        "worstMassResidual": 1.9144189551202936e-16,
+        "worstEnergyResidual": 3.273795310459823e-16,
+        "worstMomentumResidual": 2.782301691605377e-16,
+        "worstNormMinusProjection": 9.229089398292393e-17,
+        "medianComponents": 3,
+        "maxComponents": 60,
+        "withPieceOnGround": 90,
+        "lightestPieceKg": 0.021737529643255045
+      },
+      "dust": {
+        "floor1g": {
+          "drawsActing": 0,
+          "massShareMedian": null,
+          "massShareMax": null,
+          "energyShareMax": null,
+          "lowestAltitudeM": null,
+          "highestAltitudeM": null,
+          "perBinClosureWorst": 0
+        },
+        "floor01g": {
+          "drawsActing": 0,
+          "massShareMedian": null,
+          "massShareMax": null,
+          "energyShareMax": null,
+          "lowestAltitudeM": null,
+          "highestAltitudeM": null,
+          "perBinClosureWorst": 0
+        }
+      },
+      "convergence": {
+        "bin 50 m": {
+          "pairs": 90,
+          "releaseWorst": 0.0009497,
+          "releaseOverOnePercent": 0,
+          "releaseDrawsOver": [],
+          "largestMedianChange": 0,
+          "largestPerDrawWorst": 0,
+          "largestPerDrawOver": 0,
+          "survivalChange": 0,
+          "converged": {
+            "release": true,
+            "largest": true,
+            "survival": true
+          }
+        },
+        "bin 200 m": {
+          "pairs": 90,
+          "releaseWorst": 0.001898,
+          "releaseOverOnePercent": 0,
+          "releaseDrawsOver": [],
+          "largestMedianChange": 0,
+          "largestPerDrawWorst": 0,
+          "largestPerDrawOver": 0,
+          "survivalChange": 0,
+          "converged": {
+            "release": true,
+            "largest": true,
+            "survival": true
+          }
+        },
+        "floor 0.1 g": {
+          "pairs": 90,
+          "releaseWorst": 0,
+          "releaseOverOnePercent": 0,
+          "releaseDrawsOver": [],
+          "largestMedianChange": 0,
+          "largestPerDrawWorst": 0,
+          "largestPerDrawOver": 0,
+          "survivalChange": 0,
+          "converged": {
+            "release": true,
+            "largest": true,
+            "survival": true
+          }
+        }
+      },
+      "baselineLimit": {
+        "regimes": {
+          "COMPLETE_AIRBURST": 45,
+          "INTACT": 45
+        },
+        "regimeMismatches": 0,
+        "worstRelative": 3.0550395006831024e-16,
+        "zeroCases": 45,
+        "zeroWorstOverTolerance": 0,
+        "profileWorstOverE0": 4.950787657784716e-12,
+        "eq17AtBurstWorst": 7.724407905633724e-12
+      },
+      "twoFragments": {
+        "checked": 45,
+        "worst": 2.339212014734969e-16
+      },
+      "exactVersusRk4": {
+        "bodies": 30,
+        "worst": 6.976985236349213e-10
+      }
+    }
+  },
+  "constructedDust": {
+    "body": {
+      "diameter": 0.05,
+      "velocity": 25000,
+      "density": 3000,
+      "sinTheta": 1
+    },
+    "strength": 300000,
+    "priors": {
+      "cloudShare": 0.05,
+      "largerSplit": 0.5,
+      "strengthScaling": 0
+    },
+    "runs": [
+      {
+        "floorKg": 0.001,
+        "components": 765,
+        "dustShare": 0.6634,
+        "dustEnergyOverHalfMv2": 0.999974,
+        "dustBinsM": [60450],
+        "breakupM": 60467.8,
+        "pressureOverStrengthAtBreakup": 0.999784,
+        "massResidual": 0,
+        "energyResidual": 0,
+        "momentumResidual": 0
+      },
+      {
+        "floorKg": 0.0001,
+        "components": 6141,
+        "dustShare": 0.5688,
+        "dustEnergyOverHalfMv2": 0.999974,
+        "dustBinsM": [60450],
+        "breakupM": 60467.8,
+        "pressureOverStrengthAtBreakup": 0.999784,
+        "massResidual": 7.067899292141147e-17,
+        "energyResidual": 6.071279262233556e-17,
+        "momentumResidual": 0
+      }
+    ]
+  }
+}

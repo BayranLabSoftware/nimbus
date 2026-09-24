@@ -23,6 +23,15 @@ import { J, kgPerM3, m, mps, Pa } from '../units.js';
 import type { EntryAtmosphere } from '../validation/entryAtmosphereRules.js';
 import type { PancakeGrowth } from '../validation/fragmentationRoundRules.js';
 import { eq14At, solveEq14 } from './pancakeEq14.js';
+import {
+  collinsBreakupAltitude,
+  collinsBurstIntegral,
+  collinsGroundIntegral,
+  collinsPancakeGeometry,
+  collinsPaperIf,
+  collinsWholeSpeed,
+  PANCAKE_ALPHA,
+} from './collinsClosedForms.js';
 import { DRAG_COEFFICIENT, GRAVITY, H_SCALE, PANCAKE_FACTOR, RHO_0 } from './entryConstants.js';
 import {
   entryProfileOf,
@@ -647,19 +656,18 @@ export function atmosphericEntry(
     };
   }
 
-  const density = (z: number): number => RHO_0 * Math.exp(-z / H_SCALE);
+  const body = { diameter: L0, velocity: v0, density: rhoI, sinTheta };
   // Eq. 8: the speed of the body, still whole, at altitude z.
-  const wholeSpeed = (z: number): number =>
-    v0 * Math.exp((-3 * density(z) * DRAG_COEFFICIENT * H_SCALE) / (4 * rhoI * L0 * sinTheta));
+  const wholeSpeed = (z: number): number => collinsWholeSpeed(body, z);
 
   // Eq. 12, doubled where the program doubles it (BM-13). Where the doubled
   // value reaches 1 the program takes the square root of a negative number
   // and has no answer, and the paper's equations are used (rule 145 of
   // validation/entryProgramRules.ts).
-  const paperIf = (4.07 * DRAG_COEFFICIENT * H_SCALE * Y) / (rhoI * L0 * v0 * v0 * sinTheta);
+  const paperIf = collinsPaperIf(body, Y);
   const followsProgram = program && (joined || 2 * paperIf < 1);
   const If = followsProgram ? 2 * paperIf : paperIf;
-  const alpha = Math.sqrt(PANCAKE_FACTOR * PANCAKE_FACTOR - 1);
+  const alpha = PANCAKE_ALPHA;
   if (If >= 1) {
     // Never breaks. The speed at the ground, never below the terminal
     // velocity of the body.
@@ -674,17 +682,17 @@ export function atmosphericEntry(
   }
 
   // Eq. 11: the breakup altitude.
-  const zStar = Math.max(
-    -H_SCALE * (Math.log(Y / (RHO_0 * v0 * v0)) + 1.308 - 0.314 * If - 1.303 * Math.sqrt(1 - If)),
-    0
-  );
-  const rhoStar = density(zStar);
+  const zStar = collinsBreakupAltitude(Y, v0, If);
   const vStar = wholeSpeed(zStar);
-  // Eq. 16: the dispersion length; Eq. 18: the airburst altitude.
-  const l = L0 * sinTheta * Math.sqrt(rhoI / (DRAG_COEFFICIENT * rhoStar));
-  const zBurst = zStar - 2 * H_SCALE * Math.log(1 + (l / (2 * H_SCALE)) * alpha);
-  // Eq. 17's coefficient on the integral of e^((z*−z)/H) L(z)².
-  const k = (0.75 * DRAG_COEFFICIENT * rhoStar) / (rhoI * L0 ** 3 * sinTheta);
+  // Eq. 16: the dispersion length; Eq. 18: the airburst altitude; Eq. 17's
+  // coefficient on the integral of e^((z*−z)/H) L(z)².
+  const { l, zBurst, k } = collinsPancakeGeometry({
+    diameter: L0,
+    density: rhoI,
+    sinTheta,
+    altitude: zStar,
+    speed: vStar,
+  });
 
   // Rules 992 to 998 (variant P): on the paper's equations, the pancake as
   // Eq. 14 solved instead of Eq. 15*; the burst where it reaches f_p L0, the
@@ -729,11 +737,11 @@ export function atmosphericEntry(
     // Eq. 19: the integral from the airburst to the breakup. The program
     // takes its Eq. 20 between the same altitudes, without the −3(l/H)² term,
     // which is Eq. 19 plus H·L₀² (`BurstSpeed`).
-    const integral =
-      ((l * L0 * L0) / 24) *
-        alpha *
-        (8 * (3 + alpha * alpha) + 3 * alpha * (l / H_SCALE) * (2 + alpha * alpha)) +
-      (followsProgram && burstSpeed === 'program' && !joined ? H_SCALE * L0 * L0 : 0);
+    const integral = collinsBurstIntegral(
+      L0,
+      l,
+      followsProgram && burstSpeed === 'program' && !joined ? H_SCALE * L0 * L0 : 0
+    );
     const endVelocity = vStar * Math.exp(-k * integral);
     const atmosphericYieldJ = totalKE;
     // Collins et al. 2017: the blast is given the larger of the energy the
@@ -752,14 +760,7 @@ export function atmosphericEntry(
   }
 
   // Eq. 20: the integral from the ground to the breakup.
-  const r = l / H_SCALE;
-  const integral =
-    ((H_SCALE ** 3 * L0 * L0) / (3 * l * l)) *
-    (3 * (4 + r * r) * Math.exp(zStar / H_SCALE) +
-      6 * Math.exp((2 * zStar) / H_SCALE) -
-      16 * Math.exp((3 * zStar) / (2 * H_SCALE)) -
-      (followsProgram && !joined ? 0 : 3 * r * r) -
-      2);
+  const integral = collinsGroundIntegral(L0, l, zStar, !(followsProgram && !joined));
   const endVelocity = vStar * Math.exp(-k * Math.max(integral, 0));
   const energyFractionToGround = Math.min(1, (endVelocity / v0) ** 2);
   const atmosphericYieldJ = (1 - energyFractionToGround) * totalKE;

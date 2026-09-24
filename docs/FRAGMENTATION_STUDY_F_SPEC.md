@@ -127,3 +127,6 @@ largest piece at the ground (mass, speed), the surviving mass and pieces above 1
 arrival and the crater's state, the budgets. The outcome's words are fixed now: F is a study, not
 adopted, no class B; the decision is the independent test's (rules 1038–1062). Code only after the
 reviewer has read this.
+
+The verification of F's code, before any case, is in
+[FRAGMENTATION_STUDY_F_VERIFICATION.md](FRAGMENTATION_STUDY_F_VERIFICATION.md).
