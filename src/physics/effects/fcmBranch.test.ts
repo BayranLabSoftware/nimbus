@@ -302,12 +302,14 @@ describe('rule 1155: the floor, tested where it acts', () => {
 });
 
 describe('rule 1150: the aggregated tail', () => {
-  const b = { diameter: 3, velocity: 20_000, density: 3_000, angle: rad(40), strength: 5e5 };
+  // Small and quick: a long synchronous test starves vitest's worker of its
+  // messages on the CI runner (the unhandled «Timeout calling onTaskUpdate»).
+  const b = { diameter: 1, velocity: 20_000, density: 3_000, angle: rad(40), strength: 5e5 };
   const o: FcmOptions = {
     ablation: 5e-9,
     cloudDispersion: 2,
-    alpha: 0.1,
-    split: { kind: 'mass', fragments: 2, larger: 0.6, cloud: 0.1 },
+    alpha: 0.2,
+    split: { kind: 'mass', fragments: 2, larger: 0.6, cloud: 0.3 },
   };
 
   it('changes nothing where no piece is light enough', () => {
