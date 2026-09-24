@@ -92,6 +92,16 @@ the floor. F reports its release altitude (the bin where the air receives the mo
 regime (intact, complete airburst, partial), its share of energy at the ground, and beside them the
 baseline's burst altitude.
 
+## What the first verification showed the checks lack (rule 1092)
+
+On the 90 verification bodies of 0.3–30 m no piece fell below 1 g, so the floor was never exercised:
+a second set of 90 bodies of 0.05–0.5 m checks the budgets with the dust in them and the floor at
+0.1 g. The baseline has no profile of its own: the one compared at f_c = 1 is built from its outputs
+(Eq. 8 to its breakup, Eq. 17 to its burst or the ground, the rest at its burst) by a loop separate
+from F's. The momentum is summed by its two components in the entry's plane, the norm deciding. A
+draw whose release altitude moves by 1 % or more is named with its profile's competing maxima; no
+definition changes before the reviewer reads it.
+
 ## Priors, drawn once per draw
 
 | Parameter          | Interval     | From                                  |

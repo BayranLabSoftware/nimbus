@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  F_FLOOR_SET,
   F_FRAGMENTS_PER_BREAK,
   F_MASS_FLOOR_KG,
   F_MASS_FLOOR_SENSITIVITY_KG,
@@ -24,5 +25,13 @@ describe('rules 1063 to 1073: the specification of F', () => {
     expect(F_STRENGTH_CEILING_PA).toBe(330e6);
     expect(F_MASS_FLOOR_KG).toBe(1e-3);
     expect(F_MASS_FLOOR_SENSITIVITY_KG).toBe(F_MASS_FLOOR_KG / 10);
+  });
+});
+
+describe('rule 1092: the floor exercised on bodies where it acts', () => {
+  it('draws them below the 0.3 m of rule 1070’s bodies', () => {
+    expect(F_FLOOR_SET.maxDiameterM).toBeLessThanOrEqual(0.5);
+    expect(F_FLOOR_SET.minDiameterM).toBeLessThan(F_FLOOR_SET.maxDiameterM);
+    expect(F_FLOOR_SET.minActing).toBe(10);
   });
 });

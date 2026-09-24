@@ -311,6 +311,38 @@
  *       own burst altitude, today's m2.
  */
 
+/**
+ * RULE 1092. WHAT THE FIRST VERIFICATION SHOWED THE CHECKS LACK (amends rules
+ * 1070, 1080, 1081 and 1088; written after rule 1070's first run on its 90
+ * bodies and before the checks it adds are run; it moves no number of F and
+ * touches no development case).
+ *   (a) THE FLOOR EXERCISED. On rule 1070's 90 bodies, of 0.3 to 30 m, no piece
+ *       fell below 1 g, nor below 0.1 g: there the floor's sensitivity is read
+ *       on no piece and the dust's account of rule 1085 is untested. A second
+ *       set of 90 bodies, drawn by the same law but with diameters
+ *       log-uniform on 0.05 to 0.5 m (seed 1092), checks the budgets with the
+ *       dust in them and the floor at 0.1 g on rule 1080's three quantities,
+ *       and publishes where the dust's mass and energy went; if the floor acts
+ *       on fewer than 10 of its draws, it is said.
+ *   (b) THE BASELINE'S PROFILE. The baseline lays down no profile of its own.
+ *       The one rule 1081 compares is built from the baseline's outputs — Eq. 8
+ *       of the whole body from the top down to its breakup altitude, Eq. 17 of
+ *       its pancake from there to its burst or the ground, its own end speed at
+ *       the end, the rest of the energy at its burst — by a loop over the bins
+ *       apart from F's, on the same bins: every bin within 10⁻⁹ E0.
+ *   (c) THE MOMENTUM BY ITS COMPONENTS. The code writes every impulse by its
+ *       two components in the entry's vertical plane and sums each apart; the
+ *       vector's norm is the test, and its projection on the path is checked
+ *       against it (rule 1090 (b)).
+ *   (d) The release altitude's convergence is read as rule 1080 wrote it, draw
+ *       by draw. Where a draw moves by 1 % or more, the draw and its profile's
+ *       competing maxima are said, and no definition of the release altitude
+ *       is changed before the reviewer has read it.
+ */
+
+/** Rule 1092 (a): the bodies on which the floor acts. */
+export const F_FLOOR_SET = { seed: 1_092, minDiameterM: 0.05, maxDiameterM: 0.5, minActing: 10 };
+
 /** Rule 1091 (b): the energy profile's bin (m), and its halving and doubling. */
 export const F_PROFILE_BIN_M = 100;
 
