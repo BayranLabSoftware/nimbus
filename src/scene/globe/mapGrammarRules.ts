@@ -148,6 +148,36 @@
  * A layer's notes say only what holds for every scenario: what is drawn past
  * an edge is said by its own key and card, where it is drawn. From here on
  * every step of rule 1034 changes the globe and the report together.
+ *
+ * RULE 1048. STEP 7, COMPLETED. The reviewer, approving the direction on 24
+ * September 2026, did not close step 7: the report of Chelyabinsk still says
+ * «magnitudo sismica 4,0» while the timeline said the model computes no seismic
+ * coupling. Andrea's word: correct what is wrong, and ask the reviewer about
+ * the airburst's magnitude before changing it.
+ *   (a) Every place a seismic result appears — the report's first box and its
+ *       rows, the panel, the legend, the timeline, the Monte Carlo table — is
+ *       checked. Where the model computes no magnitude (out of the crater's
+ *       domain) each says «non calcolata», never a dash or a silence; so do
+ *       the magnitude's range and the liquefaction there; and the Monte Carlo
+ *       rows of the magnitude and the liquefaction say their share of draws
+ *       out of the domain, as the crater's rows do.
+ *   (b) An airburst's magnitude from the wave in the air (rules 730 to 738,
+ *       exploratory) exists, and the timeline's words for its ground denied it:
+ *       they are corrected to say it is an exploratory estimate. Whether it
+ *       becomes «non calcolata» is asked of the reviewer, told that it exists;
+ *       until he answers, the number does not move.
+ *   (c) The out-of-domain words are the reviewer's: «Geometria e sorgente degli
+ *       effetti esplorative; deposizione lungo traiettoria ridotta a sorgente
+ *       puntiforme, accoppiamento al suolo non modellato» — not every ring
+ *       ascribed to the coupling to the ground, a term that for the test stone
+ *       is 5·10⁻⁵ of the energy.
+ *   (d) The low overpressure stays selectable wherever the ground reaches
+ *       1 kPa. Where its field reaches beyond 2 000 km — about a third of a
+ *       radian of the Earth, where a flat point-source law calibrated on
+ *       explosions of far smaller scale has no footing — its evidence box says
+ *       so above everything: an extrapolation to a planetary scale, no
+ *       prediction of broken glass, in no count of damage.
+ *   (e) The observed note names its event, on the globe and in the report.
  */
 
 /** Rule 1030: the four visual states. */
@@ -172,3 +202,7 @@ export interface ProvenanceCard {
 
 /** Rule 1030 (2): state 2 shades out to one decade below the lowest isoline. */
 export const BELOW_THRESHOLD_DECADES = 1;
+
+/** Rule 1048 (d): beyond this reach (m) the low overpressure is an
+ *  extrapolation to a planetary scale. */
+export const PLANETARY_EXTRAPOLATION_M = 2_000_000;

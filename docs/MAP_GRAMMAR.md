@@ -138,6 +138,16 @@ States 2, 3 and 4 are drawn from each layer's edge (step 1), with these choices:
   complete airburst's ground gets «Onda atmosferica al suolo», at the burst altitude over the speed
   of sound (Chelyabinsk: 79 s).
 
+## Step 7, completed (rule 1048)
+
+The reviewer did not close step 7: Chelyabinsk's report still printed «magnitudo sismica 4,0» while
+the timeline said the model computes no seismic coupling. Every place a seismic result appears is
+checked; out of the crater's domain each says «non calcolata». An airburst's magnitude from the wave
+in the air (rules 730 to 738) exists and is exploratory: the timeline no longer denies it, and
+whether it becomes «non calcolata» is asked of the reviewer. The out-of-domain words are his; the low
+overpressure beyond 2 000 km says, above everything, that it is an extrapolation to a planetary
+scale; the observed note names its event.
+
 ## The printed report (rule 1037)
 
 The reviewer, approving steps 1 to 3, asked for the report now, before step 4: the globe and the

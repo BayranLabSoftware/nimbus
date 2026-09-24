@@ -180,3 +180,273 @@ export function charterReading(
   if (type === 'other') return priorsForType ? 'counted' : 'robustnessControl';
   return 'sensitivity';
 }
+
+/**
+ * Rules 1049 to 1055 — the charter amended, operationally, before F's
+ * specification. The reviewer, 24 September 2026, approved the separation of
+ * the observables and the freezing of the models before any prediction, and
+ * asked that five points become rules that execute, not readings made after
+ * the predictions are seen; Andrea's word: the corrections, then this
+ * amendment, then the text. Each rule below is carried by a function of this
+ * file, tested; two implementations cannot give two verdicts.
+ *
+ * RULE 1049. WHAT THIS IS. It amends rules 1042 to 1044 on five points: the
+ * incomplete recovery of O2, O2's improvement, O5 as a composite, the width of
+ * the bands, and the eligibility counted per observable. Nothing else of the
+ * charter moves.
+ *
+ * RULE 1050. O2, THE RECOVERY (`o2Compatible`). When its source is pinned, each
+ * body's largest recovered mass is classed: MEASURED where the source names it
+ * the fall's main mass, or declares the search of its strewn field complete;
+ * a LOWER BOUND otherwise. On a lower bound the body is incompatible where the
+ * model's 95th percentile of its largest piece lies below the recovered mass,
+ * and compatible otherwise; no error of accuracy is computed on it and it
+ * earns no credit of accuracy. On a measured mass the body is compatible where
+ * the recovered mass lies inside the model's 5–95 % band widened by a factor
+ * of three each way — a tolerance of compatibility, nothing more — and its
+ * error is |log10(model's median ÷ recovered)|.
+ *
+ * RULE 1051. O2, THE IMPROVEMENT (`o2Improves`), exactly. (a) Compatibility:
+ * the model is compatible on at least one more eligible body — measured or
+ * lower bound — than the baseline, and incompatible on none the baseline held.
+ * (b) Accuracy: on the measured bodies only, at least three in the priors'
+ * domain; E is the median over them of rule 1050's error; the model improves
+ * where E(baseline) − E(model) ≥ log10 2 and it loses no compatible body.
+ * Where E(baseline) < log10 2 — the baseline already within a factor of two —
+ * no improvement of accuracy can be claimed, and only (a) can improve O2. O2
+ * improves where (a) or (b) holds, and counts as one decisive observable.
+ *
+ * RULE 1052. O5, A COMPOSITE (`o5ComponentShare`, `o5Verdict`), never averaged
+ * into one "right". Its components, each read on its own: C1 survival (at least
+ * one piece reaches the ground); C2 the regime of arrival of the largest piece
+ * (rule 1011: at the crater law's speeds, in dark flight, or between them); C3
+ * the observable crater (computed, none, out of the domain). For each body,
+ * when its source is pinned: C1 applies where meteorites were recovered or a
+ * search is documented; C2 applies where C1's observed answer is yes; C3
+ * applies to every fall. On each draw: C1 is right where the model's answer is
+ * the observed one; C2 where the model's regime is the observed one (dark
+ * flight, for every fall); C3 is right where the model's crater is none, wrong
+ * where it is computed, and not assessable on a draw where it is out of the
+ * domain — never counted right. A component's share on a body is its right
+ * draws over its assessable draws; with fewer than half its draws assessable
+ * it is not assessable on that body; a body with no applicable, assessable
+ * component is not assessable for O5. C1 and C2 decide; C3 is diagnostic, save
+ * that a model digging a computed crater in more than a tenth of a body's
+ * draws worsens O5. O5 improves where the mean share of at least one deciding
+ * component, over its eligible bodies, rises by 0.10 or more, and no deciding
+ * component worsens — a body falling below 0.90 where the baseline was at or
+ * above it, or a mean share falling by more than 0.10. O5 counts as one
+ * decisive observable.
+ *
+ * RULE 1053. THE WIDTH OF THE BANDS (`bandVoids`; amends rule 1044's reading
+ * of rule 976). The width is that of the 5–95 % band of the quantity the
+ * observable compares: for O1 the release altitude in km, on the draws that
+ * satisfy the outcome; for O2 the base-10 logarithm of the largest piece's
+ * mass. O5 has no band. A band conditioned on an outcome is compared only where
+ * both the model and the baseline keep at least 50 conditioned draws; with
+ * fewer, the body's improvement on that observable is not counted and is
+ * reported as not assessable. A baseline band narrower than 0.5 km (O1) or 0.05
+ * dex (O2) is taken at that floor. A model's band wider than 1.5 times the
+ * baseline's voids the body's improvement.
+ *
+ * RULE 1054. ELIGIBILITY, COUNTED FIRST (`charterVerdict`). Before any verdict
+ * each observable's eligible bodies — in the priors' domain, with the
+ * observable given directly by its source and applicable — are counted and
+ * published by name, observable by observable. A decisive observable with fewer
+ * than three is not assessable, and is never completed with bodies eligible
+ * only for another: the observables' sets are never pooled, and three sets of
+ * different cases are never presented as one comparison. The clause of two
+ * improved decisive observables counts assessable observables only; with fewer
+ * than two assessable, no model can be adopted, and the verdict says so.
+ *
+ * RULE 1055. WHAT STAYS. With the set as frozen — no admitted ground case — no
+ * result can reach class B (rule 939), and no ground case is added after any
+ * model's performance has been seen. f1 = 0.50 for S and Winchcombe as a
+ * control stand. The third set stays closed: this amendment authorizes no
+ * independent prediction and no adoption of S, F or S + F. With it pushed, F's
+ * specification may be written, as a study of development (rule 1047).
+ */
+
+/** Rules 1050 to 1053: the amendment's numbers. */
+export const CHARTER_AMENDMENT = {
+  /** Rule 1050: the percentile a lower bound is read against. */
+  lowerBoundPercentile: 0.95,
+  /** Rule 1051 (b): measured bodies an improvement of accuracy needs. */
+  accuracyMinBodies: 3,
+  /** Rule 1052: the share of a body's draws a component must be assessable on. */
+  componentAssessableShare: 0.5,
+  /** Rule 1052: the share of draws with a computed crater that worsens O5. */
+  craterWorsening: 0.1,
+  /** Rule 1053: conditioned draws a band's comparison needs, on each side. */
+  conditionedMinDraws: 50,
+  /** Rule 1053: the floors of a baseline's band. */
+  bandFloorKm: 0.5,
+  bandFloorDex: 0.05,
+} as const;
+
+/** Rule 1050: a body's largest recovered mass, as its source classes it. */
+export interface RecoveredMass {
+  kg: number;
+  kind: 'measured' | 'lowerBound';
+}
+
+/** The 5th, 50th and 95th percentiles of the model's largest piece (kg). */
+export interface MassBand {
+  p5: number;
+  p50: number;
+  p95: number;
+}
+
+/** Rule 1050: whether a body is compatible on O2, and its error where one is
+ *  computed (a measured mass only). */
+export function o2Compatible(
+  recovered: RecoveredMass,
+  model: MassBand
+): { compatible: boolean; error: number | null } {
+  const w = CHARTER.massBandWidening;
+  if (recovered.kind === 'lowerBound')
+    return { compatible: model.p95 >= recovered.kg, error: null };
+  return {
+    compatible: recovered.kg >= model.p5 / w && recovered.kg <= model.p95 * w,
+    error: Math.abs(Math.log10(model.p50 / recovered.kg)),
+  };
+}
+
+const median = (values: readonly number[]): number => {
+  const s = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(s.length / 2);
+  return s.length % 2 === 1 ? (s[mid] ?? Number.NaN) : ((s[mid - 1] ?? 0) + (s[mid] ?? 0)) / 2;
+};
+
+/** One eligible body on O2, the baseline's reading and the model's. */
+export interface O2Body {
+  recovered: RecoveredMass;
+  baseline: MassBand;
+  model: MassBand;
+}
+
+/** Rule 1051: whether a model improves O2, and whether its accuracy could be
+ *  judged at all. */
+export function o2Improves(bodies: readonly O2Body[]): {
+  improves: boolean;
+  compatibilityGain: number;
+  accuracyAssessable: boolean;
+} {
+  const base = bodies.map((b) => o2Compatible(b.recovered, b.baseline));
+  const mod = bodies.map((b) => o2Compatible(b.recovered, b.model));
+  const lost = base.some((b, i) => b.compatible && mod[i]?.compatible !== true);
+  const gain = mod.filter((m) => m.compatible).length - base.filter((b) => b.compatible).length;
+  const measured = base
+    .map((b, i) => ({ b: b.error, m: mod[i]?.error ?? null }))
+    .filter((x): x is { b: number; m: number } => x.b !== null && x.m !== null);
+  const eBase = measured.length > 0 ? median(measured.map((x) => x.b)) : Number.NaN;
+  const accuracyAssessable =
+    measured.length >= CHARTER_AMENDMENT.accuracyMinBodies && eBase >= CHARTER.massImprovementDex;
+  const accuracy =
+    accuracyAssessable && eBase - median(measured.map((x) => x.m)) >= CHARTER.massImprovementDex;
+  return {
+    improves: !lost && (gain >= 1 || accuracy),
+    compatibilityGain: gain,
+    accuracyAssessable,
+  };
+}
+
+/** Rule 1052: one draw's answer on a component — right, wrong, or not
+ *  assessable (C3 out of the domain). */
+export type DrawAnswer = 'right' | 'wrong' | 'notAssessable';
+
+/** Rule 1052: C3 on a draw — a computed crater is wrong for a fall, none is
+ *  right, out of the domain is never counted right. */
+export function craterAnswer(state: 'computed' | 'none' | 'outOfDomain'): DrawAnswer {
+  return state === 'none' ? 'right' : state === 'computed' ? 'wrong' : 'notAssessable';
+}
+
+/** Rule 1052: a component's share on a body, or null where it is not
+ *  assessable there. */
+export function o5ComponentShare(draws: readonly DrawAnswer[]): number | null {
+  const assessable = draws.filter((d) => d !== 'notAssessable');
+  if (
+    draws.length === 0 ||
+    assessable.length < CHARTER_AMENDMENT.componentAssessableShare * draws.length
+  )
+    return null;
+  return assessable.filter((d) => d === 'right').length / assessable.length;
+}
+
+/** One deciding component of O5 on its eligible bodies: the shares of the
+ *  baseline and of the model, body by body (null where not assessable). */
+export interface O5Component {
+  baseline: readonly (number | null)[];
+  model: readonly (number | null)[];
+}
+
+/** Rule 1052: O5's verdict from its deciding components (C1, C2) and the share
+ *  of draws, body by body, where the model digs a computed crater. */
+export function o5Verdict(
+  components: readonly O5Component[],
+  modelComputedCraterShare: readonly number[]
+): { improves: boolean; worsens: boolean } {
+  const craterWorse = modelComputedCraterShare.some((s) => s > CHARTER_AMENDMENT.craterWorsening);
+  let improves = false;
+  let worsens = craterWorse;
+  for (const c of components) {
+    const pairs = c.baseline
+      .map((b, i) => ({ b, m: c.model[i] ?? null }))
+      .filter((x): x is { b: number; m: number } => x.b !== null && x.m !== null);
+    if (pairs.length === 0) continue;
+    const mean = (xs: number[]): number => xs.reduce((a, x) => a + x, 0) / xs.length;
+    const delta = mean(pairs.map((p) => p.m)) - mean(pairs.map((p) => p.b));
+    const fellBelow = pairs.some(
+      (p) => p.b >= CHARTER.rightOutcomeShare && p.m < CHARTER.rightOutcomeShare
+    );
+    if (fellBelow || delta < -CHARTER.outcomeWorsening) worsens = true;
+    if (delta >= CHARTER.outcomeGain) improves = true;
+  }
+  return { improves: improves && !worsens, worsens };
+}
+
+/** Rule 1053: whether a model's band voids a body's improvement — true where
+ *  it is too wide, null where the comparison is not assessable. */
+export function bandVoids(
+  observable: 'O1' | 'O2',
+  baselineWidth: number,
+  modelWidth: number,
+  conditionedDraws?: { baseline: number; model: number }
+): boolean | null {
+  if (
+    conditionedDraws !== undefined &&
+    (conditionedDraws.baseline < CHARTER_AMENDMENT.conditionedMinDraws ||
+      conditionedDraws.model < CHARTER_AMENDMENT.conditionedMinDraws)
+  )
+    return null;
+  const floor =
+    observable === 'O1' ? CHARTER_AMENDMENT.bandFloorKm : CHARTER_AMENDMENT.bandFloorDex;
+  return modelWidth > CHARTER.bandWidening * Math.max(baselineWidth, floor);
+}
+
+/** Rule 1054: one decisive observable, its eligible bodies counted by name. */
+export interface ObservableOutcome {
+  observable: CharterObservable;
+  eligible: readonly string[];
+  improves: boolean;
+  worsens: boolean;
+}
+
+/** Rule 1054: the verdict — assessable observables only, never pooled. */
+export function charterVerdict(outcomes: readonly ObservableOutcome[]): {
+  assessable: CharterObservable[];
+  adoptable: boolean;
+  reason: 'adoptable' | 'tooFewAssessable' | 'worsens' | 'tooFewImproved';
+} {
+  const assessable = outcomes.filter(
+    (o) => CHARTER_ROLES[o.observable] === 'decisive' && o.eligible.length >= CHARTER.minBodies
+  );
+  const names = assessable.map((o) => o.observable);
+  if (assessable.length < CHARTER.minObservablesImproved)
+    return { assessable: names, adoptable: false, reason: 'tooFewAssessable' };
+  if (assessable.some((o) => o.worsens))
+    return { assessable: names, adoptable: false, reason: 'worsens' };
+  if (assessable.filter((o) => o.improves).length < CHARTER.minObservablesImproved)
+    return { assessable: names, adoptable: false, reason: 'tooFewImproved' };
+  return { assessable: names, adoptable: true, reason: 'adoptable' };
+}

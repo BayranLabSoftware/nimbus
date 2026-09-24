@@ -60,6 +60,36 @@ body by body and decides nothing. "Out of the domain" never reads as "no crater"
 - A model is **adoptable** only where it improves at least two decisive observables and worsens
   none. A class B is another question (rule 939): this set has no admitted ground case yet.
 
+## The amendment (rules 1049 to 1055)
+
+The reviewer approved the separation of the observables and the freezing of the models, and asked
+that five points become rules that execute. Each is a tested function of the charter's file.
+
+- **O2, an incomplete recovery.** Each largest recovered mass is classed when its source is pinned:
+  _measured_ (the source names it the main mass, or declares the strewn field searched) or a _lower
+  bound_. A lower bound fails where the model's 95th percentile lies below it; above it the body is
+  compatible, with no error computed and no credit of accuracy. Only a measured mass takes the ×3
+  tolerance and an error |log10(median ÷ recovered)|.
+- **O2, the improvement.** Either one more compatible body with none lost, or — on at least three
+  measured bodies — the median error falling by a factor of two with none lost. A baseline already
+  within a factor of two leaves no accuracy to claim.
+- **O5, a composite.** Survival (C1), regime of arrival (C2) and observable crater (C3), each read
+  on its own, each with its applicability per body and its answer per draw; out of the domain is
+  never "no crater" but a draw not assessable; a component assessable on fewer than half its draws
+  is not assessable on the body. C1 and C2 decide; C3 is diagnostic, save that a computed crater in
+  more than a tenth of a body's draws worsens O5.
+- **The bands.** The width of the 5–95 % band of the compared quantity — the release altitude in
+  km (O1), the log10 of the largest mass (O2); conditioned bands compared only with at least 50
+  conditioned draws on each side; a baseline band narrower than 0.5 km or 0.05 dex taken at that
+  floor.
+- **Eligibility.** Counted first, by name, observable by observable; a decisive observable with
+  fewer than three bodies is not assessable and never completed from another's; the clause of two
+  improved observables counts assessable ones only.
+
+Unchanged: no class B with this set (no admitted ground case), none added after a model's
+performance has been seen; f1 = 0.50 for S; Winchcombe a control. The amendment authorizes no
+prediction and no adoption; F's specification may now be written, as a study of development.
+
 ## What may not happen
 
 No law of F, fragment size, upper edge of the strengths, f1 or closure is chosen, tuned or checked
