@@ -10,6 +10,9 @@ adopts a model: the reviewer reads this account first. No class B can come from 
 > **F’s warning (rule 1097)** goes with its readings below: its masses carry no ablation and are not
 > comparable with a recovered mass; its release altitude is no comparable result (rule 1094).
 
+> **Closed (rule 1127).** The reviewer confirmed the verdict; the audit re-derives it from this record
+> apart from the judge’s functions (`thirdSetAudit.ts`, tested on every commit).
+
 ## The verdict (rules 1115, 1119)
 
 - **O1**: comparable on 4 bodies of the priors’ domain (Golden, Madura Cave, Hamburg, Traspena) — assessable; S gains 0 (none) and loses 0 (none) — improves: no, worsens: no.
@@ -84,6 +87,11 @@ arrival), not a share of craters; D3 describes, over the arriving draws, those i
 | Cavezzo     | 52.2 g, lower bound  | baseline       | 100.0 %            | 3.821 kg             | 2.57–5.454 kg     |
 |             |                      | S              | 100.0 %            | 1.91 kg              | 1.285–2.727 kg    |
 |             |                      | F (diagnostic) | 100.0 %            | 3.821 kg             | 2.57–5.454 kg     |
+
+**Read with caution (rule 1127 (b)).** That S’s median largest piece is 17 to 250 times the recovered
+mass measures no overestimate of the mass that reached the ground: every recovered mass is a lower
+bound. It is a sign of the comparison’s limit and of the missing ablation, not a verdict of accuracy on
+O2.
 
 ### O3 on Hamburg: the median number of pieces heavier than each quartile of Table 4’s 25 masses
 

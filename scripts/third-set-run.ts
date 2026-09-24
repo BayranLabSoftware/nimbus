@@ -482,6 +482,10 @@ const lines: string[] = [
   '> **F’s warning (rule 1097)** goes with its readings below: its masses carry no ablation and are not',
   '> comparable with a recovered mass; its release altitude is no comparable result (rule 1094).',
   '',
+  // Rule 1127: added on closing the round.
+  '> **Closed (rule 1127).** The reviewer confirmed the verdict; the audit re-derives it from this record',
+  '> apart from the judge’s functions (`thirdSetAudit.ts`, tested on every commit).',
+  '',
   '## The verdict (rules 1115, 1119)',
   '',
   `- **O1**: comparable on ${String(comparable.length)} bodies of the priors’ domain (${comparable.map((b) => b.body.event).join(', ') || 'none'}) — ${o1.assessable ? 'assessable' : '**not assessable**'}; S gains ${String(gains.length)} (${gains.map((b) => b.body.event).join(', ') || 'none'}) and loses ${String(losses.length)} (${losses.map((b) => b.body.event).join(', ') || 'none'}) — improves: ${yes(o1.improves)}, worsens: ${yes(o1.worsens)}.`,
@@ -547,6 +551,12 @@ for (const b of bodies) {
 }
 const ham = bodies.find((b) => b.record.event === 'Hamburg')?.record.o3;
 lines.push(
+  '',
+  // Rule 1127 (b): added on closing the round, as it reads in the account.
+  '**Read with caution (rule 1127 (b)).** That S’s median largest piece is 17 to 250 times the recovered',
+  'mass measures no overestimate of the mass that reached the ground: every recovered mass is a lower',
+  'bound. It is a sign of the comparison’s limit and of the missing ablation, not a verdict of accuracy on',
+  'O2.',
   '',
   '### O3 on Hamburg: the median number of pieces heavier than each quartile of Table 4’s 25 masses',
   '',
