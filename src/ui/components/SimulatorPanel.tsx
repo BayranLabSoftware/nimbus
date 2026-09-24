@@ -879,7 +879,13 @@ export function SimulatorPanel(): JSX.Element {
                     </CitationTooltip>
                   </dd>
                   <dt className={styles.resultLabel}>
-                    {t('simulator.magnitude')}
+                    {/* Rule 1056 (a): an airburst's magnitude is the air wave's. */}
+                    {t(
+                      result.data.seismic.magnitudeSource === 'air' ||
+                        result.data.seismic.magnitudeSource === 'ground'
+                        ? 'simulator.magnitudeAir'
+                        : 'simulator.magnitude'
+                    )}
                     <EvidenceTag quantity="seismic" />
                   </dt>
                   <dd className={styles.resultValue} data-testid="impact-magnitude">

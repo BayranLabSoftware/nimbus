@@ -609,7 +609,8 @@
     "monteCarloFooterShare": "Where a quantity is zero in more than one run in ten (no crater, no firestorm), the row says in how many runs it happens and gives P10–P90 of those runs alone.",
     "monteCarloFooterRare": "Below 1 % of the runs an event is rare: its cells stay empty, and the percentiles of those runs alone stand on the line under it, conditional on the event.",
     "notAssessable": "not assessable",
-    "notComputed": "not computed"
+    "notComputed": "not computed",
+    "magnitudeAir": "Magnitude from the air wave (exploratory estimate)"
   },
   "cascade": {
     "label": "Cascade timeline",
@@ -1130,7 +1131,8 @@
         "shaking": {
           "tab": "Shaking",
           "title": "Ground shaking",
-          "unit": "Modified Mercalli intensity, the program's"
+          "unit": "Modified Mercalli intensity, the program's",
+          "titleAir": "Ground shaking from the air wave (exploratory estimate)"
         },
         "probability": {
           "tab": "Probability",
@@ -1153,7 +1155,7 @@
           "title": "Low overpressure — glass damage (exploratory)",
           "unit": "kPa, logarithmic scale",
           "evidence": "The shock-wave field verified at level A, read below the thresholds of structural damage: the lines at 1 and 3 kPa are not validated as a prediction of the damage.",
-          "planetary": "Warning: an extrapolation to a planetary scale. Beyond 2,000 km the line is no prediction of broken glass: the overpressure law is calibrated on explosions of far smaller scale and sees neither the Earth’s curvature nor the atmosphere’s structure, and it enters no count of damage."
+          "planetary": "Warning: an extrapolation to a planetary scale. Beyond 2,000 km the line is no prediction of broken glass: the overpressure law is calibrated on explosions of far smaller scale and sees neither the Earth’s curvature nor the atmosphere’s structure, and it enters no count of damage. The 2,000 km mark where this warning appears, not that within that distance the model is validated by that alone."
         }
       },
       "markWithWind": "{{range}} · wind {{wind}} km/h",
@@ -1192,7 +1194,7 @@
         "ejectaInside": "inside the crater the thickness is not reported",
         "magnitude": "M {{m}}, from 10⁻⁴ of the energy at the ground (Collins et al. 2005, Eq. 40*)",
         "magnitudeSpread": "M {{m}} ({{low}}–{{high}} with the seismic efficiency from 10⁻⁵ to 10⁻³), from 10⁻⁴ of the energy at the ground (Collins et al. 2005, Eq. 40*)",
-        "magnitudeAir": "M {{m}}, from the wave in the air (Harkrider; rules 730 to 738), with no spread",
+        "magnitudeAir": "M {{m}}: an exploratory estimate of the air wave’s coupling to the ground (Harkrider; rules 730–738), not a seismic release from a crater; no fork",
         "liquefactionReach": "out to {{range}} on saturated sandy ground",
         "liquefactionNone": "none: the magnitude is too low to liquefy saturated sandy ground",
         "shakingBelowV": "below V only a line, as the earthquakes are drawn",
@@ -1294,7 +1296,8 @@
         "extentOne": "{{value}}, out to {{reach}}",
         "extentWaveMap": "the wave map the globe draws, its entries below",
         "extentNone": "nothing beyond what the legend lists",
-        "extentBelowMain": "first-degree burns out to {{reach}}; no main threshold reached"
+        "extentBelowMain": "first-degree burns out to {{reach}}; no main threshold reached",
+        "planetary": "beyond 2,000 km: an extrapolation to a planetary scale"
       },
       "state": {
         "verified": "A · implementation verified",
@@ -1355,7 +1358,7 @@
           "compressedOne": "threshold {{value}} cal/cm²\ncompressed at the geometric limit",
           "belowThresholdEjecta": "deposit < 1 mm or\nnot resolved at the current scale",
           "belowMain": "below the main threshold",
-          "outOfDomain": "Exploratory geometry and source of the effects;\ndeposition along the path reduced to a point source,\nground coupling not modelled"
+          "outOfDomain": "Geometry and source of the effects are exploratory;\ndeposition along the path reduced to a point source,\nground coupling not modelled"
         },
         "source": {
           "below": "the same model as the field, read past the lowest threshold drawn",
@@ -1375,7 +1378,8 @@
         "tunguskaThermal": "Scorched forest observed near the epicentre; the mechanism and the distribution are not validated by this layer",
         "tunguskaEvent": "Tunguska, 30 June 1908",
         "named": "{{event}}: {{text}}"
-      }
+      },
+      "planetary": "Warning: this map reaches beyond 2,000 km, where the law is an extrapolation to a planetary scale: it is calibrated on explosions of far smaller scale and sees neither the Earth’s curvature nor the atmosphere’s structure. The 2,000 km mark where this warning appears, not that within that distance the model is validated by that alone."
     }
   },
   "report": {
@@ -1449,7 +1453,8 @@
         "craterFieldDetail": "a crater field’s, joined · {{depth}} deep · {{morphology}}",
         "craterUnresolved": "the body reaches the ground below 5 km/s: a local penetration pit is possible, outside the crater law's domain",
         "deathsNotAssessable": "out of the crater’s domain: no number",
-        "magnitudeOutOfDomain": "out of the crater’s domain: no coupling to the ground modelled"
+        "magnitudeOutOfDomain": "out of the crater’s domain: no coupling to the ground modelled",
+        "magnitudeAir": "an exploratory estimate of the air wave’s coupling to the ground, not a seismic release from a crater"
       },
       "group": {
         "scenario": "Scenario inputs",
@@ -1497,7 +1502,7 @@
         "ejectaAt10R": "Ejecta thickness at 10 R",
         "seismicMagnitude": "Seismic magnitude",
         "seismicMagnitudeProgram": "Seismic magnitude (Collins et al. 2005)",
-        "seismicMagnitudeAir": "Seismic magnitude (Harkrider et al. 1974 and Collins et al. 2005, rule 730)",
+        "seismicMagnitudeAir": "Magnitude from the air wave, an exploratory estimate (Harkrider et al. 1974 and Collins et al. 2005, rule 730)",
         "magnitudeRange": "Seismic magnitude, efficiency 10⁻⁵–10⁻³",
         "mercalliOutTo": "Mercalli {{level}} out to",
         "liquefaction": "Liquefaction radius",
@@ -1644,7 +1649,8 @@
       "cardWhat": "Object drawn",
       "cardField": "the field",
       "notAssessable": "not assessable",
-      "notComputed": "not computed"
+      "notComputed": "not computed",
+      "planetaryShort": "beyond 2,000 km: an extrapolation to a planetary scale"
     }
   },
   "about": {

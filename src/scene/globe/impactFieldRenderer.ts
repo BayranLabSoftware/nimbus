@@ -160,6 +160,15 @@ export function drawImpactFieldLayer(
           style: LabelStyle.FILL_AND_OUTLINE,
           heightReference: HeightReference.CLAMP_TO_GROUND,
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
+          // Rule 1056 (b): the fixed words out of the domain on a dark ground,
+          // set below the point, clear of the rings' values and the coast's
+          // names at any zoom.
+          ...(mark.id === 'out-of-domain' && {
+            showBackground: true,
+            backgroundColor: LABEL_OUTLINE.withAlpha(0.82),
+            backgroundPadding: new Cartesian2(8, 5),
+            pixelOffset: new Cartesian2(0, 78),
+          }),
         },
       });
     const info: IsolineHoverInfo = {

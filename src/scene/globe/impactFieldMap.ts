@@ -501,6 +501,19 @@ function layerEvidence(layer: RawLayer, ctx: ImpactMapContext): LayerEvidence {
       ? FAMILY_EVIDENCE[layer.uncertainty?.selected?.family ?? 'blast']
       : LAYER_EVIDENCE[layer.id];
   const { klass, label, short, summary } = evidenceText(quantity, ctx.t, ctx.language);
+  // Rule 1056 (c): the structural overpressure and the wind carry the
+  // planetary warning as the low overpressure does.
+  if (
+    (layer.id === 'overpressure' || layer.id === 'wind') &&
+    (layer.field?.maxRangeM ?? 0) > PLANETARY_EXTRAPOLATION_M
+  )
+    return {
+      quantity,
+      klass,
+      label,
+      short,
+      summary: `${ctx.t('globe.impactMap.planetary')} ${summary}`,
+    };
   // Rule 1031 (c): the verified field, read below the thresholds of damage it
   // was verified at — exploratory; rule 1048 (d): past 2 000 km, first of all,
   // an extrapolation to a planetary scale.
@@ -1520,7 +1533,10 @@ function shakingLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawL
   return {
     id: 'shaking',
     tab: t('globe.impactMap.layer.shaking.tab'),
-    title: t('globe.impactMap.layer.shaking.title'),
+    // Rule 1056 (a): an airburst's shaking is the air wave's, exploratory.
+    title: t(
+      air ? 'globe.impactMap.layer.shaking.titleAir' : 'globe.impactMap.layer.shaking.title'
+    ),
     unit: t('globe.impactMap.layer.shaking.unit'),
     field: {
       family: 'circle',
@@ -2170,7 +2186,13 @@ export function buildImpactLayer(
   const { below, beyond, halo, ...settled } = settleIsolines(layer, ctx, horizon);
   const evidence = layerEvidence(settled, ctx);
   const edge = layerEdge(settled, horizon, beyond);
-  const drawnCard = layerCard(settled, evidence, edge, ctx);
+  const plainCard = layerCard(settled, evidence, edge, ctx);
+  // Rule 1056 (c): a card whose field reaches 2 000 km says so.
+  const drawnCard =
+    (id === 'overpressure' || id === 'wind' || id === 'lowOverpressure') &&
+    (settled.field?.maxRangeM ?? 0) > PLANETARY_EXTRAPOLATION_M
+      ? { ...plainCard, extent: `${plainCard.extent} — ${ctx.t('globe.impactMap.card.planetary')}` }
+      : plainCard;
   // Rule 1031 (d): a layer drawn only as a halo below its main threshold;
   // (e): out of the crater's domain, every layer's state is out of domain.
   const outOfDomain = result.crater.state === 'outOfDomain';

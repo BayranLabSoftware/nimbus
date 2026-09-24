@@ -304,3 +304,25 @@ describe('rule 1031 (e): out of the crater’s domain the report gives no number
     expect(rows.map((r) => r.value)).toContain('report.impact.value.magnitudeOutOfDomain');
   });
 });
+
+describe('rule 1056: the report names what the air wave gives and where the law extrapolates', () => {
+  it('reads an airburst’s magnitude as the air wave’s exploratory estimate', () => {
+    const model = buildImpactReport(run('CHELYABINSK'), context(keyOnly, 'en'));
+    expect(model.keyFigures.find((k) => k.id === 'magnitude')?.detail).toBe(
+      'report.impact.key.magnitudeAir'
+    );
+  });
+
+  it('marks the radii past 2 000 km as an extrapolation to a planetary scale', () => {
+    const rows = buildImpactReport(run('CHICXULUB'), context(keyOnly, 'en')).groups.flatMap(
+      (g) => g.rows
+    );
+    expect(rows.find((r) => r.id === 'lightDamage')?.value).toContain(
+      'report.impact.planetaryShort'
+    );
+    const meteor = buildImpactReport(run('METEOR_CRATER'), context(keyOnly, 'en')).groups.flatMap(
+      (g) => g.rows
+    );
+    expect(meteor.find((r) => r.id === 'lightDamage')?.value).not.toContain('planetary');
+  });
+});

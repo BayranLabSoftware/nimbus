@@ -609,7 +609,8 @@
     "monteCarloFooterShare": "Dove una grandezza è zero in più di un campione su dieci (niente cratere, niente incendio), la riga dice in quanti campioni si verifica e dà P10–P90 di quei soli campioni.",
     "monteCarloFooterRare": "Sotto l'1 % dei campioni un evento è raro: le sue celle restano vuote, e i percentili di quei soli campioni stanno sulla riga sotto, condizionati all'evento.",
     "notAssessable": "non valutabile",
-    "notComputed": "non calcolata"
+    "notComputed": "non calcolata",
+    "magnitudeAir": "Magnitudo dall'onda in aria (stima esplorativa)"
   },
   "cascade": {
     "label": "Timeline a cascata",
@@ -1130,7 +1131,8 @@
         "shaking": {
           "tab": "Scuotimento",
           "title": "Scuotimento del suolo",
-          "unit": "intensità di Mercalli, dal programma"
+          "unit": "intensità di Mercalli, dal programma",
+          "titleAir": "Scuotimento del suolo dall'onda in aria (stima esplorativa)"
         },
         "probability": {
           "tab": "Probabilità",
@@ -1153,7 +1155,7 @@
           "title": "Sovrappressione bassa — danno a vetri (esplorativo)",
           "unit": "kPa, scala logaritmica",
           "evidence": "Il campo dell'onda d'urto verificato al livello A, letto sotto le soglie di danno strutturale: le linee a 1 e 3 kPa non sono validate come previsione del danno.",
-          "planetary": "Attenzione: estrapolazione a scala planetaria. Oltre 2000 km la linea non è una previsione della rottura dei vetri: la legge della sovrappressione è tarata su esplosioni di scala molto minore e non vede la curvatura della Terra né la struttura dell'atmosfera, e non entra in nessun conteggio dei danni."
+          "planetary": "Attenzione: estrapolazione a scala planetaria. Oltre 2000 km la linea non è una previsione della rottura dei vetri: la legge della sovrappressione è tarata su esplosioni di scala molto minore e non vede la curvatura della Terra né la struttura dell'atmosfera, e non entra in nessun conteggio dei danni. I 2000 km segnano dove compare questo avviso, non che entro quella distanza il modello sia per ciò stesso validato."
         }
       },
       "markWithWind": "{{range}} · vento {{wind}} km/h",
@@ -1192,7 +1194,7 @@
         "ejectaInside": "dentro il cratere lo spessore non è riportato",
         "magnitude": "M {{m}}, dal 10⁻⁴ dell'energia al suolo (Collins et al. 2005, Eq. 40*)",
         "magnitudeSpread": "M {{m}} ({{low}}–{{high}} con l'efficienza sismica da 10⁻⁵ a 10⁻³), dal 10⁻⁴ dell'energia al suolo (Collins et al. 2005, Eq. 40*)",
-        "magnitudeAir": "M {{m}}, dall'onda nell'aria (Harkrider; regole 730–738), senza forchetta",
+        "magnitudeAir": "M {{m}}: stima esplorativa dell'accoppiamento dell'onda in aria al suolo (Harkrider; regole 730–738), non un rilascio sismico da cratere; senza forchetta",
         "liquefactionReach": "fino a {{range}} su suolo sabbioso saturo",
         "liquefactionNone": "nessuna: la magnitudo non basta a liquefare un suolo sabbioso saturo",
         "shakingBelowV": "sotto V solo la linea, come per i terremoti",
@@ -1294,7 +1296,8 @@
         "extentOne": "{{value}}, fino a {{reach}}",
         "extentWaveMap": "la carta dell’onda che il globo disegna, le sue voci qui sotto",
         "extentNone": "nulla oltre ciò che la legenda elenca",
-        "extentBelowMain": "ustioni di I grado fino a {{reach}}; nessuna soglia principale raggiunta"
+        "extentBelowMain": "ustioni di I grado fino a {{reach}}; nessuna soglia principale raggiunta",
+        "planetary": "oltre 2000 km: estrapolazione a scala planetaria"
       },
       "state": {
         "verified": "A · implementazione verificata",
@@ -1355,7 +1358,7 @@
           "compressedOne": "soglia {{value}} cal/cm²\ncompressa presso il limite geometrico",
           "belowThresholdEjecta": "deposito < 1 mm oppure\nnon risolto dalla scala corrente",
           "belowMain": "sotto la soglia principale",
-          "outOfDomain": "Geometria e sorgente degli effetti esplorative;\ndeposizione lungo traiettoria ridotta a sorgente puntiforme,\naccoppiamento al suolo non modellato"
+          "outOfDomain": "Geometria e sorgente degli effetti sono esplorative;\ndeposizione lungo traiettoria ridotta a sorgente puntiforme,\naccoppiamento al suolo non modellato"
         },
         "source": {
           "below": "lo stesso modello del campo, letto oltre la soglia più bassa disegnata",
@@ -1375,7 +1378,8 @@
         "tunguskaThermal": "Foresta bruciacchiata osservata vicino all'epicentro; il meccanismo e la distribuzione non sono validati da questo layer",
         "tunguskaEvent": "Tunguska, 30 giugno 1908",
         "named": "{{event}}: {{text}}"
-      }
+      },
+      "planetary": "Attenzione: questa carta arriva oltre 2000 km, dove la legge è un'estrapolazione a scala planetaria: è tarata su esplosioni di scala molto minore e non vede la curvatura della Terra né la struttura dell'atmosfera. I 2000 km segnano dove compare questo avviso, non che entro quella distanza il modello sia per ciò stesso validato."
     }
   },
   "report": {
@@ -1449,7 +1453,8 @@
         "craterFieldDetail": "di un campo di crateri, unito · profondo {{depth}} · {{morphology}}",
         "craterUnresolved": "il corpo arriva al suolo sotto i 5 km/s: possibile buca di penetrazione locale, fuori dal dominio della legge del cratere",
         "deathsNotAssessable": "fuori dal dominio del cratere: nessun numero",
-        "magnitudeOutOfDomain": "fuori dal dominio del cratere: nessun accoppiamento al suolo modellato"
+        "magnitudeOutOfDomain": "fuori dal dominio del cratere: nessun accoppiamento al suolo modellato",
+        "magnitudeAir": "stima esplorativa dall'accoppiamento dell'onda in aria al suolo, non un rilascio sismico da cratere"
       },
       "group": {
         "scenario": "Parametri dello scenario",
@@ -1497,7 +1502,7 @@
         "ejectaAt10R": "Spessore della coltre a 10 R",
         "seismicMagnitude": "Magnitudo sismica",
         "seismicMagnitudeProgram": "Magnitudo sismica (Collins et al. 2005)",
-        "seismicMagnitudeAir": "Magnitudo sismica (Harkrider et al. 1974 e Collins et al. 2005, regola 730)",
+        "seismicMagnitudeAir": "Magnitudo dall'onda in aria, stima esplorativa (Harkrider et al. 1974 e Collins et al. 2005, regola 730)",
         "magnitudeRange": "Magnitudo sismica con efficienza 10⁻⁵–10⁻³",
         "mercalliOutTo": "Mercalli {{level}} fino a",
         "liquefaction": "Raggio di liquefazione",
@@ -1644,7 +1649,8 @@
       "cardWhat": "Oggetto disegnato",
       "cardField": "il campo",
       "notAssessable": "non valutabile",
-      "notComputed": "non calcolata"
+      "notComputed": "non calcolata",
+      "planetaryShort": "oltre 2000 km: estrapolazione a scala planetaria"
     }
   },
   "about": {

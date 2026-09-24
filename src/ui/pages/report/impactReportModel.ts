@@ -30,6 +30,7 @@ import {
   type ImpactMapLayer,
   type LayerAbsence,
 } from '../../../scene/globe/impactFieldMap.js';
+import { PLANETARY_EXTRAPOLATION_M } from '../../../scene/globe/mapGrammarRules.js';
 import type { Citation } from '../methodologyContent.js';
 import { ringSourceText, tntFromKilograms } from '../../components/ringSource.js';
 import { collectImpactCitations } from '../reportCitations.js';
@@ -346,10 +347,15 @@ function groups(
 
   const blastFigure = fig('overpressure');
   const windFigure = fig('wind');
+  // Rule 1056 (c): a radius past 2 000 km carries the planetary warning.
+  const reach = (m: number): string =>
+    m > PLANETARY_EXTRAPOLATION_M
+      ? `${length(m, l)} · ${t('report.impact.planetaryShort')}`
+      : length(m, l);
   const blastRows = [
-    row(t, 'overpressure5psi', length(r.damage.overpressure5psi, l), blastFigure),
-    row(t, 'overpressure1psi', length(r.damage.overpressure1psi, l), blastFigure),
-    row(t, 'lightDamage', length(r.damage.lightDamage, l), blastFigure),
+    row(t, 'overpressure5psi', reach(r.damage.overpressure5psi), blastFigure),
+    row(t, 'overpressure1psi', reach(r.damage.overpressure1psi), blastFigure),
+    row(t, 'lightDamage', reach(r.damage.lightDamage), blastFigure),
   ];
   // Rule 969: out of the crater's domain the rings say their source.
   if (unresolved) {
@@ -368,10 +374,10 @@ function groups(
   }
   if (windFigure !== undefined) {
     for (const kmh of WIND_LEVELS_KMH) {
-      const reach = windReachM(r, kmh);
-      if (reach > 0) {
+      const windReach = windReachM(r, kmh);
+      if (windReach > 0) {
         blastRows.push({
-          ...row(t, 'windOutTo', length(reach, l), windFigure, {
+          ...row(t, 'windOutTo', reach(windReach), windFigure, {
             speed: `${fixed(kmh, 0, l)} km/h`,
           }),
           id: `windOutTo${kmh.toString()}`,
@@ -563,12 +569,16 @@ function keyFigures(r: ImpactScenarioResult, ctx: ImpactReportContext): KeyFigur
         : fixed(r.seismic.magnitude, 1, l),
       r.seismic.magnitude === null && r.crater.state === 'outOfDomain'
         ? t('report.impact.key.magnitudeOutOfDomain')
-        : range === null
-          ? t('report.impact.key.magnitudeNone')
-          : t('report.impact.key.magnitudeDetail', {
-              low: fixed(range.low, 1, l),
-              high: fixed(range.high, 1, l),
-            })
+        : // Rule 1056 (a): an airburst's magnitude is the air wave's, not the
+          // crater's relation with its seismic efficiency.
+          r.seismic.magnitudeSource === 'air' || r.seismic.magnitudeSource === 'ground'
+          ? t('report.impact.key.magnitudeAir')
+          : range === null
+            ? t('report.impact.key.magnitudeNone')
+            : t('report.impact.key.magnitudeDetail', {
+                low: fixed(range.low, 1, l),
+                high: fixed(range.high, 1, l),
+              })
     ),
     k(
       'deaths',

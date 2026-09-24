@@ -387,3 +387,23 @@ describe('rule 1048: step 7 completed', () => {
     }
   });
 });
+
+describe('rule 1056: step 7 closed on its presentation', () => {
+  it('(a) names an airburst’s shaking the air wave’s exploratory estimate', () => {
+    const shaking = layersOf('CHELYABINSK').find((l) => l.id === 'shaking');
+    expect(shaking?.title).toBe('globe.impactMap.layer.shaking.titleAir');
+    expect(layersOf('METEOR_CRATER').find((l) => l.id === 'shaking')?.title).toBe(
+      'globe.impactMap.layer.shaking.title'
+    );
+  });
+
+  it('(c) warns on the structural overpressure and the wind past 2 000 km, in the card too', () => {
+    for (const id of ['overpressure', 'wind'] as const) {
+      const layer = layersOf('CHICXULUB').find((l) => l.id === id);
+      expect(layer?.evidence.summary.startsWith('globe.impactMap.planetary'), id).toBe(true);
+      expect(layer?.card.extent, id).toContain('globe.impactMap.card.planetary');
+      const meteor = layersOf('METEOR_CRATER').find((l) => l.id === id);
+      expect(meteor?.evidence.summary, id).not.toContain('planetary');
+    }
+  });
+});

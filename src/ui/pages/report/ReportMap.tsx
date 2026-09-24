@@ -207,7 +207,8 @@ export function ReportMap({
         radiusM: markLabelRadius(mk),
         bearingDeg: mk.labelBearingDeg,
         state: true,
-        required: false,
+        // Rule 1056 (b): the words out of the domain always print.
+        required: mk.id === 'out-of-domain',
       })),
     ];
     // The north, the scale and the photograph are taken before any label.
