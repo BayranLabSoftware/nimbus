@@ -325,4 +325,7 @@ export const FCM_ROUND3_CLOSED_SOURCES = [
   'Grimsby',
   'Bunburra Rockhole',
   'Neuschwanstein',
+  // Located after rule 1175 was written: its trajectory paper is on
+  // ResearchGate only, on request — no open copy; rule 1175 (b) applies.
+  'Mason Gully',
 ] as const;
