@@ -69,3 +69,19 @@ describe('rule 1123: the table of eligibility', () => {
     expect(THIRD_SET_BODIES.every((b) => b.o2.class === 'lowerBound')).toBe(true);
   });
 });
+
+describe('rule 1125: the table made precise before any prediction', () => {
+  it('says for every body which peaks enter O1 and why, the ends unmoved', () => {
+    for (const b of THIRD_SET_BODIES) expect(b.o1.selection.length).toBeGreaterThan(40);
+    const golden = THIRD_SET_BODIES.find((b) => b.event === 'Golden');
+    expect(golden?.o1.intervalKm).toEqual([29.5, 34.5]);
+    const traspena = THIRD_SET_BODIES.find((b) => b.event === 'Traspena');
+    expect(traspena?.o1.intervalKm).toEqual([28.535, 35.325]);
+  });
+
+  it('keeps Hamburg’s angle from the horizontal, its ambiguity on record', () => {
+    const hamburg = THIRD_SET_BODIES.find((b) => b.event === 'Hamburg');
+    expect(hamburg?.inputs.angle.value).toEqual({ kind: 'normal', mean: 66.14, sigma: 0.29 });
+    expect(hamburg?.recorded?.[0]).toContain('editorial ambiguity');
+  });
+});

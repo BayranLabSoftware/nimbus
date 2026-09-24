@@ -1,6 +1,6 @@
 /**
  * Writes docs/INDEPENDENT_TEST_ELIGIBILITY_V2.md from
- * src/physics/validation/thirdSetSources.ts (rules 1120 to 1124): the third
+ * src/physics/validation/thirdSetSources.ts (rules 1120 to 1125): the third
  * set's table of eligibility under the second version of the judge, before any
  * prediction. Deterministic: no clock.
  *
@@ -34,7 +34,7 @@ const c = thirdSetCounts();
 const lines: string[] = [
   '# The third set — table of eligibility, version 2',
   '',
-  'Rules 1120–1124, `src/physics/validation/thirdSetSources.ts`, under the second version of the judge',
+  'Rules 1120–1125, `src/physics/validation/thirdSetSources.ts`, under the second version of the judge',
   '(rules 1100–1119, frozen and pushed before any source was opened). Written on 24 September 2026 by',
   '`scripts/third-set-eligibility.ts`. **No model has been run on these bodies; the predictions are not',
   'authorized** — this table is the reviewer’s next point of review. No class B can come from this set.',
@@ -66,7 +66,7 @@ const lines: string[] = [
 for (const b of THIRD_SET_BODIES) {
   lines.push(
     `**${b.event}.**`,
-    `O1 — ${b.o1.why}; ${b.o1.where}. All flares given: ${b.o1.flaresKm.map((z) => `${fmt(z, 5)} km`).join(', ')}.`,
+    `O1 — ${b.o1.why}; ${b.o1.where}. All flares given: ${b.o1.flaresKm.map((z) => `${fmt(z, 5)} km`).join(', ')}. The peaks (rule 1125 (b)): ${b.o1.selection}.`,
     `O2 — ${b.o2.where}. O3 — ${b.o3.why}.`,
     `D1 — ${b.ground.recovery.why}. D2 — ${b.ground.noCrater.why}. J — ${b.ground.regime.why}.`,
     ...(b.recorded ?? []).map((r) => `Recorded — ${r}.`),
@@ -89,15 +89,19 @@ lines.push(
     `- **${b.event}**: speed — ${b.inputs.velocity.where}; angle — ${b.inputs.angle.where}; diameter — ${b.inputs.diameter.where}${b.inputs.diameter.note === undefined ? '' : ` (${b.inputs.diameter.note})`}; density — ${b.inputs.density.where}. The ground’s density is the model’s crustal rock, 2700 kg/m³ (rule 873).`,
   ]),
   '',
-  '## Put to the reviewer',
+  '## Made precise before any prediction (rule 1125)',
   '',
-  '- Rule 1121’s six conventions were written after the sources were read and before any model ran on',
-  '  them; none was chosen on a model’s output.',
-  '- Cavezzo is classified «L5 anomalous»: read as an ordinary chondrite of the L group and counted.',
-  '- Golden’s roof and bed document a trace of the arrival, but the source does not read it as an arrival',
-  '  at terminal speed: J is not admitted for it.',
-  '- O1’s interval spans the flares each source names as principal: for Golden the main flare near 30–31',
-  '  km and the one at 34 km (45 km, «less certain», left out); for Traspena the three of intensity 1.0.',
+  '- **Hamburg’s angle**: 66.14° from the horizontal, chosen and confirmed by the reviewer; the abstract’s',
+  '  «zenith angle» stays on record as an editorial ambiguity of the source.',
+  '- **O1’s peaks**: the rule already frozen — the heights of the two brightest flares the source measures,',
+  '  the interval between them (rule 866 (e), as 2022 WJ1’s and 2024 BX1’s targets were pinned); ties at the',
+  '  printed brightness all enter, two figures for one flare both kept, an uncertain flare or a non-flare',
+  '  left out. Each body’s peaks in and out, with their reason, are above; the ends were not moved.',
+  '- **After the run**: O1’s draws not produced, excluded by the selection or not convergent, counted per',
+  '  body; every negative outcome published; no body replaced, no band revised. Five bodies admitted make the',
+  '  judgement possible, not the two observables assessable.',
+  '- Confirmed: Cavezzo counted in the L group, its anomaly declared; Golden’s roof documents the impact, not a',
+  '  terminal speed; Winchcombe’s two speeds on record, its measured trajectory first — a control.',
   '- Madura Cave’s density was not measured: the interval spans the 3500 kg/m³ the source assumes and the',
   '  2800 its particle filter gives.',
   ''

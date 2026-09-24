@@ -82,6 +82,42 @@
  * set (rule 1119).
  */
 
+/**
+ * RULE 1125. THE TABLE MADE PRECISE, on the reviewer's reply of 24 September
+ * 2026 — the table near approval, two points to fix before any prediction,
+ * without any model's output (none exists). Andrea's word: the precisions and
+ * the text.
+ *   (a) HAMBURG'S ANGLE. 66.14° from the horizontal is the input chosen: the
+ *       source's slope in its Table 2, its Conclusions (about 24° from the
+ *       vertical) and its measured heights agree, and the reviewer confirms
+ *       it. The abstract's «zenith angle» stays recorded as an editorial
+ *       ambiguity of the source, not as a question closed.
+ *   (b) O1's PEAKS, BY THE RULE ALREADY FROZEN. Rule 1121 (e)'s «principal
+ *       flares» is read as the earlier rounds read rule 866 (e) and rule 921:
+ *       the target is the heights of the two brightest flares the source
+ *       measures on its light curve and trajectory, the interval between them,
+ *       each end widened by its half-unit — 2022 WJ1's E3 was pinned so
+ *       (levelB2Sources.ts: «the heights of the two brightest flares»), as
+ *       2024 BX1's took its two almost equally bright flares. Where the
+ *       source's printed brightness ties more than two at the top, every tied
+ *       flare enters; where it gives two figures for one flare, both ends are
+ *       kept (rule 866 (a)); a flare it gives as uncertain, or a feature it
+ *       does not call a flare, stays out; every other flare is published
+ *       beside. Body by body, each peak in or out and its observational reason
+ *       are written in the table (`o1.selection`). The ends were not moved:
+ *       they are the table's of rule 1123.
+ *   (c) WHAT IS PUBLISHED AFTER THE RUN, whatever it shows: O1's draws not
+ *       produced, excluded by the selection or not convergent, counted per
+ *       body (rule 1111); every negative outcome; no body replaced and no band
+ *       revised. Five bodies admitted make the judgement possible; they do
+ *       not promise that O1 and the ground outcome will prove assessable
+ *       after the run.
+ *   (d) Confirmed by the reviewer, kept: Cavezzo counted in the L group, its
+ *       anomaly declared; Golden's roof documenting the impact, not a terminal
+ *       speed observed; Winchcombe's two speeds and the priority of its
+ *       measured trajectory, a control that cannot move the verdict.
+ */
+
 import type { LevelBInput } from './levelBSources.js';
 
 export interface ThirdSetSource {
@@ -166,6 +202,8 @@ export interface ThirdSetBody {
     readonly intervalKm: readonly [number, number];
     readonly flaresKm: readonly number[];
     readonly where: string;
+    /** Rule 1125 (b): which peaks enter the interval, which stay out, and why. */
+    readonly selection: string;
   };
   /** Rule 1114: O2, diagnostic — the largest recovered mass and its class. */
   readonly o2: {
@@ -243,6 +281,8 @@ export const THIRD_SET_BODIES: readonly ThirdSetBody[] = [
       flaresKm: [35],
       where:
         'p. 931: the final fragmentation at 35 km, from the fragments’ deviation from the straight path',
+      selection:
+        'no flare height is given in figures, the light curve shown only as a plot: the final fragmentation at 35 km, measured from the path, stands alone — a control, counted in no decision',
     },
     o2: {
       largestKg: 0.339,
@@ -259,7 +299,7 @@ export const THIRD_SET_BODIES: readonly ThirdSetBody[] = [
       regime: { eligible: false, why: `pp. 938–939: ${DARK_FLIGHT_MODEL}` },
     },
     recorded: [
-      'Table 6 gives an initial speed of 13.547 ± 0.008 km/s against Table 2’s 13.86 ± 0.01 km/s, unexplained; Table 2, the measured trajectory, is pinned (rule 1121 (a))',
+      'Table 6 gives an initial speed of 13.547 ± 0.008 km/s against Table 2’s 13.86 ± 0.01 km/s, unexplained by the source; Table 2, the measured trajectory, has the priority and is pinned — a control, which cannot move the verdict (rules 1121 (a), 1125 (d))',
     ],
   },
   {
@@ -305,6 +345,8 @@ export const THIRD_SET_BODIES: readonly ThirdSetBody[] = [
       flaresKm: [30, 31, 34, 45],
       where:
         'p. 18: the main flare near 30 km (p. 3: near 31 km) and a smaller one at 34 km; one near 45 km «less certain», left out; heights from time at a constant speed, less accurate below 30 km',
+      selection:
+        'in: the main flare, the brightest (p. 18: near 30 km; p. 3: near 31 km — two figures for one flare, both kept), and the smaller flare at 34 km, the second brightest the source measures (p. 18). Out: the flare near 45 km, which only two of three cameras suggest and the source calls «less certain» (p. 18); the plateau at 50–65 km, not a flare',
     },
     o2: {
       largestKg: 1.27,
@@ -373,6 +415,8 @@ export const THIRD_SET_BODIES: readonly ThirdSetBody[] = [
       flaresKm: [35.8, 25.8],
       where:
         'p. 3 and Fig. 2, p. 5: two break-ups, the peaks of the video light curve placed on the triangulated trajectory',
+      selection:
+        'in: the two peaks of the light curve, the break-ups at 35.8 and 25.8 km — the only two the source gives, neither named the brighter (pp. 3, 5). Out: none',
     },
     o2: {
       largestKg: 1.072,
@@ -430,6 +474,8 @@ export const THIRD_SET_BODIES: readonly ThirdSetBody[] = [
       intervalKm: [21.65, 24.15],
       flaresKm: [24.1, 21.7],
       where: 'p. 10: two flares at 24.1 and 21.7 km; p. 13: GLM recorded both',
+      selection:
+        'in: the two major flares at 24.1 and 21.7 km, which the source says dominate the deposition (pp. 2, 10). Out: the marginal early fragmentations at 68 and about 48 km, placed by the fitted model, not flares measured on the light curve (p. 21)',
     },
     o2: {
       largestKg: 0.1026,
@@ -450,7 +496,7 @@ export const THIRD_SET_BODIES: readonly ThirdSetBody[] = [
       regime: { eligible: false, why: 'no trace of the arrival described' },
     },
     recorded: [
-      'The abstract (p. 2) calls 66.14° a zenith angle; Table 2 calls it the slope and the Conclusions (p. 25) say 24° from the vertical. The source’s measured heights decide: from 83.02 to 19.73 km along a 68.7 km trail, asin(63.29 / 68.7) = 67°, from the horizontal (rule 1121 (d))',
+      'An editorial ambiguity of the source, kept on record: the abstract (p. 2) calls 66.14° a zenith angle, while Table 2 calls it the slope and the Conclusions (p. 25) say about 24° from the vertical. 66.14° from the horizontal is the input chosen, as the slope, the Conclusions and the measured heights agree — from 83.02 to 19.73 km along a 68.7 km trail, asin(63.29 / 68.7) = 67° — and the reviewer confirmed it (rules 1121 (d), 1125 (a))',
     ],
   },
   {
@@ -497,6 +543,8 @@ export const THIRD_SET_BODIES: readonly ThirdSetBody[] = [
       ],
       where:
         'Table 6, p. 3863: the three flares of normalised intensity 1.0 at 35.32, 31.94 and 28.54 km; ten fainter ones (0.0 to 0.3) from 63.61 to 16.59 km, beside; the light curve uncalibrated, taken in fog',
+      selection:
+        'in: the three flares tied at the top of Table 6, normalised intensity 1.0 at 35.32, 31.94 and 28.54 km (p. 3863) — the text names the maximum brightness at 28.54 km (p. 3863), the table’s intensities, printed to 0.1 of the peak, tie the three, and every tied flare enters. Out: the ten flares of intensity 0.0 to 0.3 from 63.61 to 16.59 km, among them the «last bright flare» at 19.58 km of intensity 0.2',
     },
     o2: {
       largestKg: 0.527,
@@ -558,6 +606,8 @@ export const THIRD_SET_BODIES: readonly ThirdSetBody[] = [
       intervalKm: [30.65, 32.65],
       flaresKm: [32.6, 30.7],
       where: 'p. 1222: two flares at about 32.6 (the brightest) and 30.7 km',
+      selection:
+        'in: the two flares the source measures, at about 32.6 km (the brightest, absolute magnitude −9.5) and 30.7 km (−8.5) (p. 1222). Out: the plateau near −7.5 between 2.0 and 4.7 s, not a flare',
     },
     o2: {
       largestKg: 0.0522,
@@ -574,7 +624,7 @@ export const THIRD_SET_BODIES: readonly ThirdSetBody[] = [
       regime: { eligible: false, why: `Table 4, p. 1224: ${DARK_FLIGHT_MODEL}` },
     },
     recorded: [
-      'Classified «L5 anomalous»: the larger stone fits the L group, the smaller does not (p. 1219). Read as an ordinary chondrite, counted; put to the reviewer (rule 1123 (a))',
+      'Classified «L5 anomalous»: the larger stone fits the L group, the smaller does not (p. 1219). Counted in the L group with its anomaly declared, as the reviewer confirmed (rules 1123 (a), 1125 (d))',
     ],
   },
 ];
