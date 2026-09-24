@@ -1,0 +1,219 @@
+{
+  "rule": "1160",
+  "objective": {
+    "Chelyabinsk": [1667, 15000],
+    "Tagish Lake": [60, 1300]
+  },
+  "candidates": {
+    "T1": {
+      "cloudShare": [0.5, 0.85]
+    },
+    "T2": {
+      "cloudShare": [0.5, 0.85],
+      "alpha": [0.05, 0.3]
+    }
+  },
+  "untunedLanded": [
+    {
+      "event": "Chelyabinsk",
+      "byConfiguration": [
+        {
+          "conf": "M1/unlimited",
+          "landedKg": 24200
+        },
+        {
+          "conf": "M1/capped",
+          "landedKg": 452800
+        },
+        {
+          "conf": "M2/unlimited",
+          "landedKg": 425000
+        },
+        {
+          "conf": "M2/capped",
+          "landedKg": 382500
+        }
+      ]
+    },
+    {
+      "event": "Tagish Lake",
+      "byConfiguration": [
+        {
+          "conf": "M1/unlimited",
+          "landedKg": 6754
+        },
+        {
+          "conf": "M1/capped",
+          "landedKg": 6747
+        },
+        {
+          "conf": "M2/unlimited",
+          "landedKg": 8608
+        },
+        {
+          "conf": "M2/capped",
+          "landedKg": 10040
+        }
+      ]
+    }
+  ],
+  "assessed": [
+    {
+      "name": "T1",
+      "rows": [
+        {
+          "configuration": "M1/unlimited",
+          "objective": [
+            {
+              "event": "Chelyabinsk",
+              "landedKg": 5139,
+              "inside": true
+            },
+            {
+              "event": "Tagish Lake",
+              "landedKg": 2712,
+              "inside": false
+            }
+          ],
+          "meetsObjective": false,
+          "mainFlareWorse": ["2022 EB5 (favourable to equal)"],
+          "meets": false
+        },
+        {
+          "configuration": "M1/capped",
+          "objective": [
+            {
+              "event": "Chelyabinsk",
+              "landedKg": 141000,
+              "inside": false
+            },
+            {
+              "event": "Tagish Lake",
+              "landedKg": 3023,
+              "inside": false
+            }
+          ],
+          "meetsObjective": false,
+          "mainFlareWorse": ["2022 EB5 (favourable to equal)"],
+          "meets": false
+        },
+        {
+          "configuration": "M2/unlimited",
+          "objective": [
+            {
+              "event": "Chelyabinsk",
+              "landedKg": 60310,
+              "inside": false
+            },
+            {
+              "event": "Tagish Lake",
+              "landedKg": 5045,
+              "inside": false
+            }
+          ],
+          "meetsObjective": false,
+          "mainFlareWorse": [],
+          "meets": false
+        },
+        {
+          "configuration": "M2/capped",
+          "objective": [
+            {
+              "event": "Chelyabinsk",
+              "landedKg": 43360,
+              "inside": false
+            },
+            {
+              "event": "Tagish Lake",
+              "landedKg": 5330,
+              "inside": false
+            }
+          ],
+          "meetsObjective": false,
+          "mainFlareWorse": [],
+          "meets": false
+        }
+      ],
+      "configurationsMet": 0
+    },
+    {
+      "name": "T2",
+      "rows": [
+        {
+          "configuration": "M1/unlimited",
+          "objective": [
+            {
+              "event": "Chelyabinsk",
+              "landedKg": 1444,
+              "inside": false
+            },
+            {
+              "event": "Tagish Lake",
+              "landedKg": 1325,
+              "inside": false
+            }
+          ],
+          "meetsObjective": false,
+          "mainFlareWorse": [],
+          "meets": false
+        },
+        {
+          "configuration": "M1/capped",
+          "objective": [
+            {
+              "event": "Chelyabinsk",
+              "landedKg": 30060,
+              "inside": false
+            },
+            {
+              "event": "Tagish Lake",
+              "landedKg": 1317,
+              "inside": false
+            }
+          ],
+          "meetsObjective": false,
+          "mainFlareWorse": ["2022 EB5 (favourable to equal)"],
+          "meets": false
+        },
+        {
+          "configuration": "M2/unlimited",
+          "objective": [
+            {
+              "event": "Chelyabinsk",
+              "landedKg": 23440,
+              "inside": false
+            },
+            {
+              "event": "Tagish Lake",
+              "landedKg": 3768,
+              "inside": false
+            }
+          ],
+          "meetsObjective": false,
+          "mainFlareWorse": [],
+          "meets": false
+        },
+        {
+          "configuration": "M2/capped",
+          "objective": [
+            {
+              "event": "Chelyabinsk",
+              "landedKg": 17110,
+              "inside": false
+            },
+            {
+              "event": "Tagish Lake",
+              "landedKg": 4168,
+              "inside": false
+            }
+          ],
+          "meetsObjective": false,
+          "mainFlareWorse": [],
+          "meets": false
+        }
+      ],
+      "configurationsMet": 0
+    }
+  ],
+  "chosen": null
+}

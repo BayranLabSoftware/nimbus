@@ -64,14 +64,19 @@ export function drawFcm(
   x: EntryInputs,
   structure: Structure,
   cloud: Cloud,
-  u: () => number
+  u: () => number,
+  /** Rule 1160: a tuning's narrower priors, the same uniforms drawn. */
+  tuned: {
+    alpha?: readonly [number, number];
+    cloudShare?: readonly [number, number];
+  } = {}
 ): { body: FcmBody; options: FcmOptions; parameters: DrawnParameters } {
   const p = FCM_DEV_PRIORS;
   const s1 = logUniform(u, p.firstStagePa);
   const s2 = logUniform(u, p.secondStagePa);
-  const alpha = uniform(u, FCM_PRIORS.alpha);
+  const alpha = uniform(u, tuned.alpha ?? FCM_PRIORS.alpha);
   const larger = uniform(u, FCM_PRIORS.largerShare);
-  const cloudShare = uniform(u, FCM_PRIORS.cloudShare);
+  const cloudShare = uniform(u, tuned.cloudShare ?? FCM_PRIORS.cloudShare);
   const sigma = logUniform(u, p.sigma);
   const cDispersion = logUniform(u, p.cDispersion);
   const body: FcmBody = {

@@ -29,6 +29,7 @@ import {
   FCM_DEV_PRIORS,
   FCM_DEV_RUN,
   FCM_DOMAIN_MAP,
+  FCM_TUNING,
 } from '../src/physics/validation/fcmRound1Rules.js';
 import { THIRD_SET_BODIES } from '../src/physics/validation/thirdSetSources.js';
 import {
@@ -46,7 +47,18 @@ import {
   type Quantities,
 } from './fcmRound1Common.js';
 
-const SHARDS_DIR = join(tmpdir(), 'nimbus-fcm-dev-runs');
+/** Rule 1160: `--tuning T1` or `T2` runs a candidate, without the
+ *  sensitivities, into its own outputs. */
+const TUNING_ARG = process.argv.indexOf('--tuning');
+const TUNING = TUNING_ARG >= 0 ? (process.argv[TUNING_ARG + 1] as 'T1' | 'T2') : null;
+const TUNED: { alpha?: readonly [number, number]; cloudShare?: readonly [number, number] } =
+  TUNING === null ? {} : FCM_TUNING.candidates[TUNING];
+const TUNED_WORDS = (['cloudShare', 'alpha'] as const).flatMap((k) => {
+  const r = TUNED[k];
+  return r === undefined ? [] : [`${k} uniform on ${String(r[0])}–${String(r[1])}`];
+});
+const SUFFIX = TUNING === null ? '' : `.${TUNING}`;
+const SHARDS_DIR = join(tmpdir(), `nimbus-fcm-dev-runs${SUFFIX}`);
 const DRAWS = FCM_DEV_PRIORS.draws;
 
 interface Interval {
@@ -460,11 +472,13 @@ function runCase(spec: DevCaseSpec, tail: number | null) {
   };
   const configurations = CONFIGURATIONS.map(({ structure, cloud }) => {
     const u = stream(`${FCM_DEV_PRIORS.seed}${spec.name}/${structure}/${cloud}`);
-    const fcm = spec.inputs.map((x) => flyFcm(drawFcm(entryOf(x), structure, cloud, u), tail));
+    const fcm = spec.inputs.map((x) =>
+      flyFcm(drawFcm(entryOf(x), structure, cloud, u, TUNED), tail)
+    );
     return { configuration: `${structure}/${cloud}`, ...summarise(spec, fcm, base) };
   });
   // Rule 1156 (g): on M1 with clouds unlimited, the same parameter draws.
-  const sensitivities = SENSITIVITIES.map((v) => {
+  const sensitivities = (TUNING === null ? SENSITIVITIES : []).map((v) => {
     const u = stream(`${FCM_DEV_PRIORS.seed}${spec.name}/M1/unlimited`);
     const fcm = spec.inputs.map((x) =>
       flyFcm(v.change(drawFcm(entryOf(x), 'M1', 'unlimited', u)), tail)
@@ -563,7 +577,10 @@ function merge(K: number): void {
       .map((c) => `${r.case} ${c.configuration}`)
   );
   const out = { rule: '1156', tail: chosenTail(), draws: DRAWS, tally, contradicted, results };
-  writeFileSync('src/physics/validation/fcmDevRuns.json', `${JSON.stringify(out, null, 1)}\n`);
+  writeFileSync(
+    `src/physics/validation/fcmDevRuns${SUFFIX}.json`,
+    `${JSON.stringify({ ...out, tuning: TUNING === null ? null : { name: TUNING, priors: TUNED } }, null, 1)}\n`
+  );
 
   const V: Record<Verdict, string> = {
     favourable: 'favourable',
@@ -652,7 +669,19 @@ function merge(K: number): void {
       '',
     ]),
   ];
-  writeFileSync('docs/FCM_DEV_RUNS.md', lines.join('\n'));
+  writeFileSync(
+    `docs/FCM_DEV_RUNS${SUFFIX.replace('.', '_')}.md`,
+    (TUNING === null
+      ? lines
+      : [
+          `# FCM round 1 — the development runs under tuning ${TUNING} (rule 1160)`,
+          '',
+          `The priors of rule 1152 with ${TUNED_WORDS.join(' and ')}; nothing else changed, the same streams. The untuned runs: docs/FCM_DEV_RUNS.md. No sensitivities under a tuning.`,
+          '',
+          ...lines.slice(1),
+        ]
+    ).join('\n')
+  );
   console.log(JSON.stringify({ tally, contradicted }, null, 1));
 }
 
@@ -665,7 +694,14 @@ async function all(): Promise<void> {
         new Promise<void>((resolve, reject) => {
           const child = spawn(
             process.execPath,
-            [...process.execArgv, process.argv[1] ?? '', 'shard', String(k), String(K)],
+            [
+              ...process.execArgv,
+              process.argv[1] ?? '',
+              'shard',
+              String(k),
+              String(K),
+              ...(TUNING === null ? [] : ['--tuning', TUNING]),
+            ],
             { stdio: 'inherit' }
           );
           child.on('exit', (code) => {
