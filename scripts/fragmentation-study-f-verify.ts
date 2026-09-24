@@ -543,7 +543,7 @@ ${setRows
   .flatMap((x) =>
     Object.entries(x.r.convergence).map(
       ([name, c]) =>
-        `| ${x.label} | ${name} | ${String(c.pairs)} | ${String(c.releaseWorst)} | ${String(c.releaseOverOnePercent)} | ${String(c.largestMedianChange)} | ${String(c.survivalChange)} | ${yes(c.converged.release)} / ${yes(c.converged.largest)} / ${yes(c.converged.survival)} |`
+        `| ${x.label} | ${name} | ${String(c.pairs)} | ${String(c.releaseWorst)} | ${String(c.releaseOverOnePercent)} | ${String(c.largestMedianChange)} | ${String(c.survivalChange)} | ${name === 'floor 0.1 g' && (x.r.dust.floor1g.drawsActing ?? 0) + (x.r.dust.floor01g.drawsActing ?? 0) === 0 ? 'not exercised (rule 1095)' : `${yes(c.converged.release)} / ${yes(c.converged.largest)} / ${yes(c.converged.survival)}`} |`
     )
   )
   .join('\n')}
@@ -552,7 +552,7 @@ ${setRows
     Object.entries(x.r.convergence).flatMap(([name, c]) =>
       c.releaseDrawsOver.map(
         (d) =>
-          `\nNot converged (rule 1092 (d)), ${x.label}, ${name}: draw ${String(d.draw)} — ${String(d.diameterM)} m, f_c ${String(d.cloudShare)}, α ${String(d.strengthScaling)}, ${String(d.components)} components, the main cloud bursting at ${String(d.primaryBurstM)} m. Its profile has two maxima: at the finer bin ${d.finer.maxima.map((m) => `${String(m.altitude)} m (${String(m.share)} of E0)`).join(' and ')}; at the coarser ${d.coarser.maxima.map((m) => `${String(m.altitude)} m (${String(m.share)} of E0)`).join(' and ')}. The burst lays its energy in one bin, whatever the bin's width; the cascade spreads its own over many, so a wider bin gathers more of it. Where the two are close, the bin of the most energy — rule 1091 (c)'s release altitude — changes with the bin. No definition is changed before the reviewer reads it.`
+          `\nNot converged (rule 1092 (d)), ${x.label}, ${name}: draw ${String(d.draw)} — ${String(d.diameterM)} m, f_c ${String(d.cloudShare)}, α ${String(d.strengthScaling)}, ${String(d.components)} components, the main cloud bursting at ${String(d.primaryBurstM)} m. Its profile has two maxima: at the finer bin ${d.finer.maxima.map((m) => `${String(m.altitude)} m (${String(m.share)} of E0)`).join(' and ')}; at the coarser ${d.coarser.maxima.map((m) => `${String(m.altitude)} m (${String(m.share)} of E0)`).join(' and ')}. The burst lays its energy in one bin, whatever the bin's width; the cascade spreads its own over many, so a wider bin gathers more of it. Where the two are close, the bin of the most energy — rule 1091 (c)'s release altitude — changes with the bin. No definition was changed before the reviewer read it; the reviewer chose to keep it and to publish no aggregated release altitude of F as a comparable result (rule 1094).`
       )
     )
   )
@@ -563,7 +563,7 @@ stays 1 and its criterion is met without being tested.
 
 ## The floor (rules 1065 (d), 1080, 1085, 1092 (a))
 
-The floor acts — some piece falls below it — in ${setRows.map((x) => `${String(x.r.dust.floor1g.drawsActing)} of 90 draws at 1 g and ${String(x.r.dust.floor01g.drawsActing)} at 0.1 g (${x.label})`).join('; ')}: fewer than ${String(F_FLOOR_SET.minActing)}, and it is said. On these bodies a fragment stops breaking once past its peak of pressure, and children grow stronger as they shrink, and no cascade that ended came down to a gram: the lightest piece on the ground weighs ${setRows.map((x) => `${x.r.budgets.lightestPieceKg.toPrecision(2)} kg (${x.label})`).join(' and ')}. The floor's hypothesis does not weigh on these results, and its sensitivity is read on no piece.
+The floor acts — some piece falls below it — in ${setRows.map((x) => `${String(x.r.dust.floor1g.drawsActing)} of 90 draws at 1 g and ${String(x.r.dust.floor01g.drawsActing)} at 0.1 g (${x.label})`).join('; ')}: fewer than ${String(F_FLOOR_SET.minActing)}, and it is said. On these bodies a fragment stops breaking once past its peak of pressure, and children grow stronger as they shrink, and no cascade that ended came down to a gram: the lightest piece on the ground weighs ${setRows.map((x) => `${x.r.budgets.lightestPieceKg.toPrecision(2)} kg (${x.label})`).join(' and ')}. The floor's hypothesis does not weigh on these results; its sensitivity is read on no piece, and reads «not exercised», never «converged» (rule 1095).
 
 The dust's branch is exercised on a body built to reach it (5 cm, 25 km/s, vertical, 0.3 MPa, f_c 0.05, y 0.5, α 0, so that every child breaks where its parent did):
 

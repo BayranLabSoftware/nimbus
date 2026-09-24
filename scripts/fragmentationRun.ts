@@ -39,7 +39,7 @@ import {
 } from '../src/physics/validation/fireballRules.js';
 
 /** FNV-1a of the seed, then mulberry32: the level B rounds' stream. */
-function stream(seed: string): () => number {
+export function stream(seed: string): () => number {
   let h = 0x811c9dc5;
   for (const c of seed) {
     h ^= c.charCodeAt(0);

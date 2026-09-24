@@ -42,19 +42,19 @@ Not completed, Rule 1070 (0.3–30 m): draw 35, 17.15 m, f_c 0.0546, y 0.528, α
 | ---------------------- | ----------- | ----- | -------------- | ----------- | --------------------- | -------------- | --------------------------------------- |
 | Rule 1070 (0.3–30 m)   | bin 50 m    | 89    | 0.001575       | 0           | 0                     | 0              | yes / yes / yes                         |
 | Rule 1070 (0.3–30 m)   | bin 200 m   | 89    | 0.4127         | 1           | 0                     | 0              | **no** / yes / yes                      |
-| Rule 1070 (0.3–30 m)   | floor 0.1 g | 89    | 0              | 0           | 0                     | 0              | yes / yes / yes                         |
+| Rule 1070 (0.3–30 m)   | floor 0.1 g | 89    | 0              | 0           | 0                     | 0              | not exercised (rule 1095)               |
 | Rule 1092 (0.05–0.5 m) | bin 50 m    | 90    | 0.0009497      | 0           | 0                     | 0              | yes / yes / yes                         |
 | Rule 1092 (0.05–0.5 m) | bin 200 m   | 90    | 0.001898       | 0           | 0                     | 0              | yes / yes / yes                         |
-| Rule 1092 (0.05–0.5 m) | floor 0.1 g | 90    | 0              | 0           | 0                     | 0              | yes / yes / yes                         |
+| Rule 1092 (0.05–0.5 m) | floor 0.1 g | 90    | 0              | 0           | 0                     | 0              | not exercised (rule 1095)               |
 
-Not converged (rule 1092 (d)), Rule 1070 (0.3–30 m), bin 200 m: draw 84 — 29.4 m, f_c 0.13, α 0.17, 31113 components, the main cloud bursting at 19793 m. Its profile has two maxima: at the finer bin 19750 m (0.04748 of E0) and 27950 m (0.0398 of E0); at the coarser 27900 m (0.05673 of E0) and 19700 m (0.04858 of E0). The burst lays its energy in one bin, whatever the bin's width; the cascade spreads its own over many, so a wider bin gathers more of it. Where the two are close, the bin of the most energy — rule 1091 (c)'s release altitude — changes with the bin. No definition is changed before the reviewer reads it.
+Not converged (rule 1092 (d)), Rule 1070 (0.3–30 m), bin 200 m: draw 84 — 29.4 m, f_c 0.13, α 0.17, 31113 components, the main cloud bursting at 19793 m. Its profile has two maxima: at the finer bin 19750 m (0.04748 of E0) and 27950 m (0.0398 of E0); at the coarser 27900 m (0.05673 of E0) and 19700 m (0.04858 of E0). The burst lays its energy in one bin, whatever the bin's width; the cascade spreads its own over many, so a wider bin gathers more of it. Where the two are close, the bin of the most energy — rule 1091 (c)'s release altitude — changes with the bin. No definition was changed before the reviewer read it; the reviewer chose to keep it and to publish no aggregated release altitude of F as a comparable result (rule 1094).
 
 Every completed draw keeps a piece on the ground whatever the bin or the floor, so the survival share
 stays 1 and its criterion is met without being tested.
 
 ## The floor (rules 1065 (d), 1080, 1085, 1092 (a))
 
-The floor acts — some piece falls below it — in 0 of 90 draws at 1 g and 0 at 0.1 g (Rule 1070 (0.3–30 m)); 0 of 90 draws at 1 g and 0 at 0.1 g (Rule 1092 (0.05–0.5 m)): fewer than 10, and it is said. On these bodies a fragment stops breaking once past its peak of pressure, and children grow stronger as they shrink, and no cascade that ended came down to a gram: the lightest piece on the ground weighs 0.12 kg (Rule 1070 (0.3–30 m)) and 0.022 kg (Rule 1092 (0.05–0.5 m)). The floor's hypothesis does not weigh on these results, and its sensitivity is read on no piece.
+The floor acts — some piece falls below it — in 0 of 90 draws at 1 g and 0 at 0.1 g (Rule 1070 (0.3–30 m)); 0 of 90 draws at 1 g and 0 at 0.1 g (Rule 1092 (0.05–0.5 m)): fewer than 10, and it is said. On these bodies a fragment stops breaking once past its peak of pressure, and children grow stronger as they shrink, and no cascade that ended came down to a gram: the lightest piece on the ground weighs 0.12 kg (Rule 1070 (0.3–30 m)) and 0.022 kg (Rule 1092 (0.05–0.5 m)). The floor's hypothesis does not weigh on these results; its sensitivity is read on no piece, and reads «not exercised», never «converged» (rule 1095).
 
 The dust's branch is exercised on a body built to reach it (5 cm, 25 km/s, vertical, 0.3 MPa, f_c 0.05, y 0.5, α 0, so that every child breaks where its parent did):
 

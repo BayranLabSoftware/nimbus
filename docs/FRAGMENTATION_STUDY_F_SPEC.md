@@ -144,3 +144,6 @@ reviewer has read this.
 
 The verification of F's code, before any case, is in
 [FRAGMENTATION_STUDY_F_VERIFICATION.md](FRAGMENTATION_STUDY_F_VERIFICATION.md).
+
+The one run on the development cases (rules 1094–1096) is in
+[FRAGMENTATION_STUDY_F.md](FRAGMENTATION_STUDY_F.md).
