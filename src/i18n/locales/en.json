@@ -224,8 +224,8 @@
     "energy": "Energy",
     "crater": "Final crater",
     "magnitude": "Seismic magnitude",
-    "magnitudeNone": "— none: no relation this simulator verifies covers this airburst",
-    "magnitudeOutOfDomain": "— none: the body reaches the ground below 5 km/s, and how it couples to the ground as it penetrates is not modelled",
+    "magnitudeNone": "not computed: no relation this simulator verifies covers this airburst",
+    "magnitudeOutOfDomain": "not computed: the body reaches the ground below 5 km/s, and how it couples to the ground as it penetrates is not modelled",
     "magnitudeRange": "Range, seismic efficiency 10⁻⁵–10⁻³",
     "impactLiquefaction": "Impact-induced liquefaction radius",
     "morphology": "Morphology",
@@ -608,7 +608,8 @@
     "mcRareGiven": "conditional on a rare event — in those runs P10 {{p10}}, P50 {{p50}}, P90 {{p90}}",
     "monteCarloFooterShare": "Where a quantity is zero in more than one run in ten (no crater, no firestorm), the row says in how many runs it happens and gives P10–P90 of those runs alone.",
     "monteCarloFooterRare": "Below 1 % of the runs an event is rare: its cells stay empty, and the percentiles of those runs alone stand on the line under it, conditional on the event.",
-    "notAssessable": "not assessable"
+    "notAssessable": "not assessable",
+    "notComputed": "not computed"
   },
   "cascade": {
     "label": "Cascade timeline",
@@ -701,7 +702,7 @@
       },
       "groundAirWave": {
         "name": "Atmospheric wave at the ground",
-        "desc": "The shock of the burst aloft reaches the ground: overpressure and wind, with no seismic coupling computed by the model."
+        "desc": "The shock of the burst aloft reaches the ground with overpressure and wind. No crater: the seismic coupling from the wave in the air is only an exploratory estimate."
       }
     },
     "explosion": {
@@ -1151,7 +1152,8 @@
           "tab": "Low overpressure",
           "title": "Low overpressure — glass damage (exploratory)",
           "unit": "kPa, logarithmic scale",
-          "evidence": "The shock-wave field verified at level A, read below the thresholds of structural damage: the lines at 1 and 3 kPa are not validated as a prediction of the damage."
+          "evidence": "The shock-wave field verified at level A, read below the thresholds of structural damage: the lines at 1 and 3 kPa are not validated as a prediction of the damage.",
+          "planetary": "Warning: an extrapolation to a planetary scale. Beyond 2,000 km the line is no prediction of broken glass: the overpressure law is calibrated on explosions of far smaller scale and sees neither the Earth’s curvature nor the atmosphere’s structure, and it enters no count of damage."
         }
       },
       "markWithWind": "{{range}} · wind {{wind}} km/h",
@@ -1353,11 +1355,11 @@
           "compressedOne": "threshold {{value}} cal/cm²\ncompressed at the geometric limit",
           "belowThresholdEjecta": "deposit < 1 mm or\nnot resolved at the current scale",
           "belowMain": "below the main threshold",
-          "outOfDomain": "Exploratory effects:\nground coupling not modelled"
+          "outOfDomain": "Exploratory geometry and source of the effects;\ndeposition along the path reduced to a point source,\nground coupling not modelled"
         },
         "source": {
           "below": "the same model as the field, read past the lowest threshold drawn",
-          "outOfDomain": "the body reaches the ground below 5 km/s: its coupling to the ground is out of the crater law's domain (French 1998); the rings read the energy deposited, with no coupling, concentric about the source"
+          "outOfDomain": "the body reaches the ground below 5 km/s, out of the crater law's domain (French 1998): the energy deposited along the path is reduced to a point source at the point of impact, and the coupling to the ground is not modelled; the rings are concentric about that source"
         },
         "extent": {
           "below": "from {{from}} to {{to}}, from {{inner}} to {{outer}}: a decade below the value at the edge, or to the model’s limit",
@@ -1370,7 +1372,9 @@
         "effectiveMagnitude": "effective magnitude {{m}}"
       },
       "observed": {
-        "tunguskaThermal": "Scorched forest observed near the epicentre; the mechanism and the distribution are not validated by this layer"
+        "tunguskaThermal": "Scorched forest observed near the epicentre; the mechanism and the distribution are not validated by this layer",
+        "tunguskaEvent": "Tunguska, 30 June 1908",
+        "named": "{{event}}: {{text}}"
       }
     }
   },
@@ -1444,7 +1448,8 @@
         "deathsPending": "being counted",
         "craterFieldDetail": "a crater field’s, joined · {{depth}} deep · {{morphology}}",
         "craterUnresolved": "the body reaches the ground below 5 km/s: a local penetration pit is possible, outside the crater law's domain",
-        "deathsNotAssessable": "out of the crater’s domain: no number"
+        "deathsNotAssessable": "out of the crater’s domain: no number",
+        "magnitudeOutOfDomain": "out of the crater’s domain: no coupling to the ground modelled"
       },
       "group": {
         "scenario": "Scenario inputs",
@@ -1521,10 +1526,11 @@
         "nearestSea": "{{distance}} away, {{depth}} deep",
         "nearestSeaCrater": "{{distance}} away; the wave rises in {{depth}} of water, the mean within the crater",
         "nearestSeaCraterCapped": "{{distance}} away; the wave rises in {{depth}} of water, the cap: the water within the crater is deeper on average",
-        "magnitudeNone": "— none: no relation this simulator verifies covers this airburst",
+        "magnitudeNone": "not computed: no relation this simulator verifies covers this airburst",
         "seaCouplingWave": "{{mechanism}} · shore {{shore}} · {{fraction}} of the wave",
         "seaCouplingEnergy": "{{mechanism}} · shore {{shore}} · {{fraction}} of the water-coupled energy",
-        "collapseWave": " (collapse wave q_c {{exponent}})"
+        "collapseWave": " (collapse wave q_c {{exponent}})",
+        "magnitudeOutOfDomain": "not computed: the body reaches the ground below 5 km/s, and how it couples to the ground as it penetrates is not modelled"
       },
       "enum": {
         "regime": {
@@ -1637,7 +1643,8 @@
       "renderingNote": "The map's rendering does not extend the model's physical domain.",
       "cardWhat": "Object drawn",
       "cardField": "the field",
-      "notAssessable": "not assessable"
+      "notAssessable": "not assessable",
+      "notComputed": "not computed"
     }
   },
   "about": {

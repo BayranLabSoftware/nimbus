@@ -419,14 +419,23 @@ function groups(
     row(
       t,
       magnitudeLabelId(r),
+      // Rule 1048 (a): «non calcolata», and why, wherever none is computed.
       r.seismic.magnitude === null
-        ? t('report.impact.value.magnitudeNone')
+        ? t(
+            r.crater.state === 'outOfDomain'
+              ? 'report.impact.value.magnitudeOutOfDomain'
+              : 'report.impact.value.magnitudeNone'
+          )
         : fixed(r.seismic.magnitude, 1, l)
     ),
     row(
       t,
       'magnitudeRange',
-      range === null ? NONE : `${fixed(range.low, 1, l)}–${fixed(range.high, 1, l)}`
+      range === null
+        ? r.seismic.magnitude === null
+          ? t('report.impact.notComputed')
+          : NONE
+        : `${fixed(range.low, 1, l)}–${fixed(range.high, 1, l)}`
     ),
   ];
   const shakingLayer = figures.find((f) => f.layer.id === 'shaking')?.layer;
@@ -439,7 +448,12 @@ function groups(
   }
   const liquefaction = r.seismic.liquefactionRadius as number;
   shakingRows.push(
-    row(t, 'liquefaction', length(liquefaction, l), liquefaction > 0 ? shakingFigure : undefined)
+    row(
+      t,
+      'liquefaction',
+      r.crater.state === 'outOfDomain' ? t('report.impact.notComputed') : length(liquefaction, l),
+      liquefaction > 0 ? shakingFigure : undefined
+    )
   );
 
   const atmosphere = group(
@@ -543,13 +557,18 @@ function keyFigures(r: ImpactScenarioResult, ctx: ImpactReportContext): KeyFigur
     ),
     k(
       'magnitude',
-      r.seismic.magnitude === null ? NONE : fixed(r.seismic.magnitude, 1, l),
-      range === null
-        ? t('report.impact.key.magnitudeNone')
-        : t('report.impact.key.magnitudeDetail', {
-            low: fixed(range.low, 1, l),
-            high: fixed(range.high, 1, l),
-          })
+      // Rule 1048 (a): the first box says «non calcolata», never a dash.
+      r.seismic.magnitude === null
+        ? t('report.impact.notComputed')
+        : fixed(r.seismic.magnitude, 1, l),
+      r.seismic.magnitude === null && r.crater.state === 'outOfDomain'
+        ? t('report.impact.key.magnitudeOutOfDomain')
+        : range === null
+          ? t('report.impact.key.magnitudeNone')
+          : t('report.impact.key.magnitudeDetail', {
+              low: fixed(range.low, 1, l),
+              high: fixed(range.high, 1, l),
+            })
     ),
     k(
       'deaths',

@@ -224,8 +224,8 @@
     "energy": "Energia",
     "crater": "Cratere finale",
     "magnitude": "Magnitudo sismica",
-    "magnitudeNone": "— nessuna: nessuna relazione verificata dal simulatore copre questo airburst",
-    "magnitudeOutOfDomain": "— nessuna: il corpo arriva al suolo sotto i 5 km/s, e come si accoppi al terreno penetrando non è modellato",
+    "magnitudeNone": "non calcolata: nessuna relazione verificata dal simulatore copre questo airburst",
+    "magnitudeOutOfDomain": "non calcolata: il corpo arriva al suolo sotto i 5 km/s, e come si accoppi al terreno penetrando non è modellato",
     "magnitudeRange": "Intervallo, efficienza sismica 10⁻⁵–10⁻³",
     "impactLiquefaction": "Raggio liquefazione da impatto",
     "morphology": "Morfologia",
@@ -608,7 +608,8 @@
     "mcRareGiven": "condizionato a un evento raro — in quei campioni P10 {{p10}}, P50 {{p50}}, P90 {{p90}}",
     "monteCarloFooterShare": "Dove una grandezza è zero in più di un campione su dieci (niente cratere, niente incendio), la riga dice in quanti campioni si verifica e dà P10–P90 di quei soli campioni.",
     "monteCarloFooterRare": "Sotto l'1 % dei campioni un evento è raro: le sue celle restano vuote, e i percentili di quei soli campioni stanno sulla riga sotto, condizionati all'evento.",
-    "notAssessable": "non valutabile"
+    "notAssessable": "non valutabile",
+    "notComputed": "non calcolata"
   },
   "cascade": {
     "label": "Timeline a cascata",
@@ -701,7 +702,7 @@
       },
       "groundAirWave": {
         "name": "Onda atmosferica al suolo",
-        "desc": "L'onda d'urto dell'esplosione in quota raggiunge il suolo: sovrappressione e vento, senza accoppiamento sismico calcolato dal modello."
+        "desc": "L'onda d'urto dell'esplosione in quota raggiunge il suolo con sovrappressione e vento. Nessun cratere: l'accoppiamento sismico dall'onda in aria è solo una stima esplorativa."
       }
     },
     "explosion": {
@@ -1151,7 +1152,8 @@
           "tab": "Sovrappressione bassa",
           "title": "Sovrappressione bassa — danno a vetri (esplorativo)",
           "unit": "kPa, scala logaritmica",
-          "evidence": "Il campo dell'onda d'urto verificato al livello A, letto sotto le soglie di danno strutturale: le linee a 1 e 3 kPa non sono validate come previsione del danno."
+          "evidence": "Il campo dell'onda d'urto verificato al livello A, letto sotto le soglie di danno strutturale: le linee a 1 e 3 kPa non sono validate come previsione del danno.",
+          "planetary": "Attenzione: estrapolazione a scala planetaria. Oltre 2000 km la linea non è una previsione della rottura dei vetri: la legge della sovrappressione è tarata su esplosioni di scala molto minore e non vede la curvatura della Terra né la struttura dell'atmosfera, e non entra in nessun conteggio dei danni."
         }
       },
       "markWithWind": "{{range}} · vento {{wind}} km/h",
@@ -1353,11 +1355,11 @@
           "compressedOne": "soglia {{value}} cal/cm²\ncompressa presso il limite geometrico",
           "belowThresholdEjecta": "deposito < 1 mm oppure\nnon risolto dalla scala corrente",
           "belowMain": "sotto la soglia principale",
-          "outOfDomain": "Effetti esplorativi:\naccoppiamento al suolo non modellato"
+          "outOfDomain": "Geometria e sorgente degli effetti esplorative;\ndeposizione lungo traiettoria ridotta a sorgente puntiforme,\naccoppiamento al suolo non modellato"
         },
         "source": {
           "below": "lo stesso modello del campo, letto oltre la soglia più bassa disegnata",
-          "outOfDomain": "il corpo arriva al suolo sotto i 5 km/s: l'accoppiamento al suolo è fuori dal dominio della legge del cratere (French 1998); gli anelli leggono l'energia depositata, senza accoppiamento, concentrici sulla sorgente"
+          "outOfDomain": "il corpo arriva al suolo sotto i 5 km/s, fuori dal dominio della legge del cratere (French 1998): l'energia depositata lungo la traiettoria è ridotta a una sorgente puntiforme nel punto d'impatto, e l'accoppiamento al suolo non è modellato; gli anelli sono concentrici su quella sorgente"
         },
         "extent": {
           "below": "da {{from}} a {{to}}, da {{inner}} a {{outer}}: un decennio sotto il valore al bordo, o fino al limite del modello",
@@ -1370,7 +1372,9 @@
         "effectiveMagnitude": "magnitudo efficace {{m}}"
       },
       "observed": {
-        "tunguskaThermal": "Foresta bruciacchiata osservata vicino all'epicentro; il meccanismo e la distribuzione non sono validati da questo layer"
+        "tunguskaThermal": "Foresta bruciacchiata osservata vicino all'epicentro; il meccanismo e la distribuzione non sono validati da questo layer",
+        "tunguskaEvent": "Tunguska, 30 giugno 1908",
+        "named": "{{event}}: {{text}}"
       }
     }
   },
@@ -1444,7 +1448,8 @@
         "deathsPending": "in calcolo",
         "craterFieldDetail": "di un campo di crateri, unito · profondo {{depth}} · {{morphology}}",
         "craterUnresolved": "il corpo arriva al suolo sotto i 5 km/s: possibile buca di penetrazione locale, fuori dal dominio della legge del cratere",
-        "deathsNotAssessable": "fuori dal dominio del cratere: nessun numero"
+        "deathsNotAssessable": "fuori dal dominio del cratere: nessun numero",
+        "magnitudeOutOfDomain": "fuori dal dominio del cratere: nessun accoppiamento al suolo modellato"
       },
       "group": {
         "scenario": "Parametri dello scenario",
@@ -1521,10 +1526,11 @@
         "nearestSea": "a {{distance}}, profondo {{depth}}",
         "nearestSeaCrater": "a {{distance}}; l'onda nasce in {{depth}} d'acqua, la media dentro il cratere",
         "nearestSeaCraterCapped": "a {{distance}}; l'onda nasce in {{depth}} d'acqua, il tetto: dentro il cratere l'acqua è in media più profonda",
-        "magnitudeNone": "— nessuna: nessuna relazione verificata da questo simulatore copre questo airburst",
+        "magnitudeNone": "non calcolata: nessuna relazione verificata da questo simulatore copre questo airburst",
         "seaCouplingWave": "{{mechanism}} · costa a {{shore}} · {{fraction}} dell’onda",
         "seaCouplingEnergy": "{{mechanism}} · costa a {{shore}} · {{fraction}} dell’energia accoppiata all’acqua",
-        "collapseWave": " (onda di collasso q_c {{exponent}})"
+        "collapseWave": " (onda di collasso q_c {{exponent}})",
+        "magnitudeOutOfDomain": "non calcolata: il corpo arriva al suolo sotto i 5 km/s, e come si accoppi al terreno penetrando non è modellato"
       },
       "enum": {
         "regime": {
@@ -1637,7 +1643,8 @@
       "renderingNote": "La resa cartografica non estende il dominio fisico del modello.",
       "cardWhat": "Oggetto disegnato",
       "cardField": "il campo",
-      "notAssessable": "non valutabile"
+      "notAssessable": "non valutabile",
+      "notComputed": "non calcolata"
     }
   },
   "about": {

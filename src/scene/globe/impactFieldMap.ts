@@ -64,6 +64,7 @@ import { RING_RADIUS_SIGMA } from './ringSigma.js';
 import { INTENSITY_BANDS } from './shakingOverlay.js';
 import {
   BELOW_THRESHOLD_DECADES,
+  PLANETARY_EXTRAPOLATION_M,
   type BeyondEdge,
   type EpistemicState,
   type MapState,
@@ -501,15 +502,20 @@ function layerEvidence(layer: RawLayer, ctx: ImpactMapContext): LayerEvidence {
       : LAYER_EVIDENCE[layer.id];
   const { klass, label, short, summary } = evidenceText(quantity, ctx.t, ctx.language);
   // Rule 1031 (c): the verified field, read below the thresholds of damage it
-  // was verified at — exploratory.
-  if (layer.id === 'lowOverpressure')
+  // was verified at — exploratory; rule 1048 (d): past 2 000 km, first of all,
+  // an extrapolation to a planetary scale.
+  if (layer.id === 'lowOverpressure') {
+    const planetary = (layer.field?.maxRangeM ?? 0) > PLANETARY_EXTRAPOLATION_M;
     return {
       quantity,
       klass: 'exploratory',
       label: ctx.t('evidence.class.exploratory.label'),
       short: ctx.t('evidence.class.exploratory.short'),
-      summary: ctx.t('globe.impactMap.layer.lowOverpressure.evidence'),
+      summary: planetary
+        ? `${ctx.t('globe.impactMap.layer.lowOverpressure.planetary')} ${ctx.t('globe.impactMap.layer.lowOverpressure.evidence')}`
+        : ctx.t('globe.impactMap.layer.lowOverpressure.evidence'),
     };
+  }
   return { quantity, klass, label, short, summary };
 }
 
@@ -1233,15 +1239,29 @@ function thermalLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawL
 
 /** Rule 1031 (d): what was observed, said apart from what the model computes,
  *  for a preset whose record a layer is read against. */
-const OBSERVED: Readonly<Record<string, Partial<Record<ImpactLayerId, string>>>> = {
-  TUNGUSKA: { thermal: 'globe.impactMap.observed.tunguskaThermal' },
+const OBSERVED: Readonly<
+  Record<string, { event: string; notes: Partial<Record<ImpactLayerId, string>> }>
+> = {
+  TUNGUSKA: {
+    event: 'globe.impactMap.observed.tunguskaEvent',
+    notes: { thermal: 'globe.impactMap.observed.tunguskaThermal' },
+  },
 };
 
 function observedNote(id: ImpactLayerId, ctx: ImpactMapContext): { label: string; text: string }[] {
-  const key = ctx.preset == null ? undefined : OBSERVED[ctx.preset]?.[id];
-  return key === undefined
-    ? []
-    : [{ label: ctx.t('globe.impactMap.noteLabel.observed'), text: ctx.t(key) }];
+  const record = ctx.preset == null ? undefined : OBSERVED[ctx.preset];
+  const key = record?.notes[id];
+  if (record === undefined || key === undefined) return [];
+  // Rule 1048 (e): the note names the event it was observed at.
+  return [
+    {
+      label: ctx.t('globe.impactMap.noteLabel.observed'),
+      text: ctx.t('globe.impactMap.observed.named', {
+        event: ctx.t(record.event),
+        text: ctx.t(key),
+      }),
+    },
+  ];
 }
 
 /**

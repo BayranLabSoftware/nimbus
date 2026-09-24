@@ -320,8 +320,11 @@ describe('rule 1031 (d): below the main threshold', () => {
       availableImpactLayers(tunguska, { ...ctx, preset })
         .find((l) => l.id === 'thermal')
         ?.notes.map((n) => n.text) ?? [];
-    expect(noted('TUNGUSKA')).toContain('globe.impactMap.observed.tunguskaThermal');
-    expect(noted(null)).not.toContain('globe.impactMap.observed.tunguskaThermal');
+    // Rule 1048 (e): the note names its event.
+    const named =
+      'globe.impactMap.observed.named{"event":"globe.impactMap.observed.tunguskaEvent","text":"globe.impactMap.observed.tunguskaThermal"}';
+    expect(noted('TUNGUSKA')).toContain(named);
+    expect(noted(null)).not.toContain(named);
   });
 });
 
@@ -362,5 +365,25 @@ describe('rule 1031 (e)–(f): out of the crater’s domain, and the timeline', 
     expect(stone).not.toContain('cascade.impact.seismic');
     expect(stone).not.toContain('cascade.impact.groundAirWave');
     expect(stone).toContain('cascade.impact.craterUnresolved');
+  });
+});
+
+describe('rule 1048: step 7 completed', () => {
+  it('(d) warns first of all where the low overpressure reaches a planetary scale', () => {
+    const summary = (key: keyof typeof IMPACT_PRESETS): string =>
+      layersOf(key).find((l) => l.id === 'lowOverpressure')?.evidence.summary ?? '';
+    expect(summary('CHICXULUB').startsWith('globe.impactMap.layer.lowOverpressure.planetary')).toBe(
+      true
+    );
+    expect(summary('CHELYABINSK')).not.toContain('planetary');
+  });
+
+  it('(c) says out of the domain that the source is a point, not that every ring is the ground’s', () => {
+    for (const layer of availableImpactLayers(slowStone, ctx)) {
+      const hatch = layer.marks.find((mk) => mk.id === 'out-of-domain');
+      if (hatch === undefined) continue;
+      expect(hatch.label).toBe('globe.impactMap.mark.label.outOfDomain');
+      expect(hatch.card.source).toBe('globe.impactMap.mark.source.outOfDomain');
+    }
   });
 });

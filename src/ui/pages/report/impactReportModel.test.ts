@@ -295,5 +295,12 @@ describe('rule 1031 (e): out of the crater’s domain the report gives no number
     expect(deaths?.value).toBe('report.impact.notAssessable');
     const rows = model.groups.flatMap((g) => g.rows);
     expect(rows.find((r) => r.id === 'climateTier')?.value).toBe('report.impact.notAssessable');
+    // Rule 1048 (a): the first box and the rows say «non calcolata», never a dash.
+    expect(model.keyFigures.find((k) => k.id === 'magnitude')?.value).toBe(
+      'report.impact.notComputed'
+    );
+    expect(rows.find((r) => r.id === 'magnitudeRange')?.value).toBe('report.impact.notComputed');
+    expect(rows.find((r) => r.id === 'liquefaction')?.value).toBe('report.impact.notComputed');
+    expect(rows.map((r) => r.value)).toContain('report.impact.value.magnitudeOutOfDomain');
   });
 });

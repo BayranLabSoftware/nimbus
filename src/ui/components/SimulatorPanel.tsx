@@ -907,8 +907,11 @@ export function SimulatorPanel(): JSX.Element {
                   </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.seismicMagnitudeRange')}>
+                      {/* Rule 1048 (a): where no magnitude is computed, said so. */}
                       {result.data.seismic.magnitudeRange === null
-                        ? '—'
+                        ? result.data.seismic.magnitude === null
+                          ? t('simulator.notComputed')
+                          : '—'
                         : `M ${formatDecimal(result.data.seismic.magnitudeRange.low, 1)}–${formatDecimal(result.data.seismic.magnitudeRange.high, 1)}`}
                     </CitationTooltip>
                   </dd>
@@ -918,7 +921,11 @@ export function SimulatorPanel(): JSX.Element {
                   </dt>
                   <dd className={styles.resultValue}>
                     <CitationTooltip citation={t('citations.liquefaction')}>
-                      <RangeValue meters={result.data.seismic.liquefactionRadius} />
+                      {result.data.crater.state === 'outOfDomain' ? (
+                        t('simulator.notComputed')
+                      ) : (
+                        <RangeValue meters={result.data.seismic.liquefactionRadius} />
+                      )}
                     </CitationTooltip>
                   </dd>
                   {/* B-100: a morphology is a fact about a crater, and an
@@ -2188,7 +2195,11 @@ function MonteCarloPanel({ mc }: { mc: ActiveMonteCarlo }): JSX.Element {
                   <td>
                     {name}
                     {outOfDomainShare > 0 &&
-                      (key === 'finalCraterDiameter' || key === 'ejectaEdge1m') && (
+                      (key === 'finalCraterDiameter' ||
+                        key === 'ejectaEdge1m' ||
+                        // Rule 1048 (a): no magnitude, no liquefaction there.
+                        key === 'seismicMagnitude' ||
+                        key === 'liquefactionRadius') && (
                         <span className={styles.mcShare}>
                           {t('simulator.mcOutOfDomain', {
                             share: formatPercentShare(outOfDomainShare),
