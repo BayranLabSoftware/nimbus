@@ -1,0 +1,131 @@
+{
+  "rule": "1168 (e)",
+  "verdict": "inconclusive",
+  "why": "1 assessable event(s), 1 strong — rule 1167 asks at least 5 and 3",
+  "assessable": 1,
+  "strong": 1,
+  "rows": [
+    {
+      "event": "Aguas Zarcas",
+      "assessable": true,
+      "reason": "assessable",
+      "kind": "proxy",
+      "quality": "A",
+      "interval": [24.1, 26.1],
+      "branch": {
+        "median": 32.97,
+        "distanceKm": 6.87,
+        "intervalScore": 51.67
+      },
+      "baseline": {
+        "median": 55.34,
+        "distanceKm": 29.24,
+        "intervalScore": 585.1
+      },
+      "exponential": {
+        "median": 35.73,
+        "distanceKm": 9.63,
+        "outcome": "favourable"
+      },
+      "outcome": "favourable",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "medianKm": 32.52,
+          "distanceKm": 6.42,
+          "producedShare": 1,
+          "notRobustShare": 0.035,
+          "severe": false
+        },
+        {
+          "configuration": "M1/capped",
+          "medianKm": 32.88,
+          "distanceKm": 6.78,
+          "producedShare": 1,
+          "notRobustShare": 0.025,
+          "severe": false
+        },
+        {
+          "configuration": "M2/unlimited",
+          "medianKm": 33.14,
+          "distanceKm": 7.04,
+          "producedShare": 1,
+          "notRobustShare": 0.015,
+          "severe": true
+        },
+        {
+          "configuration": "M2/capped",
+          "medianKm": 33.38,
+          "distanceKm": 7.28,
+          "producedShare": 1,
+          "notRobustShare": 0.03,
+          "severe": true
+        }
+      ],
+      "severeStructural": true
+    },
+    {
+      "event": "Grimsby",
+      "assessable": false,
+      "reason": "not judged: its kind is diagnostic",
+      "diagnostics": {
+        "HfKm": {
+          "heightKm": 37.9,
+          "branchMinusKm": -0.89,
+          "baselineMinusKm": 2.36
+        },
+        "HdKm": {
+          "heightKm": 29,
+          "branchMinusKm": 8.01,
+          "baselineMinusKm": 11.26
+        }
+      }
+    },
+    {
+      "event": "Bunburra Rockhole",
+      "assessable": false,
+      "reason": "not judged: its kind is diagnostic",
+      "diagnostics": {
+        "HfKm": {
+          "heightKm": 36,
+          "branchMinusKm": -5.36,
+          "baselineMinusKm": null
+        },
+        "HdKm": {
+          "heightKm": 33.9,
+          "branchMinusKm": -3.26,
+          "baselineMinusKm": null
+        }
+      }
+    },
+    {
+      "event": "Mason Gully",
+      "assessable": false,
+      "reason": "not judged: its kind is diagnostic",
+      "diagnostics": {
+        "HfKm": {
+          "heightKm": 34.4,
+          "branchMinusKm": -2.16,
+          "baselineMinusKm": -2.31
+        },
+        "HdKm": {
+          "heightKm": 28.1,
+          "branchMinusKm": 4.14,
+          "baselineMinusKm": 3.99
+        }
+      }
+    },
+    {
+      "event": "Neuschwanstein",
+      "assessable": false,
+      "reason": "not judged: its kind is diagnostic",
+      "diagnostics": {
+        "HdKm": {
+          "heightKm": 22.2,
+          "branchMinusKm": 15.08,
+          "baselineMinusKm": 18.21
+        }
+      }
+    }
+  ]
+}
