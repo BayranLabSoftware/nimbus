@@ -138,6 +138,14 @@ C3's score is the sum over the paired draws divided by their number — the chan
 «no crater»; below −0.10 on any fall it worsens O5. The veto on a net flight out of the domain
 (rule 1084) and the test on computed craters (rule 1075) apply in addition, never in its place.
 
+## Frozen (rule 1093)
+
+On 24 September 2026 the reviewer approved the charter as the judge, rule 1089 completing the scoring
+of the transitions, and froze it; its execution is not authorized. Rules 1038–1062, 1075–1077, 1084
+and 1089 are the judge as written: no threshold, definition or scoring changes, before the third set
+is opened or after. F is not adopted and no class B is given; the frozen set still lacks the
+admissible ground case, so no outcome of it alone promotes the cratering.
+
 ## What may not happen
 
 No law of F, fragment size, upper edge of the strengths, f1 or closure is chosen, tuned or checked

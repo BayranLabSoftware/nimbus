@@ -3,6 +3,7 @@ import { FRAGMENTATION_CLAUSE, S_FIRST_PHASE_LOSS } from './fragmentationRoundRu
 import {
   bandVoids,
   CHARTER,
+  CHARTER_FROZEN,
   CHARTER_ROLES,
   charterReading,
   charterVerdict,
@@ -265,5 +266,13 @@ describe('rules 1049 to 1062: the charter amended, operationally', () => {
     expect(fled.deniesCredit).toBe(true);
     // Losing «no crater» on more than a tenth of the draws worsens O5.
     expect(o5DomainFlight(['none', 'none'], ['outOfDomain', 'none']).worsens).toBe(true);
+  });
+});
+
+describe('rule 1093: the charter frozen', () => {
+  it('is the judge as written, and is not run', () => {
+    expect(CHARTER_FROZEN.rule).toBe(1093);
+    expect(CHARTER_FROZEN.executionAuthorized).toBe(false);
+    expect(CHARTER_FROZEN.rules).toContain('1089');
   });
 });

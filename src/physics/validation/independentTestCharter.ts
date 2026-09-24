@@ -417,6 +417,24 @@ export const C3_TRANSITION_SCORE = {
 /** Rule 1089: a score below this on any fall worsens O5. */
 export const C3_SCORE_WORSENING = -0.1;
 
+/**
+ * RULE 1093. THE CHARTER FROZEN (the reviewer, 24 September 2026: rule 1089
+ * completes the scoring of the transitions; the charter is approved as the
+ * judge, and frozen, its execution not authorized). From this rule on, rules
+ * 1038 to 1062, 1075 to 1077, 1084 and 1089 are the judge as written: no
+ * threshold, definition or scoring changes, before the third set is opened or
+ * after. The test is not run until the reviewer authorizes it; F is not
+ * adopted and no class B is given; the frozen set still lacks the admissible
+ * ground case rule 1055 asks for, so no outcome of it alone promotes the
+ * cratering.
+ */
+export const CHARTER_FROZEN = {
+  rule: 1093,
+  date: '2026-09-24',
+  rules: '1038–1062, 1075–1077, 1084, 1089',
+  executionAuthorized: false,
+} as const;
+
 /** Rule 1084 (d): the net share of draws moved out of the domain that denies
  *  O5's credit. */
 export const O5_DOMAIN_FLIGHT = 0.1;

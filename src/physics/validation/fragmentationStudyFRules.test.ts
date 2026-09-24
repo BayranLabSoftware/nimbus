@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   F_FLOOR_SET,
+  F_PRIOR_SEED,
+  F_PROFILE_BIN_M,
+  F_RELEASE_BINS_M,
   F_FRAGMENTS_PER_BREAK,
   F_MASS_FLOOR_KG,
   F_MASS_FLOOR_SENSITIVITY_KG,
@@ -33,5 +36,15 @@ describe('rule 1092: the floor exercised on bodies where it acts', () => {
     expect(F_FLOOR_SET.maxDiameterM).toBeLessThanOrEqual(0.5);
     expect(F_FLOOR_SET.minDiameterM).toBeLessThan(F_FLOOR_SET.maxDiameterM);
     expect(F_FLOOR_SET.minActing).toBe(10);
+  });
+});
+
+describe('rules 1094 to 1096: the run on the development cases', () => {
+  it('publishes the release altitude at the bin halved and doubled', () => {
+    expect(F_RELEASE_BINS_M).toEqual([F_PROFILE_BIN_M / 2, F_PROFILE_BIN_M, F_PROFILE_BIN_M * 2]);
+  });
+
+  it('draws F’s priors on a stream of its own', () => {
+    expect(F_PRIOR_SEED).toBe('study F/');
   });
 });

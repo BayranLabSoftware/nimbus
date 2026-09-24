@@ -102,6 +102,20 @@ from F's. The momentum is summed by its two components in the entry's plane, the
 draw whose release altitude moves by 1 % or more is named with its profile's competing maxima; no
 definition changes before the reviewer reads it.
 
+## The run on the development cases (rules 1094–1096)
+
+The reviewer authorized one run on the development cases alone, in rule 1073's order and with rule
+1072's words. F's release altitude keeps its definition (the peak bin) and is published draw by draw
+at 50, 100 and 200 m with its two largest maxima and whether it converges, per case with the number
+of draws that do not converge; no aggregated release altitude of F is published as a comparable
+result, and none earns credit. The peak of the energy given to the air is not the peak of observed
+brightness, a photometric observable: m2 stays a proxy. For each floor the run publishes how many
+completed draws it acts on, the mass and energy that go below it, and the differences on the paired
+draws where it acts; where it acts on none, «the floor's sensitivity not exercised», never
+"converged". Every draw started is counted: completed, not completed, void. F's priors are drawn on
+the rounds' stream seeded "study F/" and the case's name; the f_c = 1 limit is checked on every
+draw; S's row at f1 = 0.50 is read from its record.
+
 ## Priors, drawn once per draw
 
 | Parameter          | Interval     | From                                  |

@@ -340,6 +340,73 @@
  *       is changed before the reviewer has read it.
  */
 
+/**
+ * Rules 1094 to 1096 — F's one run on the development cases, on the reviewer's
+ * reply of 24 September 2026: the run authorized on the development cases
+ * alone, in rule 1073's order and with rule 1072's words; route (c) for the
+ * release altitude, not (a); the floor's sensitivity reported, never assumed.
+ * Written before the run; they change no number of F and read no case.
+ *
+ * RULE 1094. THE RELEASE ALTITUDE IN THIS RUN (amends rules 1071, 1080 and
+ * 1092 (d)). F's release altitude keeps rule 1091 (c)'s definition, the centre
+ * of the bin of the most energy given to the air. For every draw the run
+ * publishes it at the three bins, 50, 100 and 200 m; whether it converges
+ * (both changes below 1 %); and the profile's two largest maxima at least
+ * 1 km apart, altitude and share of E0. Per case it publishes the number of
+ * draws that do not converge and the profile — the draw's own for a single
+ * run, the mean of the draws' shares of E0 for a drawn case. No aggregated
+ * release altitude of F — no median, mean or band over draws — is published as
+ * a result comparable with the observation or with the baseline, and none
+ * earns credit of improvement; rule 1092 (d)'s exclusion of a draw is not
+ * adopted. A release altitude defined otherwise may be a later study, declared
+ * as another observable, never a retroactive substitute of the peak. The peak
+ * of the energy deposited in the air is not the peak of the observed
+ * brightness, which is a photometric observable: m2 stays a proxy, and is said
+ * so beside every table that shows it.
+ *
+ * RULE 1095. THE FLOOR IN THIS RUN (amends rules 1080 and 1092 (a)). For each
+ * floor, 1 g and 0.1 g, per case: the number of completed draws where it
+ * acts — some piece falls below it; the mass and the energy that go below it,
+ * as shares of m0 and E0, their mean over those draws and their largest; and,
+ * only on the paired draws where it acts in either run, the differences of the
+ * quantities of rule 1071 between the two runs. Where it acts on no draw of a
+ * case, the case reads «sensibilità al taglio non esercitata» — "the floor's
+ * sensitivity not exercised" — never "converged"; and rule 1070's
+ * verification reads so too, where it said "yes".
+ *
+ * RULE 1096. THE RUN'S ACCOUNT AND ITS READINGS (amends rules 1071 and 1083).
+ *   (a) The draws: rule 978's, the baseline's own, untouched. F's priors are
+ *       drawn once per draw on the rounds' stream (FNV-1a and mulberry32)
+ *       seeded "study F/" and the case's name, three uniforms per draw in the
+ *       draws' order, f_c, y, α; the main strength is the one the product
+ *       starts its pancake at, S2 by rule 881's law.
+ *   (b) The account: every draw started is counted — completed, not completed
+ *       (past 10⁵ components), void (a budget past 10⁻¹²) — per case, with the
+ *       priors of each draw not completed or void. Those draws enter no
+ *       comparison; they stay in the account.
+ *   (c) The baseline's limit on the same draws: with f_c = 1 every draw's
+ *       regime, breakup, burst, end speed and share of energy at the ground
+ *       are the product's entry's, within rule 1088's tolerances; one draw
+ *       that is not voids the run.
+ *   (d) The readings, as S read them (rule 1011): the regime of what arrives
+ *       is the largest piece's — at the crater law's speeds (5 km/s or more),
+ *       in dark flight (at its terminal speed), or between, out of the
+ *       crater's domain — and where no piece arrives but a cloud's swarm does,
+ *       the swarm's at its speed √(2E/m); none where nothing arrives. The
+ *       crater: computed at the crater law's speeds, none where nothing
+ *       arrives, out of the domain otherwise.
+ *   (e) Beside the baseline and F, S's published row at f1 = 0.50 — the
+ *       charter's f1 (rule 1039) — read from its own record, not run again;
+ *       S's release altitude is a centroid over 1 km, another quantity.
+ *   (f) The outcome in rule 1072's words, and nothing adopted.
+ */
+
+/** Rule 1094: the three bins the release altitude is published at (m). */
+export const F_RELEASE_BINS_M = [50, 100, 200] as const;
+
+/** Rule 1096 (a): the prefix of the seed of F's priors, before the case's name. */
+export const F_PRIOR_SEED = 'study F/';
+
 /** Rule 1092 (a): the bodies on which the floor acts. */
 export const F_FLOOR_SET = { seed: 1_092, minDiameterM: 0.05, maxDiameterM: 0.5, minActing: 10 };
 
