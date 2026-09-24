@@ -317,12 +317,15 @@ describe('rule 1056: the report names what the air wave gives and where the law 
     const rows = buildImpactReport(run('CHICXULUB'), context(keyOnly, 'en')).groups.flatMap(
       (g) => g.rows
     );
-    expect(rows.find((r) => r.id === 'lightDamage')?.value).toContain(
-      'report.impact.planetaryShort'
+    // Rule 1074: a «†» on the radius, one note at the foot of the group.
+    expect(rows.find((r) => r.id === 'lightDamage')?.value).toMatch(/†$/);
+    const blast = buildImpactReport(run('CHICXULUB'), context(keyOnly, 'en')).groups.find(
+      (g) => g.id === 'blast'
     );
+    expect(blast?.footnote).toBe('report.impact.planetaryNote');
     const meteor = buildImpactReport(run('METEOR_CRATER'), context(keyOnly, 'en')).groups.flatMap(
       (g) => g.rows
     );
-    expect(meteor.find((r) => r.id === 'lightDamage')?.value).not.toContain('planetary');
+    expect(meteor.find((r) => r.id === 'lightDamage')?.value).not.toContain('†');
   });
 });

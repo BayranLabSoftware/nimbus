@@ -69,6 +69,8 @@ export interface ReportGroup {
   id: string;
   title: string;
   rows: ReportRow[];
+  /** Rule 1074: one note at the group's foot, which its rows point to. */
+  footnote?: string;
 }
 
 export interface KeyFigure {
@@ -347,11 +349,10 @@ function groups(
 
   const blastFigure = fig('overpressure');
   const windFigure = fig('wind');
-  // Rule 1056 (c): a radius past 2 000 km carries the planetary warning.
+  // Rules 1056 (c) and 1074: a radius past 2 000 km is marked «†», pointing to
+  // the one planetary note at the foot of its group.
   const reach = (m: number): string =>
-    m > PLANETARY_EXTRAPOLATION_M
-      ? `${length(m, l)} · ${t('report.impact.planetaryShort')}`
-      : length(m, l);
+    m > PLANETARY_EXTRAPOLATION_M ? `${length(m, l)} †` : length(m, l);
   const blastRows = [
     row(t, 'overpressure5psi', reach(r.damage.overpressure5psi), blastFigure),
     row(t, 'overpressure1psi', reach(r.damage.overpressure1psi), blastFigure),
@@ -491,7 +492,12 @@ function groups(
     group('scenario', scenarioRows(r, ctx)),
     body,
     group('crater', craterRows, 'crater'),
-    group('blast', blastRows, 'blast'),
+    {
+      ...group('blast', blastRows, 'blast'),
+      ...(blastRows.some((row) => row.value.endsWith('†')) && {
+        footnote: t('report.impact.planetaryNote'),
+      }),
+    },
     heat,
     ejecta,
     group('shaking', shakingRows, 'seismic'),

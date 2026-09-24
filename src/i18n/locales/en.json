@@ -1650,7 +1650,7 @@
       "cardField": "the field",
       "notAssessable": "not assessable",
       "notComputed": "not computed",
-      "planetaryShort": "beyond 2,000 km: an extrapolation to a planetary scale"
+      "planetaryNote": "† beyond 2,000 km the law of the overpressure and the wind is an extrapolation to a planetary scale: see the figure's warning. The 2,000 km mark where the warning appears, not a frontier of validity."
     }
   },
   "about": {

@@ -264,6 +264,7 @@ function Groups({ groups }: { groups: ReportGroup[] }): JSX.Element {
               </div>
             ))}
           </dl>
+          {g.footnote !== undefined && <p className={styles.groupFootnote}>{g.footnote}</p>}
         </div>
       ))}
     </div>

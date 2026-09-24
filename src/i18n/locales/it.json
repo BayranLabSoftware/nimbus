@@ -1650,7 +1650,7 @@
       "cardField": "il campo",
       "notAssessable": "non valutabile",
       "notComputed": "non calcolata",
-      "planetaryShort": "oltre 2000 km: estrapolazione a scala planetaria"
+      "planetaryNote": "† oltre 2000 km la legge della sovrappressione e del vento è un'estrapolazione a scala planetaria: vedi l'avvertenza della figura. I 2000 km segnano dove compare l'avviso, non un confine di validità."
     }
   },
   "about": {
