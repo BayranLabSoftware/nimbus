@@ -507,6 +507,40 @@ export const CHARTER_PRODUCIBLE = {
   O5: { baseline: 'C1, C2, C3', S: 'C1, C2, C3', F: 'C1, C2, C3' },
 } as const;
 
+/**
+ * RULE 1099. THE CHARTER SUSPENDED AS A JUDGE (the reviewer, 24 September
+ * 2026, after rule 1098, before any source of the third set was opened). The
+ * leave to run this charter with the value of a decision is withdrawn: given
+ * before rule 1098 made rule 1011's consequence explicit, it no longer holds.
+ *   (a) The flaw, recorded. C3 reads «out of the domain» as a wrong answer even
+ *       where a variant brings a fall's meteorites down in dark flight — an
+ *       outcome that can be physically coherent with a fall. «Out of the crater
+ *       law's domain» means neither «crater» nor «no meteorites». Rule 1089's
+ *       table is consistent as arithmetic of the share of «no crater»; it is
+ *       not, for these falls, a valid measure of whether the arrival is right.
+ *   (b) O1's limit, recorded. Where draws arriving in dark flight leave O1's
+ *       band because they satisfy no E1, O1 may be not assessable by the rule
+ *       of selection, not by the absence of a flare: it is a limit of the
+ *       judge, never read as a worse photometric prediction. Rule 1094 still
+ *       forbids F's release altitude as a comparable result.
+ *   (c) This charter — rules 1038 to 1062, 1075 to 1077, 1084, 1089, frozen by
+ *       rule 1093 and checked by rule 1098 — is kept whole, as written, as a
+ *       historical version. It is not run to decide the adoption of S or F;
+ *       any computation of its scores is a diagnostic audit, never presented
+ *       as an independent test passed or failed.
+ *   (d) The third set stays closed. A successor protocol, versioned, is
+ *       written in its own file (independentTestCharterV2.ts, rules 1100 on)
+ *       before any source is opened; this charter is neither rewritten
+ *       retroactively nor replaced tacitly. No class B from this set.
+ */
+export const CHARTER_V1_STATUS = {
+  rule: 1099,
+  frozen: true,
+  suspendedAsJudge: true,
+  executableForAdoption: false,
+  successor: 'independentTestCharterV2.ts',
+} as const;
+
 /** Rule 1084 (d): the net share of draws moved out of the domain that denies
  *  O5's credit. */
 export const O5_DOMAIN_FLIGHT = 0.1;

@@ -173,6 +173,18 @@ neither can be adopted. Said plainly: with rule 1011's reading no draw that brin
 meteorites down in dark flight is ever right on C3. The charter is frozen; this is stated, not
 corrected.
 
+## Suspended as a judge (rule 1099)
+
+After rule 1098, before any source of the third set was opened, the reviewer withdrew the leave to
+run this charter with the value of a decision. C3 reads «out of the domain» as wrong even where a
+variant brings a fall's meteorites down in dark flight, an outcome that can be coherent with a fall:
+rule 1089's table is sound arithmetic of the share of «no crater», but not, for these falls, a valid
+measure of whether the arrival is right. And O1 may be not assessable through E1's selection rather
+than for want of a flare — a limit of the judge, never a worse photometric prediction. The charter is
+kept whole as a historical version; it is not run to decide an adoption, and any computation of its
+scores is a diagnostic audit only. Its successor, versioned, is
+[INDEPENDENT_TEST_CHARTER_V2.md](INDEPENDENT_TEST_CHARTER_V2.md).
+
 ## What may not happen
 
 No law of F, fragment size, upper edge of the strengths, f1 or closure is chosen, tuned or checked
