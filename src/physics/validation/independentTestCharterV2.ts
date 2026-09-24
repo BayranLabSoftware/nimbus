@@ -224,26 +224,117 @@
  * reads them; frozen only on his approval; the third set closed until then.
  */
 
+/**
+ * Rules 1114 to 1118 — the last amendments before the second version can be
+ * frozen, on the reviewer's reply of 24 September 2026: O2 treated alike for
+ * all three models, the count of decisive observables that follows, and the
+ * arrivals at the crater law's speeds that the law does not resolve. Andrea's
+ * word: the amendments and the text. No parameter, run or number of Nimbus
+ * changes; the third set stays closed.
+ *
+ * RULE 1114. O2, DIAGNOSTIC FOR ALL THREE (amends rules 1100, 1105 and 1112
+ * (c), (d)). No model — the baseline, S or F — earns any credit on the mass of
+ * the largest recovered meteorite in this round: none of them carries
+ * ablation, so its mass at the ground is not the quantity recovered, and a
+ * recovered mass may be only a lower bound of what fell. O2 decides nothing
+ * and worsens nothing; no error of accuracy and no verdict of compatibility
+ * is computed. Its readings are published as diagnostics, body by body: the
+ * share of draws with a piece at the ground; over those draws, the median and
+ * the 5–95 % band of the largest piece's mass; the recovered mass with its
+ * class (measured or lower bound, rule 1058). A draw with no piece gives no
+ * mass — never a zero, never an infinite error. This is a choice of the judge
+ * made before the set is seen, not an observed failure of the three models.
+ *
+ * RULE 1115. THE DECISIVE OBSERVABLES THAT REMAIN (amends rules 1044 and
+ * 1112). They are two: O1 and the ground outcome. A model is adoptable only
+ * where both are assessable for it and for the baseline, each on at least
+ * three bodies of the priors' domain admitted under rules fixed before the
+ * predictions, both improve, and neither worsens (`verdictV2`). Rule 1076
+ * applies to O1 — not assessable for F alone — and not to O2, which is
+ * assessable for none. So:
+ *   (a) F has the ground outcome alone and cannot be adopted in this round;
+ *   (b) S can be adopted only through O1 and the ground outcome together;
+ *       where either is not admissible or not assessable on three bodies, S
+ *       cannot be adopted in this round, and the verdict says so.
+ *
+ * RULE 1116. ARRIVALS AT THE LAW'S SPEEDS THE LAW DOES NOT RESOLVE (amends
+ * rule 1107). Speed alone does not make a crater law applicable. The
+ * product's law has one condition of domain — rule 946's 5 km/s — beside the
+ * iron's strewn field, which has its own law; it evaluates no other (the
+ * body's size, the strength regime, the target). That is a limit of the
+ * product, stated here and not changed. So the judge calls CRATER only a
+ * crater a model's own code computes: the baseline's `crater.state`
+ * `computed`. S and F carry no crater code: a piece of theirs arriving at 5
+ * km/s or more is FAST — an arrival at the law's speeds whose crater is not
+ * computed — and is never called a crater. A draw's state then follows the
+ * precedence crater, fast, between, dark flight, nothing. Two readings follow:
+ *   (a) D2's worsening reads, alike for every model, the share of the paired
+ *       draws with an arrival at the law's speeds — a crater or a fast
+ *       arrival — on a fall whose «no crater» is documented; it is named so,
+ *       not a share of craters;
+ *   (b) a fast draw is never in dark flight: it adds nothing to J.
+ *
+ * RULE 1117. THE CLASSES COUNTED, so that the state that prevails hides none
+ * of the others (`arrivalBreakdown`). Per body and model, for each class —
+ * crater, fast, between, dark flight — the share of the draws with at least
+ * one arrival of that class, and the mean share of the arriving mass in it.
+ *
+ * RULE 1118. THE ORDER, kept (rules 1106, 1113): these amendments pushed, the
+ * reviewer reads them, the version frozen only on his approval. Even frozen
+ * and run, the test gives evidence of compatibility or incompatibility on the
+ * observables admitted — never a class B, the set lacking its ground case.
+ */
+
 /** Rule 1102: a model's outcome at the ground on one draw. */
-export type GroundState = 'nothing' | 'crater' | 'darkFlight' | 'between';
+export type GroundState = 'nothing' | 'crater' | 'fast' | 'darkFlight' | 'between';
 
-/** Rule 1107: the class of one piece or swarm reaching the ground. */
-export type PieceClass = 'crater' | 'darkFlight' | 'between';
+/** Rules 1107 and 1116: the class of one piece or swarm reaching the ground. */
+export type PieceClass = 'crater' | 'fast' | 'darkFlight' | 'between';
 
-/** Rule 1107: a piece's class from its speed at the ground, whether that speed
- *  is its terminal speed (a swarm never is), and the crater law's speed. */
-export function pieceClass(speed: number, atTerminal: boolean, craterSpeed = 5_000): PieceClass {
-  if (speed >= craterSpeed) return 'crater';
+/** Rules 1107 and 1116: a piece's class from its speed at the ground, whether
+ *  that speed is its terminal speed (a swarm never is), and whether the
+ *  model's own crater code computed a crater for it (S and F have none). */
+export function pieceClass(
+  speed: number,
+  atTerminal: boolean,
+  craterComputed = false,
+  craterSpeed = 5_000
+): PieceClass {
+  if (speed >= craterSpeed) return craterComputed ? 'crater' : 'fast';
   return atTerminal ? 'darkFlight' : 'between';
 }
 
-/** Rule 1107: the draw's state, by the fixed precedence crater, between, dark
- *  flight, nothing. */
+/** Rules 1107 and 1116: the draw's state, by the fixed precedence crater,
+ *  fast, between, dark flight, nothing. */
 export function drawState(pieces: readonly PieceClass[]): GroundState {
   if (pieces.length === 0) return 'nothing';
-  if (pieces.includes('crater')) return 'crater';
-  if (pieces.includes('between')) return 'between';
+  for (const c of ['crater', 'fast', 'between'] as const) if (pieces.includes(c)) return c;
   return 'darkFlight';
+}
+
+/** Rule 1117: the classes counted on one body's draws — the share of draws
+ *  with at least one arrival of each class, and the mean share of the
+ *  arriving mass in it. */
+export function arrivalBreakdown(
+  draws: readonly (readonly { cls: PieceClass; mass: number }[])[]
+): Record<PieceClass, { drawsWith: number; meanMassShare: number | null }> {
+  const classes: PieceClass[] = ['crater', 'fast', 'between', 'darkFlight'];
+  const arriving = draws.filter((d) => d.length > 0);
+  return Object.fromEntries(
+    classes.map((c) => {
+      const drawsWith =
+        draws.length === 0
+          ? 0
+          : draws.filter((d) => d.some((p) => p.cls === c)).length / draws.length;
+      const shares = arriving.map((d) => {
+        const total = d.reduce((a, p) => a + p.mass, 0);
+        return total > 0 ? d.filter((p) => p.cls === c).reduce((a, p) => a + p.mass, 0) / total : 0;
+      });
+      const meanMassShare =
+        shares.length === 0 ? null : shares.reduce((a, x) => a + x, 0) / shares.length;
+      return [c, { drawsWith, meanMassShare }];
+    })
+  ) as Record<PieceClass, { drawsWith: number; meanMassShare: number | null }>;
 }
 
 /** Rules 1103, 1108 and 1110: the questions read on one body's draws. */
@@ -258,9 +349,13 @@ export interface GroundReading {
   q2Draws: number;
   /** D2: craters over the draws in the law's domain; null with none there. */
   q2CraterShare: number | null;
-  /** Rule 1110: the draws with a computed crater over all the draws — the
-   *  worsening's share, not a probability of «no crater». */
+  /** Rule 1110: the draws with a computed crater over all the draws. */
   craterShareAll: number;
+  /** Rule 1116: fast draws, and the draws with an arrival at the law's speeds
+   *  (a crater or a fast arrival) over all — the worsening's share, named so,
+   *  not a share of craters nor a probability of «no crater». */
+  fast: number;
+  lawSpeedShareAll: number;
   /** D3 (rule 1108 (b)), a description: dark flight over the draws arriving;
    *  null where fewer than half the draws arrive (not assessable). */
   q3: number | null;
@@ -278,6 +373,7 @@ export function groundReading(states: readonly GroundState[]): GroundReading {
   const craters = count((s) => s === 'crater');
   const dark = count((s) => s === 'darkFlight');
   const inDomain = count((s) => s === 'crater' || s === 'nothing');
+  const fast = count((s) => s === 'fast');
   const out = count((s) => s === 'darkFlight' || s === 'between');
   const assessable = n > 0 && arriving >= n / 2;
   return {
@@ -288,16 +384,19 @@ export function groundReading(states: readonly GroundState[]): GroundReading {
     q2Draws: inDomain,
     q2CraterShare: inDomain === 0 ? null : craters / inDomain,
     craterShareAll: n === 0 ? 0 : craters / n,
+    fast,
+    lawSpeedShareAll: n === 0 ? 0 : (craters + fast) / n,
     q3: assessable ? dark / arriving : null,
     outOfDomainShare: arriving === 0 ? null : out / arriving,
     betweenShare: arriving === 0 ? null : count((s) => s === 'between') / arriving,
   };
 }
 
-/** Rules 1103 (c) and 1110: the worsening by craters on a fall whose «no
- *  crater» is documented, on all paired draws. */
+/** Rules 1103 (c), 1110 and 1116 (a): the worsening on a fall whose «no
+ *  crater» is documented, read alike for every model on the share of the
+ *  paired draws with an arrival at the crater law's speeds. */
 export function craterWorsensV2(baseline: GroundReading, model: GroundReading): boolean {
-  return model.craterShareAll > 0.1 || model.craterShareAll > baseline.craterShareAll + 0.1;
+  return model.lawSpeedShareAll > 0.1 || model.lawSpeedShareAll > baseline.lawSpeedShareAll + 0.1;
 }
 
 /** Rule 1109: what a body's sources document, classed when they are pinned. */
@@ -372,8 +471,8 @@ export function releaseStatus(
   return convergent ? 'produced' : 'notConvergent';
 }
 
-/** Rules 1105 and 1112: what each observable asks of its source and who can
- *  be judged on it. */
+/** Rules 1105, 1112, 1114 and 1115: what each observable asks of its source
+ *  and who can be judged on it. */
 export const V2_OBSERVABLES = {
   O1: {
     role: 'decisive',
@@ -381,10 +480,10 @@ export const V2_OBSERVABLES = {
     assessableFor: ['baseline', 'S'],
   },
   O2: {
-    role: 'decisive',
+    // Rule 1114: diagnostic for all three, no credit and no worsening.
+    role: 'diagnostic',
     source: 'the largest recovered mass, measured or a lower bound (rule 1058)',
-    // Rule 1112 (c): not F; (d): S and the baseline asked of the reviewer.
-    assessableFor: ['baseline', 'S'],
+    assessableFor: [],
   },
   O3: {
     role: 'diagnostic',
@@ -399,13 +498,41 @@ export const V2_OBSERVABLES = {
   },
 } as const;
 
-/** Rule 1112 (c): F cannot be adopted in this round. */
+/** Rule 1115: the decisive observables that remain. */
+export const DECISIVE_V2 = ['O1', 'ground'] as const;
+
+/** One decisive observable's outcome for a model against the baseline. */
+export interface DecisiveOutcome {
+  /** Assessable for both, on at least three admitted bodies. */
+  assessable: boolean;
+  improves: boolean;
+  worsens: boolean;
+}
+
+/** Rule 1115: adoptable only where both decisive observables are assessable,
+ *  both improve and neither worsens. */
+export function verdictV2(
+  o1: DecisiveOutcome,
+  ground: DecisiveOutcome
+): {
+  adoptable: boolean;
+  reason: string;
+} {
+  if (!o1.assessable || !ground.assessable)
+    return { adoptable: false, reason: 'a decisive observable is not assessable' };
+  if (o1.worsens || ground.worsens) return { adoptable: false, reason: 'it worsens' };
+  if (!o1.improves || !ground.improves)
+    return { adoptable: false, reason: 'fewer than two decisive observables improve' };
+  return { adoptable: true, reason: 'both decisive observables improve, neither worsens' };
+}
+
+/** Rules 1112 (c) and 1115 (a): F cannot be adopted in this round. */
 export const F_ADOPTABLE_THIS_ROUND = false;
 
-/** Rules 1100, 1106 and 1113: this version's status. */
+/** Rules 1100, 1106, 1113 and 1118: this version's status. */
 export const CHARTER_V2 = {
   version: 2,
-  rules: '1100–1113',
+  rules: '1100–1118',
   frozen: false,
   predecessor: 'independentTestCharter.ts (rule 1099: suspended as a judge)',
 } as const;

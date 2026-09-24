@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { CHARTER_V1_STATUS } from './independentTestCharter.js';
 import {
+  arrivalBreakdown,
   CHARTER_V2,
+  DECISIVE_V2,
   craterWorsensV2,
   drawState,
   F_ADOPTABLE_THIS_ROUND,
@@ -10,6 +12,7 @@ import {
   pieceClass,
   releaseStatus,
   V2_OBSERVABLES,
+  verdictV2,
   type BodyDocumentation,
   type GroundState,
 } from './independentTestCharterV2.js';
@@ -32,7 +35,9 @@ describe('rule 1099: the first charter suspended as a judge', () => {
 
 describe('rule 1107: the arrivals of a draw, exhaustive', () => {
   it('classes each piece on its own', () => {
-    expect(pieceClass(6_000, false)).toBe('crater');
+    // Rule 1116: a crater only where the model's own code computed one.
+    expect(pieceClass(6_000, false, true)).toBe('crater');
+    expect(pieceClass(6_000, false)).toBe('fast');
     expect(pieceClass(60, true)).toBe('darkFlight');
     expect(pieceClass(900, false)).toBe('between');
   });
@@ -44,6 +49,23 @@ describe('rule 1107: the arrivals of a draw, exhaustive', () => {
     expect(drawState(['darkFlight', 'between', 'darkFlight'])).toBe('between');
     // One piece digging a crater and others slow — the draw has a crater.
     expect(drawState(['between', 'crater', 'darkFlight'])).toBe('crater');
+    // A fast arrival prevails over the slow ones, and is never a crater.
+    expect(drawState(['darkFlight', 'fast', 'between'])).toBe('fast');
+  });
+
+  it('counts every class, so the state that prevails hides none (rule 1117)', () => {
+    const b = arrivalBreakdown([
+      [
+        { cls: 'darkFlight', mass: 3 },
+        { cls: 'between', mass: 1 },
+      ],
+      [{ cls: 'darkFlight', mass: 2 }],
+      [],
+    ]);
+    expect(b.between.drawsWith).toBeCloseTo(1 / 3, 12);
+    expect(b.darkFlight.drawsWith).toBeCloseTo(2 / 3, 12);
+    expect(b.darkFlight.meanMassShare).toBeCloseTo((0.75 + 1) / 2, 12);
+    expect(b.crater.drawsWith).toBe(0);
   });
 });
 
@@ -105,6 +127,15 @@ describe('rules 1102, 1108 and 1110: the questions of the ground', () => {
     expect(v.improves).toBe(true);
   });
 
+  it('reads fast arrivals alike for every model in the worsening (rule 1116)', () => {
+    const baseline = groundReading(draws({ nothing: 100 }));
+    const model = groundReading(draws({ fast: 20, darkFlight: 80 }));
+    expect(model.craters).toBe(0);
+    expect(model.lawSpeedShareAll).toBeCloseTo(0.2, 12);
+    expect(model.joint).toBeCloseTo(0.8, 12);
+    expect(craterWorsensV2(baseline, model)).toBe(true);
+  });
+
   it('worsens by craters only where «no crater» is documented', () => {
     const baseline = groundReading(draws({ nothing: 100 }));
     const model = groundReading(draws({ crater: 20, darkFlight: 80 }));
@@ -139,11 +170,23 @@ describe('rule 1111: O1’s draws, each accounted for', () => {
   });
 });
 
-describe('rules 1105 and 1112: what can be assessed, and F', () => {
-  it('judges F on neither O1 nor O2, so F cannot be adopted in this round', () => {
+describe('rules 1114 and 1115: O2 diagnostic, and the decisive observables left', () => {
+  it('gives no model credit on O2, and leaves O1 and the ground outcome', () => {
+    expect(V2_OBSERVABLES.O2.role).toBe('diagnostic');
+    expect(V2_OBSERVABLES.O2.assessableFor).toHaveLength(0);
+    expect(DECISIVE_V2).toEqual(['O1', 'ground']);
     expect(V2_OBSERVABLES.O1.assessableFor).not.toContain('F');
-    expect(V2_OBSERVABLES.O2.assessableFor).not.toContain('F');
     expect(V2_OBSERVABLES.O4.assessableFor).toHaveLength(0);
+  });
+
+  it('adopts only where both are assessable and improve, neither worsening', () => {
+    const yes = { assessable: true, improves: true, worsens: false };
+    const off = { assessable: false, improves: false, worsens: false };
+    expect(verdictV2(yes, yes).adoptable).toBe(true);
+    // F: O1 not assessable — the ground outcome alone cannot adopt it.
+    expect(verdictV2(off, yes).adoptable).toBe(false);
     expect(F_ADOPTABLE_THIS_ROUND).toBe(false);
+    expect(verdictV2(yes, { ...yes, improves: false }).adoptable).toBe(false);
+    expect(verdictV2(yes, { ...yes, worsens: true }).adoptable).toBe(false);
   });
 });

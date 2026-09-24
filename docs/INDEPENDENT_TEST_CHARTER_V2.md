@@ -1,18 +1,20 @@
-# The independent test — protocol, version 2 (draft, amended)
+# The independent test — protocol, version 2 (draft, amended twice)
 
-Rules 1100–1113, `src/physics/validation/independentTestCharterV2.ts`, written on 24 September 2026
+Rules 1100–1118, `src/physics/validation/independentTestCharterV2.ts`, written on 24 September 2026
 before any source of the third set was opened. A draft: frozen only when the reviewer approves it,
 run only after. The first version ([INDEPENDENT_TEST_CHARTER.md](INDEPENDENT_TEST_CHARTER.md)) stays
 as written, a historical version suspended as a judge (rule 1099). This version corrects how the
 comparison is read, not any number of Nimbus.
 
-Rules 1100–1106 are the first draft; rules 1107–1113 amend it on the reviewer's reply (not yet to be
-frozen): mixed arrivals made exhaustive, the joint outcome added, the clause of 0.90 withdrawn, D2's
-numbers, O1's draws accounted for, the decision's edge cases, and what each observed answer rests on.
+Rules 1100–1106 are the first draft. Rules 1107–1113 amend it on the reviewer's first reply: mixed
+arrivals made exhaustive, the joint outcome added, the clause of 0.90 withdrawn, D2's numbers, O1's
+draws accounted for, the decision's edge cases, and what each observed answer rests on. Rules
+1114–1118 amend it on his second: O2 diagnostic for all three models, the two decisive observables
+that remain, and arrivals at the crater law's speeds that the law does not resolve.
 
 ## What is kept and what is dropped (rule 1100)
 
-Kept by number: the models and the set (1039–1041), the observables O1–O4 and their roles (1042, 1043) save O1's selection, the thresholds (1044), O2 as amended (1050, 1051, 1058, 1059, 1077), the
+Kept by number: the models and the set (1039–1041), the observables O1–O4 and their roles (1042, 1043) save O1's selection, the thresholds (1044), O2 as amended (1050, 1051, 1058, 1059, 1077), made diagnostic by rule 1114, the
 bands (1053, 1061), eligibility counted first (1054, 1062), an observable lost to a variant (1076),
 what may not happen (1045). Dropped: O5 as the composite of rules 1052 and 1060, C3's right answers
 of rule 1075, and the transitions of rules 1084 and 1089.
@@ -21,23 +23,30 @@ The models (rule 1101): the baseline, S at f1 = 0.50 (0c59e87), F (3586988, run 
 with rule 1097's warning); S + F not built. No class B from this set: no version of the judge creates
 the ground case it lacks.
 
-## The arrivals of a draw (rules 1102, 1107)
+## The arrivals of a draw (rules 1102, 1107, 1116, 1117)
 
-Every piece or swarm that reaches the ground is classed on its own — **crater** (at 5 km/s or more),
-**dark flight** (at its terminal speed), **between** (below 5 km/s, above its terminal speed; a swarm
-is never at its terminal speed). The draw's state follows by a fixed precedence: crater, then
-between, then dark flight, then nothing — a draw is in dark flight only if everything that arrives
-is. The shares of the arriving mass in each class are published beside. These are Nimbus's
-operational classes, not measurements of how a real meteorite arrived.
+Every piece or swarm that reaches the ground is classed on its own — **crater** (a crater the
+model's own code computes: the baseline's `crater.state` `computed`), **fast** (at 5 km/s or more,
+its crater not computed — S and F carry no crater code), **between** (below 5 km/s, above its
+terminal speed; a swarm is never at its terminal speed), **dark flight** (at its terminal speed).
+Speed alone does not make a crater law applicable: the product's law has one condition of domain,
+rule 946's 5 km/s, beside the iron's strewn field; it evaluates no other (size, strength regime,
+target) — a limit of the product, stated and not changed here. The draw's state follows by a fixed
+precedence: crater, fast, between, dark flight, nothing. For each class the share of draws with at
+least one arrival of it and the mean share of the arriving mass in it are published, so that the
+state that prevails hides none of the others. These are Nimbus's operational classes, not
+measurements of how a real meteorite arrived.
 
-| Draw state  | D1 survival | D2 crater in the law's domain | D3 (description) | J joint |
-| ----------- | ----------- | ----------------------------- | ---------------- | ------- |
-| nothing     | no          | no crater                     | not asked        | no      |
-| crater      | yes         | crater                        | no               | no      |
-| between     | yes         | not asked                     | no               | no      |
-| dark flight | yes         | not asked                     | yes              | yes     |
+| Draw state  | D1 survival | D2 crater in the law's domain | D3 (description) | J joint | D2's worsening share |
+| ----------- | ----------- | ----------------------------- | ---------------- | ------- | -------------------- |
+| nothing     | no          | no crater                     | not asked        | no      | no                   |
+| crater      | yes         | crater                        | no               | no      | yes                  |
+| fast        | yes         | not asked                     | no               | no      | yes                  |
+| between     | yes         | not asked                     | no               | no      | no                   |
+| dark flight | yes         | not asked                     | yes              | yes     | no                   |
 
-«Out of the domain» is never read as «no crater», nor as «crater», nor as «no meteorites».
+«Out of the domain» is never read as «no crater», nor as «crater», nor as «no meteorites»; a fast
+arrival is never called a crater.
 
 ## The questions and the decision (rules 1103, 1108, 1110, 1112)
 
@@ -47,10 +56,10 @@ operational classes, not measurements of how a real meteorite arrived.
   assessable lets no model escape D1.
 - **J**, P(material arrives and the draw is in dark flight), on all the paired draws.
 - **D2** earns no credit: the number of computed craters and the number of draws in the law's domain
-  are published, and beside them the share of draws with a computed crater over all the draws — the
-  share the worsening reads, not a probability of «no crater». It worsens where that share exceeds
-  0.10 on a fall, or the baseline's by more than 0.10 — only on the bodies where «no crater» is
-  documented.
+  are published. Its worsening reads, alike for every model, the share of the paired draws with an
+  arrival at the crater law's speeds — a crater or a fast arrival — named so, not a share of craters
+  nor a probability of «no crater». It worsens where that share exceeds 0.10 on a fall, or the
+  baseline's by more than 0.10 — only on the bodies where «no crater» is documented.
 - **The ground outcome** (one decisive observable) has two deciding measures: D1 on the bodies whose
   recovery is documented, J on those whose regime of arrival is documented. Each improves where its
   mean rises by 0.10 or more over at least three bodies in the priors' domain read for both models;
@@ -86,26 +95,34 @@ the crater law's domain with no crater is never excluded for it. A non-assessabi
 selection is said so, never read as a worse photometric prediction. The peak of the energy given to
 the air is a proxy of the brightest flare, not the same quantity.
 
-## What can be assessed, and for whom (rules 1105, 1112)
+## What can be assessed, and for whom (rules 1105, 1112, 1114, 1115)
 
-| Observable | Role           | What the source must give                                         | Assessable for  |
-| ---------- | -------------- | ----------------------------------------------------------------- | --------------- |
-| O1         | decisive       | flare heights measured from the light curve and the trajectory    | baseline, S     |
-| O2         | decisive       | the largest recovered mass, measured or a lower bound (rule 1058) | baseline, S (?) |
-| O3         | diagnostic     | at least ten recovered masses and a documented search             | baseline, S, F  |
-| O4         | not assessable | the end speed of the luminous flight — no model gives it aloft    | none            |
-| Ground     | decisive       | recovery, no crater and regime, each documented (rule 1109)       | baseline, S, F  |
+| Observable | Role           | What the source must give                                         | Assessable for   |
+| ---------- | -------------- | ----------------------------------------------------------------- | ---------------- |
+| O1         | decisive       | flare heights measured from the light curve and the trajectory    | baseline, S      |
+| O2         | diagnostic     | the largest recovered mass, measured or a lower bound (rule 1058) | none (no credit) |
+| O3         | diagnostic     | at least ten recovered masses and a documented search             | baseline, S, F   |
+| O4         | not assessable | the end speed of the luminous flight — no model gives it aloft    | none             |
+| Ground     | decisive       | recovery, no crater and regime, each documented (rule 1109)       | baseline, S, F   |
 
-**F cannot be adopted in this round** (rule 1112 (c)): O1 is not assessable for it (rule 1094), and
-its masses are not comparable with a recovered mass (rule 1097), so neither is O2; both count against
-its clause of two (rule 1076), and the ground outcome alone cannot meet it. F's readings are published
-as diagnostics. **S and the baseline** carry no ablation either (S's core by assumption, the
-baseline's intact body as the product has it): whether O2 stays assessable for them is asked of the
-reviewer before the set is opened (rule 1112 (d)).
+**O2 is diagnostic for all three** (rule 1114): none of the models carries ablation, so its mass at
+the ground is not the quantity recovered, and a recovered mass may be only a lower bound. No model
+earns credit or is worsened on it; body by body are published the share of draws with a piece at the
+ground, the median and 5–95 % band of the largest piece's mass over those draws, and the recovered
+mass with its class — a draw with no piece gives no mass, never a zero nor an infinite error. It is
+a choice of the judge made before the set is seen, not an observed failure of the models.
 
-## The order (rules 1106, 1113)
+**The decisive observables that remain are two** (rule 1115): O1 and the ground outcome. A model is
+adoptable only where both are assessable for it and the baseline on at least three admitted bodies,
+both improve and neither worsens. **F cannot be adopted in this round**: O1 is not assessable for it
+(rule 1094), and the ground outcome alone cannot adopt it. **S** can be adopted only through O1 and
+the ground outcome together; where either is not admissible or not assessable on three bodies, it
+cannot, and the verdict says so. Rule 1076 applies to O1, not to O2, which is assessable for none.
+
+## The order (rules 1106, 1113, 1118)
 
 These amendments pushed; the reviewer reads them; frozen only on his approval. Then the sources
 opened, with Andrea's leave for each download, and pinned into the table of eligibility; then the
 predictions, the judge run once, every outcome published even if negative or not assessable. Until
-then the third set stays closed.
+then the third set stays closed. Even frozen and run, the test gives evidence of compatibility or
+incompatibility on the observables admitted — never a class B, the set lacking its ground case.
