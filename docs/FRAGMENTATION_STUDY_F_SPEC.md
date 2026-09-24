@@ -33,6 +33,28 @@ changes. With a cloud share of 1, F is the baseline.
 | Ablation            | none, as in the baseline and in S                                                   | an axis of its own                |
 | Fragments under 1 g | not followed; energy laid down where they form (sensitivity at 0.1 g)               | Nimbus's hypothesis               |
 
+## Completed before the code (rules 1078 to 1083)
+
+- **Budgets, defined.** Mass: fragments, clouds, pieces on the ground and dust below the floor sum
+  to the body's, the dust written where it formed. Energy: the entry's kinetic energy plus gravity's
+  work equals what is laid down in the air (the dust's at its birth) plus what is on the ground and
+  in flight. Momentum along each path: the entry's plus gravity's impulse minus drag's impulse to
+  the air equals what is in flight and on the ground. Each to 10⁻¹², or the run is void.
+- **The break, once.** The parent's path ends at the break; two fragments and a cloud start there at
+  its speed and angle, with the stated masses and strengths; each lays down its own energy on its
+  own path; a child already past its strength breaks at once, at the same altitude.
+- **Convergence on what counts.** Release altitude and the largest piece's median mass within 1 %,
+  the share of draws with a survivor within 0.01; the floor's sensitivity shows where the mass below
+  it went; a quantity that does not converge is not published as a result.
+- **The baseline's limit.** Clouds are closed by the very code of the baseline's pancake; with
+  f_c = 1, burst and breakup altitudes, energy to the ground and regime equal within 10⁻⁹ relative
+  (10⁻⁶ m absolute where zero), each profile bin within 10⁻⁹ of the total energy.
+- **Priors, attributed.** The sources support the structure, the strength's scaling with its
+  ceiling, two-fragment splits and the single events' fitted values; the uniform laws, their bounds
+  and their independence are Nimbus's choices, which the sources do not justify.
+- **What F cannot claim.** No strewn field, no place of recovery, no ablation's loss in its masses;
+  a run past 10⁵ components is declared not completed and enters no comparison.
+
 ## Priors, drawn once per draw
 
 | Parameter          | Interval     | From                                  |

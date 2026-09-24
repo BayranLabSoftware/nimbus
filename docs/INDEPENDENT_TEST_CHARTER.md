@@ -106,6 +106,19 @@ prediction and no adoption; F's specification may now be written, as a study of 
   least 50); the floors stabilize the ratio and license no widened band.
 - **The table of eligibility**, published empty: docs/INDEPENDENT_TEST_ELIGIBILITY.md.
 
+## The third touch (rules 1075 to 1077)
+
+- **O5's crater cannot be dodged.** Computed craters are counted on all the paired draws, never on
+  those left in the domain; each body's three shares — crater, no crater, out of the domain — are
+  published for the baseline and the variant; a variant worsens where its computed craters pass
+  0.10 of the draws, or the baseline's by more than 0.10. A draw out of the domain is never "no
+  crater" and never a success.
+- **An observable lost to a variant** stays counted for the baseline, earns the variant nothing,
+  and counts against the clause of two.
+- **O2's infinities.** Two infinite errors compare equal. The point prediction stays the median over
+  all draws, so a body with survivors in fewer than half its draws has an infinite error and, on a
+  measured mass, is incompatible; its survival share is published beside, survival judged by C1.
+
 ## What may not happen
 
 No law of F, fragment size, upper edge of the strengths, f1 or closure is chosen, tuned or checked

@@ -330,6 +330,40 @@ export function charterReading(
  * eligible and why — only when the sources are pinned, before any prediction.
  */
 
+/**
+ * Rules 1075 to 1077 — the charter touched a third time, on the reviewer's
+ * reply of 24 September 2026, before the judge is frozen. Andrea's word: this,
+ * then F's specification completed, then the text.
+ *
+ * RULE 1075. O5'S CRATER, NOT TO BE DODGED (amends rule 1060). The share of
+ * computed craters is read on all the paired draws — the same draws, by index,
+ * for the baseline and the variant — never on those left in the crater's
+ * domain alone: a variant cannot better it by moving draws out of the domain.
+ * For each body the three shares — crater computed, no crater, out of the
+ * domain — are published for both, on those draws. A variant worsens O5 on a
+ * fall where its share of computed craters exceeds 0.10, or exceeds the
+ * baseline's by more than 0.10. C3's right answers are the draws with no
+ * crater over all the paired draws: a draw out of the domain is never right,
+ * and a move there is never a success nor hides a worsening.
+ *
+ * RULE 1076. AN OBSERVABLE LOST TO A VARIANT. A decisive observable assessable
+ * for the baseline stays in the verdict's count of assessable observables;
+ * where it is not assessable for the variant, the variant earns no improvement
+ * on it, and it counts against the clause of two.
+ *
+ * RULE 1077. O2'S INFINITIES AND SPARSE SURVIVORS (amends rule 1059). Two
+ * infinite errors compare equal: no improvement of accuracy is claimed between
+ * them, and the baseline's infinite median error against a variant's finite one
+ * counts as an improvement only through rule 1051's other conditions. The
+ * point prediction stays the median over all the draws: a body on which fewer
+ * than half the draws put a piece on the ground has a median of zero, an
+ * infinite error, and on a measured mass is incompatible; on a lower bound its
+ * verdict is read on the 95th percentile as before. Its share of draws with a
+ * survivor is published beside, and survival is judged by C1, apart. A lower
+ * bound's «not incompatible» is never accuracy: only a measured mass's error
+ * is.
+ */
+
 /** Rule 1062: the columns of the table of eligibility. */
 export const ELIGIBILITY_COLUMNS = ['type', 'O1', 'O2', 'C1', 'C2', 'C3'] as const;
 
@@ -421,8 +455,10 @@ export function o2Improves(bodies: readonly O2Body[]): {
   const eBase = measured.length > 0 ? median(measured.map((x) => x.b)) : Number.NaN;
   const accuracyAssessable =
     measured.length >= CHARTER_AMENDMENT.accuracyMinBodies && eBase >= CHARTER.massImprovementDex;
+  // Rule 1077: two infinite errors compare equal — no gain between them.
+  const eModel = measured.length > 0 ? median(measured.map((x) => x.m)) : Number.NaN;
   const accuracy =
-    accuracyAssessable && eBase - median(measured.map((x) => x.m)) >= CHARTER.massImprovementDex;
+    accuracyAssessable && Number.isFinite(eModel) && eBase - eModel >= CHARTER.massImprovementDex;
   return {
     improves: !lost && (gain >= 1 || accuracy),
     compatibilityGain: gain,
@@ -434,10 +470,11 @@ export function o2Improves(bodies: readonly O2Body[]): {
  *  assessable (C3 out of the domain). */
 export type DrawAnswer = 'right' | 'wrong' | 'notAssessable';
 
-/** Rule 1052: C3 on a draw — a computed crater is wrong for a fall, none is
- *  right, out of the domain is never counted right. */
+/** Rules 1052 and 1075: C3 on a draw of a fall — no crater is right; a
+ *  computed crater, and a draw out of the domain, are not: the share is read
+ *  on all the paired draws, and a move out of the domain is never a success. */
 export function craterAnswer(state: 'computed' | 'none' | 'outOfDomain'): DrawAnswer {
-  return state === 'none' ? 'right' : state === 'computed' ? 'wrong' : 'notAssessable';
+  return state === 'none' ? 'right' : 'wrong';
 }
 
 /** Rule 1052: a component's share on a body, or null where it is not
@@ -452,18 +489,30 @@ export function o5ComponentShare(draws: readonly DrawAnswer[]): number | null {
   return assessable.filter((d) => d === 'right').length / assessable.length;
 }
 
-/** Rule 1060: on a fall, the share of the draws in the crater's domain that
- *  dig a computed crater — null where fewer than half the draws are in it. */
-export function craterWorseningShare(
-  states: readonly ('computed' | 'none' | 'outOfDomain')[]
-): number | null {
-  const inDomain = states.filter((st) => st !== 'outOfDomain');
-  if (
-    states.length === 0 ||
-    inDomain.length < CHARTER_AMENDMENT.componentAssessableShare * states.length
-  )
-    return null;
-  return inDomain.filter((st) => st === 'computed').length / inDomain.length;
+/** Rule 1075: a body's three crater shares on its draws — computed, none,
+ *  out of the domain — published for the baseline and the variant alike. */
+export function craterShares(states: readonly ('computed' | 'none' | 'outOfDomain')[]): {
+  computed: number;
+  none: number;
+  outOfDomain: number;
+} {
+  const n = states.length;
+  const share = (k: string): number => (n === 0 ? 0 : states.filter((st) => st === k).length / n);
+  return { computed: share('computed'), none: share('none'), outOfDomain: share('outOfDomain') };
+}
+
+/** Rule 1075: whether the variant worsens O5 by its craters on a fall — its
+ *  share of computed craters, on all the paired draws, above 0.10, or above the
+ *  baseline's by more than 0.10. */
+export function craterWorsens(
+  baseline: readonly ('computed' | 'none' | 'outOfDomain')[],
+  variant: readonly ('computed' | 'none' | 'outOfDomain')[]
+): boolean {
+  if (baseline.length !== variant.length)
+    throw new Error('rule 1075: the draws must be paired, one for one');
+  const b = craterShares(baseline).computed;
+  const v = craterShares(variant).computed;
+  return v > CHARTER_AMENDMENT.craterWorsening || v - b > CHARTER_AMENDMENT.craterWorsening;
 }
 
 /** One deciding component of O5 on its eligible bodies: the shares of the
@@ -473,15 +522,16 @@ export interface O5Component {
   model: readonly (number | null)[];
 }
 
-/** Rules 1052 and 1060: O5's verdict from its deciding components (C1, C2),
- *  and the crater's worsening share on each fall (null where not assessable).
- *  A deciding component assessable on fewer than three bodies forbids the
- *  claim of improvement; it does not stop a worsening from counting. */
+/** Rules 1052, 1060 and 1075: O5's verdict from its deciding components (C1,
+ *  C2) and, on each fall, whether the variant's craters worsen it
+ *  (`craterWorsens`). A deciding component assessable on fewer than three
+ *  bodies forbids the claim of improvement; it does not stop a worsening from
+ *  counting. */
 export function o5Verdict(
   components: readonly O5Component[],
-  craterShares: readonly (number | null)[]
+  craterWorsening: readonly boolean[]
 ): { improves: boolean; worsens: boolean; improvementClaimable: boolean } {
-  let worsens = craterShares.some((sh) => sh !== null && sh > CHARTER_AMENDMENT.craterWorsening);
+  let worsens = craterWorsening.some(Boolean);
   let gained = false;
   let claimable = components.length > 0;
   const mean = (xs: number[]): number => xs.reduce((a, x) => a + x, 0) / xs.length;
@@ -520,9 +570,12 @@ export function bandVoids(
 /** Rule 1054: one decisive observable, its eligible bodies counted by name. */
 export interface ObservableOutcome {
   observable: CharterObservable;
+  /** The bodies eligible for it under the baseline. */
   eligible: readonly string[];
   improves: boolean;
   worsens: boolean;
+  /** Rule 1076: false where the variant cannot be assessed on it. */
+  assessableForVariant?: boolean;
 }
 
 /** Rule 1054: the verdict — assessable observables only, never pooled. */
@@ -539,7 +592,9 @@ export function charterVerdict(outcomes: readonly ObservableOutcome[]): {
     return { assessable: names, adoptable: false, reason: 'tooFewAssessable' };
   if (assessable.some((o) => o.worsens))
     return { assessable: names, adoptable: false, reason: 'worsens' };
-  if (assessable.filter((o) => o.improves).length < CHARTER.minObservablesImproved)
+  // Rule 1076: an observable lost to the variant earns it no improvement.
+  const improved = assessable.filter((o) => o.improves && o.assessableForVariant !== false);
+  if (improved.length < CHARTER.minObservablesImproved)
     return { assessable: names, adoptable: false, reason: 'tooFewImproved' };
   return { assessable: names, adoptable: true, reason: 'adoptable' };
 }

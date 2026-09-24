@@ -199,6 +199,14 @@
  *       within it nothing is validated by that alone. In the report it goes
  *       with the figures, the provenance cards and the rows of the numbers that
  *       print those radii.
+ *
+ * RULE 1074. THE PRINTED ROWS. The reviewer found the warning of rule 1056 (c)
+ * making the numbers it qualifies harder to read: on Chicxulub's page of
+ * parameters and results the long rows of the blast ran into the next column,
+ * over the tsunami's. Every value of that page wraps inside its own column,
+ * never over another; the planetary warning is one note at the foot of its
+ * group, each radius past 2 000 km marked «†» and pointing to it. The page is
+ * checked printed at its real size, A4.
  */
 
 /** Rule 1030: the four visual states. */

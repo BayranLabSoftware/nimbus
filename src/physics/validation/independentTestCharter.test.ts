@@ -7,7 +7,8 @@ import {
   charterReading,
   charterVerdict,
   craterAnswer,
-  craterWorseningShare,
+  craterShares,
+  craterWorsens,
   ELIGIBILITY_COLUMNS,
   o2Compatible,
   o2Improves,
@@ -94,41 +95,53 @@ describe('rules 1049 to 1062: the charter amended, operationally', () => {
     expect(o2Improves(lostOne).improves).toBe(false);
   });
 
-  it('1052, 1060: components apart, out of the domain never "no crater"', () => {
-    expect(craterAnswer('outOfDomain')).toBe('notAssessable');
+  it('1052, 1075: out of the domain is never "no crater", and never a way out', () => {
+    expect(craterAnswer('outOfDomain')).toBe('wrong');
     expect(craterAnswer('none')).toBe('right');
     expect(craterAnswer('computed')).toBe('wrong');
     expect(o5ComponentShare(['right', 'notAssessable', 'notAssessable'])).toBeNull();
     expect(o5ComponentShare(['right', 'wrong', 'notAssessable', 'right'])).toBeCloseTo(2 / 3, 12);
-    // The crater's worsening only on the draws in its domain.
-    expect(
-      craterWorseningShare(['outOfDomain', 'outOfDomain', 'outOfDomain', 'computed'])
-    ).toBeNull();
-    expect(craterWorseningShare(['none', 'none', 'computed', 'outOfDomain'])).toBeCloseTo(
-      1 / 3,
-      12
-    );
+    // The three shares on all the paired draws.
+    expect(craterShares(['none', 'none', 'computed', 'outOfDomain'])).toEqual({
+      computed: 0.25,
+      none: 0.5,
+      outOfDomain: 0.25,
+    });
+    // A variant that moves draws out of the domain does not dodge its craters:
+    // two computed craters in ten draws, whatever the rest.
+    const base: ('computed' | 'none' | 'outOfDomain')[] = Array.from({ length: 10 }, () => 'none');
+    const moved: ('computed' | 'none' | 'outOfDomain')[] = [
+      ...Array.from({ length: 8 }, () => 'outOfDomain' as const),
+      'computed',
+      'computed',
+    ];
+    expect(craterWorsens(base, moved)).toBe(true);
+    const one: ('computed' | 'none' | 'outOfDomain')[] = [
+      ...Array.from({ length: 9 }, () => 'none' as const),
+      'computed',
+    ];
+    expect(craterWorsens(base, one)).toBe(false);
+    expect(() => craterWorsens(base, ['none'])).toThrow();
   });
 
   it('1060: O5 improves only with C1 and C2 each assessable on three bodies', () => {
     const survival = { baseline: [0.5, 0.6, 0.7], model: [0.7, 0.7, 0.8] };
     const regime = { baseline: [0.4, 0.5, 0.5], model: [0.5, 0.6, 0.6] };
-    expect(o5Verdict([survival, regime], [0, 0, 0])).toEqual({
+    expect(o5Verdict([survival, regime], [false, false, false])).toEqual({
       improves: true,
       worsens: false,
       improvementClaimable: true,
     });
     // C2 assessable on two bodies only: no claim, though C1 gains.
     const thin = { baseline: [0.4, null, 0.5], model: [0.5, null, 0.6] };
-    expect(o5Verdict([survival, thin], [0, 0, 0])).toMatchObject({
+    expect(o5Verdict([survival, thin], [false, false, false])).toMatchObject({
       improves: false,
       improvementClaimable: false,
     });
     // A body below 0.90 where the baseline held it, or a crater in its domain: worse.
     const slip = { baseline: [0.95, 0.5, 0.5], model: [0.85, 0.9, 0.9] };
-    expect(o5Verdict([survival, slip], [0, 0, 0]).worsens).toBe(true);
-    expect(o5Verdict([survival, regime], [null, 0.2, 0]).worsens).toBe(true);
-    expect(o5Verdict([survival, regime], [null, null, 0]).worsens).toBe(false);
+    expect(o5Verdict([survival, slip], [false, false, false]).worsens).toBe(true);
+    expect(o5Verdict([survival, regime], [false, true, false]).worsens).toBe(true);
   });
 
   it('1053, 1061: the floor stabilizes, it licenses no widened band', () => {
@@ -169,5 +182,35 @@ describe('rules 1049 to 1062: the charter amended, operationally', () => {
         { observable: 'O3', eligible: three, improves: true, worsens: false },
       ]).reason
     ).toBe('tooFewAssessable');
+  });
+
+  it('1076: an observable lost to the variant earns it nothing', () => {
+    const three = ['a', 'b', 'c'];
+    expect(
+      charterVerdict([
+        { observable: 'O1', eligible: three, improves: true, worsens: false },
+        {
+          observable: 'O2',
+          eligible: three,
+          improves: true,
+          worsens: false,
+          assessableForVariant: false,
+        },
+      ]).reason
+    ).toBe('tooFewImproved');
+  });
+
+  it('1077: two infinite errors compare equal', () => {
+    const m = (kg: number) => ({ kg, kind: 'measured' as const });
+    const none = band(0, 0, 0);
+    const both = [1, 2, 3].map(() => ({ recovered: m(10), baseline: none, model: none }));
+    expect(o2Improves(both).improves).toBe(false);
+    // An infinite baseline against a finite variant can improve.
+    const better = [1, 2, 3].map(() => ({
+      recovered: m(10),
+      baseline: none,
+      model: band(5, 12, 30),
+    }));
+    expect(o2Improves(better).improves).toBe(true);
   });
 });

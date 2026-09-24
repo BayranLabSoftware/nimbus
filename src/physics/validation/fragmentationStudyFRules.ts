@@ -129,6 +129,79 @@
  * of F is chosen on the third set, whose sources stay closed.
  */
 
+/**
+ * Rules 1078 to 1083 — F's specification completed, on the reviewer's reply of
+ * 24 September 2026: the approach approved as a study, not yet for code, with
+ * five clauses to add before it. Andrea's word: the specification completed,
+ * then the text; the code after the reviewer's answer.
+ *
+ * RULE 1078. THE BUDGETS, defined (amends rule 1069). At every step and at the
+ * end: MASS — the fragments in flight, the clouds in flight, the pieces on the
+ * ground and the dust below the floor sum to the body's mass (no ablation);
+ * the dust's mass is written where it formed, altitude by altitude, never
+ * dropped. ENERGY — the entry's kinetic energy plus the work of gravity on
+ * every component equals the energy laid down in the air (each component's
+ * kinetic energy lost to drag, and the dust's kinetic energy at its birth,
+ * laid down at its birth's altitude) plus the kinetic energy of everything on
+ * the ground plus that still in flight. MOMENTUM, along each component's path —
+ * the entry's momentum plus the impulse of gravity minus the impulse given to
+ * the air by drag equals the momentum of everything in flight and on the
+ * ground, the dust's at its birth given to the air with its energy. Each closes
+ * to 10⁻¹² of the entry's value, or the run is void.
+ *
+ * RULE 1079. THE BREAK, without double counting (amends rule 1065). At the
+ * altitude z where a parent of mass m, speed v, angle θ and strength S_p meets
+ * its criterion, the parent's path ends and its energy lost down to z is
+ * counted once, on its own path. There begin, each at z, v and θ: two fragments
+ * of masses y(1 − f_c)m and (1 − y)(1 − f_c)m, spheres at the body's density,
+ * with strengths min(S_p (m/m_child)^α, 330 MPa); and one cloud of mass f_c m,
+ * starting as the sphere of its mass at the body's density. Every component
+ * lays down its own energy on its own path from z on; the profile is their sum
+ * per altitude bin, no part counted twice. A child whose pressure at z already
+ * reaches its own strength breaks at once, at z, by the same rule, until every
+ * piece is stronger than its pressure there or lies below the floor.
+ *
+ * RULE 1080. CONVERGENCE ON WHAT COUNTS (amends rule 1070 (d)). The step
+ * halved and doubled, and the floor at 0.1 g, must move each of: the release
+ * altitude, by less than 1 %; the median mass of the largest piece on the
+ * ground, by less than 1 %; the share of draws with a piece on the ground, by
+ * less than 0.01 — each on the same draws. The floor's sensitivity publishes
+ * where the mass below the floor went — its share of the body and the
+ * altitudes at which its energy was laid down — beside the rest of the budget.
+ * Where a quantity does not converge, it is said, and that quantity is not
+ * published as a result.
+ *
+ * RULE 1081. THE LIMIT OF THE BASELINE, verifiable (amends rule 1070 (a)). F's
+ * clouds are closed by the very code the baseline's pancake runs, started from
+ * the cloud's state. With f_c = 1, on the same draws: the burst altitude, the
+ * breakup altitude, the energy fraction to the ground and the entry's regime
+ * are the baseline's; each continuous quantity within 10⁻⁹ in relative error
+ * (|F − baseline| / |baseline|, an absolute 10⁻⁶ m where the baseline's value
+ * is zero), and every energy bin of the profile within 10⁻⁹ of the total
+ * energy; the regime and the crater's state equal; the cloud's law of
+ * expansion the same function, not a copy.
+ *
+ * RULE 1082. THE PRIORS, attributed precisely (amends rule 1068). What the
+ * sources support: the structure — discrete fragments and debris clouds, a
+ * break into pieces and a cloud (Register et al. §2.7; Wheeler et al. §2);
+ * the strength's scaling S_c = S_p (m_p/m_c)^α with its ceiling of 330 MPa
+ * (Register et al. §2.2); two-fragment splits as their best for Chelyabinsk's
+ * lower flare (Wheeler et al. §4.1); and the values their fits took for single
+ * events — clouds of 75–85 % and α of about 0.07 to 0.5 for Chelyabinsk,
+ * splits near 60/40, clouds between 3 and 75 % as a consequence of Register et
+ * al.'s split of radii. What Nimbus chooses, with no source behind it: that
+ * each parameter is uniform on its interval; the interval's bounds; that f_c,
+ * y and α are drawn independently of one another and held for every break of a
+ * draw. The sources justify neither a uniform probability nor these bounds.
+ *
+ * RULE 1083. WHAT F CANNOT CLAIM, and the bound. With no lateral speed F
+ * predicts no strewn field and no place of any recovery; with no ablation its
+ * surviving masses carry no ablation's loss — F says neither where meteorites
+ * fall nor what they weigh once ablated, and its O2 and O3 readings are
+ * labelled so. A run past 10⁵ components is declared not completed: its
+ * outputs are published with that mark and enter no comparison.
+ */
+
 /** Rule 1065 (a): fragments per break, besides the cloud. */
 export const F_FRAGMENTS_PER_BREAK = 2;
 

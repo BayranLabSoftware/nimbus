@@ -157,6 +157,12 @@ sono esplorative; …», drawn legibly apart from the rings' values and the coas
 warning goes with the structural overpressure and the wind too, in the report's figures, cards and
 rows; 2 000 km is where it appears, not a frontier of validity.
 
+## The printed rows (rule 1074)
+
+On Chicxulub's page of parameters and results the warned rows ran into the next column. Every value
+now wraps inside its own column; each radius past 2 000 km is marked «†» and the warning is one note
+at the foot of its group; the page is checked printed at A4.
+
 ## The printed report (rule 1037)
 
 The reviewer, approving steps 1 to 3, asked for the report now, before step 4: the globe and the
