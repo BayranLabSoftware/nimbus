@@ -46,6 +46,7 @@ import {
   MAIN_STAGE_STRENGTH_RANGE,
 } from '../src/physics/effects/atmosphericEntry.js';
 import { A_SIGMA_PRIOR_S2_M2 } from '../src/physics/validation/ablationStudyRules.js';
+import { FCM_FLOOR_BODY } from '../src/physics/validation/fcmRound1Rules.js';
 
 const KT = 4.184e12;
 const DRAWS = 48;
@@ -292,7 +293,15 @@ const rows = draws.map((d) => {
     const refAtMovedPeak = failed.includes('peakAltitudeKm')
       ? Number((windowAt(ref, x.peakAltitudeKm) / q.peakKtKm).toPrecision(4))
       : null;
-    return { name: v.name, completed: true, moved, failed, nearZero, refAtMovedPeak };
+    return {
+      name: v.name,
+      completed: true,
+      moved,
+      failed,
+      nearZero,
+      refAtMovedPeak,
+      flightAbsResidual: r.ledger.flightAbsResidual,
+    };
   });
   const bound =
     d.id < 16
@@ -311,6 +320,8 @@ const rows = draws.map((d) => {
     bound,
     // The mass the floor turned to dust, as a share of the body's.
     dustShare: Number((ref.ledger.dustMass / ref.mass).toPrecision(3)),
+    // Rule 1154 (b): the balance in flight at the reference.
+    flightAbsResidual: ref.ledger.flightAbsResidual,
     reference: Object.fromEntries(
       Object.entries(q as unknown as Record<string, number>).map(([k, x]) => [
         k,
@@ -393,10 +404,73 @@ const r17Floor = [1e-2, 1e-3, 1e-4].map((floorKg) => {
   };
 });
 
+/** Rule 1155: the body built to cascade to the floor, at 1 g and at 0.1 g. */
+const floorBody = (() => {
+  const f = FCM_FLOOR_BODY;
+  const fly = (floorKg: number): FcmResult =>
+    fcmEntry(
+      {
+        diameter: f.diameterM,
+        velocity: f.speedMS,
+        density: f.densityKgM3,
+        angle: (f.angleDeg * Math.PI) / 180,
+        strength: f.strengthPa,
+      },
+      {
+        ablation: 1e-8,
+        cloudDispersion: 3.5,
+        alpha: f.alpha,
+        split: { kind: 'mass', fragments: 2, larger: 0.5, cloud: 0 },
+        binM: 10,
+        floorKg,
+        maxComponents: 10_000_000,
+      }
+    );
+  const [a, b] = f.floorsKg.map(fly);
+  if (a === undefined || b === undefined) throw new Error('rule 1155: two floors');
+  const qa = quantities(a);
+  const qb = quantities(b);
+  const entryKt = a.energy / KT;
+  return {
+    dustShare: [a.ledger.dustMass / a.mass, b.ledger.dustMass / b.mass].map((x) =>
+      Number(x.toPrecision(3))
+    ),
+    ledger: Math.max(
+      ...[a, b].map((r) =>
+        Math.max(
+          Math.abs(r.ledger.massResidual),
+          Math.abs(r.ledger.energyResidual),
+          r.ledger.momentumResidual
+        )
+      )
+    ),
+    moved: Object.fromEntries(KEYS.map((k) => [k, Number((qb[k] - qa[k]).toPrecision(3))])),
+    failed: KEYS.filter((k) => !passes(k, qa[k], qb[k], entryKt)),
+  };
+})();
+
 /** The draws on which the floor turned any mass to dust. */
 function completedRowsDust(): number {
   return rows.filter((r) => 'dustShare' in r && r.dustShare > 0).length;
 }
+
+/** Rule 1154 (b): the balance in flight, per draw, and its order under the
+ *  step halved — log2 of the residual at 10 m over that at 5 m. */
+const flight = rows.flatMap((r) => {
+  if (!('flightAbsResidual' in r)) return [];
+  const halved = r.variations.find((v) => v.name === 'step 5 m');
+  const h = halved !== undefined && 'flightAbsResidual' in halved ? halved.flightAbsResidual : null;
+  return [
+    {
+      id: r.id,
+      residual: r.flightAbsResidual,
+      halved: h,
+      order: h === null || h <= 0 ? null : Math.log2(r.flightAbsResidual / h),
+    },
+  ];
+});
+const flightSorted = [...flight].sort((a, b) => a.residual - b.residual);
+const orders = flight.flatMap((f) => (f.order === null ? [] : [f.order])).sort((a, b) => a - b);
 
 const out = {
   rule: '1141 (c)',
@@ -412,6 +486,15 @@ const out = {
   boundChecked: rows.filter((r) => r.bound !== null && 'identical' in r.bound).length,
   floorBound: completedRowsDust(),
   r17Floor,
+  floorBody,
+  flight: {
+    medianResidual: Number(
+      (flightSorted[Math.floor(flightSorted.length / 2)]?.residual ?? 0).toPrecision(3)
+    ),
+    maxResidual: Number((flightSorted[flightSorted.length - 1]?.residual ?? 0).toPrecision(3)),
+    medianOrder: Number((orders[Math.floor(orders.length / 2)] ?? 0).toPrecision(3)),
+    leastOrder: Number((orders[0] ?? 0).toPrecision(3)),
+  },
   gridPhase: {
     medianRelative: Number(median.toPrecision(3)),
     maxRelative: Number(maxPhase.toPrecision(3)),
@@ -489,6 +572,10 @@ const lines = [
               : 'not completed without the strength ceiling either, so it is the cascade’s size, not the ceiling — a cost the bound declares (rule 1138 (b)), for the register of deviations'
           }.`
       )),
+  '',
+  `The floor where it acts (rule 1155): a body built to cascade to it (0.5 m, 3 000 kg/m³, 20 km/s, 45°, 100 kPa, α 0, two equal fragments, no cloud) turns ${String(floorBody.dustShare[0])} of its mass to dust at 1 g and ${String(floorBody.dustShare[1])} at 0.1 g, the ledger closed to ${floorBody.ledger.toExponential(1)}; ${floorBody.failed.length === 0 ? 'every decisional quantity moves by less than its tolerance between the two floors' : `between the two floors ${floorBody.failed.map((k) => NAMES[k]).join(', ')} move beyond the tolerance — the floor is then a parameter of the branch, published with its effect`}.`,
+  '',
+  `The balance in flight (rule 1154 (b)): the energy given to the air, set against the drag’s work and the ablated mass’s energy integrated apart, differs by ${String(out.flight.medianResidual)} of the entry’s energy at the median draw and ${String(out.flight.maxResidual)} at most (summed step by step in absolute value); halving the step divides it by 2^${String(out.flight.medianOrder)} at the median and 2^${String(out.flight.leastOrder)} at the least — at the balance of a break, by contrast, mass, energy and momentum close to rounding (the ledger, rule 1141 (a)).`,
   '',
   `The fixed 1 km grid’s phase: shifting its edges by half a kilometre moves the peak by ${pct(median)} at the`,
   `median and ${pct(maxPhase)} at most — the reason the peak is read on a sliding window.`,

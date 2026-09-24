@@ -9,6 +9,17 @@ a declared development range is explored like W18’s. Each row is a partial com
 (d)): whether the branch, given the structure W18 describes, can behave as W18 says its own did —
 the flares’ altitudes within 1 km on the 1 km profile, the peak, the landed mass.
 
+Rule 1159’s reading: **W18 partial, with its discrepancies named** — rebuilding W18’s groups from its text
+and trying the corners of its ranges is a study of sensitivity, not a reproduction with W18’s parameters,
+which W18 does not print. No corner is selected afterwards: every one is counted below, and the few that
+meet a case’s targets together may inform the development tuning, never stand for the gate.
+
+The uncertainty of reading: W18 gives its flares in words («around 37 km», «near 53 km», «around 32 and 36
+km»), read here ±1 km; its figures are not read at all. Where several peaks, the figures’ resolution or the
+parameters W18 leaves unsaid do not let the 1 km criterion decide, it is **not applicable**, and the
+comparison says what the branch does, not whether it passes. The Chelyabinsk band 67–109 kt/km is derived
+from W18’s luminous efficiencies (13–21 % about 17 %), not printed by W18.
+
 ## Košice
 
 What W18 states:
@@ -37,7 +48,7 @@ Chosen where W18 is silent:
 - the rubble’s strength the disruption’s, 1.9 kPa («at the top of the observed profile»);
 - two fragments per break (not stated for Košice);
 
-The nominal: 3500 kg, 0.09412 kt at entry, 0.09466 kt deposited; 48631 components; the main peak 0.02184 kt/km at 35.5 km; the flares (1 km profile, above 5 % of the peak): 0.0218 at 35.5 km.
+The nominal: 3500 kg, 0.09412 kt at entry, 0.09465 kt deposited; 48631 components; the main peak 0.02184 kt/km at 35.5 km; the flares (1 km profile, above 5 % of the peak): 0.0218 at 35.5 km.
 
 The groups’ first breaks, nominal, in the order above: 38.3 km, 64.9 km, 60.9 km, 84.8 km.
 
@@ -47,7 +58,18 @@ W18’s flares: 37 km — nominal **not within 1 km**, found within 1 km in 0 of
 
 Every count at once — the flares within 1 km: the nominal **does not**; 0 of 128 corners do.
 
-The ledger’s worst residual over every run: 4.5e-16.
+Every corner, as a distribution (128 corners):
+
+| Quantity           | least  | first quartile | median | third quartile | most   |
+| ------------------ | ------ | -------------- | ------ | -------------- | ------ |
+| main peak (kt/km)  | 0.0187 | 0.0194         | 0.0213 | 0.022          | 0.0227 |
+| its altitude (km)  | 35.5   | 35.5           | 35.5   | 35.5           | 35.5   |
+| landed (kg)        | 177    | 199            | 209    | 211            | 232    |
+| largest piece (kg) | 2.91   | 2.99           | 3.02   | 3.02           | 3.1    |
+
+Each target alone: the flare near 37 km: 0 of 128; the flare near 53 km: 0 of 128.
+
+The ledger’s worst residual over every run: 4.3e-16.
 
 ## Chelyabinsk
 
@@ -80,7 +102,7 @@ Chosen where W18 is silent:
 - the main group one piece, splits 60/40; the rubble 7, 7 and 5 pieces (0.2, 0.2, 0.26 %) at 1.75, 2.5 and 3.5 MPa with the main group’s α, cloud and split;
 - the strong group three pieces of 0.8 %;
 
-The nominal: 9755000 kg, 427.9 kt at entry, 429.7 kt deposited; 626 components; the main peak 67.79 kt/km at 32.5 km; the flares (1 km profile, above 5 % of the peak): 67.8 at 32.5 km; 5.56 at 23.5 km.
+The nominal: 9755000 kg, 427.9 kt at entry, 429.6 kt deposited; 626 components; the main peak 67.79 kt/km at 32.5 km; the flares (1 km profile, above 5 % of the peak): 67.8 at 32.5 km; 5.55 at 23.5 km.
 
 The groups’ first breaks, nominal, in the order above: 46.4 km, 39.8 km, 38.7 km, 36.3 km, 34 km, 23.8 km.
 
@@ -100,7 +122,18 @@ Where the landed mass comes from, W18’s shown case against the nominal:
 
 Every count at once — the peak inside the observed band, 67.2–109 kt/km, the landed mass inside W18’s range: the nominal **does not**; 6 of 512 corners do.
 
-The ledger’s worst residual over every run: 5.4e-16.
+Every corner, as a distribution (512 corners):
+
+| Quantity           | least | first quartile | median | third quartile | most  |
+| ------------------ | ----- | -------------- | ------ | -------------- | ----- |
+| main peak (kt/km)  | 47.1  | 59             | 68.5   | 78.1           | 94.6  |
+| its altitude (km)  | 28.5  | 30.5           | 30.5   | 30.5           | 32.5  |
+| landed (kg)        | 3280  | 6840           | 9130   | 15500          | 31200 |
+| largest piece (kg) | 368   | 435            | 769    | 909            | 1520  |
+
+Each target alone: the peak in 67.2–109 kt/km: 256 of 512; the landed mass in 5000–6500 kg: 16 of 512.
+
+The ledger’s worst residual over every run: 5.3e-16.
 
 ## Tagish Lake
 
@@ -128,7 +161,7 @@ Chosen where W18 is silent:
 - splits 50/50 where unstated; the 2–3 % between 45 and 40 km one piece at 0.3 MPa, as the small flare’s group;
 - the upper share in seven pieces at 1 to 90 kPa, log-spaced (fifteen groups in all); disruption at 1 kPa, no debris;
 
-The nominal: 78000 kg, 2.327 kt at entry, 2.339 kt deposited; 460868 components; the main peak 0.2956 kt/km at 32.5 km; the flares (1 km profile, above 5 % of the peak): 0.296 at 32.5 km; 0.203 at 34.5 km; 0.177 at 36.5 km; 0.172 at 38.5 km; 0.0332 at 46.5 km; 0.032 at 51.5 km.
+The nominal: 78000 kg, 2.327 kt at entry, 2.338 kt deposited; 460868 components; the main peak 0.2955 kt/km at 32.5 km; the flares (1 km profile, above 5 % of the peak): 0.296 at 32.5 km; 0.203 at 34.5 km; 0.177 at 36.5 km; 0.172 at 38.5 km; 0.0332 at 46.5 km; 0.032 at 51.5 km.
 
 The groups’ first breaks, nominal, in the order above: 33.3 km, 31.9 km, 30.7 km, 40.5 km, 37.3 km, 35.2 km, 55.1 km, 48.6 km, 89.1 km, 84.9 km, 80.2 km, 75.3 km, 70.2 km, 64.8 km, 58.7 km.
 
@@ -140,4 +173,15 @@ Landed: nominal 50.2 kg against W18’s 190 kg (100–1000 over its fits) — **
 
 Every count at once — the flares within 1 km, the landed mass inside W18’s range: the nominal **does not**; 0 of 64 corners do.
 
-The ledger’s worst residual over every run: 7.6e-16.
+Every corner, as a distribution (64 corners):
+
+| Quantity           | least | first quartile | median | third quartile | most  |
+| ------------------ | ----- | -------------- | ------ | -------------- | ----- |
+| main peak (kt/km)  | 0.276 | 0.284          | 0.29   | 0.29           | 0.299 |
+| its altitude (km)  | 30.5  | 30.5           | 32.5   | 32.5           | 32.5  |
+| landed (kg)        | 18.1  | 24             | 124    | 135            | 149   |
+| largest piece (kg) | 0.48  | 2.08           | 3.16   | 3.16           | 3.16  |
+
+Each target alone: the flare near 32 km: 32 of 64; the flare near 36 km: 64 of 64; the flare near 47 km: 64 of 64; the landed mass in 100–1000 kg: 32 of 64.
+
+The ledger’s worst residual over every run: 6.6e-16.

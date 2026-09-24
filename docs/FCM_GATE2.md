@@ -1,5 +1,21 @@
 # FCM round, gate 2 — reproducing R17’s Chelyabinsk
 
+Rule 1159’s reading: **R17 reproduced within the quantities its text lets one read** — whether that, with
+W18 partial (docs/FCM_GATE2_W18.md), is enough for a test in a restricted domain is left to the final review.
+
+The parameters, all known from R17: the inputs of its Chelyabinsk (19.8 m, 19.16 km/s, 18.3°, 3 300 kg/m³),
+its conventions (C_d = 1 in ½ C_d, σ = 10⁻⁸ s²/m², C_disp = 3.5, the 1976 standard atmosphere, 10 m steps from
+100 km) and its Table 1 for each setting (strengths, α, splits). What R17 does not print, and so what was
+chosen: the clouds’ end (settling within 1 % of the terminal speed, R17’s «limiting velocity» being
+unpublished) and the Runge–Kutta integration (R17’s own scheme, apparently explicit, run beside it).
+
+The uncertainty of reading: the excess over the observed peak is R17’s own words — «about 50 %», «15–17 %»,
+«15–22 %» — and the observed peak 82–83 kt/km; the criterion widens each end by 5 %. The peak’s altitude is
+read from R17’s figures by eye, about 29–30 km for the pancake, to ±1 km at best: the 1 km criterion on it is
+**not applicable** (rule 1159), and the altitude is reported, not scored. R17 prints no integrated
+deposition: the 5 % criterion on it is not applicable either; the deposition is set against the entry’s
+energy only as a check of the ledger.
+
 Rule 1142 (`src/physics/validation/fcmRoundRules.ts`), run by `scripts/fcm-gate2.ts` — development,
 begun before the reviewer has read the round’s dossier (rule 1147). R17’s inputs (19.8 m, 19.16 km/s,
 18.3°, 3 300 kg/m³, from 100 km), its conventions (C_d = 1 in ½ C_d, σ = 10⁻⁸ s²/m², C_disp = 3.5, the
@@ -10,16 +26,16 @@ each row is a partial comparison where no table permits more (rule 1142 (d)). Th
 
 | Setting                                     | Scheme | Peak (kt/km) at (km) | Excess over the observed | Stated by R17                                                                    | Within the stated (±5 %) | Deposited / entry (kt) | First break (km) | Components | Ledger (mass · energy · momentum) |
 | ------------------------------------------- | ------ | -------------------- | ------------------------ | -------------------------------------------------------------------------------- | ------------------------ | ---------------------- | ---------------- | ---------- | --------------------------------- |
-| pancake                                     | rk4    | 125.9 at 30.5        | 52–54 %                  | about 50 % above the observed peak; W18: FCM at 3 300 kg/m³ about 123 against 83 | yes                      | 590.7 / 588.4          | 39.41            | 2          | 3.5e-17 · 0.0e+0 · 0.0e+0         |
-| pancake                                     | euler  | 126 at 30.5          | 52–54 %                  | about 50 % above the observed peak; W18: FCM at 3 300 kg/m³ about 123 against 83 | yes                      | 590.7 / 588.4          | 39.41            | 2          | 3.5e-17 · 0.0e+0 · 0.0e+0         |
-| combination, Fig. 7a (50/50 radius, α 0.1)  | rk4    | 97.54 at 31.5        | 18–19 %                  | within 15–17 % of the observed peak, too much energy above 30 km                 | yes                      | 590.6 / 588.4          | 39.63            | 190        | -6.8e-17 · -5.6e-17 · 1.1e-17     |
-| combination, Fig. 7a (50/50 radius, α 0.1)  | euler  | 97.51 at 31.5        | 18–19 %                  | within 15–17 % of the observed peak, too much energy above 30 km                 | yes                      | 590.6 / 588.4          | 39.63            | 190        | -9.1e-17 · -8.3e-17 · 6.2e-17     |
-| combination, Fig. 7b (60/40 radius, α 0.57) | rk4    | 117 at 30.5          | 41–43 %                  | about 50 % above the observed peak, a second peak appearing                      | yes                      | 590.6 / 588.4          | 39.63            | 25         | 8.6e-17 · 1.3e-16 · 1.5e-16       |
-| combination, Fig. 7b (60/40 radius, α 0.57) | euler  | 117.2 at 30.5        | 41–43 %                  | about 50 % above the observed peak, a second peak appearing                      | yes                      | 590.6 / 588.4          | 39.63            | 25         | 8.7e-17 · 2.6e-16 · 1.8e-16       |
+| pancake                                     | rk4    | 125.9 at 30.5        | 52–54 %                  | about 50 % above the observed peak; W18: FCM at 3 300 kg/m³ about 123 against 83 | yes                      | 590.6 / 588.4          | 39.41            | 2          | -3.5e-17 · 0.0e+0 · 0.0e+0        |
+| pancake                                     | euler  | 126 at 30.5          | 52–54 %                  | about 50 % above the observed peak; W18: FCM at 3 300 kg/m³ about 123 against 83 | yes                      | 590.6 / 588.4          | 39.41            | 2          | 6.9e-17 · 0.0e+0 · 0.0e+0         |
+| combination, Fig. 7a (50/50 radius, α 0.1)  | rk4    | 97.54 at 31.5        | 18–19 %                  | within 15–17 % of the observed peak, too much energy above 30 km                 | yes                      | 590.5 / 588.4          | 39.63            | 190        | -1.4e-16 · -5.6e-17 · 1.1e-17     |
+| combination, Fig. 7a (50/50 radius, α 0.1)  | euler  | 97.51 at 31.5        | 18–19 %                  | within 15–17 % of the observed peak, too much energy above 30 km                 | yes                      | 590.5 / 588.4          | 39.63            | 190        | -5.6e-17 · -8.3e-17 · 6.2e-17     |
+| combination, Fig. 7b (60/40 radius, α 0.57) | rk4    | 117 at 30.5          | 41–43 %                  | about 50 % above the observed peak, a second peak appearing                      | yes                      | 590.6 / 588.4          | 39.63            | 25         | 8.6e-17 · 1.3e-16 · 1.7e-16       |
+| combination, Fig. 7b (60/40 radius, α 0.57) | euler  | 117.2 at 30.5        | 41–43 %                  | about 50 % above the observed peak, a second peak appearing                      | yes                      | 590.6 / 588.4          | 39.63            | 25         | 1.4e-16 · 2.6e-16 · 1.8e-16       |
 | independent wakes (50/50 mass, α 0.1)       | rk4    | 90.09 at 29.5        | 9–10 %                   | 15–22 % above the observed peak, with nearly a million fragments                 | yes                      | 590.7 / 588.4          | 39.63            | 1048575    | 3.5e-17 · 1.1e-17 · 7.4e-17       |
 | independent wakes (50/50 mass, α 0.1)       | euler  | 90.19 at 29.5        | 9–10 %                   | 15–22 % above the observed peak, with nearly a million fragments                 | yes                      | 590.7 / 588.4          | 39.63            | 1048575    | 0.0e+0 · 9.1e-18 · 6.3e-17        |
 
-Fig. 7b's second peak, below 26 km: 9.21 kt/km at 22.5 km — R17's figure, read by eye, shows about 9 kt/km near 23 km.
+Fig. 7b's second peak, below 26 km: 9.209 kt/km at 22.5 km — R17's figure, read by eye, shows about 9 kt/km near 23 km.
 
 The collective and the non-collective wakes of R17 are not built in this round (rule 1138); the
 peak’s altitude is read from R17’s figures by eye (about 29–30 km for the pancake), so it is reported

@@ -13,14 +13,14 @@ than 0.1 km, 10⁻³ of the entry’s energy (per km for the peak) or 0.01 of th
 | ----------- | ----------------------------------- | -------------- | ------ | ------------------------------- | --------------------- | ------------- |
 | step 5 m    | peak value                          | 47             | 47     | 0                               | 0.31 %                | —             |
 | step 5 m    | peak altitude                       | 47             | 47     | 0                               | 0.036 %               | —             |
-| step 5 m    | deposited energy                    | 47             | 47     | 0                               | 0.018 %               | —             |
-| step 5 m    | energy at the ground                | 47             | 47     | 3                               | 10 %                  | —             |
+| step 5 m    | deposited energy                    | 47             | 47     | 0                               | 0.00025 %             | —             |
+| step 5 m    | energy at the ground                | 47             | 47     | 0                               | 0.00090 %             | —             |
 | step 5 m    | survival (solid mass at the ground) | 47             | 47     | 0                               | 2.3e-8 %              | —             |
 | step 5 m    | largest piece                       | 47             | 47     | 0                               | 5.5e-8 %              | —             |
 | step 20 m   | peak value                          | 47             | 47     | 0                               | 0.62 %                | —             |
 | step 20 m   | peak altitude                       | 47             | 47     | 0                               | 0.94 %                | —             |
-| step 20 m   | deposited energy                    | 47             | 47     | 0                               | 0.027 %               | —             |
-| step 20 m   | energy at the ground                | 47             | 47     | 3                               | 13 %                  | —             |
+| step 20 m   | deposited energy                    | 47             | 47     | 0                               | 0.00067 %             | —             |
+| step 20 m   | energy at the ground                | 47             | 47     | 0                               | 0.0054 %              | —             |
 | step 20 m   | survival (solid mass at the ground) | 47             | 47     | 0                               | 7.5e-8 %              | —             |
 | step 20 m   | largest piece                       | 47             | 47     | 0                               | 1.4e-7 %              | —             |
 | bins 100 m  | peak value                          | 47             | 47     | 0                               | 0.30 %                | —             |
@@ -44,6 +44,10 @@ The bound: on 16 completed draws a bound of 1 000 000 left every bin, the ground
 count identical on 16. The draws the reference did not complete:
 
 - draw 24, 15.74 m: not completed at 1 000 000 either; α 0.109, splits 0.548 of the pieces’ mass to the larger, 0.0682 to the cloud — unequal pieces, none flying as one, each generation doubling the distinct pieces; not completed without the strength ceiling either, so it is the cascade’s size, not the ceiling — a cost the bound declares (rule 1138 (b)), for the register of deviations.
+
+The floor where it acts (rule 1155): a body built to cascade to it (0.5 m, 3 000 kg/m³, 20 km/s, 45°, 100 kPa, α 0, two equal fragments, no cloud) turns 0.995 of its mass to dust at 1 g and 0.995 at 0.1 g, the ledger closed to 0.0e+0; every decisional quantity moves by less than its tolerance between the two floors.
+
+The balance in flight (rule 1154 (b)): the energy given to the air, set against the drag’s work and the ablated mass’s energy integrated apart, differs by 3.34e-8 of the entry’s energy at the median draw and 0.00000754 at most (summed step by step in absolute value); halving the step divides it by 2^3.99 at the median and 2^-0.381 at the least — at the balance of a break, by contrast, mass, energy and momentum close to rounding (the ledger, rule 1141 (a)).
 
 The fixed 1 km grid’s phase: shifting its edges by half a kilometre moves the peak by 2.3 % at the
 median and 45 % at most — the reason the peak is read on a sliding window.

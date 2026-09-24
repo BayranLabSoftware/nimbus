@@ -29,10 +29,19 @@ const G0 = 9.806_65;
 const EARTH_RADIUS_M = 6.371e6;
 
 /** The 1976 standard's density, tabulated every metre from 0 to 120 km as its
- *  logarithm and interpolated linearly in it: the same numbers as
- *  `ussaState` to far below the step's error, at a fraction of its cost. */
+ *  logarithm and interpolated linearly in it (rule 1153): the same numbers as
+ *  `ussaState` to 10⁻⁶, at a fraction of its cost. The metres that hold a
+ *  change of the standard's layers — the bases of Table 4's layers, 11 to 71
+ *  km′ geopotential, and the join of its two parts at 86 km geometric — read
+ *  the standard directly, since a straight line across a kink is not it. */
 let ussaTable: Float64Array | null = null;
 const USSA_TABLE_TOP_M = 120_000;
+const USSA_R0 = 6_356_766;
+const USSA_KINKS = new Set(
+  [11_000, 20_000, 32_000, 47_000, 51_000, 71_000]
+    .map((hp) => Math.floor((USSA_R0 * hp) / (USSA_R0 - hp)))
+    .concat([85_999])
+);
 function ussaDensity(h: number): number {
   if (ussaTable === null) {
     ussaTable = new Float64Array(USSA_TABLE_TOP_M + 1);
@@ -42,10 +51,14 @@ function ussaDensity(h: number): number {
   if (h >= USSA_TABLE_TOP_M) return USSA_1976_PROFILE.density(h);
   const x = Math.max(h, 0);
   const i = Math.floor(x);
+  if (USSA_KINKS.has(i)) return USSA_1976_PROFILE.density(x);
   const a = ussaTable[i] ?? 0;
   const b = ussaTable[i + 1] ?? a;
   return Math.exp(a + (x - i) * (b - a));
 }
+
+/** Rule 1153: the branch's reading of the standard, exported to check it. */
+export const fcmUssaDensity = (h: number): number => ussaDensity(h);
 
 export type FcmAtmosphere = 'ussa1976' | 'exponential';
 export type FcmScheme = 'rk4' | 'euler';
@@ -86,6 +99,18 @@ export interface FcmOptions {
   /** Identical fragments born together fly as one with their number (exact;
    *  false flies each member apart, to check it). */
   bundle?: boolean;
+  /** Rule 1150's aggregated tail: a solid piece lighter than this share of
+   *  the body's mass that reaches its strength breaks wholly into a cloud.
+   *  Absent, every break follows the split. */
+  aggregateBelowShare?: number;
+  /** A step is halved where a component's speed, mass or radius would change
+   *  by more than this share of itself in it. */
+  maxChangePerStep?: number;
+  /** A cloud settles where its speed is within this share above its terminal
+   *  speed — 1 % unless said, as a piece at the ground is «at terminal»: the
+   *  last approach to it is stiff, and an explicit step there decides the
+   *  error whatever the base step (rule 1154 (b), deviation D9). */
+  settleWithin?: number;
 }
 
 /** A structure group (W18): identical pieces with their own strength and,
@@ -163,7 +188,20 @@ export interface FcmResult {
     massResidual: number;
     energyResidual: number;
     momentumResidual: number;
+    /** Rule 1154 (b): the drag's work and the ablated mass's kinetic energy,
+     *  integrated apart over every step flown (J). */
+    dragWork: number;
+    ablatedEnergy: number;
+    /** The energy given to the air in flight less those two, over the
+     *  entry's energy: signed, and summed step by step in absolute value. */
+    flightResidual: number;
+    flightAbsResidual: number;
   };
+  /** Steps flown, each a component (with its members) over one step: the
+   *  run's cost, deterministic. */
+  steps: number;
+  /** Pieces the aggregated tail turned to clouds (rule 1150). */
+  aggregated: number;
 }
 
 interface Component {
@@ -190,8 +228,11 @@ interface Component {
 }
 
 /** The state carried through a step: v, γ, m, r, gravity's work W and its
- *  impulse J (per unit of the vertical), and the time t. */
-type State = [number, number, number, number, number, number, number];
+ *  impulse J (per unit of the vertical), the time t, and — integrated apart
+ *  for the balance in flight (rule 1154 (b)) — the drag's work and the
+ *  ablated mass's kinetic energy. */
+type State = [number, number, number, number, number, number, number, number, number];
+const zero = (): State => [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 class Bound extends Error {}
 
@@ -221,6 +262,8 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
   const floor = options.floorKg ?? 1e-3;
   const cap = options.maxComponents ?? 100_000;
   const ceiling = options.strengthCeilingPa ?? 330e6;
+  const maxChange = options.maxChangePerStep ?? 0.5;
+  const settleAbove = 1 + (options.settleWithin ?? 0.01);
   const withGravity = options.gravity ?? true;
   const withCurvature = options.curvature ?? true;
   const euler = (options.scheme ?? 'rk4') === 'euler';
@@ -255,6 +298,15 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
   const gravityImpulse = new Sum();
   const groundX = new Sum();
   const groundY = new Sum();
+  const dragWork = new Sum();
+  // Energy given where a component stops (settles, turns to dust): no flight.
+  const stoppedEnergy = new Sum();
+  const ablatedEnergy = new Sum();
+  const flightAbs = new Sum();
+  let steps = 0;
+  let aggregated = 0;
+  const aggregateBelow =
+    options.aggregateBelowShare === undefined ? 0 : options.aggregateBelowShare * m0;
   const pieces: FcmPiece[] = [];
   const swarm = { mass: 0, energy: 0 };
   let components = 1;
@@ -286,13 +338,15 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
     out[4] = m * g * v * sinG * inv;
     out[5] = m * g * inv;
     out[6] = inv;
+    out[7] = 0.5 * Cd * area * rho * v * v * v * inv;
+    out[8] = 0.25 * sigma * rho * area * v * v * v * v * v * inv;
   };
 
-  const k1: State = [0, 0, 0, 0, 0, 0, 0];
-  const k2: State = [0, 0, 0, 0, 0, 0, 0];
-  const k3: State = [0, 0, 0, 0, 0, 0, 0];
-  const k4: State = [0, 0, 0, 0, 0, 0, 0];
-  const tmp: State = [0, 0, 0, 0, 0, 0, 0];
+  const k1 = zero();
+  const k2 = zero();
+  const k3 = zero();
+  const k4 = zero();
+  const tmp = zero();
 
   /** out = y + a·k, component by component. */
   const axpy = (out: State, y: State, a: number, k: State): void => {
@@ -303,11 +357,13 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
     out[4] = y[4] + a * k[4];
     out[5] = y[5] + a * k[5];
     out[6] = y[6] + a * k[6];
+    out[7] = y[7] + a * k[7];
+    out[8] = y[8] + a * k[8];
   };
 
   /** One step from h down by dh (> 0), by the chosen scheme. */
   const advance = (c: Component, h: number, y: State, dh: number): State => {
-    const out: State = [0, 0, 0, 0, 0, 0, 0];
+    const out = zero();
     derivative(c, h, y, k1);
     if (euler) {
       axpy(out, y, -dh, k1);
@@ -327,6 +383,8 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
     k1[4] += 2 * k2[4] + 2 * k3[4] + k4[4];
     k1[5] += 2 * k2[5] + 2 * k3[5] + k4[5];
     k1[6] += 2 * k2[6] + 2 * k3[6] + k4[6];
+    k1[7] += 2 * k2[7] + 2 * k3[7] + k4[7];
+    k1[8] += 2 * k2[8] + 2 * k3[8] + k4[8];
     axpy(out, y, -dh / 6, k1);
     return out;
   };
@@ -341,6 +399,14 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
     deposited.add(e);
     gravityWork.add(n * work);
     vapour.add(n * (y0[2] - y1[2]));
+    // Rule 1154 (b): the same energy from the drag's work and the ablated
+    // mass's energy, integrated apart.
+    const drag = n * (y1[7] - y0[7]);
+    const ablated = n * (y1[8] - y0[8]);
+    dragWork.add(drag);
+    ablatedEnergy.add(ablated);
+    flightAbs.add(Math.abs(e - drag - ablated));
+    steps += 1;
     const impulse = y1[5] - y0[5];
     gravityImpulse.add(n * impulse);
     // The air's impulse: what the component lost, gravity's impulse counted.
@@ -351,6 +417,7 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
   /** Give a component's whole kinetic energy and momentum to the air here. */
   const stopHere = (c: Component, into: Sum): void => {
     const e = c.n * 0.5 * c.mass * c.v * c.v;
+    stoppedEnergy.add(e);
     energyPerBin[binOf(c.h)] = (energyPerBin[binOf(c.h)] ?? 0) + e;
     deposited.add(e);
     airX.add(c.n * c.mass * c.v * Math.cos(c.gamma));
@@ -377,6 +444,11 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
   const children = (p: Component): Component[] => {
     // The body not yet broken (its bulk density) breaks into the material's.
     const rho = p.whole ? rhoMat : p.rho;
+    // Rule 1150: the aggregated tail, a light piece broken wholly to a cloud.
+    if (p.mass < aggregateBelow) {
+      aggregated += p.n;
+      return [cloudOf(p, p.mass, p.n, rho)];
+    }
     const solid = (mass: number, k: number): Component => ({
       ...p,
       whole: false,
@@ -439,7 +511,9 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
     b[2] <= a[2] &&
     b[1] > 0 &&
     b[1] < Math.PI &&
-    Math.abs(b[0] - a[0]) <= 0.5 * a[0];
+    Math.abs(b[0] - a[0]) <= maxChange * a[0] &&
+    a[2] - b[2] <= maxChange * a[2] &&
+    Math.abs(b[3] - a[3]) <= maxChange * Math.max(a[3], 1e-300);
 
   /** A cloud's terminal speed at a state: where it settles (rule 1138 (c)). */
   const cloudTerminal = (h: number, y: State): number =>
@@ -447,13 +521,13 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
 
   /** Fly a component to its end: the ground, a break, the floor, rest. */
   const fly = (c: Component): void => {
-    let y: State = [c.v, c.gamma, c.mass, c.radius, 0, 0, 0];
+    let y: State = [c.v, c.gamma, c.mass, c.radius, 0, 0, 0, 0, 0];
     let h = c.h;
     const pressure = (hh: number, st: State): number => density(hh) * st[0] * st[0];
     for (;;) {
       const here = (): Component => ({ ...c, v: y[0], gamma: y[1], mass: y[2], radius: y[3], h });
-      // A cloud slowed to its terminal speed settles where it is.
-      if (c.cloud && withGravity && y[0] <= cloudTerminal(h, y)) {
+      // A cloud slowed to within 1 % of its terminal speed settles where it is.
+      if (c.cloud && withGravity && y[0] <= settleAbove * cloudTerminal(h, y)) {
         stopHere(here(), settled);
         return;
       }
@@ -577,7 +651,7 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
         return out;
       };
       // The first flight: the body as one solid, broken into its groups.
-      let y: State = [start.v, start.gamma, start.mass, 0, 0, 0, 0];
+      let y: State = [start.v, start.gamma, start.mass, 0, 0, 0, 0, 0, 0];
       let h = start.h;
       let disrupted: Component | null = null;
       while (h > 0) {
@@ -653,7 +727,14 @@ export function fcmEntry(body: FcmBody, options: FcmOptions): FcmResult {
       massResidual,
       energyResidual,
       momentumResidual,
+      dragWork: dragWork.value,
+      ablatedEnergy: ablatedEnergy.value,
+      flightResidual:
+        (deposited.value - stoppedEnergy.value - dragWork.value - ablatedEnergy.value) / E0,
+      flightAbsResidual: flightAbs.value / E0,
     },
+    steps,
+    aggregated,
   };
 }
 
@@ -674,5 +755,81 @@ export function fcmProfile(r: FcmResult): {
     altitudeKm,
     ktPerKm,
     peak: { altitudeKm: altitudeKm[best] ?? 0, ktPerKm: ktPerKm[best] ?? 0 },
+  };
+}
+
+/** Rule 1151's thresholds: a secondary maximum's reach, separation and dip. */
+export interface FcmPeakThresholds {
+  secondaryShare: number;
+  separationKm: number;
+  dipShare: number;
+}
+
+/** Rule 1151: the main peak on a 1 km window sliding along the result's bins,
+ *  the highest secondary maximum that qualifies, whether the release is
+ *  robust, and the profile at the declared resolution beside the window. */
+export function fcmPeaks(
+  r: FcmResult,
+  t: FcmPeakThresholds
+): {
+  ktPerKm: number;
+  altitudeKm: number;
+  secondary: { altitudeKm: number; share: number } | null;
+  robust: boolean;
+  /** The peak on the fixed 1 km grid (edges at whole kilometres). */
+  gridKtKm: number;
+  /** The largest single bin, in kt/km, and its ratio to the window's peak. */
+  finestKtKm: number;
+  finestRatio: number;
+} {
+  const KT = 4.184e12;
+  const e = r.energyPerBin;
+  const w = Math.max(1, Math.round(1_000 / r.binM));
+  const n = e.length - w + 1;
+  const win = new Float64Array(Math.max(n, 1));
+  let sum = 0;
+  for (let i = 0; i < w && i < e.length; i++) sum += e[i] ?? 0;
+  win[0] = sum;
+  for (let i = 1; i < n; i++) {
+    sum += (e[i + w - 1] ?? 0) - (e[i - 1] ?? 0);
+    win[i] = sum;
+  }
+  const centreKm = (i: number): number => ((i + w / 2) * r.binM) / 1_000;
+  let main = 0;
+  for (let i = 1; i < n; i++) if ((win[i] ?? 0) > (win[main] ?? 0)) main = i;
+  const top = win[main] ?? 0;
+  // Local maxima, highest first; the first that qualifies is the secondary.
+  const maxima: number[] = [];
+  for (let i = 1; i < n - 1; i++) {
+    const x = win[i] ?? 0;
+    if (x > 0 && x >= (win[i - 1] ?? 0) && x > (win[i + 1] ?? 0) && i !== main) maxima.push(i);
+  }
+  maxima.sort((a, b) => (win[b] ?? 0) - (win[a] ?? 0));
+  let secondary: { altitudeKm: number; share: number } | null = null;
+  for (const j of maxima) {
+    if (Math.abs(centreKm(j) - centreKm(main)) < t.separationKm) continue;
+    const [a, b] = j < main ? [j, main] : [main, j];
+    let low = Infinity;
+    for (let i = a; i <= b; i++) low = Math.min(low, win[i] ?? 0);
+    if (low < t.dipShare * Math.min(win[j] ?? 0, top)) {
+      secondary = { altitudeKm: centreKm(j), share: top > 0 ? (win[j] ?? 0) / top : 0 };
+      break;
+    }
+  }
+  let grid = 0;
+  for (let start = 0; start < e.length; start += w) {
+    let g = 0;
+    for (let i = start; i < start + w; i++) g += e[i] ?? 0;
+    grid = Math.max(grid, g);
+  }
+  const finest = e.reduce((a, x) => Math.max(a, x), 0) / (r.binM / 1_000);
+  return {
+    ktPerKm: top / KT,
+    altitudeKm: centreKm(main),
+    secondary,
+    robust: secondary === null || secondary.share < t.secondaryShare,
+    gridKtKm: grid / KT,
+    finestKtKm: finest / KT,
+    finestRatio: top > 0 ? finest / top : 0,
   };
 }

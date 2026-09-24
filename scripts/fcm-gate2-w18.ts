@@ -565,6 +565,63 @@ writeFileSync(
 );
 
 const f3 = (x: number): string => String(Number(x.toPrecision(3)));
+
+/** Rule 1159: every corner, as a distribution, and each target met alone. */
+function cornerTable(r: (typeof results)[number]): string[] {
+  const rows = r.cornerRows as {
+    peakKtKm: number;
+    peakAltitudeKm: number;
+    flaresKm: number[];
+    landedKg: number;
+    largestKg: number;
+  }[];
+  const q = (xs: number[], f: number): number => {
+    const s = [...xs].sort((a, b) => a - b);
+    return s[Math.min(s.length - 1, Math.floor(f * (s.length - 1) + 0.5))] ?? 0;
+  };
+  const line = (name: string, xs: number[]): string =>
+    `| ${name} | ${[0, 0.25, 0.5, 0.75, 1].map((f) => f3(q(xs, f))).join(' | ')} |`;
+  const alone = [
+    ...r.flareMatch.map(
+      (m) => `the flare near ${String(m.statedKm)} km: ${String(m.corners)} of ${String(r.corners)}`
+    ),
+    ...(r.peakBand === null
+      ? []
+      : [
+          `the peak in ${f3(r.peakBand[0])}–${f3(r.peakBand[1])} kt/km: ${String(rows.filter((x) => x.peakKtKm >= (r.peakBand?.[0] ?? 0) && x.peakKtKm <= (r.peakBand?.[1] ?? 0)).length)} of ${String(r.corners)}`,
+        ]),
+    ...(r.landedStated === null
+      ? []
+      : [
+          `the landed mass in ${String(r.landedStated.range[0])}–${String(r.landedStated.range[1])} kg: ${String(rows.filter((x) => x.landedKg >= (r.landedStated?.range[0] ?? 0) && x.landedKg <= (r.landedStated?.range[1] ?? 0)).length)} of ${String(r.corners)}`,
+        ]),
+  ];
+  return [
+    `Every corner, as a distribution (${String(r.corners)} corners):`,
+    '',
+    '| Quantity | least | first quartile | median | third quartile | most |',
+    '| --- | --- | --- | --- | --- | --- |',
+    line(
+      'main peak (kt/km)',
+      rows.map((x) => x.peakKtKm)
+    ),
+    line(
+      'its altitude (km)',
+      rows.map((x) => x.peakAltitudeKm)
+    ),
+    line(
+      'landed (kg)',
+      rows.map((x) => x.landedKg)
+    ),
+    line(
+      'largest piece (kg)',
+      rows.map((x) => x.largestKg)
+    ),
+    '',
+    `Each target alone: ${alone.join('; ')}.`,
+    '',
+  ];
+}
 const pct = (x: number): string => `${String(Number((x * 100).toPrecision(2)))} %`;
 const lines = [
   '# FCM round, gate 2 (c) — W18’s structured bodies',
@@ -577,6 +634,17 @@ const lines = [
   'a declared development range is explored like W18’s. Each row is a partial comparison (rule 1142',
   '(d)): whether the branch, given the structure W18 describes, can behave as W18 says its own did —',
   'the flares’ altitudes within 1 km on the 1 km profile, the peak, the landed mass.',
+  '',
+  'Rule 1159’s reading: **W18 partial, with its discrepancies named** — rebuilding W18’s groups from its text',
+  'and trying the corners of its ranges is a study of sensitivity, not a reproduction with W18’s parameters,',
+  'which W18 does not print. No corner is selected afterwards: every one is counted below, and the few that',
+  'meet a case’s targets together may inform the development tuning, never stand for the gate.',
+  '',
+  'The uncertainty of reading: W18 gives its flares in words («around 37 km», «near 53 km», «around 32 and 36',
+  'km»), read here ±1 km; its figures are not read at all. Where several peaks, the figures’ resolution or the',
+  'parameters W18 leaves unsaid do not let the 1 km criterion decide, it is **not applicable**, and the',
+  'comparison says what the branch does, not whether it passes. The Chelyabinsk band 67–109 kt/km is derived',
+  'from W18’s luminous efficiencies (13–21 % about 17 %), not printed by W18.',
   '',
   ...results.flatMap((r) => [
     `## ${r.case}`,
@@ -645,6 +713,7 @@ const lines = [
       ', '
     )}: the nominal ${r.joint.nominal ? 'does' : '**does not**'}; ${String(r.joint.corners)} of ${String(r.corners)} corners do.`,
     '',
+    ...cornerTable(r),
     `The ledger’s worst residual over every run: ${r.worstLedger.toExponential(1)}.`,
     '',
   ]),
