@@ -271,40 +271,53 @@ configuration reads from the identical stream key regardless of `settleWithin` �
 itself drawn — so the three thresholds' draws are identical, not merely aggregately comparable; completion
 itself does not change on any of the 71 pairs.
 
-**The reviewer's first correction, applied: median AND max, by configuration, not pooled alone.** The
-pooled median move is small — **0.0144 percentage points** of settled-mass share between the tightest and
-loosest threshold — but the **pooled max move is 70.6 percentage points**, three thousand times larger.
-The tail is not evenly spread: broken down by configuration (18 pairs each, M2/capped 17 since Tunguska
-never completes there), the median stays under 0.03 percentage points in all four, but the max move is
-17.6 % (M1/unlimited), **70.6 % (M1/capped)**, 3.9 % (M2/unlimited), **34.9 % (M2/capped)**. The two
-**capped** configurations are the ones with a large tail; both **unlimited** configurations stay small at
-both the median and the max. The single largest mover is Chelyabinsk/M1/capped itself: settled share goes
-5.5 % (tightest threshold) → 42.9 % (baseline) → 76.0 % (loosest), while ground share — the complementary
-figure, reaching h = 0 — goes the other way, 73.9 % → 36.5 % → 3.4 %, on the SAME single produced draw. A
-hundred-fold change in `settleWithin` very nearly inverts which of "settled" or "reaches the ground" holds
-most of this draw's mass. This is the same configuration already named in deviation D16's capped-cloud
-pathology (a capped cloud's area, and so its ablation rate, stops growing once the cap is reached). This
-audit does not diagnose why the capped configurations are far more sensitive to `settleWithin` than the
-unlimited ones; it reports that they are, and that the two families should not be described by one pooled
-number.
+**The reviewer's first correction, applied twice over: median AND max, AND max weighted by how many draws
+produced it — a single-draw extreme is a real vulnerability of that one run, not a stable estimate of how
+often the effect occurs.** The pooled median move is small — **0.0144 percentage points** of settled-mass
+share between the tightest and loosest threshold — and the pooled max move is 70.6 percentage points, from
+Chelyabinsk/M1/capped, **on that case's one produced draw**. Splitting the max by how many draws actually
+produced it changes the picture from "capped is volatile" to something sharper:
+
+- **Among the 200-draw cases** (the reliable sample; single-draw presets set aside), the two **unlimited**
+  configurations' largest move is **0.0174 percentage points** — 2008 TC3/M1/unlimited, indistinguishable
+  from the tiny medians already reported. Sensitivity in the unlimited configurations is modest everywhere
+  checked, not merely at the median.
+- **Among those same 200-draw cases**, the two **capped** configurations move substantially and
+  repeatedly: 2008 TC3 29.2 % (M1) / 27.3 % (M2), Tagish Lake 15.6 % / 15.2 %, Carancas 7.9 % / 7.5 %,
+  Košice 2.2 % / 1.2 % — six of the eighteen 200-draw cases move by more than a percentage point in the
+  capped configurations, none do in the unlimited ones. This is not a single-draw artefact: it is a
+  reproducible pattern specific to capped clouds, present across many independent draws.
+- **The two single-draw presets** (Chelyabinsk, Tunguska) add the largest individual numbers — Chelyabinsk
+  /M1/capped's settled share goes 5.5 % (tightest threshold) → 42.9 % (baseline) → 76.0 % (loosest), ground
+  share the complementary 73.9 % → 36.5 % → 3.4 %, very nearly inverting which category holds most of that
+  one draw's mass; Tunguska/M1/unlimited moves 17.6 % on its own one draw, the only unlimited case to move
+  by more than a fraction of a percentage point anywhere in this sweep. **Both are n = 1: real observations
+  of what can happen on a single realisation, not a frequency estimate for that configuration** — kept
+  separate here from the 200-draw evidence above, not blended into one number, and not smoothed away either.
+
+**Restated, correctly this time: sensitivity is typically modest in every configuration; the tail is very
+wide specifically in the capped configurations, and reproducibly so across many draws — not zero, but far
+smaller, in the unlimited ones.** This co-occurs with deviation D16's already-known capped-cloud pathology
+(a capped cloud's area, and so its ablation rate, stops growing once the cap is reached) — **a plausible
+link, not a demonstrated causal mechanism**; this audit does not trace why capped configurations move more,
+only that they do, reproducibly, and that no single pooled number describes both families honestly.
 
 Ground mass (solid pieces plus cloud swarm reaching the ground) is tracked apart from the settled share and
-moves by nearly the same amount in the same pairs (0.7057 vs 0.7059 percentage points at the largest
-mover) — in the capped configurations, a looser threshold does not merely reclassify "settled" mass, it
-moves mass between "settled" and "reaches the ground" categories that this project's own landed-mass
-figures (H1, H3, H5, rule 1178 (a)) are built from. **This is a genuine, unresolved sensitivity in the
-capped configurations specifically — not a claim that `settleWithin` should be changed, and not evidence
-either way about the physical fate of the settled mass** — only that the capped-cloud pathology already
-named in D16 is numerically unstable with respect to this threshold, where the unlimited configurations are
-not. The ledger's own balance stays at machine precision throughout every threshold and every pair
-(residuals of order 10⁻¹⁶, no case exceeding gate 1's tolerance).
+moves by nearly the same amount in the same pairs — in the capped configurations, a looser threshold does
+not merely reclassify "settled" mass, it moves mass between "settled" and "reaches the ground" categories
+that this project's own landed-mass figures (H1, H3, H5, rule 1178 (a)) are built from. **This is a
+genuine, unresolved sensitivity in the capped configurations specifically — not a claim that `settleWithin`
+should be changed, and not evidence either way about the physical fate of the settled mass.** The ledger's
+own balance stays at machine precision throughout every threshold and every pair (residuals of order
+10⁻¹⁶, no case exceeding gate 1's tolerance).
 
 **Conclusion, restricted to what this numerical check actually shows**: for the two unlimited-cloud
-configurations, the settling this audit reports is a stable feature of the trajectory, largely independent
-of where `settleWithin` is set. For the two capped-cloud configurations, it is not — a small number of
-cases move substantially with the threshold, entangled with the already-known capped-cloud pathology. This
-does not answer what the settled mass physically becomes next (still open, per rule 1190), and it is not,
-on its own, grounds to retune `settleWithin` or to treat the capped configurations' figures above as
-settled.
+configurations, settling is a stable feature of the trajectory across both single draws and 200-draw
+ensembles, essentially independent of where `settleWithin` is set. For the two capped-cloud configurations,
+it is not — a reproducible subset of cases (not only the single-draw extremes) moves substantially with the
+threshold, alongside the already-known capped-cloud pathology, plausibly linked but not shown to share a
+mechanism. This does not answer what the settled mass physically becomes next (still open, per rule 1190),
+and it is not, on its own, grounds to retune `settleWithin` or to treat the capped configurations' figures
+above as settled.
 
 These findings inform the causal dossier the reviewer asked for next — not decided here.
