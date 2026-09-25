@@ -1,5 +1,5 @@
 /**
- * Rules 1178 to 1189 — the opening document of the survival–light round, on
+ * Rules 1178 to 1191 — the opening document of the survival–light round, on
  * the reviewer's approval of 25 September 2026: a round of development on the
  * FCM branch's own physics, before any test that could adopt it, and — apart
  * — the custody protocol and the reconnaissance of a genuinely blind fifth
@@ -383,7 +383,8 @@ export const FCM_H5_DOMINANCE_MARGIN = 2;
  * NO NEW PHYSICS, and no hypothesis tested yet — a measurement, the
  * reviewer's own first step of "misurare, poi intervenire un meccanismo alla
  * volta" (measure, then intervene one mechanism at a time). Its result
- * informs the dossier of rule 1190, not a law.
+ * informs the cloud audit of rule 1190 and the dossier of rule 1191, not a
+ * law.
  *
  * RULE 1189 (a). WHAT IS RECORDED, for every break the branch produces —
  * the initial disruption of a structured body included — and for every
@@ -423,7 +424,7 @@ export const FCM_H5_DOMINANCE_MARGIN = 2;
  * that eventually lands versus is lost to each other fate, and how these
  * relate to the residual altitude a landing child had (its own birth
  * altitude, not only its generation). No threshold is chosen here to call a
- * pattern "the cause": this rule reports what the cascade does: rule 1190's
+ * pattern "the cause": this rule reports what the cascade does: rule 1191's
  * dossier is where a candidate mechanism, if any is discriminable, gets
  * proposed and its falsification named.
  *
@@ -431,4 +432,65 @@ export const FCM_H5_DOMINANCE_MARGIN = 2;
  * as it is: this audit changes no default, no prior, no branch of the
  * engine — only what is recorded of a run that would happen identically
  * without it.
+ *
+ * RULE 1190. THE CLOUD'S OWN AUDIT — the reviewer's correction to rule
+ * 1189's first result (25 September 2026): 93.2 % of the body's mass,
+ * pooled, was reported "settled" — stopped once a cloud reaches within
+ * `settleWithin` (1 %) of its own terminal speed (rule 1138 (c)). That stop
+ * is a NUMERICAL condition, chosen so the integration does not stall
+ * (deviation D9): by itself it says nothing about the material's later,
+ * physical fate. Rule 1189's own report is accepted as what the engine
+ * accounts for in its completed runs — not as a claim that 93.2 % of the
+ * true mass never reaches the ground; the two are conflated nowhere in the
+ * branch's own physics, only in a reading of the audit that this rule now
+ * forecloses. This rule does not sum "settled" mass into any ground- or
+ * meteorite-mass claim: dispersed dust and a recoverable fragment are not
+ * the same observable, and nothing here decides which "settled" mass is
+ * which.
+ *
+ * A second, independent correction, found while checking the first: the
+ * "largest child" rule 1189 reported at a break can be — and at Chelyabinsk,
+ * every break of the one produced draw, was — the CLOUD, not a solid
+ * fragment, wherever the draw's own cloud share exceeds its largest solid
+ * fragment's share. This is not a bug in what was measured; it is a gap in
+ * how it was reported: one column conflated "largest of every child" with
+ * an implicit reading of "the dominant surviving solid," which is what
+ * matters for H5's genealogy question. Rule 1189's own report is corrected,
+ * not re-run: `largestChildShare` (any component) and
+ * `largestSolidChildShare` (solid only, or null where every child is a
+ * cloud) are reported apart from here on, alongside the cloud's own share,
+ * already present.
+ *
+ * RULE 1190 (a). WHAT IS ADDED TO EVERY STOPPED COMPONENT'S RECORD (rule
+ * 1189 (a), unchanged for every other field): the EXACT reason integration
+ * stopped — `'terminalVelocity'` (a cloud within `settleWithin` of its own
+ * terminal speed), `'nonPhysicalStep'` (rule 1141 (a)'s halving exhausted:
+ * the same branch a solid can also stop in, at `floorKg` or an unphysical
+ * step), or `'massFloor'` (below `floorKg`, at birth or in flight) — and,
+ * for a cloud, its radius and its own local terminal speed at that instant
+ * (`Math.sqrt(2 m g(h) / (C_d ρ(h) π r²))`, the same closed form the sealed
+ * engine already computes to decide the stop, recorded rather than only
+ * compared). No new category is invented for what a stopped cloud becomes
+ * next (ablated, dispersed, suspended, deposited): rule 1189's own report
+ * already had no physics to decide that, and this rule adds none — only the
+ * state at the moment integration stopped, for whoever studies it next.
+ *
+ * RULE 1190 (b). THE ENGINE: the same fork, `fcmBranchAudit.ts`, extended —
+ * still no physics change, verified to the same exact-equality discipline
+ * as rule 1189 (b) before any case is read with the extension.
+ *
+ * RULE 1190 (c). THE SENSITIVITY, on `settleWithin` — a NUMERICAL check, not
+ * a tuning, because nothing about it moves any of H1 through H5's own
+ * results: the same development cases run at `settleWithin` a tenth and ten
+ * times rule 1138 (c)'s own value (0.1 % and 10 %, against the baseline
+ * 1 %), comparing the settled-mass share and the ledger's own balance
+ * (rule 1141 (a)) across the three. A share that moves by a wide margin
+ * says the stop condition itself governs the result; one that barely moves
+ * still leaves the settled mass's physical fate exactly as open as before —
+ * this rule decides the first question, not the second.
+ *
+ * RULE 1190 (d). NO ADOPTION, no new claim about ground or meteorite mass:
+ * the sealed candidate (rule 1162) stays untouched, and `settleWithin`'s own
+ * value (rule 1138 (c)) is not changed by what this rule finds — only read
+ * at three points to see whether it matters.
  */
