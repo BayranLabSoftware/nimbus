@@ -175,6 +175,46 @@ export const RULE_1193_WRITTEN = '2026-09-25' as const;
 export const RULE_1194_WRITTEN = '2026-09-25' as const;
 
 /**
+ * RULE 1194, ITEM (2), READ FURTHER: the two blast laws are not a loose
+ * end that only needs picking one -- `casualties.ts` already knows what
+ * the right answer is and does not do it. Its own comment above
+ * `BlastCasualtyInput.chemicalBlast` says: "The band edges [12 psi, 2 psi]
+ * follow it, so that the 12 psi and 2 psi circles sit on the same curve
+ * as the rings they are measured from. Read only for a chemical charge."
+ * `blastCasualtyPlan`'s `ratio()` branches on `input.chargeType ===
+ * 'chemical'`; an impact is never that charge type, so it always falls to
+ * `overpressureRadiusRatio`, which calls `distanceForOverpressure`
+ * (`events/impact/damageRings.ts`) -- a bisection against
+ * `peakOverpressure`, a FIXED Kinney-Graham-family law, regardless of
+ * which law actually drew the 5 psi and 1 psi rings the 12 psi and 2 psi
+ * ones are meant to sit on. For a ground impact those rings come from
+ * `groundImpactOverpressure`'s `programHeld` default (Collins et al.'s
+ * Eq. 54 family, not Kinney-Graham); for an airburst, from
+ * `airburstOverpressureRange`. Neither is invertible by the same bisection
+ * `distanceForOverpressure` already does for the fixed law -- that
+ * bisection pattern is right, it is just closed over the wrong function.
+ * No new bisection is even needed: `groundImpactReach` and `airburstReach`
+ * (`effects/airburstBlast.ts`), the inverse of the two laws that draw the
+ * 5 psi and 1 psi rings themselves, already exist and are presumably what
+ * draws those rings today. `blastCasualtyPlan` cannot call them as it
+ * stands -- `BlastCasualtyInput` carries the two radii already computed,
+ * not the burst altitude, yield and ground range those functions need --
+ * so the fix is a threading change (`useAppStore.ts` to `casualties.ts`),
+ * not a missing piece of physics.
+ *
+ * NOT fixed this round. The technical path is clear and the functions to
+ * do it right already exist, but this touches every casualty count an
+ * impact produces, not an isolated reading -- exactly the surface this
+ * project has been most careful with
+ * (`THIRD_DEGREE_MORTALITY`'s own comment records a past mistake here,
+ * "no fire storm occurred at all and the model asserted one anyway").
+ * Doing it properly needs the numeric size of the shift measured against
+ * the development cases before it is trusted, not assumed small because
+ * the reasoning is sound -- a round of its own, not a block of this one.
+ */
+export const RULE_1194_ITEM_2_WRITTEN = '2026-09-25' as const;
+
+/**
  * RULE 1195. A12 — TEXTS THE INTERFACE PRINTS THAT ARE FALSE OR UNDISCLOSED,
  * TAKEN AS FOUND, NOT IN THE AUDIT'S OWN ORDER. Started in the same block as
  * rule 1194's first items because each fix is a sentence, not a redesign.
@@ -281,3 +321,43 @@ export const RULE_1195_WRITTEN = '2026-09-25' as const;
  *   round's to decide -- flagged for the reviewer, not guessed at.
  */
 export const RULE_1196_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1197. A11, ITEM (2), DONE -- THE CASUALTY BAND EDGES SIT ON THE LAW
+ * THAT DREW THE RINGS THEY ARE MEASURED FROM, FOR AN IMPACT TOO.
+ *
+ * The declaration (rule 1194, item 2, read further, above): `casualties.ts`
+ * already states the right rule in its own comment -- "the 12 psi and
+ * 2 psi circles sit on the same curve as the rings they are measured
+ * from" -- and already follows it for a chemical explosion
+ * (`chargeType === 'chemical'`, Kingery-Bulmash), but never for an impact,
+ * which always fell through to a fixed Kinney-Graham-family bisection
+ * (`overpressureRadiusRatio` → `distanceForOverpressure` →
+ * `peakOverpressure`) regardless of which law drew the 5 psi and 1 psi
+ * rings it was scaling from.
+ *
+ * The fix, decided here before writing it: `simulate.ts` already computes
+ * the 5 psi, 1 psi and 0.5 psi (`lightDamage`) rings through one function,
+ * `blastRing(surface, air, threshold)`, that reads the ground-impact law
+ * (`groundImpactReach`, itself `GroundBlast`-aware) where a body reaches
+ * the ground and the larger of the project's two Kinney-Graham rings
+ * otherwise (`entry.shockWaveRadii`, `surfaceDamage`) -- the same choice,
+ * by construction, that drew the rings the panel shows. Two more calls to
+ * the SAME function, at the OTA bands' own 12 psi and 2 psi, give the two
+ * missing radii on the same law, no new bisection and no new physics.
+ * These become two new fields of `ImpactDamageRadii`
+ * (`overpressure12psi`, `overpressure2psi`), threaded through
+ * `useAppStore.ts` to `blastCasualtyPlan` as two new, optional
+ * `BlastCasualtyInput` fields (`overpressure12psiRadius`,
+ * `overpressure2psiRadius`); `casualties.ts`'s `ratio()` scaling stays,
+ * unchanged, as the fallback an explosion with no impact-drawn rings still
+ * needs.
+ *
+ * What this rule commits to before any number is read: the shift is
+ * measured on every development preset before it is called done, printed
+ * as a ratio of the old 12 psi and 2 psi radii to the new ones, and if any
+ * preset's shift is large enough to plausibly move a band's population by
+ * a factor worth noticing, that is reported exactly as it reads --
+ * nothing here is re-tuned to make the shift look smaller.
+ */
+export const RULE_1197_WRITTEN = '2026-09-25' as const;
