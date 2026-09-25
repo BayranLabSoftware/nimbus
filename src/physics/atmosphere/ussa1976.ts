@@ -70,8 +70,12 @@ export const USSA_SEA_LEVEL_DENSITY = 1.225;
 const G0 = 9.806_65;
 /** Mean molar mass of dry air (kg/mol). USSA-76 §1.3.1. */
 const M_AIR = 0.028_964_4;
-/** Universal gas constant (J/(mol·K)). USSA-76 §1.3.1. */
-const R_STAR = 8.314_462_618;
+/** Universal gas constant (J/(mol·K)). USSA-76 §1.3.1 gives 8.31432, not the
+ *  modern CODATA value (8.314462618) this file carried until rule 1194 (an
+ *  outside audit, A11): the standard fixes its own constant, and the other
+ *  two implementations of it in this codebase (`effects/ussa1976Entry.ts`,
+ *  `effects/standardAtmosphere.ts`) already use 8.31432. */
+const R_STAR = 8.314_32;
 
 interface AtmosphericLayer {
   /** Layer-base geopotential altitude (m). */

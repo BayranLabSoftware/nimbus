@@ -5,6 +5,47 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## [Unreleased]
 
+### Fixed
+
+- **The scorecard now counts what its own evidence already said in prose
+  (rule 1193).** An outside audit written from a NASA laboratory's point of
+  view found that I2 and I3 read "met" on `docs/GOLD_STANDARD.md`'s public
+  count only because of amendments that read them against a tool of the
+  field instead of the bound each asked for as first written — and the
+  second amendment to I3 rewrote its own 90 %-of-runs clause in the same
+  commit that first computed what the field's tool achieves against it. Both
+  rules are frozen, permanently, at the status their original bound gives
+  them (I2 not met: 13.74 km median against 5 km asked; I3 two of four
+  things held). What the amendments measured opens as new rules, I5 and I6,
+  counted beside them and never merged back in. The Impacts domain's count
+  reads 6.9 of 9 today, down from 8.0 — the point of the fix, not a side
+  effect of it.
+- **Level A now also runs on the configuration the product ships**, not only
+  on the reference's own assumptions I1 pins for it (`strengthLaw: 'density'`,
+  `craterDomain: 'legacy'`). Printed beside the pinned run in
+  `docs/VALIDATION_REPORT.md`: on the shipped default
+  (`strengthLaw: 'twoStage'`, `craterDomain: 'hypervelocity'`), 80.4 % of
+  readings are excellent against 90.6 % pinned.
+- **The Monte Carlo and the toll band no longer discard the scenario's own
+  impact angle.** Both drew a fresh angle from an unconditional sin 2θ
+  distribution on every iteration, silently ignoring whatever angle the
+  panel showed; `impactAngle` now joins `surfaceGravity`, `waterDepth` and
+  `impactorStrength` on the list of inputs the sampler holds fixed at the
+  caller's own scenario.
+- **One of the three implementations of the 1976 US Standard Atmosphere
+  carried the wrong gas constant.** `atmosphere/ussa1976.ts` used the modern
+  CODATA value (8.314462618) where USSA-76 §1.3.1 fixes its own (8.31432),
+  which the other two implementations already had right; corrected.
+- The firestorm hazard's zero rate-dispersion (its `low` and `mid` are both
+  0, by design, since the model cannot say a mass fire forms at all) is now
+  a **declared** property of `tripleSigmaLn`'s guard, not a silent one — and
+  named as a cause of the toll band's own coverage gap, not a fix of it.
+- Two constants that carried no source at all — the seafloor crater's 1/3.4
+  exponent and the iron threshold's 6 000 kg/m³ — now say so in place.
+- The methodology note on impact angle said it "does not change the airburst
+  altitude." It does, through sin θ in the same equation that reads strength
+  and speed; corrected in both languages.
+
 ### Licence
 
 - **Nimbus is now free software under the GNU Affero General Public

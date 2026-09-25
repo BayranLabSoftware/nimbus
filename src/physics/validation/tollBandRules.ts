@@ -117,7 +117,12 @@ export const TOLL_BAND_CANDIDATE: TollBandScatter = 'withVulnerability';
 /** Rule 184 (a): how far a row's central toll may move, as a fraction. */
 export const TOLL_BAND_CENTRE_TOLERANCE = 0.005;
 
-/** Rule 183: the σ a triple implies, reading its ends as a 5–95 % interval. */
+/** Rule 183: the σ a triple implies, reading its ends as a 5–95 % interval.
+ *  A `low` of 0 or less reads as "this hazard's own rate carries no
+ *  dispersion" — true by construction for the one triple this project gives
+ *  a `low` of exactly 0 (`casualties.ts`'s `FIRESTORM_MORTALITY`), where 0
+ *  means the hazard's occurrence, not its rate, is what is unknown (rule
+ *  1194, A11). */
 export function tripleSigmaLn(low: number, high: number): number {
   if (!(low > 0) || !(high > 0) || high <= low) return 0;
   return Math.log(high / low) / 3.29;

@@ -86,3 +86,80 @@
  * and nowhere it could be read as the same number twice.
  */
 export const RULE_1193_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1194. A11 — TWELVE PUNCTUAL DEFECTS ON THE DEFAULT PATH, TAKEN IN THE
+ * ORDER THE AUDIT LISTS THEM. Each moves a number or a declared status, so
+ * each is its own paragraph below, written before its fix, with a verdict:
+ * fixed now, or left open and said so — never silently dropped.
+ *
+ * (1) The Monte Carlo and the toll band drew a fresh impact angle from
+ *     sin 2θ on every iteration, discarding the caller's own angle
+ *     (`impactMonteCarlo.ts:99`, shared by `tollBand.ts` through
+ *     `impactSampler`) — documented as deliberate in the file's own
+ *     docstring, which is what made it easy to miss as a defect rather than
+ *     a choice. FIXED: `impactAngle` joins `surfaceGravity`, `waterDepth`
+ *     and `impactorStrength` on the list of inputs this wrapper does not
+ *     resample — the scenario's own chosen geometry, not a measured orbital
+ *     parameter. `sampleImpactAngle` itself is untouched (it still states a
+ *     real, citable distribution) and is simply no longer called from here.
+ *
+ * (3) The firestorm hazard's `low = mid = 0` (declaring that the model
+ *     cannot say a mass fire forms at all, not merely that its rate is
+ *     uncertain) silently zeroes `tripleSigmaLn`'s guard, so
+ *     `withVulnerabilityScatter` gives it no dispersion of its own — a
+ *     named cause of the band missing the record on 9 of 10 Japanese-city
+ *     held-out rows. FIXED as a **declared exclusion**, the audit's own
+ *     second option: both `tripleSigmaLn` and `FIRESTORM_MORTALITY` now say
+ *     in comments that this is why, not an accident. NOT fixed: the band's
+ *     actual coverage gap, which needs an occurrence-probability model this
+ *     round has no grounds to invent — said plainly, not implied fixed.
+ *
+ * (12) Three implementations of the 1976 US Standard Atmosphere
+ *      (`atmosphere/ussa1976.ts`, `effects/ussa1976Entry.ts`,
+ *      `effects/standardAtmosphere.ts`) carry the universal gas constant,
+ *      and one of the three read the modern CODATA value (8.314462618)
+ *      where USSA-76 §1.3.1 fixes its own, 8.31432 — the other two already
+ *      had it right. FIXED: `ussa1976.ts`'s `R_STAR` corrected to 8.31432.
+ *      NOT fixed: "a single implementation", the audit's own preferred
+ *      remedy — the three serve three different, largely non-overlapping
+ *      callers (volcano ashfall, volcano plume height, an atmosphere-table
+ *      validation script), and merging them safely is a refactor of its
+ *      own, not a constant fix; left open rather than rushed.
+ *
+ * (7)/(8) Constants "read backward from the program's output" or "without a
+ *     citation": most of what the audit's compressed list names already
+ *     carries an honest comment saying so on inspection —
+ *     `BLEND_HALF_WIDTH` (airburstBlast.ts) names the program's blend by
+ *     construction; `PROGRAM_WATER_CRATER_COEFFICIENT`
+ *     (tsunami/impactProgram.ts) is titled "as the program computes it";
+ *     `NEAR_SLOPE`/`MID_SLOPE` (seismic.ts) already say which paper
+ *     equation and which printed decimal they refine; the ejecta
+ *     asymmetry's 0.3 already says "not a published fit";
+ *     `IRON_FIELD_CUT_DIAMETER` already says "the project's, with no
+ *     source." Two genuinely carried no comment at all: the seafloor
+ *     crater's 1/3.4 exponent (`simulate.ts`) and `IRON_DENSITY = 6 000`
+ *     (`ironCraterField.ts`). FIXED: both now say, in place, that they are
+ *     the project's own with no primary source — flagged, not replaced,
+ *     since this round has no researched alternative to put in their
+ *     place. NOT fixed: finding or ruling out a primary source for either.
+ *
+ * Left open, not started this round, said so rather than left silent: (2)
+ * two blast laws inside one casualty count (`casualties.ts:505`,
+ * `useAppStore.ts:1764`); (4) fixed nuclear-flash thermal thresholds and the
+ * unused E^(1/6) scaling (`constants.ts`, `impactThermal.ts`,
+ * `simulate.ts:936`); (5) the seismic magnitude mixing Harkrider's Ms with
+ * an energy magnitude, and liquefaction extrapolated to M 9.9
+ * (`airburstSeismic.ts`, `simulate.ts:1211`); (6) Synolakis run-up with no
+ * breaking branch or ceiling (`simulate.ts:1502-1543`); (9) planar 1/r and
+ * r⁻³ geometry for blast and ejecta at planetary range
+ * (`airburstBlast.ts:284`, `ejecta.ts:56`); (10) the taxonomy selector
+ * setting a strength that silently opts every custom body out of the
+ * two-stage default, and measured cells that hold only at exactly
+ * 3 000 kg/m³ with no strength given (`ImpactCustomInputs.tsx`,
+ * `entryCells.ts`); (11) 46 `as number` casts in `simulate.ts` and bare
+ * numbers in mixed units elsewhere. Each needs either a design decision
+ * this file is not the place to make alone, or research this round has not
+ * done — continued in a later block of the same round, not abandoned.
+ */
+export const RULE_1194_WRITTEN = '2026-09-25' as const;

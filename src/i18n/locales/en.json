@@ -591,7 +591,7 @@
         "depth": "the hypocentre depth does not enter the intensities: the relation that draws them has no depth in it",
         "areas": "against the published ShakeMaps the painted areas are wrong by a factor of a few, in both directions — 2.6× too much ground at MMI VIII on Tōhoku, 0.10× of it on Northridge",
         "topography": "the field knows the ground stiffness but not the topography, the basin depth, or how shaking correlates from one place to the next",
-        "impactAngle": "the angle changes the crater and the ejecta, not the airburst altitude, which is read from strength and speed alone",
+        "impactAngle": "the angle changes the crater and the ejecta, and the airburst altitude too — through sin θ in the same equation that reads strength and speed: a shallower body bursts higher",
         "impactToll": "no impact death toll has ever been recorded, so the toll here is calibrated on explosions of the same energy",
         "explosionEnvelope": "measured up to the Tsar Bomba at 50 Mt and Hiroshima for the toll; beyond those the model extrapolates",
         "volcanoPlume": "the plume height follows the eruption rate alone: no wind shear, no atmospheric profile",

@@ -80,8 +80,11 @@ describe('the count toward a 9', () => {
 describe('the two measures beside the count', () => {
   // The amendment of 16 September 2026, evening: fidelity is verification,
   // I4's exact count and every bound the first amendment read against a tool
-  // of the field on the same rows; everything else is beyond.
-  const FIDELITY = ['G1', 'E1', 'E2', 'E3', 'T1', 'T2', 'T3', 'L1', 'L2', 'I1', 'I2', 'I4'];
+  // of the field on the same rows; everything else is beyond. Rule 1194
+  // (25 September 2026) moves I2 to beyond (its bound as first written asks
+  // for real observation, no tool of the field involved) and adds I5 and I6,
+  // both fidelity, carrying forward what the withdrawn amendments measured.
+  const FIDELITY = ['G1', 'E1', 'E2', 'E3', 'T1', 'T2', 'T3', 'L1', 'L2', 'I1', 'I4', 'I5', 'I6'];
   const FIDELITY_TOO = ['N1', 'N2', 'V1', 'V2', 'V3', 'V4'];
 
   it('puts every rule of a domain under one measure, as the amendment lists them', () => {

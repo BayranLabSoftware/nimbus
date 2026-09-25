@@ -727,6 +727,9 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const fSeafloor = oceanPartition.seafloorFraction;
   const fWater = oceanPartition.waterFraction;
 
+  // The exponent 1/3.4 is the project's, with no primary source (rule 1194,
+  // A11) -- flagged, not replaced: this round has no researched alternative
+  // to put in its place.
   const seafloorScale = Math.pow(fSeafloor, 1 / 3.4);
 
   // Iron strewn-field branch. Small iron meteorites that

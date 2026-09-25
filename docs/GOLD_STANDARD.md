@@ -229,20 +229,39 @@ the impact tsunami. Every departure carries its reason.
 altitude, a speed and an energy — at least 300, held out — the altitude at
 which the model's body deposits its energy lies within 5 km of the altitude
 of peak brightness in median absolute error, with a mean error within 3 km,
-for bodies of the form's default composition.
+for bodies of the form's default composition. **Frozen by the amendment of
+25 September 2026 below at the status this bound, exactly as first written,
+gives it — the reading against the program's own entry that the amendment of
+16 September 2026 added stands as I5 instead.**
 
 **I3. Air blast.** The band of an airburst's blast radius holds every
 measured airburst footprint — the forest flattened at Tunguska, the windows
 broken at Chelyabinsk — and at least 90 % of the shock-physics runs of
-Collins et al. 2017, and its width in radius is no more than ×3 — read,
-since the two amendments of 21 September 2026, against the field: the width
-against the band the reference gives its own three approximations at the same
-scenario, and the runs against the same band drawn about the field's tool. Both footprints and those
-runs have been read, and no other exists: this rule is a check, not a held-out
-test.
+Collins et al. 2017, and its width in radius is no more than ×3. Both
+footprints and those runs have been read, and no other exists: this rule is a
+check, not a held-out test. **Frozen by the amendment of 25 September 2026
+below at the status this bound, exactly as first written, gives it — the two
+clauses of 21 September 2026 that read its width and its runs against the
+field are withdrawn from this rule and stand as I6 instead.**
 
 **I4. Tolls.** The people inside each ring are counted within 5 % of an exact
 count on the same raster, and the toll carries the ceiling below.
+
+**I5. Entry, against the field.** Where the Earth Impact Effects Program is
+run on the same fireballs NASA JPL's catalogue gives an altitude, a speed and
+an energy for, the model's burst altitude agrees with the program's: either
+the model implements the program's entry equations on that set (G1's
+standard, verified rather than measured), or, where any fireball departs
+further than a named G1 exception explains, the model's median absolute
+error and the magnitude of its mean error are no larger than the program's
+own, against the same sky.
+
+**I6. Air blast, against the field.** For every complete airburst, the band
+the width of I3 forbids answers to Collins et al. 2017's own moving- and
+line-source approximations at the same yield and burst altitude, read at the
+static source I1 already holds the model to; and the same band holds at
+least as many of Collins et al. 2017's shock-physics runs as it holds when
+drawn about the program's own static source on the same runs.
 
 ## Explosions
 
@@ -321,7 +340,7 @@ A bound changes only by a dated amendment in this file that says why,
 written before the figure it touches has been measured on the set it names,
 and it is never loosened after a figure has failed it.
 
-Five amendments have been made, and they are below. The first re-anchors
+Six amendments have been made, and they are below. The first re-anchors
 bounds to the rule this file opened with, rather than loosening any: the
 verdict each rule reached under its bound as first written stays recorded, and
 no rule is met today that was not met before it. The second changes no bound
@@ -332,7 +351,11 @@ Andrea's decision, reads I3's width against the spread the field's reference
 gives its own approximations, as the first reads every bound whose quantity the
 field has a tool for, before any band this product draws has been scored. The
 fifth, by Andrea's decision the same afternoon, reads I3's shock-physics runs
-against the field's tool, as the first reads I2's fireballs.
+against the field's tool, as the first reads I2's fireballs. The sixth, after
+an outside audit found the fourth and fifth had rewritten I3 in place rather
+than opened a new rule beside it, freezes I2 and I3 at their bound as first
+written, permanently, and opens I5 and I6 to carry what the amendments after
+the first were actually measuring.
 
 ## Amendment of 16 September 2026: every validation bound read against the field
 
@@ -626,6 +649,66 @@ until a band is carried by the product, and the reading of the three clauses
 is made by rules written first. The figure this amendment re-reads was seen
 before it was written and is recorded beside it: under the clause as first
 written, 27 of 43 runs — 63 %, against 90 %.
+
+## Amendment of 25 September 2026: I2 and I3 frozen as first written; I5 and I6 opened
+
+**Why.** An audit written from a NASA laboratory's point of view
+(`~/Desktop/Nimbus-audit-NASA-2026-09-25.pdf`, commit 04eefcd, its figures
+checked against this repository before this amendment was written) found
+that this file's own discipline — a bound changes only by a dated amendment
+that says why, and is never loosened after a figure has failed it — was kept
+in the letter for I2 and broken in the letter for I3. The 16 September 2026
+amendment to I2 left it **pending**, not met, and only crossed to met in a
+later, separate commit once the program's own run was in hand: no bound was
+loosened after a figure failed it, because at the time of writing no figure
+existed. The second amendment of 21 September 2026 to I3, above, did not keep
+to that: it rewrote I3's own 90 %-of-runs clause in the same commit that
+first computed what the field's tool achieves against it (27 of 43), and its
+own text says so — "the figure this amendment re-reads was seen before it was
+written." A bound is not "read against the field" if it is rewritten, in the
+rule the field failed, to whatever the field happens to achieve.
+
+Both rules' evidence in `validation/goldStandardScorecard.ts` already
+recorded the verdict as first written beside the amended one, in prose. What
+this amendment corrects is that the _counted_ status — the one figure the
+public scorecard is built from — reflected only the amended reading. A
+reviewer who reads the number and not the paragraph saw a validation that
+was not there.
+
+**The amendment.** I2 and I3 are frozen, permanently, at the status their
+bound as first written gives them: I2 **not met** (13.74 km median, 12.75 km
+mean, against 5 km and 3 km, rules 76 to 79); I3 two of its four things held
+(both footprints), two not (63 % of runs against 90 %; 3.34× to 3.79× width
+against ×3). Neither status changes again, whatever a future run measures —
+a new rule opens instead, exactly as this file already requires. What the
+16 September and the two 21 September amendments were actually measuring —
+agreement with a tool of the field, not agreement with the sky — opens as
+**I5** (the fireball entry, carrying forward the 16 September reading) and
+**I6** (the airburst band, carrying forward the two 21 September readings).
+No figure in either changes: I5 and I6 report the same numbers I2 and I3's
+amended text already gave.
+
+**What this changes on the day it is written.** The Impacts domain's count,
+built from nine rules where two were counted under a reading their own text
+did not ask for, is built from eleven rules now: I1 to I6, G3 to G7. I2 moves
+from fidelity to beyond in the same amendment — its bound as first written
+asks the model to match real observation, which no tool of the field
+computes, and its old fidelity tag reflected the amendment this one
+withdraws, not the bound as first written. Read at this commit: **6.9 of 9**,
+down from 8.0 — fidelity 9.0 of 9 (I1, I4, I5, I6, all held), beyond 5.7 of 9
+(I2, I3, G3 to G7). This is the point of the amendment, not a side effect of
+it: the count now reads what a reviewer who trusts only the number, and not
+the paragraph beside it, would be told is true.
+
+**A second, separate correction the same day.** Level A (`eiepComparison.ts`)
+pins `strengthLaw: 'density'` and `craterDomain: 'legacy'` for I1's grid,
+which answers G1's question — does the model implement Collins et al.'s
+formulas — correctly, since those are the reference's own assumptions. It
+does not answer a different question I1 was never asked: how far the
+configuration the product actually ships (`strengthLaw: 'twoStage'`,
+`craterDomain: 'hypervelocity'`) reads from the program on the same grid.
+I1 is unchanged; `docs/VALIDATION_REPORT.md` now prints that second grid
+beside the first, under a heading that says which is which.
 
 ## Three decisions of 21 September 2026, which change no rule
 

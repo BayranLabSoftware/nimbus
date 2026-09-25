@@ -372,6 +372,41 @@
           },
           {
             "rule": "I2",
+            "measure": "beyond",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0,
+            "status": "not met",
+            "clauses": []
+          },
+          {
+            "rule": "I3",
+            "measure": "beyond",
+            "standsFor": [],
+            "holds": false,
+            "credit": 0.5,
+            "status": null,
+            "clauses": [
+              {
+                "name": "holds the forest flattened at Tunguska",
+                "status": "met"
+              },
+              {
+                "name": "holds the windows broken at Chelyabinsk",
+                "status": "met"
+              },
+              {
+                "name": "holds ≥90 % of Collins et al. 2017’s shock-physics runs",
+                "status": "not met"
+              },
+              {
+                "name": "width no more than ×3",
+                "status": "not met"
+              }
+            ]
+          },
+          {
+            "rule": "I4",
             "measure": "fidelity",
             "standsFor": [],
             "holds": true,
@@ -380,8 +415,8 @@
             "clauses": []
           },
           {
-            "rule": "I3",
-            "measure": "beyond",
+            "rule": "I5",
+            "measure": "fidelity",
             "standsFor": [],
             "holds": true,
             "credit": 1,
@@ -389,7 +424,7 @@
             "clauses": []
           },
           {
-            "rule": "I4",
+            "rule": "I6",
             "measure": "fidelity",
             "standsFor": [],
             "holds": true,
@@ -445,21 +480,21 @@
         ],
         "held": 8,
         "pending": 0,
-        "credit": 8,
-        "reading": 8,
+        "credit": 8.5,
+        "reading": 6.9,
         "fidelity": {
-          "rules": 3,
-          "held": 3,
+          "rules": 4,
+          "held": 4,
           "pending": 0,
-          "credit": 3,
+          "credit": 4,
           "reading": 9
         },
         "beyond": {
-          "rules": 6,
-          "held": 5,
+          "rules": 7,
+          "held": 4,
           "pending": 0,
-          "credit": 5,
-          "reading": 7.5
+          "credit": 4.5,
+          "reading": 5.7
         }
       },
       {
@@ -7752,7 +7787,31 @@
         "entry-paper-equations": 2,
         "low-burst-crater": 14
       },
-      "undocumented": []
+      "undocumented": [],
+      "shippedConfig": {
+        "shipped": {
+          "readings": 18116,
+          "medianPercent": 0.20823335655952846,
+          "p90Percent": 6.292537350731631,
+          "maxPercent": 6485.351922069084,
+          "bands": {
+            "excellent": 14563,
+            "explain": 2115,
+            "audit": 1438
+          }
+        },
+        "pinned": {
+          "readings": 18374,
+          "medianPercent": 0.04536884908494798,
+          "p90Percent": 1.8780311138058559,
+          "maxPercent": 6485.351922069084,
+          "bands": {
+            "excellent": 16652,
+            "explain": 1240,
+            "audit": 482
+          }
+        }
+      }
     }
   },
   "golden": {

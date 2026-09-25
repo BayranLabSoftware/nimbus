@@ -37,7 +37,8 @@ export type IronCraterField = 'cut' | 'mass';
  *  764 to 771 of validation/ironCraterFieldRules.ts. */
 export const DEFAULT_IRON_CRATER_FIELD: IronCraterField = 'mass';
 
-/** The density from which a body is drawn as an iron (kg/m³). */
+/** The density from which a body is drawn as an iron (kg/m³): the project's,
+ *  with no primary source (rule 1194, A11) -- flagged, not replaced. */
 export const IRON_DENSITY = 6_000;
 
 /** Under `cut`, the diameter below which an iron that breaks up is a strewn

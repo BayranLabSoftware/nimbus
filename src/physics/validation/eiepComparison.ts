@@ -45,7 +45,7 @@ export function eiepRowInput(
   row: EiepRow,
   options: Pick<
     ImpactScenarioInput,
-    'entryEquations' | 'entryBoundary' | 'craterField' | 'strengthLaw'
+    'entryEquations' | 'entryBoundary' | 'craterField' | 'strengthLaw' | 'craterDomain'
   > = {}
 ): ImpactScenarioInput {
   return {
@@ -67,7 +67,7 @@ export function simulateEiepRow(
   row: EiepRow,
   options: Pick<
     ImpactScenarioInput,
-    'entryEquations' | 'entryBoundary' | 'craterField' | 'strengthLaw'
+    'entryEquations' | 'entryBoundary' | 'craterField' | 'strengthLaw' | 'craterDomain'
   > = {}
 ): ImpactScenarioResult {
   return simulateImpact(eiepRowInput(row, options));
@@ -116,7 +116,10 @@ export interface EiepOneSided {
  *  only one side answers go to `oneSided`, where a caller asks for them. */
 export function eiepRatios(
   rows: readonly EiepRow[] = EIEP_REFERENCE,
-  options: Pick<ImpactScenarioInput, 'entryEquations' | 'entryBoundary' | 'craterField'> = {},
+  options: Pick<
+    ImpactScenarioInput,
+    'entryEquations' | 'entryBoundary' | 'craterField' | 'strengthLaw' | 'craterDomain'
+  > = {},
   oneSided?: EiepOneSided[]
 ): EiepRatio[] {
   const out: EiepRatio[] = [];

@@ -149,13 +149,20 @@ import {
   type EiepQuantity,
   type EiepSummary,
 } from '../src/physics/validation/eiepComparison.js';
-import { EIEP_READ_ON, EIEP_REFERENCE } from '../src/physics/validation/eiepReference.js';
+import {
+  EIEP_READ_ON,
+  EIEP_REFERENCE,
+  type EiepRow,
+} from '../src/physics/validation/eiepReference.js';
 import { EIEP_GRID, EIEP_GRID_READ_ON } from '../src/physics/validation/eiepGrid.js';
 import {
+  bandOf,
+  epsilonOf,
   LEVEL_A_BARS,
   LEVEL_A_DIFFERENCES,
   LEVEL_A_OPEN,
   runLevelASync,
+  type EpsilonBand,
   type LevelARun,
 } from '../src/physics/validation/levelA.js';
 import {
@@ -3608,7 +3615,10 @@ function levelBSection(score: LevelBScore): string {
 }
 
 /** Level A (phase 2 of the plan of 22 September 2026): every case, both grids. */
-function levelASection(run: LevelARun): string {
+function levelASection(
+  run: LevelARun,
+  shippedConfig: { shipped: LevelAConfigSummary; pinned: LevelAConfigSummary }
+): string {
   const pct = (x: number): string => fixed(x, 2).toString();
   const rows = run.summaries.map(
     (s) =>
@@ -3667,6 +3677,8 @@ function levelASection(run: LevelARun): string {
             .join(', ')}`
       ),
     ...[...new Set(Object.values(LEVEL_A_OPEN))].map((note) => `\nOpen: ${note}`),
+    '',
+    levelAShippedConfigSection(shippedConfig),
   ].join('\n');
 }
 
@@ -4092,6 +4104,76 @@ function summary(net: CalibrationNet, replay: AggregateBucket, golden: Aggregate
   ]);
 }
 
+/**
+ * Rule 1193(b): level A a second time, on the configuration the product
+ * ships (`strengthLaw: 'twoStage'`, `craterDomain: 'hypervelocity'`), same
+ * grid, same rows, same ε and the same three bands I1's pinned run uses
+ * (`strengthLaw: 'density'`, `craterDomain: 'legacy'`, the reference's own
+ * assumptions). No cause is attributed here — `LEVEL_A_DIFFERENCES` was
+ * written against the pinned run's own numbers — so this reports counts
+ * only, printed beside the pinned run and nowhere read as the same number.
+ */
+interface LevelAConfigSummary {
+  readonly readings: number;
+  readonly medianPercent: number;
+  readonly p90Percent: number;
+  readonly maxPercent: number;
+  readonly bands: Record<EpsilonBand, number>;
+}
+
+function summariseLevelAConfig(
+  rows: readonly EiepRow[],
+  options: { strengthLaw: 'twoStage' | 'density'; craterDomain: 'hypervelocity' | 'legacy' }
+): LevelAConfigSummary {
+  const pairs = eiepRatios(rows, options);
+  const eps = pairs.map(epsilonOf).sort((a, b) => a - b);
+  const bands: Record<EpsilonBand, number> = { excellent: 0, explain: 0, audit: 0 };
+  for (const e of eps) bands[bandOf(e)]++;
+  const quantile = (q: number): number => eps[Math.round(q * (eps.length - 1))] ?? Number.NaN;
+  return {
+    readings: pairs.length,
+    medianPercent: quantile(0.5) * 100,
+    p90Percent: quantile(0.9) * 100,
+    maxPercent: (eps[eps.length - 1] ?? Number.NaN) * 100,
+    bands,
+  };
+}
+
+function runLevelAShippedConfig(rows: readonly EiepRow[]): {
+  shipped: LevelAConfigSummary;
+  pinned: LevelAConfigSummary;
+} {
+  return {
+    shipped: summariseLevelAConfig(rows, {
+      strengthLaw: 'twoStage',
+      craterDomain: 'hypervelocity',
+    }),
+    pinned: summariseLevelAConfig(rows, { strengthLaw: 'density', craterDomain: 'legacy' }),
+  };
+}
+
+function levelAShippedConfigSection(s: {
+  shipped: LevelAConfigSummary;
+  pinned: LevelAConfigSummary;
+}): string {
+  const pct = (n: number, of: number): string => `${((100 * n) / of).toFixed(1)} %`;
+  const row = (label: string, x: LevelAConfigSummary): string =>
+    `| ${label} | ${x.readings.toString()} | ${x.medianPercent.toFixed(2)} | ${x.p90Percent.toFixed(2)} | ${x.maxPercent.toFixed(1)} | ${pct(x.bands.excellent, x.readings)} | ${x.bands.explain.toString()} | ${x.bands.audit.toString()} |`;
+  return [
+    "Rule 1193(b): I1 above pins the reference's own assumptions " +
+      "(`strengthLaw: 'density'`, `craterDomain: 'legacy'`) to ask G1's question — does the model " +
+      'implement the Earth Impact Effects Program’s equations. It does not say how far the ' +
+      "configuration the product ships (`strengthLaw: 'twoStage'`, `craterDomain: 'hypervelocity'`) " +
+      'reads from the program on the same grid, which nothing else asked either. Same rows, same ε, ' +
+      'the same three bands; no cause attributed, nothing rerun to read better.',
+    '',
+    '| Configuration | Readings | Median ε % | P90 ε % | Max ε % | < 2 % | 2–10 % | > 10 % |',
+    '| --- | --: | --: | --: | --: | --: | --: | --: |',
+    row('Pinned (reference’s own assumptions, I1 above)', s.pinned),
+    row('Shipped (the product’s default)', s.shipped),
+  ].join('\n');
+}
+
 function main(): void {
   const replayFixtures = loadReplayFixtures();
   const replayReports = replayFixtures.map(runReplay);
@@ -4107,6 +4189,7 @@ function main(): void {
   const byRule = ruleCells(ruleSets);
   const eiep = runEiep();
   const levelA = runLevelASync([...EIEP_REFERENCE, ...EIEP_GRID]);
+  const levelAShippedConfig = runLevelAShippedConfig([...EIEP_REFERENCE, ...EIEP_GRID]);
   const levelB = scoreLevelB();
   const ringChecks = verifyRings();
   const contourLaws = runContourLaws();
@@ -4321,7 +4404,7 @@ ${eiepSection(eiep)}
 
 ### Level A: implementation verified, case by case
 
-${levelASection(levelA)}
+${levelASection(levelA, levelAShippedConfig)}
 
 ### Level B: the model against observed events, preregistered
 
@@ -4919,6 +5002,13 @@ otherwise.
             target: a.pair.row.target,
             distanceKm: a.pair.row.distanceKm,
           })),
+        // Rule 1193(b): the same grid, read a second time on the configuration
+        // the product ships, printed beside the pinned (reference's own
+        // assumptions) run above -- never the same number.
+        shippedConfig: {
+          shipped: levelAShippedConfig.shipped,
+          pinned: levelAShippedConfig.pinned,
+        },
       },
     },
     golden: {

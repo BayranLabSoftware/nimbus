@@ -397,6 +397,18 @@ export const THIRD_DEGREE_MORTALITY: Triple = { low: 0.3, mid: 0.5, high: 0.8 };
  * validation/japanMortalityRules.ts.
  */
 export const FIRESTORM_MORTALITY: Triple = { low: 0, mid: 0, high: 0.8 };
+/**
+ * Rule 1194 (A11): declared, not an accident of `tripleSigmaLn`'s guard — a
+ * `low` of exactly 0 above means the model cannot say a mass fire forms at
+ * all, not merely that its rate is uncertain, so `withVulnerabilityScatter`
+ * draws this hazard no multiplicative scatter of its own; its uncertainty is
+ * which of the two scenarios above applies, which the {low, high} split
+ * already carries. Named here as a cause of the band's own gap in coverage
+ * (it misses the record on 9 of 10 Japanese-city held-out rows), not a fix
+ * of it: an all-or-nothing hazard would need an occurrence-probability model
+ * of its own to carry a rate-dispersion, and this round has no ground to
+ * invent one.
+ */
 
 /** Share of the prompt injured who die within the first weeks for
  *  lack of care — a project estimate. OTA 1979 expects many to die for

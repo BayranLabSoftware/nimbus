@@ -9,7 +9,7 @@ import { kgPerM3, m, mps, Pa } from '../units.js';
 import { IMPACT_INPUT_SIGMA } from '../uq/conventions.js';
 import type { MonteCarloOutput } from './engine.js';
 import { runMonteCarlo } from './engine.js';
-import { sampleImpactAngle, sampleLognormal, sampleNormal, type Rng } from './sampling.js';
+import { sampleLognormal, sampleNormal, type Rng } from './sampling.js';
 
 /**
  * Monte-Carlo wrapper for the cosmic-impact pipeline. Samples the
@@ -29,16 +29,20 @@ import { sampleImpactAngle, sampleLognormal, sampleNormal, type Rng } from './sa
  *                       (typical orbital-solution uncertainty for a
  *                       well-observed NEO).
  *   impactorDensity   — log-normal with σ_log = 0.15 (a project value).
- *   impactAngle       — sin(2θ) distribution (most likely 45°, Collins
- *                       et al. 2005 after Shoemaker 1962), independent
- *                       of the caller's nominal angle. Shallow grazing
- *                       and near-vertical are both under-weighted.
  *
  * We deliberately do NOT re-sample `surfaceGravity`, `waterDepth`,
- * or `impactorStrength`: gravity is known exactly for a chosen
- * body, water depth is a site property the user picks, and
- * strength is absorbed into the atmospheric-entry classifier's
- * already-coarse INTACT/AIRBURST branches.
+ * `impactorStrength`, or, since rule 1194 (an outside audit found the
+ * band ran on a random angle the caller never chose, `impactMonteCarlo.ts`
+ * A3/A11 of the audit), `impactAngle`: gravity is known exactly for a
+ * chosen body, water depth is a site property the user picks, strength is
+ * absorbed into the atmospheric-entry classifier's already-coarse
+ * INTACT/AIRBURST branches, and the angle is the scenario's own chosen
+ * geometry — the same category as water depth, not a measured orbital
+ * parameter like diameter, velocity or density. A population-level
+ * question ("across every angle an unknown impactor might arrive at, sin
+ * 2θ-weighted, Collins et al. 2005 after Shoemaker 1962") is a different
+ * question from "given this scenario's angle, how uncertain is the
+ * outcome", and this wrapper answers only the second.
  */
 
 const DEFAULT_ITERATIONS = 200;
@@ -96,7 +100,6 @@ export function impactSampler(nominal: ImpactScenarioInput): (rng: Rng) => Impac
       nominal.impactorDensity,
       IMPACT_INPUT_SIGMA.density.sigma
     );
-    const angleRad = sampleImpactAngle(rng);
     // Rule 882(c), done by rule 896(i): under the two-stage law, for a body
     // it covers and no strength given, the two phases' strengths are drawn
     // log-uniform over their intervals. Under today's law nothing more is
@@ -111,14 +114,14 @@ export function impactSampler(nominal: ImpactScenarioInput): (rng: Rng) => Impac
             firstStageStrength: Pa(sampleLogUniform(rng, FIRST_STAGE_STRENGTH_RANGE)),
           }
         : {};
-    // Target density is ground-fixed and not sampled; it and every
-    // other unsampled field ride through untouched.
+    // Target density is ground-fixed and not sampled; the angle is the
+    // scenario's own chosen geometry (rule 1194) and every other unsampled
+    // field rides through untouched.
     return {
       ...nominal,
       impactorDiameter: m(diameter),
       impactVelocity: mps(velocity),
       impactorDensity: kgPerM3(impactorDensity),
-      impactAngle: angleRad as ImpactScenarioInput['impactAngle'],
       ...strengths,
     };
   };

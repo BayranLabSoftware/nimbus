@@ -591,7 +591,7 @@
         "depth": "la profondità dell'ipocentro non entra nelle intensità: la relazione che le disegna non ha la profondità",
         "areas": "rispetto agli ShakeMap pubblicati le aree dipinte sbagliano di un fattore di qualche unità, in entrambi i versi — 2,6× di terreno in più a MMI VIII sul Tōhoku, 0,10× su Northridge",
         "topography": "il campo conosce la rigidità del suolo ma non la topografia, la profondità del bacino, né quanto lo scuotimento è correlato da un punto al vicino",
-        "impactAngle": "l'angolo cambia il cratere e la coltre di ejecta, non la quota dell'airburst, che dipende solo da resistenza e velocità",
+        "impactAngle": "l'angolo cambia il cratere e la coltre di ejecta, e anche la quota dell'airburst — attraverso il sin θ della stessa equazione che legge resistenza e velocità: un corpo più radente scoppia più in alto",
         "impactToll": "non è mai stato registrato un bilancio di vittime da impatto: qui è tarato su esplosioni di pari energia",
         "explosionEnvelope": "misurato fino alla Tsar Bomba di 50 Mt e a Hiroshima per le vittime; oltre, il modello estrapola",
         "volcanoPlume": "l'altezza del pennacchio segue la sola portata eruttiva: niente taglio del vento, niente profilo atmosferico",

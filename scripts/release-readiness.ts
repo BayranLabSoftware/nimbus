@@ -193,9 +193,12 @@ function checkBugRegistry(outcomes: GateOutcome[]): void {
     total += 1;
     const id = m[1] ?? '';
     const fix = (m[2] ?? '').trim().toLowerCase();
-    // Accept anything that looks like a commit link / hash. Reject:
-    // empty, "pending", "tbd", "n/a".
-    const looksFixed = fix.length > 0 && !['pending', 'tbd', 'n/a', '-'].includes(fix);
+    // Accept anything that looks like a commit link / hash. Reject: empty,
+    // "pending", "tbd", "n/a", "-", or "open"/"open: ..." (rule 1194, A8 --
+    // an outside audit found B-091 and B-126's literal "OPEN" fix column
+    // passed this gate as though they were fixed).
+    const looksFixed =
+      fix.length > 0 && !['pending', 'tbd', 'n/a', '-'].includes(fix) && !fix.startsWith('open');
     if (!looksFixed) pendingRows.push(`${id} → "${(m[2] ?? '').trim()}"`);
   }
   outcomes.push({
