@@ -205,6 +205,17 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
                 data-testid={`impact-fixed-${o.id}`}
                 data-state={o.card.state}
               >
+                {/* The crater's dark disc and light rim, the cavity's blue
+                    ring, as the globe draws them. */}
+                <span
+                  className={styles.swatch}
+                  style={
+                    o.id === 'crater'
+                      ? { backgroundColor: '#050505', borderColor: '#F4F1EA' }
+                      : { backgroundColor: 'transparent', borderColor: '#38BDF8', borderWidth: 2 }
+                  }
+                  aria-hidden="true"
+                />
                 <details className={styles.markCard}>
                   <summary>{o.label}</summary>
                   <CardFields card={o.card} t={t} />

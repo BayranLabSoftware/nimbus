@@ -115,6 +115,7 @@ describe('the validation page has words for everything its data can say', () => 
       'rules.title',
       'rules.body',
       'rules.reading',
+      'rules.readingSplit',
       'rules.asks',
       'rules.held',
       'rules.notHeld',

@@ -1,6 +1,10 @@
 import { Color } from 'cesium';
+import type { TFunction } from 'i18next';
 import type { ImpactDamageRadii } from '../../physics/events/impact/damageRings.js';
+import { IMPACT_INPUT_SIGMA } from '../../physics/uq/conventions.js';
 import type { ActiveMonteCarlo } from '../../store/index.js';
+import { formatRange } from './impactFieldMap.js';
+import type { ProvenanceCard } from './mapGrammarRules.js';
 
 /**
  * The palette and the metric picker for the Monte Carlo P10/P90 halos
@@ -158,4 +162,102 @@ export function pickFuzzyMetrics(mc: ActiveMonteCarlo): FuzzyMetric[] {
         },
       ];
   }
+}
+
+/** Rule 1217: how many discs the glow is drawn as, and its peak opacity —
+ *  the opacity the old canvas painted where every draw reached. */
+export const ECDF_DISC_STEPS = 16;
+export const ECDF_MAX_ALPHA = 0.35;
+
+/**
+ * Rule 1217: the glow under a halo as geodesic discs, not a canvas stretched
+ * over degrees. One disc at each (j − ½)/N quantile of the draws, every disc
+ * of the one opacity a that stacks to `maxAlpha` where all N overlap, so at a
+ * distance reached by a share E of the draws the stack reads
+ * 1 − (1 − maxAlpha)^E: the peak where every draw reaches, nothing where
+ * none does. A disc of no radius — a draw that reaches nowhere, a crater
+ * that is not dug — is left out, and keeps its place in the count.
+ */
+export function ecdfDiscs(
+  samples: readonly number[],
+  steps: number = ECDF_DISC_STEPS,
+  maxAlpha: number = ECDF_MAX_ALPHA
+): { radiusM: number; alpha: number }[] {
+  const sorted = samples.filter((x) => Number.isFinite(x)).sort((a, b) => a - b);
+  if (sorted.length === 0 || steps < 1) return [];
+  const alpha = 1 - Math.pow(1 - maxAlpha, 1 / steps);
+  const out: { radiusM: number; alpha: number }[] = [];
+  for (let j = 1; j <= steps; j++) {
+    const at = Math.round(((j - 0.5) / steps) * (sorted.length - 1));
+    const radiusM = sorted[Math.min(sorted.length - 1, Math.max(0, at))] ?? 0;
+    if (radiusM > 0) out.push({ radiusM, alpha });
+  }
+  return out;
+}
+
+/** Rule 1217: one halo, or its glow, with rule 1029's five fields. */
+export interface MonteCarloCard {
+  id: string;
+  label: string;
+  card: ProvenanceCard;
+}
+
+/** Rule 1217: the cards of what an impact's Monte Carlo draws on the globe —
+ *  each halo, and its glow where the draws are there to draw it. */
+export function monteCarloCards(
+  mc: ActiveMonteCarlo,
+  metrics: readonly FuzzyMetric[],
+  t: TFunction,
+  language: string
+): MonteCarloCard[] {
+  const km = (m: number): string => formatRange(m, language);
+  const sigma = {
+    diameter: IMPACT_INPUT_SIGMA.diameter.sigma.toLocaleString(language),
+    density: IMPACT_INPUT_SIGMA.density.sigma.toLocaleString(language),
+    speed: (IMPACT_INPUT_SIGMA.velocity.sigma * 100).toLocaleString(language),
+  };
+  const out: MonteCarloCard[] = [];
+  for (const metric of metrics) {
+    const name = t(`globe.legend.monteCarlo.metric.${metric.metricKey}`);
+    out.push({
+      id: `${metric.metricKey}-halo`,
+      label: name,
+      card: {
+        quantity: t('globe.legend.monteCarlo.card.haloQuantity', { metric: name }),
+        unit: 'km',
+        state: 'exploratory',
+        source: t('globe.legend.monteCarlo.card.source', {
+          runs: mc.data.iterations.toLocaleString(language),
+          ...sigma,
+        }),
+        extent: t('globe.legend.monteCarlo.card.haloExtent', {
+          p10: km(metric.p10),
+          p90: km(metric.p90),
+        }),
+        beyond: 'notApplicable',
+      },
+    });
+    if (metric.samples === undefined || metric.samples.length === 0) continue;
+    const radii = metric.scale === 'diameter' ? metric.samples.map((x) => x / 2) : metric.samples;
+    const max = Math.max(...radii.filter((x) => Number.isFinite(x)));
+    out.push({
+      id: `${metric.metricKey}-glow`,
+      label: t('globe.legend.monteCarlo.card.glowLabel', { metric: name }),
+      card: {
+        quantity: t('globe.legend.monteCarlo.card.glowQuantity', { metric: name }),
+        unit: 'km',
+        state: 'exploratory',
+        source: t('globe.legend.monteCarlo.card.source', {
+          runs: mc.data.iterations.toLocaleString(language),
+          ...sigma,
+        }),
+        extent: t('globe.legend.monteCarlo.card.glowExtent', {
+          max: km(max),
+          steps: ECDF_DISC_STEPS.toLocaleString(language),
+        }),
+        beyond: 'computedZero',
+      },
+    });
+  }
+  return out;
 }

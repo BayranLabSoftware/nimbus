@@ -8,11 +8,11 @@ import {
   NON_FINITE_PLACEHOLDER,
   type UnitTier,
 } from '../utils/numberFormat.js';
-import { pickFuzzyMetrics } from '../../scene/globe/monteCarloHalos.js';
-import type { FuzzyMetric } from '../../scene/globe/monteCarloHalos.js';
+import { monteCarloCards, pickFuzzyMetrics } from '../../scene/globe/monteCarloHalos.js';
+import type { FuzzyMetric, MonteCarloCard } from '../../scene/globe/monteCarloHalos.js';
 import { INTENSITY_BANDS } from '../../scene/globe/shakingOverlay.js';
 import { entryCellSentence } from '../../scene/globe/measuredCellText.js';
-import { ImpactFieldLegend } from './ImpactFieldLegend.js';
+import { CardFields, ImpactFieldLegend } from './ImpactFieldLegend.js';
 import styles from './RingLegend.module.css';
 
 const TIERS_RANGE: readonly UnitTier[] = [
@@ -307,6 +307,11 @@ export function RingLegend(): JSX.Element {
     monteCarlo !== null && monteCarlo.type === 'impact' && result?.type === 'impact'
       ? pickFuzzyMetrics(monteCarlo)
       : [];
+  // Rule 1217: each halo and each glow with rule 1029's five fields.
+  const impactMonteCarloCards: MonteCarloCard[] =
+    monteCarlo !== null && impactFuzzyMetrics.length > 0
+      ? monteCarloCards(monteCarlo, impactFuzzyMetrics, t, i18n.language)
+      : [];
 
   return (
     <aside
@@ -450,6 +455,18 @@ export function RingLegend(): JSX.Element {
               {impactFuzzyMetrics.some((metric) => metric.samples !== undefined) && (
                 <p className={styles.uncertaintyNote}>{t('globe.legend.monteCarlo.heatmap')}</p>
               )}
+              {impactMonteCarloCards.map((c) => (
+                <details
+                  key={c.id}
+                  className={styles.uncertaintyNote}
+                  data-testid={`legend-monte-carlo-card-${c.id}`}
+                >
+                  <summary>
+                    {c.label} — {t('globe.impactMap.card.heading')}
+                  </summary>
+                  <CardFields card={c.card} t={t} />
+                </details>
+              ))}
             </section>
           )}
           {result?.type === 'impact' && (

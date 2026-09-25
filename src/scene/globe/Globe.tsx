@@ -41,6 +41,7 @@ import {
   MMI_RING_COLORS,
   PYROCLASTIC_RING_COLOR,
   RING_COLORS,
+  ecdfDiscs,
   pickFuzzyMetrics,
 } from './monteCarloHalos.js';
 import {
@@ -55,7 +56,6 @@ import type { WindAdvectedAshfall } from '../../physics/events/volcano/index.js'
 // triangle layers): the approved tsunami direction draws the NOAA
 // thresholds as marching-squares contour lines over a continuous
 // amplitude veil.
-import { buildExceedanceProbability } from '../../physics/uq/ecdf.js';
 import {
   drawContourOverlay,
   renderScalarFieldHeatmap,
@@ -71,7 +71,6 @@ import {
   waveRunupTier,
 } from '../heatmap.js';
 import { computeRunupField, extractAmplitudeContours } from '../../physics/tsunami/index.js';
-import { renderRadialEcdfBitmap } from '../radialEcdfBitmap.js';
 import {
   buildCrestFrames,
   extractFrontContour,
@@ -3971,59 +3970,30 @@ export function Globe(): JSX.Element {
         drawBand('p10', spec.p10, spec.color, 0.4);
         drawBand('p90', spec.p90, spec.color, 0.4);
 
-        // Phase 8c — radial ECDF heatmap underneath the bands. When
-        // the MC engine returned the raw sample set, build an
-        // exceedance-probability oracle and render its 256-step
-        // radial alpha gradient as a Cesium Rectangle. The result
-        // visually conveys "darker = very likely, fading = rare worst
-        // case" on top of the existing P10/P90 reference rings.
+        // Rule 1217 (A12): the glow under the bands, where the engine kept
+        // its draws — darker where more of them reach — as geodesic discs
+        // sized in metres, one at each of `ECDF_DISC_STEPS` quantiles of the
+        // draws, the way the bands themselves are drawn. Until 26 September
+        // 2026 it was a canvas stretched over a rectangle in degrees, which
+        // is not a disc on the sphere at a thousand kilometres, nor defined
+        // past a pole.
         if (spec.samples !== undefined && spec.samples.length > 0) {
-          // Convert diameter samples to radii so the bitmap's
-          // halfEdge matches the ground-range radius the rings live
-          // in.
           const radiusSamples =
             spec.scale === 'diameter' ? spec.samples.map((s) => s / 2) : spec.samples;
-          const ecdf = buildExceedanceProbability(radiusSamples);
-          try {
-            const bitmap = renderRadialEcdfBitmap(ecdf, {
-              size: 256,
-              maxAlpha: 0.35,
-              rgb: [
-                Math.round(spec.color.red * 255),
-                Math.round(spec.color.green * 255),
-                Math.round(spec.color.blue * 255),
-              ],
+          ecdfDiscs(radiusSamples).forEach((disc, k) => {
+            viewer.entities.add({
+              id: `${FUZZY_RING_ID_PREFIX}${idx.toString()}-ecdf-${k.toString()}`,
+              position: centerCartesian,
+              ellipse: {
+                semiMajorAxis: clampToGreatCircle(disc.radiusM),
+                semiMinorAxis: clampToGreatCircle(disc.radiusM),
+                material: spec.color.withAlpha(disc.alpha),
+                outline: false,
+                height: 0,
+                heightReference: HeightReference.CLAMP_TO_GROUND,
+              },
             });
-            if (bitmap !== null) {
-              const halfEdgeM = bitmap.halfEdgeMeters;
-              // Convert metres to a Cesium Rectangle in degrees,
-              // adjusting the longitude span by cos(latitude) so the
-              // bitmap stays geometrically square at non-equatorial
-              // latitudes.
-              const latDeg = halfEdgeM / 111_000;
-              const cosLat = Math.max(Math.cos((ringAnchor.latitude * Math.PI) / 180), 1e-6);
-              const lonDeg = latDeg / cosLat;
-              viewer.entities.add({
-                id: `${FUZZY_RING_ID_PREFIX}${idx.toString()}-ecdf`,
-                rectangle: {
-                  coordinates: Rectangle.fromDegrees(
-                    ringAnchor.longitude - lonDeg,
-                    ringAnchor.latitude - latDeg,
-                    ringAnchor.longitude + lonDeg,
-                    ringAnchor.latitude + latDeg
-                  ),
-                  material: new ImageMaterialProperty({
-                    image: bitmap.canvas,
-                    transparent: true,
-                  }),
-                  // Phase 14a hotfix — flat at sea level (see above).
-                  height: 0,
-                },
-              });
-            }
-          } catch (err: unknown) {
-            console.warn('[Globe] radial ECDF heatmap render failed:', err);
-          }
+          });
         }
       });
     }

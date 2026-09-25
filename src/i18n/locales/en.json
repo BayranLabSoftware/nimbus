@@ -974,7 +974,15 @@
           "finalCraterDiameter": "Crater diameter",
           "firestormIgnition": "Firestorm ignition"
         },
-        "heatmap": "The soft glow under those rings is the same spread as a gradient: denser where more of the sweep's draws land, fading toward the rare, more extreme ones."
+        "heatmap": "The soft glow under those rings is the same spread as a gradient: denser where more of the sweep's draws land, fading toward the rare, more extreme ones.",
+        "card": {
+          "haloQuantity": "{{metric}}: the Monte Carlo's P10 and P90",
+          "glowLabel": "{{metric}}: the glow under the rings",
+          "glowQuantity": "{{metric}}: the share of the draws that reach each distance",
+          "source": "The {{runs}} draws of this run's Monte Carlo, the inputs drawn around the scenario's — σ_log {{diameter}} on the diameter, {{density}} on the density, σ {{speed}} % on the speed, spreads the project sets. Checked against no reference.",
+          "haloExtent": "two rings, at {{p10}} (P10) and {{p90}} (P90) from the centre",
+          "glowExtent": "from the centre out to the farthest draw, {{max}}, as {{steps}} stacked discs on the ellipsoid"
+        }
       },
       "field": {
         "title": "Shaking field",
@@ -2422,6 +2430,7 @@
       "title": "The rules of the gold standard",
       "body": "The domain's own bar, written before it was measured: I-rules are the impacts' own, G-rules every domain's, and the column beside each says whether it measures fidelity to the equations or what lies beyond them — held-out sets, bands, the sky. A rule holds only when all of it holds; the reading gives a rule with clauses the share of them that holds.",
       "reading": "{{held}} of {{of}} rules hold: the domain reads {{reading}} out of 9.",
+      "readingSplit": "Counted apart: fidelity to the reference program reads {{fidelity}} out of 9 ({{fidelityHeld}} of {{fidelityRules}} rules hold); validation beyond it — the sky, held-out sets, bands — reads {{beyond}} out of 9 ({{beyondHeld}} of {{beyondRules}}), and does not hold on {{notHeld}}.",
       "rule": "Rule",
       "measure": "What it measures",
       "asks": "What it asks",

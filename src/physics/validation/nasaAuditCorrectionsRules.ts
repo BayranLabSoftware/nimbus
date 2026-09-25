@@ -1727,3 +1727,69 @@ export const RULE_1215_WRITTEN = '2026-09-26' as const;
  * reasons.
  */
 export const RULE_1216_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1217. A12, ITEM 7 OF RULE 1203'S LIST, FINISHED: THE MONTE CARLO'S
+ * P10/P90 HALOS AND ITS PROBABILITY MAP -- "SENZA VOCE DI LEGENDA NÉ SCHEDA,
+ * IN GRADI (DISTORTI ALLE GRANDI DISTANZE)".
+ *
+ * Rule 1201 gave them their legend entry; two halves remain.
+ *
+ * (a) The card. Read: `RingLegend.tsx`'s Monte Carlo section names each
+ *     halo's metric and says in a sentence what the glow is, but neither
+ *     has rule 1029's five fields. Each halo, and the glow where it is
+ *     drawn, gets them, in the legend, from one pure function beside the
+ *     metric picker (`monteCarloHalos.ts`): the quantity (the metric's
+ *     radius); exploratory; the source -- the P10 and P90 of the run's own
+ *     draws, the inputs drawn with the spreads the Monte Carlo's footer
+ *     names (rule 1213), checked against no reference; the extent, P10 to
+ *     P90 from the centre (for the glow, out to the largest draw); beyond
+ *     it, not applicable for a halo, and for the glow a computed zero -- no
+ *     draw reaches farther.
+ * (b) The geometry. Read (`Globe.tsx`, the Monte Carlo block): the halos
+ *     are Cesium ellipses sized in metres -- geodesic, correct at any range.
+ *     The glow is not: `renderRadialEcdfBitmap` paints a square canvas and
+ *     a `Rectangle.fromDegrees` stretches it over latitude ± r/111 km and
+ *     longitude ± that over cos(latitude). A square in degrees is not a
+ *     disc on the sphere: the error grows with the radius and with the
+ *     latitude (the firestorm's glow reaches 1 000-2 000 km), and past a
+ *     pole the rectangle is not even defined. The fix draws the glow the
+ *     way the halos are drawn: a stack of geodesic discs, one at each of N
+ *     quantiles of the draws, each of the same small opacity, chosen so
+ *     that where every draw reaches the stack reads the glow's old peak
+ *     opacity and where none does it reads nothing -- the same "darker =
+ *     reached by more draws" in metres on the ellipsoid, no degrees
+ *     anywhere. The opacities and radii come from a pure function with its
+ *     own test (`ecdfDiscs`); the bitmap module and its test, unused once
+ *     the globe no longer paints a canvas, are removed with it.
+ * Checked on the globe itself, headless (Playwright on the dev server, the
+ * way this project checks what Cesium draws), after the change, at a mid
+ * latitude and at a high one: the entities the scene holds, and a picture
+ * of each. The old rectangle is not re-drawn to compare: its own arithmetic
+ * above is the defect. No number moves; the seal does not draw the Monte
+ * Carlo (no scenario of it runs one), so it does not move.
+ */
+export const RULE_1217_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1218. A2, "DUE COLONNE NEL CARTELLONE E NELLA PAGINA PUBBLICA:
+ * FEDELTÀ AL RIFERIMENTO E VALIDAZIONE OSSERVATIVA, CON I2 «NON RAGGIUNTA»
+ * NELLA SECONDA".
+ *
+ * Read before writing: since rules 1193 and 1194 the scorecard counts each
+ * rule under what it measures and the report prints both readings side by
+ * side (`goldStandard.domains[].fidelity` and `.beyond`, the report's
+ * scorecard table). The public page does not: `ValidationPage.tsx` prints
+ * one reading ("8 of 11 rules hold: the domain reads 6.9 out of 9") and a
+ * per-rule column saying what each measures, but never the two readings the
+ * audit asked for on the page -- fidelity to the reference, 9.0 of 9, four
+ * of four; validation beyond it, 5.7 of 9, four of seven -- nor which rules
+ * of the second do not hold.
+ *
+ * The fix: under the domain's reading, one line with the two readings from
+ * the report's own JSON, and the codes of the rules that do not hold in the
+ * second, read from the rules themselves (not typed: I2, I3 and G3 today),
+ * each code already described in its row since rule 1208. Both languages.
+ * No number moves; the seal does not move.
+ */
+export const RULE_1218_WRITTEN = '2026-09-26' as const;

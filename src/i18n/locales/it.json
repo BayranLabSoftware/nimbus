@@ -974,7 +974,15 @@
           "finalCraterDiameter": "Diametro cratere",
           "firestormIgnition": "Innesco firestorm"
         },
-        "heatmap": "Il bagliore tenue sotto quegli anelli è la stessa dispersione resa come sfumatura: più denso dove cadono più estrazioni della simulazione, sfumato verso quelle rare e più estreme."
+        "heatmap": "Il bagliore tenue sotto quegli anelli è la stessa dispersione resa come sfumatura: più denso dove cadono più estrazioni della simulazione, sfumato verso quelle rare e più estreme.",
+        "card": {
+          "haloQuantity": "{{metric}}: P10 e P90 del Monte Carlo",
+          "glowLabel": "{{metric}}: il bagliore sotto gli anelli",
+          "glowQuantity": "{{metric}}: la quota delle estrazioni che raggiunge ogni distanza",
+          "source": "Le {{runs}} estrazioni del Monte Carlo di questa corsa, con gli ingressi estratti attorno a quelli dello scenario — σ_log {{diameter}} sul diametro, {{density}} sulla densità, σ {{speed}} % sulla velocità, dispersioni fissate dal progetto. Non verificato contro alcun riferimento.",
+          "haloExtent": "due anelli, a {{p10}} (P10) e a {{p90}} (P90) dal centro",
+          "glowExtent": "dal centro fino all'estrazione più lontana, {{max}}, come {{steps}} dischi sovrapposti sull'ellissoide"
+        }
       },
       "field": {
         "title": "Campo di scuotimento",
@@ -2509,6 +2517,7 @@
       "title": "Le regole del gold standard",
       "body": "La barra che il dominio si è dato, scritta prima di misurare: le regole I sono proprie degli impatti, le regole G di ogni dominio, e la colonna accanto a ciascuna dice se misura la fedeltà alle equazioni o ciò che sta oltre — insiemi tenuti da parte, bande, il cielo. Una regola tiene solo se tiene tutta; la lettura dà a una regola con clausole la quota di esse che tiene.",
       "reading": "{{held}} regole su {{of}} tengono: il dominio legge {{reading}} su 9.",
+      "readingSplit": "Contate a parte: la fedeltà al programma di riferimento legge {{fidelity}} su 9 ({{fidelityHeld}} regole su {{fidelityRules}} tengono); la validazione oltre il programma — il cielo, insiemi tenuti da parte, bande — legge {{beyond}} su 9 ({{beyondHeld}} su {{beyondRules}}), e non tiene su {{notHeld}}.",
       "rule": "Regola",
       "measure": "Che cosa misura",
       "asks": "Che cosa chiede",

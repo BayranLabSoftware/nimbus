@@ -67,6 +67,13 @@ interface DomainRule {
   clauses: RuleClause[];
 }
 
+/** One of the two readings rules 1193 and 1194 count a domain under. */
+interface MeasureCount {
+  rules: number;
+  held: number;
+  reading: number;
+}
+
 interface ReportData {
   goldStandard: {
     domains: {
@@ -75,6 +82,8 @@ interface ReportData {
       held: number;
       pending: number;
       reading: number;
+      fidelity: MeasureCount;
+      beyond: MeasureCount;
     }[];
   };
   gate: { decision: string };
@@ -410,6 +419,21 @@ export function ValidationPage(): JSX.Element {
               held: impacts.held,
               of: impacts.rules.length,
               reading: dec(impacts.reading, 1),
+            })}
+          </p>
+          {/* Rule 1218 (A2): the two readings, and what does not hold beyond. */}
+          <p className={styles.note} data-testid="validation-rules-split">
+            {t('validation.rules.readingSplit', {
+              fidelity: dec(impacts.fidelity.reading, 1),
+              fidelityHeld: impacts.fidelity.held,
+              fidelityRules: impacts.fidelity.rules,
+              beyond: dec(impacts.beyond.reading, 1),
+              beyondHeld: impacts.beyond.held,
+              beyondRules: impacts.beyond.rules,
+              notHeld: impacts.rules
+                .filter((rule) => rule.measure === 'beyond' && !rule.holds)
+                .map((rule) => rule.rule)
+                .join(', '),
             })}
           </p>
           <TableRegion label={t('validation.rules.title')}>
