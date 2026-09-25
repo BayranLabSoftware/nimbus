@@ -494,3 +494,141 @@ export const FCM_H5_DOMINANCE_MARGIN = 2;
  * value (rule 1138 (c)) is not changed by what this rule finds — only read
  * at three points to see whether it matters.
  */
+
+/**
+ * RULE 1191. THE CAUSAL DOSSIER — written on the reviewer's own order (25
+ * September 2026): the cloud's unresolved state first, then the mass
+ * partition, then break timing measured directly, then — only at the end —
+ * separate candidate hypotheses on threshold, partition and their possible
+ * interaction, each held to his four requirements: a discriminating
+ * observation, an independent source constraining the proposed FORM (not a
+ * number fit to these cases), effects expected beyond landed mass, and a
+ * result that would refute it. Where a hypothesis cannot meet this without
+ * deriving its form from the very masses it would be tested against, the
+ * declared verdict is NOT IDENTIFIABLE, not a hypothesis dressed up to look
+ * testable. NO CODE, no new fit, no adoption: this dossier proposes what a
+ * later, separately preregistered round might test — it decides nothing.
+ *
+ * RULE 1191 (a). THE CLOUD'S STATE — still unresolved, restated so the
+ * dossier does not quietly assume it: rule 1190 found that 93.2 % of the
+ * body's mass, pooled over the 71 pairs that complete, stops being
+ * integrated at a numerical condition (a cloud near its own terminal
+ * speed), overwhelmingly the ordinary stop and not a fallback, and that the
+ * unlimited-cloud configurations' accounting is stable against the
+ * threshold while the capped ones are not (rule 1190 (c), tied to the
+ * already-known capped pathology of deviation D16). NONE of this identifies
+ * what the settled mass physically becomes. This dossier's three sections
+ * below concern the LANDED mass's own excess (H3's channel, H5's
+ * genealogy) — a small share of the entry mass, distinct from the settled
+ * question — and do not depend on resolving it; a reader should not read
+ * either the threshold or the partition candidate below as an account of
+ * the settled 93.2 % too.
+ *
+ * RULE 1191 (b). THE MASS PARTITION, measured directly rather than
+ * summarised. Rule 1139's own development prior fixes `larger` — the share
+ * of a break's non-cloud remainder the larger child receives — uniform on
+ * [0.5, 0.8], drawn once per full draw and reused at every break of that
+ * cascade (`fcmRound1Common.ts`'s `drawFcm`). Because the range's own floor
+ * is 0.5, EVERY break of EVERY draw gives its larger child at least half
+ * the solid remainder, by construction — not an emergent pattern the audit
+ * discovered, but a guarantee already sitting in the prior's declared
+ * range. Rule 1190's corrected figures (largest solid child a median of
+ * 56.5 % of the parent's mass at the first break, 50.1 % at later breaks,
+ * rule 1190's own report) are the visible consequence of that guarantee,
+ * not new evidence of it. `docs/FCM_ROUND_DOSSIER.md` names `larger`
+ * itself, alongside `alpha` and `cloudShare`, an "effective parameter kept
+ * apart from measured ones," with "tuning on declared development cases
+ * allowed, recorded, frozen before round 3" — meaning its own range is not
+ * independently sourced from outside this project's cases. A hypothesis
+ * that simply narrows or redraws `larger` inside its current range, or
+ * proposes a new range chosen because it reduces landed mass on these same
+ * cases, would repeat exactly the tuning rule 1181 forbade for H1
+ * through H4 — this dossier does not propose that.
+ *
+ * RULE 1191 (c). BREAK TIMING, measured by the recorded altitude, not the
+ * generation label — the reviewer's own correction to how rule 1188 read
+ * H5. Landed solid pieces sorted by their own birth altitude into three
+ * equal-count groups (rule 1190's own tertiles, pooled as a median of each
+ * pair's own median, 71 case–configuration pairs): the lowest-altitude
+ * third retains a median 75.8 % of its birth mass, the middle third 73.7 %,
+ * the highest-altitude third 70.0 % — monotonic, in the mechanically
+ * expected direction (a piece born lower has less atmosphere left to ablate
+ * through), and present at the pooled level even though only 52 of 71
+ * individual pairs show it themselves (rule 1190's own count). Altitude is
+ * therefore a real, if noisy, pooled signal — not merely the generation
+ * label's shadow — but a 5.8-percentage-point spread across the full range
+ * of birth altitudes is modest next to the 20-to-100-times excess rule
+ * 1178 (a) named: whatever role break timing plays, this direct measure
+ * does not by itself look large enough to be the whole channel. Birth
+ * speed is recorded on every landed piece alongside altitude (rule
+ * 1189 (a)) and was not cross-tabulated for this dossier; a round that
+ * makes timing central should use it too, not altitude alone.
+ *
+ * RULE 1191 (d). THE THRESHOLD CANDIDATE. Rule 1191 (b) shows the
+ * partition's own prior is tuned, not independent; the break CONDITION
+ * itself (ρv² ≥ strength, R17 Eq. 8, with S_p(m_p/m_c)^α inheritance) is a
+ * separate structural choice rule 1191 (b) does not touch. A literature
+ * search for a genuinely independent form — dynamic-loading, Weibull-flaw-
+ * statistics accounts of when and where a brittle solid fractures under
+ * strain-rate-dependent stress, from lab experiments on rock or ceramic
+ * analogues, never fit to a meteor's mass — turned up real candidates
+ * (Weibull's own statistics; Denoual & Hild 2002 and Levy & Molinari 2009's
+ * defect-statistics fragmentation models; strain-rate-dependent rock
+ * strength measurements such as Vivek et al. 2022's Hopkinson-bar tests on
+ * basalt and granite). NONE of these has been read by this project — they
+ * are leads from a search, not citations: rule "mai copiare i riferimenti"
+ * applies here as everywhere, and no source becomes a citation before it is
+ * read directly. IF a specific source is read and does give a threshold
+ * form independent of these cases: the discriminating observation would be
+ * where and how densely breaks occur along the trajectory relative to what
+ * the current ρv²-only condition predicts (more breaks earlier, at lower
+ * dynamic pressure, if strain-rate weakening is real); the expected effect
+ * beyond landed mass is on the deposit profile's own shape (rule 1151),
+ * since moving breaks earlier changes where energy is deposited, not only
+ * how much mass survives to the ground; the falsifying result is a form
+ * that, applied to these development cases, moves the deposit peak away
+ * from where H1's own diagnostic and round 3's read events already placed
+ * it. Until a source is read and its form checked against these
+ * requirements, the threshold candidate's status is NOT YET IDENTIFIABLE —
+ * not refused, not adopted, waiting on the reading rule 1184's own
+ * discipline requires before any citation.
+ *
+ * RULE 1191 (e). THE PARTITION CANDIDATE. Symmetrically: a literature
+ * search for an independent fragment-mass-spectrum form — from explosive or
+ * impact fragmentation of brittle solids, never fit to a meteor's mass —
+ * also turned up real candidates (Mott's and Grady & Kipp's shell-
+ * fragmentation theory; impact and explosion fragment-size scaling such as
+ * Housen & Holsapple 1985; hypervelocity disruption experiments on rock and
+ * porous targets, e.g. Nakamura et al. 2008). Again, none read; leads, not
+ * citations, for the same reason as rule 1191 (d). IF a source is read and
+ * gives an independent fragment-mass distribution (a spectrum across many
+ * pieces, say, rather than the branch's fixed one-or-two-child split): the
+ * discriminating observation is the shape of the surviving mass spectrum
+ * itself — the branch's own audit already records every child's mass at
+ * every break (rule 1189 (a)), so this is measurable without new code, only
+ * new analysis of what rule 1189's run already wrote; the expected effect
+ * beyond landed mass is on the number and size distribution of pieces
+ * reaching the ground (already in `FcmPiece`), not only their summed mass;
+ * the falsifying result is a source's own spectrum failing to reproduce the
+ * skew rule 1191 (b) already measured (the current, tuned `larger` prior)
+ * as well as or better than the tuned prior does, on an honest comparison
+ * that does not itself use these cases' landed masses to pick the winner.
+ * Same status as (d): NOT YET IDENTIFIABLE until read.
+ *
+ * RULE 1191 (f). THE INTERACTION — the reviewer's own instruction: only
+ * attempted, if ever, after (d) and (e) are separately grounded and show an
+ * identifiable, individually measurable effect. Not proposed in any form
+ * here; naming it only to record that it is not forgotten, not skipped.
+ *
+ * RULE 1191 (g). WHAT THIS DOSSIER AUTHORISES: reading the specific sources
+ * named in (d) and (e) — or better ones, if a closer read finds these
+ * unsuitable — to check whether any actually gives an independent,
+ * checkable form, before any is cited as a rule the way H1's or H4's
+ * numbers were. It authorises no code, no redraw of `larger`, `alpha` or
+ * the break condition, no new fit to these cases' masses, and no change to
+ * the sealed candidate (rule 1162). If reading finds no source that gives a
+ * form independent of these cases, the honest verdict for that candidate is
+ * NOT IDENTIFIABLE, and this dossier's own preference — restated — is that
+ * such a verdict is a better result than a parameter chosen because it
+ * moves the landed mass the right way.
+ */
