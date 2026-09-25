@@ -127,6 +127,16 @@ export const RULE_1193_WRITTEN = '2026-09-25' as const;
  *      validation script), and merging them safely is a refactor of its
  *      own, not a constant fix; left open rather than rushed.
  *
+ * (10, partial) The taxonomy selector already had a note saying it fills
+ *     strength alongside density; it did not say that giving a strength
+ *     takes the entry off the two-stage default onto that single class
+ *     value. FIXED: the note now says so, in both languages
+ *     (`ImpactCustomInputs.tsx`'s `taxonomyNote`). NOT fixed: the deeper
+ *     inconsistency -- the measured cells and their accuracy band still
+ *     hold only at exactly 3 000 kg/m³ with no strength given, so no
+ *     taxonomy choice and no preset falls inside one; aligning module,
+ *     default and cells is a design decision, not a label.
+ *
  * (7)/(8) Constants "read backward from the program's output" or "without a
  *     citation": most of what the audit's compressed list names already
  *     carries an honest comment saying so on inspection —
@@ -153,13 +163,52 @@ export const RULE_1193_WRITTEN = '2026-09-25' as const;
  * (`airburstSeismic.ts`, `simulate.ts:1211`); (6) Synolakis run-up with no
  * breaking branch or ceiling (`simulate.ts:1502-1543`); (9) planar 1/r and
  * r⁻³ geometry for blast and ejecta at planetary range
- * (`airburstBlast.ts:284`, `ejecta.ts:56`); (10) the taxonomy selector
- * setting a strength that silently opts every custom body out of the
- * two-stage default, and measured cells that hold only at exactly
- * 3 000 kg/m³ with no strength given (`ImpactCustomInputs.tsx`,
- * `entryCells.ts`); (11) 46 `as number` casts in `simulate.ts` and bare
+ * (`airburstBlast.ts:284`, `ejecta.ts:56`); (10, the rest) measured cells
+ * that hold only at exactly 3 000 kg/m³ with no strength given, so no
+ * taxonomy choice and no preset falls inside one (`entryCells.ts`) -- the
+ * note is fixed, the underlying inconsistency is not; (11) 46 `as number`
+ * casts in `simulate.ts` and bare
  * numbers in mixed units elsewhere. Each needs either a design decision
  * this file is not the place to make alone, or research this round has not
  * done — continued in a later block of the same round, not abandoned.
  */
 export const RULE_1194_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1195. A12 — TEXTS THE INTERFACE PRINTS THAT ARE FALSE OR UNDISCLOSED,
+ * TAKEN AS FOUND, NOT IN THE AUDIT'S OWN ORDER. Started in the same block as
+ * rule 1194's first items because each fix is a sentence, not a redesign.
+ *
+ * - The impact-angle methodology note said the angle "does not change the
+ *   airburst altitude" -- false: it does, through sin θ in the same
+ *   equation that reads strength and speed (`atmosphericEntry.ts:591`).
+ *   FIXED in both languages.
+ * - Popigai and Boltysh's diameters are chosen so the model's own crater law
+ *   reproduces the crater observed for each, not measured independently --
+ *   their preset notes said only the crater size and the (independent)
+ *   composition source, not this. FIXED: both notes now say the diameter is
+ *   circular with the crater, not a check of it.
+ * - The landing page said "every estimate carries its own uncertainty
+ *   interval", which is not true of the third-degree burn radius or the
+ *   5 psi and 1 psi rings, all single values today. FIXED: reworded to what
+ *   is true of every quantity -- that each is marked with what it is
+ *   checked against.
+ * - The taxonomy selector's own note said it fills strength alongside
+ *   density; it did not say that doing so moves the entry off the two-stage
+ *   default. FIXED (see rule 1194's note on item 10) -- the underlying
+ *   inconsistency with the measured cells is not.
+ *
+ * Left open, not started this round: the 13/13 validation tile computed as
+ * count/count rather than against any threshold (`ValidationPage.tsx`); the
+ * azimuth cursor not saying it moves nothing for an airburst -- which the
+ * panel cannot know until the scenario is simulated, so a text fix alone is
+ * not enough; P10/P90 circles and the Monte Carlo probability map drawn
+ * without a legend entry or a grammar state; the printed report's missing
+ * fields (burst/breakup altitude, final speed, I2's band, the measured
+ * cell's verdict, azimuth, the Monte Carlo table, active model variants);
+ * silent field-validation failures; the terrain 8 s timeout that turns an
+ * ocean site into land with no warning; the keyboard-navigation claim.
+ * Several need code most of the way through the render path this round has
+ * not read carefully enough to touch safely -- left open and said so.
+ */
+export const RULE_1195_WRITTEN = '2026-09-25' as const;

@@ -1679,7 +1679,7 @@ export const IMPACT_PRESETS = {
    *  PNAS 112: 11542). */
   POPIGAI: {
     name: 'Popigai 35.7 Ma',
-    note: '≈ 100 km crater in northern Siberia. L-chondrite projectile (Tagle & Hecht 2006, MAPS 41: 1721); contemporary with the Chesapeake-Bay impact and a candidate trigger for the late-Eocene climate shift.',
+    note: '≈ 100 km crater in northern Siberia. L-chondrite projectile (Tagle & Hecht 2006, MAPS 41: 1721); contemporary with the Chesapeake-Bay impact and a candidate trigger for the late-Eocene climate shift. The diameter here is not an independent measurement: it is chosen so this model’s own crater law reproduces the observed 100 km, so its agreement with the crater is circular, not a check (rule 1194, A12).',
     input: {
       // Phase-17 audit: previous L = 7 km predicted only 84.6 km of
       // final crater (observed 100 km, error −15 %, at the edge of the
@@ -1704,7 +1704,7 @@ export const IMPACT_PRESETS = {
    *  comparison alongside CHICXULUB. */
   BOLTYSH: {
     name: 'Boltysh 65.4 Ma',
-    note: '≈ 24 km crater, central Ukraine. Within dating uncertainty of Chicxulub (Kelley & Gurov 2002, MAPS 37: 1031); illustrates a regional-scale impact rather than a mass-extinction trigger.',
+    note: '≈ 24 km crater, central Ukraine. Within dating uncertainty of Chicxulub (Kelley & Gurov 2002, MAPS 37: 1031); illustrates a regional-scale impact rather than a mass-extinction trigger. The diameter here is not an independent measurement: it is chosen so this model’s own crater law reproduces the observed 24 km, so its agreement with the crater is circular, not a check (rule 1194, A12).',
     input: {
       // Phase-17 audit: previous L = 800 m predicted only 11.5 km of
       // final crater (observed 24 km, error −52 %). The Phase-10 audit

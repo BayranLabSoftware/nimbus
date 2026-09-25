@@ -9,7 +9,7 @@
     "projectName": "Bayran Nimbus",
     "eyebrow": "Scientific simulator · free software",
     "tagline": "Simulation of asteroid and comet impacts on a true-scale 3D Earth.",
-    "description": "Nimbus computes the physical effects of an asteroid or comet impact — atmospheric entry, crater, air blast, thermal radiation, ejecta, seismic shaking and the tsunami it raises — and maps them onto the Earth's surface at their true extent. The relations it uses come from the scientific literature, and every estimate carries its own uncertainty interval.",
+    "description": "Nimbus computes the physical effects of an asteroid or comet impact — atmospheric entry, crater, air blast, thermal radiation, ejecta, seismic shaking and the tsunami it raises — and maps them onto the Earth's surface at their true extent. The relations it uses come from the scientific literature, and every quantity is marked with what it has been checked against and where that check runs out.",
     "meta": "AGPL-3.0 licence · Interface in English and Italian",
     "hero": {
       "alt": "The simulator's globe with the effect radii of the Chicxulub impact",
@@ -169,7 +169,7 @@
       "azimuthLabel": "Downrange direction",
       "azimuthNote": "{{degrees}}° — the way the impactor is flying, from north",
       "diameterInKm": "{{value}} km",
-      "taxonomyNote": "fills density and strength with that class’s values"
+      "taxonomyNote": "fills density and strength with that class’s values — giving a strength here takes the entry off the two-stage default law, onto this single class value (rule 1194, A11)"
     },
     "clickGlobe": "Click anywhere on the globe to pick the event location.",
     "locationReady": "Selected: {{lat}}°, {{lon}}°. Ready to launch.",

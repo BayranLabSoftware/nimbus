@@ -9,7 +9,7 @@
     "projectName": "Bayran Nimbus",
     "eyebrow": "Simulatore scientifico · software libero",
     "tagline": "Simulazione degli impatti di asteroidi e comete su un globo terrestre a scala reale.",
-    "description": "Nimbus calcola gli effetti fisici dell'impatto di un asteroide o di una cometa — ingresso in atmosfera, cratere, onda d'urto, radiazione termica, ejecta, scuotimento sismico e lo tsunami che ne deriva — e li rappresenta sulla superficie terrestre alla loro estensione reale. Le relazioni impiegate provengono dalla letteratura scientifica e ogni stima è accompagnata dal proprio intervallo di incertezza.",
+    "description": "Nimbus calcola gli effetti fisici dell'impatto di un asteroide o di una cometa — ingresso in atmosfera, cratere, onda d'urto, radiazione termica, ejecta, scuotimento sismico e lo tsunami che ne deriva — e li rappresenta sulla superficie terrestre alla loro estensione reale. Le relazioni impiegate provengono dalla letteratura scientifica e ogni grandezza è etichettata con ciò contro cui è stata verificata e dove quella verifica finisce.",
     "meta": "Licenza AGPL-3.0 · Interfaccia in italiano e inglese",
     "hero": {
       "alt": "Il globo terrestre del simulatore con i raggi degli effetti dell'impatto di Chicxulub",
@@ -169,7 +169,7 @@
       "azimuthLabel": "Direzione di volo",
       "azimuthNote": "{{degrees}}° — verso dove vola l’impattore, da nord",
       "diameterInKm": "{{value}} km",
-      "taxonomyNote": "riempie densità e resistenza con i valori della classe"
+      "taxonomyNote": "riempie densità e resistenza con i valori della classe — dare qui una resistenza toglie l'ingresso dalla legge a due stadi predefinita, portandolo su questo unico valore di classe (regola 1194, A11)"
     },
     "clickGlobe": "Clicca un punto qualsiasi del globo per scegliere la posizione dell'evento.",
     "locationReady": "Selezionato: {{lat}}°, {{lon}}°. Pronto al lancio.",
