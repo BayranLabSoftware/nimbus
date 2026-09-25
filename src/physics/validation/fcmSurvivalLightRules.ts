@@ -1,5 +1,5 @@
 /**
- * Rules 1178 to 1188 — the opening document of the survival–light round, on
+ * Rules 1178 to 1189 — the opening document of the survival–light round, on
  * the reviewer's approval of 25 September 2026: a round of development on the
  * FCM branch's own physics, before any test that could adopt it, and — apart
  * — the custody protocol and the reconnaissance of a genuinely blind fifth
@@ -359,3 +359,76 @@ export const FCM_H5_RETAINED_FRACTION = 0.5;
 /** Rule 1188 (c): the mass-weighted share one bucket needs over the other to
  *  decide the round, rather than declare the mechanism unidentified. */
 export const FCM_H5_DOMINANCE_MARGIN = 2;
+
+/**
+ * RULE 1189. THE CASCADE AUDIT — the reviewer's own next step (25 September
+ * 2026), approved after H5, with three qualifications on H5 itself that this
+ * audit is built to answer: (1) "late" (generation 2 or more) is not the same
+ * as "little residual atmosphere"; a causal claim needs the recorded
+ * altitudes and the residual trajectory, not the generation label alone;
+ * (2) H5 decomposed only LANDED pieces — survivors, selected on the very
+ * property (surviving) the study wants to explain — so separating a
+ * break-threshold effect from a mass-partition effect needs the children
+ * that do NOT land too, not only the ones that do; (3) H5's pooled total is
+ * dominated by a few massive events (Tagish Lake, 2008 TC3), so a per-case,
+ * per-configuration account is what any later claim must rest on, not the
+ * pooled share alone. H5's approved closing formula, carried here unchanged:
+ * «In the M1/unlimited configuration, the landed solid mass on the
+ * development cases is dominated by descendants of later breaks that retain
+ * more than half the mass they were born with; this diagnosis directs the
+ * study toward genealogy, but does not yet identify whether the break
+ * threshold, the mass partition, or the children's later evolution is at
+ * fault.»
+ *
+ * NO NEW PHYSICS, and no hypothesis tested yet — a measurement, the
+ * reviewer's own first step of "misurare, poi intervenire un meccanismo alla
+ * volta" (measure, then intervene one mechanism at a time). Its result
+ * informs the dossier of rule 1190, not a law.
+ *
+ * RULE 1189 (a). WHAT IS RECORDED, for every break the branch produces —
+ * the initial disruption of a structured body included — and for every
+ * component that break creates, on all four configurations (M1 and M2,
+ * clouds unlimited and capped) and the same 18 development cases and input
+ * streams as H1, H3 and H5:
+ *   - the break itself: its altitude, the parent's speed, mass and strength
+ *     at that altitude, and the ratio of dynamic pressure to strength there
+ *     (recorded, not assumed — it should sit at very nearly 1, the
+ *     bisection's own precision, and an audit that finds otherwise has found
+ *     a bug before it has found a mechanism);
+ *   - every child that break produces, whether solid or cloud, its count
+ *     (identical children born together), mass, inherited strength and
+ *     area-to-mass ratio at birth — the number and mass spectrum of a
+ *     break's children, not only the child that eventually lands;
+ *   - EVERY child's eventual fate: broke again (and if so, its own break's
+ *     altitude, speed, mass and pressure ratio — the next generation's row),
+ *     landed as a solid piece, landed as part of a settled cloud, settled
+ *     mid-flight as a cloud, turned to dust at the mass floor or a
+ *     non-physical step, or was folded into the aggregated tail (rule 1150).
+ *     A component born together with identical siblings (`n`/count) is one
+ *     row, not `n` rows: exactly how the sealed engine already bundles them.
+ *
+ * RULE 1189 (b). THE ENGINE, a third fork of the sealed candidate
+ * (`fcmBranch.ts`, rule 1162, untouched) — `fcmBranchAudit.ts` — carrying,
+ * like H5's, NO physics change: every equation and every branch of every
+ * break copied unchanged, the only addition a record kept at each break and
+ * each termination, of state the branch's own step already computes.
+ * Verified to EXACT equality with the sealed candidate's own output, not
+ * merely close, on a spread of random cases, before any development case is
+ * read with it — the same discipline as rule 1188 (d).
+ *
+ * RULE 1189 (c). THE REPORT: distributions, by case AND by configuration —
+ * never only the pooled sum, per the reviewer's third qualification — of the
+ * break's pressure ratio (a sanity check), the children's mass spectrum
+ * relative to their parent's mass, the share of each break's produced mass
+ * that eventually lands versus is lost to each other fate, and how these
+ * relate to the residual altitude a landing child had (its own birth
+ * altitude, not only its generation). No threshold is chosen here to call a
+ * pattern "the cause": this rule reports what the cascade does: rule 1190's
+ * dossier is where a candidate mechanism, if any is discriminable, gets
+ * proposed and its falsification named.
+ *
+ * RULE 1189 (d). NO ADOPTION: the sealed candidate (rule 1162) stays exactly
+ * as it is: this audit changes no default, no prior, no branch of the
+ * engine — only what is recorded of a run that would happen identically
+ * without it.
+ */
