@@ -163,6 +163,7 @@
     },
     "preset": "Preset",
     "customPreset": "Parametri personalizzati ★",
+    "presetConsistency": "coerenza (diametro ricavato dal cratere)",
     "customParams": "Parametri personalizzati",
     "validation": {
       "errorLabel": "Errore",
@@ -1729,6 +1730,7 @@
       "notAssessable": "non valutabile",
       "notComputed": "non calcolata",
       "notDefault": "non il default",
+      "consistency": "coerenza: il diametro è ricavato dal cratere con la legge di questo stesso modello, quindi il cratere non può verificarlo",
       "monteCarloNote": "Solo esplorativo: la dispersione dell'esito del modello quando gli ingressi sono estratti attorno a quelli dello scenario, con le dispersioni indicate in fondo alla tabella. Nessuna banda qui è stata verificata contro un riferimento.",
       "monteCarloTitle": "Monte Carlo: come si disperde l'esito",
       "planetaryNote": "† oltre 2000 km la legge della sovrappressione e del vento è un'estrapolazione a scala planetaria: vedi l'avvertenza della figura. I 2000 km segnano dove compare l'avviso, non un confine di validità."
@@ -2021,6 +2023,15 @@
       },
       "CHELYABINSK": {
         "note": "Airburst di una condrite LL a 18,3°, 15 feb 2013 — un corpo di 19,8 m a 19,16 km/s, Popova et al. 2013 Science. Un airburst completo ad angolo radente: nessun cratere e nessuna coltre di ejecta."
+      },
+      "POPIGAI": {
+        "note": "Cratere di ≈ 100 km nel nord della Siberia. Proiettile di condrite L (Tagle & Hecht 2006, MAPS 41: 1721); coevo dell'impatto della baia di Chesapeake e candidato a innescare il cambiamento climatico del tardo Eocene. Il diametro qui non è una misura indipendente: è scelto perché la legge del cratere di questo stesso modello riproduca i 100 km osservati, quindi il suo accordo con il cratere è circolare, non una verifica (regola 1194, A12)."
+      },
+      "BOLTYSH": {
+        "note": "Cratere di ≈ 24 km nell'Ucraina centrale. Coevo di Chicxulub entro l'incertezza della datazione (Kelley & Gurov 2002, MAPS 37: 1031); illustra un impatto a scala regionale più che l'innesco di un'estinzione di massa. Il diametro qui non è una misura indipendente: è scelto perché la legge del cratere di questo stesso modello riproduca i 24 km osservati, quindi il suo accordo con il cratere è circolare, non una verifica (regola 1194, A12)."
+      },
+      "SIKHOTE_ALIN_1947": {
+        "note": "Pioggia di meteoriti ferrosi di ≈ 70 t, Estremo Oriente russo. Krinov 1966; Bronshten 1976. La più grande caduta di meteoriti ferrosi mai registrata: si frammentò nell'alta atmosfera e scavò 122 crateri su ≈ 1,6 km²."
       }
     },
     "explosion": {

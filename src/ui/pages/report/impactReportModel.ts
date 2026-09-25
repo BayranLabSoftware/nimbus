@@ -10,7 +10,12 @@
 import { COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M } from '../../../physics/validation/craterDomainRules.js';
 import type { TFunction } from 'i18next';
 import type { CasualtyEstimate } from '../../../physics/casualties.js';
-import { impactModelSwitches, type ImpactScenarioResult } from '../../../physics/simulate.js';
+import {
+  CONSISTENCY_PRESETS,
+  impactModelSwitches,
+  type ImpactPresetId,
+  type ImpactScenarioResult,
+} from '../../../physics/simulate.js';
 import { joulesToMegatons, radiansToDegrees } from '../../../physics/units.js';
 import {
   EVIDENCE_QUANTITIES,
@@ -787,7 +792,12 @@ export function buildImpactReport(
     title: t('report.title'),
     subtitle: t('report.impact.subtitle', { name }),
     event:
-      ctx.presetName === null ? t('report.impact.eventCustom') : t('report.impact.event', { name }),
+      ctx.presetName === null
+        ? t('report.impact.eventCustom')
+        : // Rule 1219: a back-solved preset says so where the event is named.
+          CONSISTENCY_PRESETS.has(ctx.preset as ImpactPresetId)
+          ? `${t('report.impact.event', { name })} — ${t('report.impact.consistency')}`
+          : t('report.impact.event', { name }),
     place: placeOf(ctx),
     generated: ctx.evaluatedAt === null ? null : dateTime(ctx.evaluatedAt, language, ctx.timeZone),
     keyFigures: keyFigures(result, ctx),

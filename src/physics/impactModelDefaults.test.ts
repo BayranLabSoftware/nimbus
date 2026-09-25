@@ -15,7 +15,12 @@ import { DEFAULT_AIRBURST_SEISMIC } from './events/impact/airburstSeismic.js';
 import { DEFAULT_CRATER_DOMAIN } from './events/impact/crater.js';
 import { DEFAULT_CRATER_FIELD } from './events/impact/craterField.js';
 import { DEFAULT_IRON_CRATER_FIELD } from './events/impact/ironCraterField.js';
-import { IMPACT_MODEL_DEFAULTS, IMPACT_PRESETS, impactModelSwitches } from './simulate.js';
+import {
+  CONSISTENCY_PRESETS,
+  IMPACT_MODEL_DEFAULTS,
+  IMPACT_PRESETS,
+  impactModelSwitches,
+} from './simulate.js';
 
 /**
  * Rule 1213: the printed report names the configuration that made it, from
@@ -54,5 +59,17 @@ describe("the model's switches, as a report prints them", () => {
       strengthLaw: 'density',
     }).find((s) => s.key === 'strengthLaw');
     expect(density).toEqual({ key: 'strengthLaw', value: 'density', isDefault: false });
+  });
+});
+
+/** Rule 1219: the presets labelled "consistency" are those whose own note
+ *  says the diameter is back-solved from the crater, and no other. */
+describe('the back-solved presets', () => {
+  it('are exactly those whose note says their crater is circular', () => {
+    for (const [id, preset] of Object.entries(IMPACT_PRESETS)) {
+      expect(CONSISTENCY_PRESETS.has(id as keyof typeof IMPACT_PRESETS), id).toBe(
+        preset.note.includes('circular, not a check')
+      );
+    }
   });
 });

@@ -1793,3 +1793,37 @@ export const RULE_1217_WRITTEN = '2026-09-26' as const;
  * No number moves; the seal does not move.
  */
 export const RULE_1218_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1219. A12: "I DIAMETRI DI POPIGAI E BOLTYSH NEI PRESET SONO RICAVATI
+ * A RITROSO DAI CRATERI ... E L'INTERFACCIA NON LO DICE"; THE AUDIT'S FIX,
+ * "PRESET BACK-SOLVED ETICHETTATI «COERENZA»".
+ *
+ * Read before writing: rule 1195 put the sentence in both presets' notes
+ * (`IMPACT_PRESETS.POPIGAI.note`, `.BOLTYSH.note`: "circular, not a
+ * check"). Two things it did not do. The label: nothing where the preset is
+ * chosen or printed says "consistency" -- the selector reads "Popigai 35.7
+ * Ma" like any other, and so does the report's heading. And the language:
+ * the panel reads a preset's note from `presets.impact.<id>.note` and falls
+ * back to the English written beside the physics where the key is missing
+ * -- and it is missing for Popigai, Boltysh and Sikhote-Alin, so an Italian
+ * reader got all three in English, the circularity sentence included.
+ *
+ * The fix:
+ *   (a) one exported set beside the presets (`CONSISTENCY_PRESETS`,
+ *       `simulate.ts`: Popigai and Boltysh, the two whose diameter is
+ *       back-solved with this model's own crater law), read by the panel's
+ *       selector, which labels them "consistency" / "coerenza", and by the
+ *       report, whose event line says it and why -- inside
+ *       `buildImpactReport`, so the seal reads it as the page prints it;
+ *   (b) the three missing Italian notes, translated from the English beside
+ *       the physics, the circularity sentence included.
+ * Meteor Crater's impactor is also inferred from its crater in the
+ * literature (level B already counts it "consistency only, class D", rule
+ * 857 (d)), but by others' fits, not this model's law, and the audit named
+ * the two back-solved here: named, not touched, for Andrea.
+ *
+ * No number moves. The report's text moves for the two presets: re-sealed
+ * under rule 833 with this as the reason.
+ */
+export const RULE_1219_WRITTEN = '2026-09-26' as const;

@@ -163,6 +163,7 @@
     },
     "preset": "Preset",
     "customPreset": "Custom parameters ★",
+    "presetConsistency": "consistency (diameter back-solved from the crater)",
     "customParams": "Custom parameters",
     "validation": {
       "errorLabel": "Error",
@@ -1729,6 +1730,7 @@
       "notAssessable": "not assessable",
       "notComputed": "not computed",
       "notDefault": "not the default",
+      "consistency": "consistency: the diameter is back-solved from the crater with this model's own law, so the crater cannot check it",
       "monteCarloNote": "Exploratory only: the spread of the model's outcome when the inputs are drawn around this scenario's, with the spreads the table's foot names. No band here has been checked against a reference.",
       "monteCarloTitle": "Monte Carlo: how the outcome spreads",
       "planetaryNote": "† beyond 2,000 km the law of the overpressure and the wind is an extrapolation to a planetary scale: see the figure's warning. The 2,000 km mark where the warning appears, not a frontier of validity."

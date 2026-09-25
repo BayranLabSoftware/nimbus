@@ -316,6 +316,19 @@ describe("an impact's report, in the reader's language (IMP-7c)", () => {
     expect(rowValue(chicxulubModel, 'impactAzimuthDeg')).toBe('90°N');
   });
 
+  it('rule 1219: a back-solved preset says so where the event is named, and only it', () => {
+    const popigai = buildImpactReport(
+      simulateImpact(IMPACT_PRESETS.POPIGAI.input),
+      context(keyOnly, 'en', { presetName: 'Popigai 35.7 Ma', preset: 'POPIGAI' })
+    );
+    expect(popigai.event).toContain('report.impact.consistency');
+    const tunguska = buildImpactReport(
+      run('TUNGUSKA'),
+      context(keyOnly, 'en', { presetName: 'Tunguska', preset: 'TUNGUSKA' })
+    );
+    expect(tunguska.event).not.toContain('report.impact.consistency');
+  });
+
   it("rule 1213: prints G4's verdict, I2's band and the model's configuration, in the reader's language", async () => {
     const rowOf = (model: ImpactReportModel, id: string) =>
       model.groups.flatMap((g) => g.rows).find((r) => r.id === id);

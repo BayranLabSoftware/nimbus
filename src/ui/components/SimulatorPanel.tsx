@@ -20,7 +20,11 @@ import { bandFor, type ConfidenceField } from '../../physics/confidence.js';
 import { IMPACT_INPUT_SIGMA, OUTPUT_SIGMA } from '../../physics/uq/conventions.js';
 import type { EvidenceQuantity } from '../../physics/validation/evidenceClasses.js';
 import { clampToGreatCircle, isGlobalReach } from '../../physics/earthScale.js';
-import { IMPACT_PRESETS, type ImpactPresetId } from '../../physics/simulate.js';
+import {
+  CONSISTENCY_PRESETS,
+  IMPACT_PRESETS,
+  type ImpactPresetId,
+} from '../../physics/simulate.js';
 import { availableImpactLayers, isFieldLayer } from '../../scene/globe/impactFieldMap.js';
 import { takeGlobeShots } from '../../scene/globe/globeShots.js';
 import { joulesToMegatons } from '../../physics/units.js';
@@ -670,7 +674,13 @@ export function SimulatorPanel(): JSX.Element {
     currentPreset === 'CUSTOM' ? 'CUSTOM' : fallbackPreset === undefined ? '' : currentPreset;
 
   const labelFor = (id: AnyPresetId): string => {
-    if (id in IMPACT_PRESETS) return IMPACT_PRESETS[id as ImpactPresetId].name;
+    if (id in IMPACT_PRESETS) {
+      const name = IMPACT_PRESETS[id as ImpactPresetId].name;
+      // Rule 1219: a back-solved diameter is labelled where it is chosen.
+      return CONSISTENCY_PRESETS.has(id as ImpactPresetId)
+        ? `${name} · ${t('simulator.presetConsistency')}`
+        : name;
+    }
     if (id in EXPLOSION_PRESETS) return EXPLOSION_PRESETS[id as ExplosionPresetId].name;
     if (id in EARTHQUAKE_PRESETS) return EARTHQUAKE_PRESETS[id as EarthquakePresetId].name;
     // Landslide preset ids overlap volcano (ANAK_KRAKATAU_2018), so

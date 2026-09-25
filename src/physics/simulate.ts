@@ -1891,3 +1891,14 @@ export const IMPACT_PRESETS = {
 } as const;
 
 export type ImpactPresetId = keyof typeof IMPACT_PRESETS;
+
+/**
+ * Rule 1219 (A12): the presets whose diameter is back-solved from their own
+ * crater with this model's crater law, so the crater agrees by construction
+ * and checks nothing — labelled "consistency" wherever the preset is chosen
+ * or printed.
+ */
+export const CONSISTENCY_PRESETS: ReadonlySet<ImpactPresetId> = new Set<ImpactPresetId>([
+  'POPIGAI',
+  'BOLTYSH',
+]);
