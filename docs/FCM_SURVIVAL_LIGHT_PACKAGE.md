@@ -120,3 +120,48 @@ plateau against catastrophic fragmentation) rather than one constant for the who
 H2's original framing than either run so far tested, and requiring its own preregistered form. This
 round's three tested hypotheses (H1, H3's diagnostic aside) and H4 all close without adopting anything
 into the frozen candidate (rule 1162, still untouched).
+
+## H5: the excess is dominated by genealogy, not ablation
+
+The reviewer's answer to H1–H4's close (rule 1188): stop searching for a σ value on these cases, and ask
+instead a mechanical question with no new free parameter — is the excess landed mass dominated by
+fragments the branch creates already large and late in the cascade, or by fragments born early, with a
+long residual flight, that nonetheless keep most of their birth mass? `docs/FCM_H5_RUN.md`,
+`src/physics/validation/fcmH5Run.json`, from `scripts/fcm-h5-run.ts` (the H5 engine, `fcmBranchH5.ts`, a
+second fork of the sealed candidate — rule 1162 still untouched, and this one carries no physics change
+at all, verified to exact equality with the sealed engine's own output before any development case was
+read with it). Same 18 cases, same input and parameter streams as H1 and H3, M1/unlimited only — the
+configuration H3 examined.
+
+Every landed solid piece is classified by generation (0: the whole body, never broken; 1: born at the
+very first break, the earliest and highest a fragment can be created; 2 or more: born later) and by
+whether it retained more than half its birth mass — four buckets, fixed before any case was read
+(rule 1188 (b)), and the round's decision comes from each bucket's pooled, mass-weighted share of the
+5 784 000 kg landed across all 18 cases (rule 1188 (c)):
+
+| Bucket                                  | Share      |
+| --------------------------------------- | ---------- |
+| Early + retained (ablation channel)     | 2.0 %      |
+| **Late + retained (genealogy channel)** | **89.5 %** |
+| Ablated as expected                     | 8.4 %      |
+| Whole body, never broke                 | 0.08 %     |
+
+The late+retained bucket exceeds the early+retained bucket by 45×, far past the declared 2× margin.
+**Decision: genealogy.** This holds case by case, not only pooled: on 16 of the 18 development cases the
+late+retained bucket is the largest non-"ablated" share, with a median generation of 5 to 15 (these
+survivors are typically many breaks deep in the cascade, not close to the first one) and a median
+retained fraction of 0.58 to 0.83 (they kept well over half their birth mass despite being created late).
+Two small bodies (Winchcombe, Cavezzo) lean toward early+retained or the whole-body bucket instead —
+consistent with H3's earlier note that the smallest bodies in the set carry most of their landed mass in
+one piece.
+
+**What this changes:** four rounds (H1, H2, H4) tried representations of ablation — a different light
+law, redrawing σ per break, fixing σ at the literature's own upper sensitivity — and none closed H3's
+gap. H5 says why: the excess mass is not sitting in fragments that ablate too little given a long flight
+ahead of them: it is sitting in fragments the branch's own break conditions and mass partition create
+already large, late in the cascade, with comparatively little flight left regardless of how they ablate.
+Changing σ again, in any form, could only ever discount a small share of the excess (the 2 % early+
+retained bucket) and risks masking the larger channel rather than testing it. Per rule 1188 (e), H5
+adopts nothing: it names the next causal study — break conditions, mass partition and the genealogy of
+children — for a separately preregistered round, and closes the search for an ablation coefficient on
+these cases.

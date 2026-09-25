@@ -1,0 +1,288 @@
+{
+  "rule": "1188 (a) to (c)",
+  "draws": 200,
+  "configuration": "M1/unlimited",
+  "totalLandedKg": 5783820,
+  "shares": {
+    "earlyRetained": 0.0199454,
+    "lateRetained": 0.894926,
+    "ablatedEarly": 0.00188664,
+    "ablatedLate": 0.0824143,
+    "wholeBody": 0.000827244
+  },
+  "dominanceMargin": 2,
+  "retainedFraction": 0.5,
+  "decision": "genealogy",
+  "results": [
+    {
+      "case": "Chelyabinsk",
+      "family": "rule 961",
+      "produced": 1,
+      "totalLandedKg": 24203.8,
+      "buckets": {
+        "earlyRetained": 0,
+        "lateRetained": 24203.8,
+        "ablatedEarly": 0,
+        "ablatedLate": 0,
+        "wholeBody": 0
+      },
+      "medianGeneration": 8,
+      "medianRetainedFraction": 0.5797
+    },
+    {
+      "case": "Tunguska",
+      "family": "rule 961",
+      "produced": 1,
+      "totalLandedKg": 856995,
+      "buckets": {
+        "earlyRetained": 0,
+        "lateRetained": 856995,
+        "ablatedEarly": 0,
+        "ablatedLate": 0,
+        "wholeBody": 0
+      },
+      "medianGeneration": 5,
+      "medianRetainedFraction": 0.7491
+    },
+    {
+      "case": "2008 TC3",
+      "family": "rule 961",
+      "produced": 200,
+      "totalLandedKg": 2094510,
+      "buckets": {
+        "earlyRetained": 53418.6,
+        "lateRetained": 1928490,
+        "ablatedEarly": 4519.52,
+        "ablatedLate": 108089,
+        "wholeBody": 0
+      },
+      "medianGeneration": 7,
+      "medianRetainedFraction": 0.8274
+    },
+    {
+      "case": "2018 LA",
+      "family": "rule 961",
+      "produced": 200,
+      "totalLandedKg": 62156.4,
+      "buckets": {
+        "earlyRetained": 6372.15,
+        "lateRetained": 49053.1,
+        "ablatedEarly": 1059.23,
+        "ablatedLate": 5671.88,
+        "wholeBody": 0
+      },
+      "medianGeneration": 5,
+      "medianRetainedFraction": 0.7862
+    },
+    {
+      "case": "2022 EB5",
+      "family": "rule 961",
+      "produced": 1,
+      "totalLandedKg": 512.845,
+      "buckets": {
+        "earlyRetained": 0,
+        "lateRetained": 42.5335,
+        "ablatedEarly": 0,
+        "ablatedLate": 470.312,
+        "wholeBody": 0
+      },
+      "medianGeneration": 11,
+      "medianRetainedFraction": 0.4549
+    },
+    {
+      "case": "2023 CX1",
+      "family": "rule 961",
+      "produced": 200,
+      "totalLandedKg": 37050.9,
+      "buckets": {
+        "earlyRetained": 1076.53,
+        "lateRetained": 32257.3,
+        "ablatedEarly": 522.034,
+        "ablatedLate": 3195.04,
+        "wholeBody": 0
+      },
+      "medianGeneration": 6,
+      "medianRetainedFraction": 0.6828
+    },
+    {
+      "case": "2024 BX1",
+      "family": "rule 961",
+      "produced": 200,
+      "totalLandedKg": 6406.32,
+      "buckets": {
+        "earlyRetained": 285.045,
+        "lateRetained": 5442.09,
+        "ablatedEarly": 99.1766,
+        "ablatedLate": 580.013,
+        "wholeBody": 0
+      },
+      "medianGeneration": 5,
+      "medianRetainedFraction": 0.7729
+    },
+    {
+      "case": "2022 WJ1",
+      "family": "rule 961",
+      "produced": 200,
+      "totalLandedKg": 12597.8,
+      "buckets": {
+        "earlyRetained": 4028.4,
+        "lateRetained": 4009.63,
+        "ablatedEarly": 425.032,
+        "ablatedLate": 287.822,
+        "wholeBody": 3846.93
+      },
+      "medianGeneration": 2,
+      "medianRetainedFraction": 0.7651
+    },
+    {
+      "case": "Carancas",
+      "family": "rule 961",
+      "produced": 200,
+      "totalLandedKg": 102748,
+      "buckets": {
+        "earlyRetained": 753.041,
+        "lateRetained": 91068.7,
+        "ablatedEarly": 437.955,
+        "ablatedLate": 10487.9,
+        "wholeBody": 0
+      },
+      "medianGeneration": 11,
+      "medianRetainedFraction": 0.8213
+    },
+    {
+      "case": "Winchcombe",
+      "family": "third set",
+      "produced": 200,
+      "totalLandedKg": 1132.11,
+      "buckets": {
+        "earlyRetained": 251.773,
+        "lateRetained": 119.119,
+        "ablatedEarly": 15.4626,
+        "ablatedLate": 4.38821,
+        "wholeBody": 741.363
+      },
+      "medianGeneration": 1,
+      "medianRetainedFraction": 0.8006
+    },
+    {
+      "case": "Golden",
+      "family": "third set",
+      "produced": 200,
+      "totalLandedKg": 3135.03,
+      "buckets": {
+        "earlyRetained": 174.793,
+        "lateRetained": 2502.01,
+        "ablatedEarly": 55.9536,
+        "ablatedLate": 402.278,
+        "wholeBody": 0
+      },
+      "medianGeneration": 7,
+      "medianRetainedFraction": 0.61
+    },
+    {
+      "case": "Madura Cave",
+      "family": "third set",
+      "produced": 200,
+      "totalLandedKg": 2233.39,
+      "buckets": {
+        "earlyRetained": 1040.25,
+        "lateRetained": 1074.16,
+        "ablatedEarly": 48.4127,
+        "ablatedLate": 70.5601,
+        "wholeBody": 0
+      },
+      "medianGeneration": 3,
+      "medianRetainedFraction": 0.7365
+    },
+    {
+      "case": "Hamburg",
+      "family": "third set",
+      "produced": 200,
+      "totalLandedKg": 3585.14,
+      "buckets": {
+        "earlyRetained": 309.058,
+        "lateRetained": 2911.42,
+        "ablatedEarly": 68.9883,
+        "ablatedLate": 295.667,
+        "wholeBody": 0
+      },
+      "medianGeneration": 6,
+      "medianRetainedFraction": 0.7025
+    },
+    {
+      "case": "Traspena",
+      "family": "third set",
+      "produced": 200,
+      "totalLandedKg": 42695.9,
+      "buckets": {
+        "earlyRetained": 0,
+        "lateRetained": 36574.2,
+        "ablatedEarly": 24.2286,
+        "ablatedLate": 6097.41,
+        "wholeBody": 0
+      },
+      "medianGeneration": 10,
+      "medianRetainedFraction": 0.6792
+    },
+    {
+      "case": "Cavezzo",
+      "family": "third set",
+      "produced": 200,
+      "totalLandedKg": 353.379,
+      "buckets": {
+        "earlyRetained": 89.377,
+        "lateRetained": 63.2328,
+        "ablatedEarly": 3.82964,
+        "ablatedLate": 0.600472,
+        "wholeBody": 196.339
+      },
+      "medianGeneration": 1,
+      "medianRetainedFraction": 0.8262
+    },
+    {
+      "case": "Košice",
+      "family": "W18",
+      "produced": 200,
+      "totalLandedKg": 101008,
+      "buckets": {
+        "earlyRetained": 803.62,
+        "lateRetained": 90925.3,
+        "ablatedEarly": 458.029,
+        "ablatedLate": 8820.73,
+        "wholeBody": 0
+      },
+      "medianGeneration": 11,
+      "medianRetainedFraction": 0.7215
+    },
+    {
+      "case": "Benešov",
+      "family": "W18",
+      "produced": 200,
+      "totalLandedKg": 46729.7,
+      "buckets": {
+        "earlyRetained": 0,
+        "lateRetained": 39276,
+        "ablatedEarly": 5.46268,
+        "ablatedLate": 7448.23,
+        "wholeBody": 0
+      },
+      "medianGeneration": 15,
+      "medianRetainedFraction": 0.7622
+    },
+    {
+      "case": "Tagish Lake",
+      "family": "W18",
+      "produced": 200,
+      "totalLandedKg": 2385770,
+      "buckets": {
+        "earlyRetained": 46757.9,
+        "lateRetained": 2011090,
+        "ablatedEarly": 3168.68,
+        "ablatedLate": 324748,
+        "wholeBody": 0
+      },
+      "medianGeneration": 10,
+      "medianRetainedFraction": 0.5934
+    }
+  ]
+}
