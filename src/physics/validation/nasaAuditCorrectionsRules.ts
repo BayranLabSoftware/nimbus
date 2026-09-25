@@ -1199,3 +1199,67 @@ export const RULE_1204_WRITTEN = '2026-09-25' as const;
  * the most.
  */
 export const RULE_1205_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1206. A12, ITEMS 1 AND 5 OF RULE 1203'S LIST: A MONTE CARLO RANGE
+ * CALLED A CONFIDENCE INTERVAL, A DASHED LINE THAT IS NO LONGER DRAWN, AND
+ * A PROBABILITY VIEW THAT INHERITS A LABEL IT NEVER EARNED.
+ *
+ * Read, not assumed, before writing:
+ *
+ * (a) `landing.facts.monteCarlo` sets "P10–P90" beside "confidence
+ *     intervals from Monte Carlo sampling". A P10–P90 range of outcomes over
+ *     sampled inputs is not a confidence interval (a statement about an
+ *     estimated parameter from data); it is the spread of results when the
+ *     inputs are drawn from their assumed distributions. Reworded to say
+ *     that.
+ * (b) `landing.instrument.uncertainty.detail`: "the nominal value is drawn
+ *     as a solid line, its spread as a dashed line". Checked in `Globe.tsx`:
+ *     the only `PolylineDashMaterialProperty` left are the tsunami's hourly
+ *     isochrones and the volcanic ashfall isopach -- neither is an
+ *     uncertainty band, and no impact ring has a dashed spread line since
+ *     the grammar round of 22-23 September (rules 1028-1036). The spread is
+ *     shown today by the probability view (its own tab) and, after a Monte
+ *     Carlo run, by the faint P10–P90 halos (rule 1201). Reworded to that.
+ *     `methodology.uncertainty.outputNote`'s "the dashed rings on the globe
+ *     read a table of their own" gets the same correction (the table is
+ *     `ringSigma.ts`; the rings are not dashed on the impact globe).
+ * (c) The probability view (`impactFieldMap.ts`, `layerEvidence` for
+ *     `layer.id === 'uncertainty'`) takes its evidence class from
+ *     `FAMILY_EVIDENCE[family]` -- class A for blast, ejecta and crater --
+ *     while what it draws is a band: for the `probability` kind a 1σ on the
+ *     radius from `RING_RADIUS_SIGMA` (`ringSigma.ts`), which
+ *     `visualContracts.ts`' own `sigmaUpperBand` contract already says is,
+ *     for most quantities, "a project convention and not a band scored on a
+ *     held-out set"; for the `agreement` kind (a complete airburst's blast)
+ *     the disagreement of Collins et al. 2017's three models, published but
+ *     never scored either (I3 not met, frozen by rule 1193). Class A is
+ *     "implementation verified against the reference program, case by
+ *     case" -- no band has been so checked. The fix follows the precedent
+ *     `layerEvidence` already sets for the low overpressure (rule 1031
+ *     (c)): the uncertainty layer carries `klass: 'exploratory'`, the
+ *     exploratory label, and a summary of its own saying what the band
+ *     rests on, one for each kind. The `quantity` stays the family's, as
+ *     the low overpressure's does.
+ * (d) The probability kind's three texts call its σ "the published scatter
+ *     of the radius" (`globe.impactMap.note.probabilityFrom`,
+ *     `.source.probability`, `.isoline.probability`). True in part only:
+ *     for the two fire rings (mass fire, ignition) σ = 0.3 is Glasstone &
+ *     Dolan's own Table 7.40 footnote, ±50 % in the field, carried through
+ *     the inverse square (`OUTPUT_SIGMA`, 19 September); for the burns
+ *     (0.3), the blast (0.18) and the ejecta (0.5) `ringSigma.ts` names no
+ *     source for the figure. Reworded to "a 1σ the project sets for the
+ *     radius", with the fire rings' derivation named where it is true.
+ *
+ * Left as it is, and why: `globe.legend.uncertaintyNote` also speaks of
+ * dotted and dashed lines and of a published 1σ, but `RingLegend.tsx`
+ * renders it only when the active result is NOT an impact
+ * (`impactMap === null`) -- the paused modules, which the site no longer
+ * offers (impacts only, since 22 September 2026). Named, not touched.
+ *
+ * No number moves. What the globe and the report say about the probability
+ * view moves, so the seal's drawing and text digests will move on every
+ * scenario that has that view: re-sealed under rule 833 with this as the
+ * reason.
+ */
+export const RULE_1206_WRITTEN = '2026-09-26' as const;

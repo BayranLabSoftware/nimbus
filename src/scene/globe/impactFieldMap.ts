@@ -373,7 +373,8 @@ export interface UncertaintyChoice {
   kind: 'probability' | 'agreement';
   family: FamilyId;
   medianM: number;
-  /** Published 1σ scatter of the radius, for a probability. */
+  /** The 1σ on the radius the project sets (`ringSigma.ts`; rule 1206), for
+   *  a probability. */
   sigma?: number;
   /** The field's band, for an agreement. */
   lowM?: number;
@@ -527,6 +528,24 @@ function layerEvidence(layer: RawLayer, ctx: ImpactMapContext): LayerEvidence {
       summary: planetary
         ? `${ctx.t('globe.impactMap.layer.lowOverpressure.planetary')} ${ctx.t('globe.impactMap.layer.lowOverpressure.evidence')}`
         : ctx.t('globe.impactMap.layer.lowOverpressure.evidence'),
+    };
+  }
+  // Rule 1206 (c): the probability view draws a band, not the family's
+  // verified value -- a 1σ the project sets, or the spread of Collins et al.
+  // 2017's three blast models -- and no band has been checked case by case,
+  // so it does not inherit the family's class.
+  if (layer.id === 'uncertainty') {
+    const kind = layer.uncertainty?.selected?.kind ?? 'probability';
+    return {
+      quantity,
+      klass: 'exploratory',
+      label: ctx.t('evidence.class.exploratory.label'),
+      short: ctx.t('evidence.class.exploratory.short'),
+      summary: ctx.t(
+        kind === 'agreement'
+          ? 'globe.impactMap.layer.agreement.evidence'
+          : 'globe.impactMap.layer.probability.evidence'
+      ),
     };
   }
   return { quantity, klass, label, short, summary };
@@ -1666,7 +1685,8 @@ function normalCdf(z: number): number {
 }
 
 /** Where a threshold is exceeded with probability p, for a radius scattered
- *  lognormally with the published 1σ: R · exp(±z σ_ln), σ_ln = ln(1 + σ). */
+ *  lognormally with the 1σ the project sets for it (rule 1206): R · exp(±z σ_ln),
+ *  σ_ln = ln(1 + σ). */
 export function probabilityRadius(medianM: number, sigma: number, p: number): number {
   const sl = Math.log(1 + sigma);
   const z = p === 0.9 ? -Z90 : p === 0.1 ? Z90 : 0;

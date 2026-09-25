@@ -30,7 +30,7 @@
       "label": "Nimbus in cifre",
       "presets": "impatti predefiniti, storici e di riferimento",
       "band": "intervallo predittivo delle stime delle vittime",
-      "monteCarlo": "intervalli di confidenza da simulazione Monte Carlo",
+      "monteCarlo": "intervalli dei risultati dal campionamento Monte Carlo degli ingressi",
       "accessibility": "livello di accessibilità dell'interfaccia"
     },
     "models": {
@@ -63,7 +63,7 @@
       },
       "uncertainty": {
         "name": "Incertezza dichiarata",
-        "detail": "Il valore nominale è indicato da una linea continua, la sua dispersione da una linea tratteggiata."
+        "detail": "Il valore nominale è la linea stessa; la sua dispersione ha una vista propria — la probabilità che ogni soglia sia superata a ogni distanza — e, dopo un Monte Carlo, aloni tenui P10–P90."
       },
       "reproducible": {
         "name": "Scenari riproducibili",
@@ -830,7 +830,7 @@
       "inputItem": "Convenzioni σ degli input",
       "inputNote": "I quattro wrapper Monte Carlo importano la dispersione da un unico dizionario tipato, e ogni voce dice da dove viene — un articolo quando c'è, altrimenti un catalogo, una FAQ o un valore del progetto. Esempi: diametro dell'impattore σ_log = 0,15 (Mainzer 2019), yield dell'esplosione σ_log = 0,1 (Sublette FAQ), Vs30 σ = 30 % (Wald & Allen 2007). Due estrazioni restano fuori: l'angolo d'impatto, che segue la distribuzione in sin 2θ, e la profondità del terremoto, il cui σ non scende mai sotto i 2 km.",
       "outputItem": "Scatter 1σ sugli output (bande sui valori puntuali)",
-      "outputNote": "OUTPUT_SIGMA contiene la dispersione di otto output, e il pannello del simulatore la stampa per ciascuno come intervallo con la sua ampiezza. Le più larghe sono lo tsunami in campo lontano di Wünnemann (un fattore 3 in più o in meno), l'area di caduta della cenere e il percorso dei lahar (un fattore 2), l'altezza del pennacchio di Mastin (un fattore 1,6) e il percorso delle colate piroclastiche (±70 %). Il ±30 % della tempesta di fuoco è un valore del progetto, non una dispersione pubblicata, e gli anelli tratteggiati sul globo leggono una tabella propria.",
+      "outputNote": "OUTPUT_SIGMA contiene la dispersione di otto output, e il pannello del simulatore la stampa per ciascuno come intervallo con la sua ampiezza. Le più larghe sono lo tsunami in campo lontano di Wünnemann (un fattore 3 in più o in meno), l'area di caduta della cenere e il percorso dei lahar (un fattore 2), l'altezza del pennacchio di Mastin (un fattore 1,6) e il percorso delle colate piroclastiche (±70 %). Il ±30 % della tempesta di fuoco è un valore del progetto, non una dispersione pubblicata, e le bande che il globo disegna attorno a un raggio leggono una tabella propria.",
       "mcItem": "Monte Carlo (N = 1 000)",
       "mcNote": "Il pulsante estrae 1 000 realizzazioni da un generatore Mulberry32 con un seme ricavato da tipo di evento, preset e numero di campioni, quindi lo stesso scenario dà gli stessi percentili nello stesso browser. Un link porta gli input ma non il seme né il risultato, e nessun test verifica che due browser diversi coincidano bit per bit. Un test confronta 200 estrazioni con 2 000 per l'impatto di Tunguska: P10 e P90 entro il 15 %, mediane entro il 10 %.",
       "sensitivityItem": "Sensitività locale OAT",
@@ -1151,12 +1151,14 @@
         "probability": {
           "tab": "Probabilità",
           "title": "Probabilità di superare {{threshold}}",
-          "unit": "per cento"
+          "unit": "per cento",
+          "evidence": "La banda, non il valore: un 1σ sul raggio che il progetto fissa per ogni grandezza — ricavato da un dato pubblicato solo per gli anelli d’incendio (il ±50 % di Glasstone e Dolan), una convenzione del progetto per le ustioni, l’onda d’urto e gli ejecta — e nessuna banda è stata ancora verificata su eventi tenuti da parte (regola G3 del gold standard)."
         },
         "agreement": {
           "tab": "Accordo del campo",
           "title": "Accordo del campo su {{threshold}}",
-          "unit": "la forchetta che Collins et al. (2017) danno alle loro approssimazioni"
+          "unit": "la forchetta che Collins et al. (2017) danno alle loro approssimazioni",
+          "evidence": "La banda, non il valore: quanto discordano i tre modelli dell’onda d’urto di un airburst di Collins et al. (2017) — una forchetta pubblicata fra modelli, non una dispersione misurata su eventi, e non ancora verificata su eventi tenuti da parte (regole I3 e G3 del gold standard)."
         },
         "tsunami": {
           "tab": "Tsunami",
@@ -1213,7 +1215,7 @@
         "liquefactionNone": "nessuna: la magnitudo non basta a liquefare un suolo sabbioso saturo",
         "shakingBelowV": "sotto V solo la linea, come per i terremoti",
         "shakingAirburst": "il programma disegna questi anelli anche per un airburst, ma Collins et al. (2005) non riportano scuotimento per gli airburst; quello di Tunguska arrivò ai sismografi e qui non è confrontato con una registrazione",
-        "probabilityFrom": "lo scarto pubblicato del raggio, 1σ = {{sigma}} %, letto come lognormale",
+        "probabilityFrom": "un 1σ di {{sigma}} % sul raggio, fissato dal progetto (per gli anelli d’incendio, il ±50 % di Glasstone e Dolan), letto come lognormale",
         "probabilityIsolines": "90, 50 e 10 %; il 50 % è la linea della carta del campo",
         "agreementReading": "tutta la forchetta supera la soglia fino a {{low}}; solo il suo bordo alto fino a {{high}}",
         "agreementNowhere": "in nessun punto tutta la forchetta supera la soglia; il suo bordo alto sì, fino a {{high}}",
@@ -1253,7 +1255,7 @@
         "ejecta": "Collins, Melosh & Marcus (2005), spessore in r⁻³",
         "shaking": "l'attenuazione del programma (Eq. 41*–43*) e la Tabella 3 di Collins et al. (2005), verificate sugli anelli del programma (regole 154–157)",
         "liquefaction": "la soglia di Youd & Idriss (2001), dalla magnitudo",
-        "probability": "lo scarto pubblicato del raggio, letto come lognormale",
+        "probability": "un 1σ sul raggio fissato dal progetto, letto come lognormale",
         "agreement": "la forchetta della regola 706 (Collins et al. 2017)"
       },
       "isoline": {
@@ -1269,7 +1271,7 @@
         "liquefactionTitle": "Liquefazione",
         "liquefaction": "il suolo sabbioso saturo si liquefa fino a questa linea",
         "probabilityTitle": "{{p}} % · {{threshold}}",
-        "probability": "la soglia è superata con questa probabilità su questa linea (scarto pubblicato 1σ {{sigma}} %)",
+        "probability": "la soglia è superata con questa probabilità su questa linea (1σ di {{sigma}} % sul raggio, fissato dal progetto)",
         "agreementTitle": "{{threshold}} · la mediana",
         "agreement": "la linea della carta del campo; la forchetta attorno è quella del campo",
         "lowTitle": "Sovrappressione {{value}}",

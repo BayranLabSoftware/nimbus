@@ -30,7 +30,7 @@
       "label": "Nimbus in figures",
       "presets": "preset impacts, historical and reference",
       "band": "predictive interval on every casualty estimate",
-      "monteCarlo": "confidence intervals from Monte Carlo sampling",
+      "monteCarlo": "ranges of outcomes from Monte Carlo sampling of the inputs",
       "accessibility": "accessibility level of the interface"
     },
     "models": {
@@ -63,7 +63,7 @@
       },
       "uncertainty": {
         "name": "Stated uncertainty",
-        "detail": "The nominal value is drawn as a solid line, its spread as a dashed line."
+        "detail": "The nominal value is the line itself; its spread has a view of its own — the probability that each threshold is passed at each distance — and, after a Monte Carlo run, faint P10–P90 halos."
       },
       "reproducible": {
         "name": "Reproducible scenarios",
@@ -830,7 +830,7 @@
       "inputItem": "Input σ conventions",
       "inputNote": "The four Monte-Carlo wrappers import their scatter from one typed dictionary, and every entry names its source — a paper where there is one, otherwise a catalogue, an FAQ or a project value. Examples: impactor diameter σ_log = 0.15 (Mainzer 2019), explosion yield σ_log = 0.1 (Sublette FAQ), Vs30 σ = 30 % (Wald & Allen 2007). Two draws sit outside it: the impact angle, which follows the sin 2θ distribution, and the depth of an earthquake, whose σ is never smaller than 2 km.",
       "outputItem": "Output 1σ scatter (point-estimate bands)",
-      "outputNote": "OUTPUT_SIGMA holds the scatter of eight outputs, and the simulator panel prints each as a range with its width. The widest are Wünnemann's far-field tsunami (a factor of 3 either way), ashfall area and lahar runout (a factor of 2), Mastin's plume height (a factor of 1.6) and pyroclastic runout (±70 %). The firestorm's ±30 % is a project value, not published scatter, and the dashed rings on the globe read a table of their own.",
+      "outputNote": "OUTPUT_SIGMA holds the scatter of eight outputs, and the simulator panel prints each as a range with its width. The widest are Wünnemann's far-field tsunami (a factor of 3 either way), ashfall area and lahar runout (a factor of 2), Mastin's plume height (a factor of 1.6) and pyroclastic runout (±70 %). The firestorm's ±30 % is a project value, not published scatter, and the bands the globe draws around a radius read a table of their own.",
       "mcItem": "Monte Carlo (N = 1 000)",
       "mcNote": "The button draws 1 000 realisations from a Mulberry32 generator seeded by the event type, the preset and the sample size, so the same scenario gives the same percentiles in the same browser. A link carries the inputs but not the seed or the result, and nothing checks that two browsers agree to the bit. One test compares 200 draws with 2 000 for the Tunguska impact: P10 and P90 within 15 %, medians within 10 %.",
       "sensitivityItem": "OAT local sensitivity",
@@ -1151,12 +1151,14 @@
         "probability": {
           "tab": "Probability",
           "title": "Probability of exceeding {{threshold}}",
-          "unit": "per cent"
+          "unit": "per cent",
+          "evidence": "The band, not the value: a 1σ on the radius that the project sets for each quantity — derived from a published figure only for the fire rings (Glasstone & Dolan’s ±50 %), a project convention for the burns, the blast and the ejecta — and no band has yet been checked against held-out events (gold-standard rule G3)."
         },
         "agreement": {
           "tab": "Field agreement",
           "title": "Agreement of the field on {{threshold}}",
-          "unit": "the band Collins et al. (2017) give their own approximations"
+          "unit": "the band Collins et al. (2017) give their own approximations",
+          "evidence": "The band, not the value: how far Collins et al. (2017)’s three models of an airburst’s blast disagree — a spread published between models, not a scatter measured on events, and not yet checked against held-out events (gold-standard rules I3 and G3)."
         },
         "tsunami": {
           "tab": "Tsunami",
@@ -1213,7 +1215,7 @@
         "liquefactionNone": "none: the magnitude is too low to liquefy saturated sandy ground",
         "shakingBelowV": "below V only a line, as the earthquakes are drawn",
         "shakingAirburst": "the program draws these rings for an airburst too, but Collins et al. (2005) report no seismic effects for airbursts; Tunguska's shaking reached seismographs and is not compared here with a record",
-        "probabilityFrom": "the published scatter of the radius, 1σ = {{sigma}} %, read as lognormal",
+        "probabilityFrom": "a 1σ of {{sigma}} % on the radius, set by the project (for the fire rings, Glasstone & Dolan’s own ±50 %), read as lognormal",
         "probabilityIsolines": "90, 50 and 10 %; 50 % is the line of the map of the field",
         "agreementReading": "the whole band exceeds the threshold out to {{low}}; only its upper edge out to {{high}}",
         "agreementNowhere": "nowhere does the whole band exceed the threshold; its upper edge does, out to {{high}}",
@@ -1253,7 +1255,7 @@
         "ejecta": "Collins, Melosh & Marcus (2005), thickness in r⁻³",
         "shaking": "the program's attenuation (Eqs. 41*–43*) and Table 3 of Collins et al. (2005), verified on the program's rings (rules 154 to 157)",
         "liquefaction": "Youd & Idriss (2001)'s threshold, fed by the magnitude",
-        "probability": "the published scatter of the radius, read as lognormal",
+        "probability": "a 1σ on the radius set by the project, read as lognormal",
         "agreement": "the band of rule 706 (Collins et al. 2017)"
       },
       "isoline": {
@@ -1269,7 +1271,7 @@
         "liquefactionTitle": "Liquefaction",
         "liquefaction": "saturated sandy ground liquefies out to this line",
         "probabilityTitle": "{{p}} % · {{threshold}}",
-        "probability": "the threshold is exceeded with this probability at this line (published 1σ scatter {{sigma}} %)",
+        "probability": "the threshold is exceeded with this probability at this line (1σ of {{sigma}} % on the radius, set by the project)",
         "agreementTitle": "{{threshold}} · the median",
         "agreement": "the line of the map of the field; the band about it is the field's",
         "lowTitle": "Overpressure {{value}}",
