@@ -1,5 +1,5 @@
 /**
- * Rules 1178 to 1187 — the opening document of the survival–light round, on
+ * Rules 1178 to 1188 — the opening document of the survival–light round, on
  * the reviewer's approval of 25 September 2026: a round of development on the
  * FCM branch's own physics, before any test that could adopt it, and — apart
  * — the custody protocol and the reconnaissance of a genuinely blind fifth
@@ -249,3 +249,113 @@ export const FCM_H2_SIGMA_RANGE = [1e-9, 1.6e-8] as const;
 
 /** Rule 1187: H4's one value — rule 1131's own named sensitivity. */
 export const FCM_H4_SIGMA_S2_M2 = 3.5e-7;
+
+/**
+ * RULE 1188. H5, THE RESIDUAL HISTORY OF SURVIVING FRAGMENTS — the reviewer's
+ * answer of 25 September 2026 to H1–H4's close: stop searching for a value of
+ * σ on these same cases; H1–H4 show that redrawing σ inside the same prior
+ * (H2) or fixing it at the prior's own top (H4) do not close H3's gap, not
+ * that ablation is irrelevant, and not that a value between the two would —
+ * choosing one now because it lands closer would be exactly the tuning rule
+ * 1181 forbids. H3 stays the most useful finding so far, but conditioned to
+ * the one configuration it examined (M1, clouds unlimited): H5 works inside
+ * that same configuration, not across all four.
+ *
+ * H5 asks a mechanical question with NO NEW FREE PARAMETER: is the excess
+ * landed mass dominated by solid fragments the branch creates already large
+ * and late in the cascade (a question about break conditions, mass
+ * partition and the genealogy of children — H2/H4 never touched this), or
+ * by fragments born early, with a long residual flight still ahead of them,
+ * that nonetheless keep most of their birth mass (a question that would
+ * still point at ablation, but not at its redraw point or its scale alone)?
+ * The reviewer's own qualification, carried here unchanged: recovered
+ * masses are generally lower bounds on the mass that fell, not the fallen
+ * mass itself, so a modelled mass above a recovered one is not by itself a
+ * measured size of error; W18's own modelled masses are not an independent
+ * observation either. H5 decomposes the branch's OWN landed mass against
+ * its OWN birth conditions — an audit of the model's internal budget, not a
+ * new claim about how large the real discrepancy is.
+ *
+ * RULE 1188 (a). WHAT IS RECORDED, for every solid piece the branch already
+ * lands at the ground (`FcmPiece`, unchanged) under M1/unlimited, on the same
+ * 18 development cases and the same input and parameter streams as H1's and
+ * H3's runs (rule 1179; `drawFcm`, `fcmRound1Common.ts`, unchanged): its
+ * generation (0 = the unbroken body itself, landing whole; 1 = born at the
+ * first break; 2 = born at a break of a first-break child; and so on — one
+ * more than its parent's, counted from birth, already implicit in how a
+ * piece came to exist and not a new physical quantity), the altitude, speed,
+ * mass and inherited strength it was born with, the material density its
+ * area follows, and its mass at three points along its own flight — at
+ * birth, at half the altitude it drops between birth and the ground
+ * (linearly interpolated between the two nearest simulated steps), and at
+ * landing (already `mass`). Nothing here is drawn or chosen: every one of
+ * these quantities already exists on the branch's own internal state at the
+ * moment a piece is born or lands; only its record survives past that
+ * moment, where the sealed engine already discards it.
+ *
+ * RULE 1188 (b). THE CLASSIFICATION, fixed before any case is read, needing
+ * no threshold chosen after seeing a result:
+ *   - a piece is EARLY if its generation is 1 (born at the very first break —
+ *     the highest, earliest a fragment can be created, and so the one with
+ *     the longest possible residual flight in front of it) and LATE if its
+ *     generation is 2 or more (born at a break after the first, necessarily
+ *     lower and later);
+ *   - a piece RETAINED its birth mass if landed mass over birth mass exceeds
+ *     one half, and did not otherwise — a round, symmetric split, not fitted
+ *     to any case;
+ *   - every landed piece falls in exactly one of four buckets: EARLY+RETAINED
+ *     (points to ablation: born as high and early as a fragment can be, with
+ *     the longest possible flight to lose mass in, and still keeping most of
+ *     it), LATE+RETAINED (points to genealogy: born already large, late in
+ *     the cascade, when little flight remained regardless of ablation), and
+ *     the two RETAINED=false buckets (ablated as expected, not part of the
+ *     excess this round is chasing).
+ *
+ * RULE 1188 (c). THE DECISION, mechanical, from each bucket's SHARE OF THE
+ * POOLED LANDED MASS across all 18 cases (mass-weighted: a piece's own
+ * landed mass — count × mass — over the sum of every case's landed mass),
+ * not from a count of pieces or of cases:
+ *   - if the LATE+RETAINED share exceeds twice the EARLY+RETAINED share, the
+ *     excess is dominated by genealogy: the next causal study is break
+ *     conditions, mass partition and child genealogy, and changing σ again,
+ *     in any form, risks masking it rather than testing it;
+ *   - if the EARLY+RETAINED share exceeds twice the LATE+RETAINED share, the
+ *     excess is dominated by insufficiently ablated early survivors: a
+ *     regime-dependent ablation law becomes worth a separately preregistered
+ *     specification, grounded in a source that gives its physical regimes
+ *     (Jenniskens's plateau of shear-melt against catastrophic
+ *     fragmentation) — not a formula this round invents;
+ *   - otherwise (neither share leads by that margin), the mechanism is NOT
+ *     IDENTIFIED by this decomposition: no correction is forced, and this
+ *     round names, rather than closes, what a next round of observables
+ *     would need to separate the two populations.
+ * The 2× margin, like every other number in (b), is fixed here, before any
+ * case is read.
+ *
+ * RULE 1188 (d). THE ENGINE, a new fork — `fcmBranchH5.ts` — carrying no
+ * physics change at all: the same `FcmOptions` shape as the sealed candidate
+ * (`ablation: number`, one fixed σ per draw, exactly as round 1 and H3 ran
+ * it), the only addition a generation counter and the recording, at the
+ * moment a piece is born or lands, of state the engine's own step already
+ * holds. Because nothing about the dynamics changes, the fork's output must
+ * be checked EXACTLY equal to the sealed candidate's, not merely close —
+ * same mass, speed, ledger, completion and step count, component by
+ * component, on a spread of random cases — before any development case is
+ * read with it. The sealed files (rule 1162) stay untouched.
+ *
+ * RULE 1188 (e). NO ADOPTION, as every rule of this round: H5 informs which
+ * later round to open — the break condition, a regime-dependent ablation
+ * law, or neither — and adopts nothing into the frozen candidate itself.
+ *
+ * In parallel, per the reviewer's direction and rule 1185's already-declared
+ * scope: the fifth set's metadata-only reconnaissance begins now, without
+ * waiting for H5 — its custody protocol (rule 1184) is unchanged, and its
+ * altitudes or curves stay unread until a version and its charter are frozen.
+ */
+
+/** Rule 1188 (b): a piece "retained" its birth mass above this fraction. */
+export const FCM_H5_RETAINED_FRACTION = 0.5;
+
+/** Rule 1188 (c): the mass-weighted share one bucket needs over the other to
+ *  decide the round, rather than declare the mechanism unidentified. */
+export const FCM_H5_DOMINANCE_MARGIN = 2;

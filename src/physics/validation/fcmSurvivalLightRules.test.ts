@@ -3,6 +3,8 @@ import {
   FCM_CUSTODY_PROTOCOL,
   FCM_H2_SIGMA_RANGE,
   FCM_H4_SIGMA_S2_M2,
+  FCM_H5_DOMINANCE_MARGIN,
+  FCM_H5_RETAINED_FRACTION,
   FCM_LUMINOUS_EFFICIENCY,
   FCM_PERMANENT_DEVELOPMENT_SOURCES,
   FCM_SURVIVAL_EXCESS,
@@ -50,5 +52,15 @@ describe('rule 1187: H4 uses rule 1131’s own sensitivity value, not a new one'
   it('matches the value already named apart before this round', () => {
     expect(FCM_H4_SIGMA_S2_M2).toBe(3.5e-7);
     expect(FCM_H4_SIGMA_S2_M2).toBeGreaterThan(FCM_H2_SIGMA_RANGE[1]);
+  });
+});
+
+describe('rule 1188: H5’s classification is fixed — round thresholds, no new free parameter', () => {
+  it('splits retained mass at one half, symmetric, not fitted to any case', () => {
+    expect(FCM_H5_RETAINED_FRACTION).toBe(0.5);
+  });
+
+  it('requires a bucket to lead by 2× before deciding the round', () => {
+    expect(FCM_H5_DOMINANCE_MARGIN).toBe(2);
   });
 });
