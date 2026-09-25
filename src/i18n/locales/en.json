@@ -2371,7 +2371,11 @@
         "the-air-blast-of-ground-impacts": "the air blast of ground impacts",
         "the-seismic-magnitude": "the seismic magnitude",
         "the-impact-tsunami": "the impact tsunami",
-        "the-peak-wind": "the peak wind"
+        "the-peak-wind": "the peak wind",
+        "holds-the-forest-flattened-at-tunguska": "holds the forest flattened at Tunguska",
+        "holds-the-windows-broken-at-chelyabinsk": "holds the windows broken at Chelyabinsk",
+        "holds-90-of-collins-et-al-2017-s-shock-physics-runs": "holds ≥90 % of Collins et al. 2017’s shock-physics runs",
+        "width-no-more-than-3": "width no more than ×3"
       }
     },
     "unmeasured": {

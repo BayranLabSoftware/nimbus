@@ -2458,7 +2458,11 @@
         "the-air-blast-of-ground-impacts": "l'onda d'urto degli impatti al suolo",
         "the-seismic-magnitude": "la magnitudo sismica",
         "the-impact-tsunami": "lo tsunami da impatto",
-        "the-peak-wind": "il vento di picco"
+        "the-peak-wind": "il vento di picco",
+        "holds-the-forest-flattened-at-tunguska": "tiene la foresta abbattuta a Tunguska",
+        "holds-the-windows-broken-at-chelyabinsk": "tiene i vetri rotti a Čeljabinsk",
+        "holds-90-of-collins-et-al-2017-s-shock-physics-runs": "tiene almeno il 90 % delle corse shock-physics di Collins et al. 2017",
+        "width-no-more-than-3": "larghezza non oltre ×3"
       }
     },
     "unmeasured": {
