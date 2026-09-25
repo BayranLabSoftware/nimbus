@@ -9,7 +9,9 @@ tested: a measurement, reported by case and by configuration throughout.
 
 Break pressure ratio: every case-configuration’s own median sits at 1 (the bisection’s own precision — a sanity check, not a result).
 
-What the branch stops accounting for, pooled across every case and configuration that completed —
+What the branch stops accounting for, pooled across every case and configuration that completed
+(71 of 72 pairs; Tunguska/M2/capped never completes and contributes nothing
+to this pooled figure — its own behaviour is unknown, not assumed to match the rest) —
 **rule 1190: "settled" is a numerical stopping condition, not a claim about the material’s later,
 physical fate; nothing here sums it into a ground- or meteorite-mass claim**:
 

@@ -2,6 +2,616 @@
   "rule": "1190 (c)",
   "draws": 200,
   "settleWithins": [0.001, 0.01, 0.1],
+  "sameDrawStreamAcrossThresholds": true,
+  "medianSettledMove": 0.000144,
+  "maxSettledMove": 0.705873,
+  "medianGroundMove": 0,
+  "maxGroundMove": 0.70571,
+  "pairsWithCompletionChange": 0,
+  "byConfiguration": [
+    {
+      "configuration": "M1/unlimited",
+      "pairs": 18,
+      "medianSettledMove": 0.000076,
+      "maxSettledMove": 0.176398,
+      "medianGroundMove": 0,
+      "maxGroundMove": 0.176317
+    },
+    {
+      "configuration": "M1/capped",
+      "pairs": 18,
+      "medianSettledMove": 0.000267,
+      "maxSettledMove": 0.705873,
+      "medianGroundMove": 0,
+      "maxGroundMove": 0.70571
+    },
+    {
+      "configuration": "M2/unlimited",
+      "pairs": 18,
+      "medianSettledMove": 0.000063,
+      "maxSettledMove": 0.038572,
+      "medianGroundMove": 0,
+      "maxGroundMove": 0.0383895
+    },
+    {
+      "configuration": "M2/capped",
+      "pairs": 17,
+      "medianSettledMove": 0.000234,
+      "maxSettledMove": 0.349316,
+      "medianGroundMove": 0,
+      "maxGroundMove": 0.348919
+    }
+  ],
+  "moves": [
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.00033,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M1/capped",
+      "settledMove": 0.705873,
+      "groundMove": 0.70571,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000203,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M2/capped",
+      "settledMove": 0.349316,
+      "groundMove": 0.348919,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.176398,
+      "groundMove": 0.176317,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M1/capped",
+      "settledMove": 0.128339,
+      "groundMove": 0.128312,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.038572,
+      "groundMove": 0.0383895,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000174,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M1/capped",
+      "settledMove": 0.291817,
+      "groundMove": 0.291423,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000144,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M2/capped",
+      "settledMove": 0.273181,
+      "groundMove": 0.272822,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000079,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M1/capped",
+      "settledMove": 0.000212,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000059,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M2/capped",
+      "settledMove": 0.000166,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000172,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M1/capped",
+      "settledMove": 0.000261,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000121,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M2/capped",
+      "settledMove": 0.000458,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [1, 1, 1]
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000076,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M1/capped",
+      "settledMove": 0.000357,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000071,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M2/capped",
+      "settledMove": 0.000316,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000045,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M1/capped",
+      "settledMove": 0.000267,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000037,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M2/capped",
+      "settledMove": 0.000228,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000033,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M1/capped",
+      "settledMove": 0.000082,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000025,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M2/capped",
+      "settledMove": 0.000055,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000105,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M1/capped",
+      "settledMove": 0.074845,
+      "groundMove": 0.074441,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000094,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M2/capped",
+      "settledMove": 0.078892,
+      "groundMove": 0.078548,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000008,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M1/capped",
+      "settledMove": 0.000069,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000007,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M2/capped",
+      "settledMove": 0.0000491,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Golden",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000032,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Golden",
+      "configuration": "M1/capped",
+      "settledMove": 0.0002,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Golden",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.00003,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Golden",
+      "configuration": "M2/capped",
+      "settledMove": 0.000178,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000026,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M1/capped",
+      "settledMove": 0.000225,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000023,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M2/capped",
+      "settledMove": 0.00019,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000037,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M1/capped",
+      "settledMove": 0.00025,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000029,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M2/capped",
+      "settledMove": 0.000234,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000071,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M1/capped",
+      "settledMove": 0.000295,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000063,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M2/capped",
+      "settledMove": 0.000262,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000006,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M1/capped",
+      "settledMove": 0.000099,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000005,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M2/capped",
+      "settledMove": 0.000078,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Košice",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000087,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Košice",
+      "configuration": "M1/capped",
+      "settledMove": 0.022135,
+      "groundMove": 0.021823,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Košice",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000073,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Košice",
+      "configuration": "M2/capped",
+      "settledMove": 0.011884,
+      "groundMove": 0.011578,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000054,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M1/capped",
+      "settledMove": 0.000188,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000049,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M2/capped",
+      "settledMove": 0.000171,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M1/unlimited",
+      "settledMove": 0.000096,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M1/capped",
+      "settledMove": 0.155931,
+      "groundMove": 0.155679,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M2/unlimited",
+      "settledMove": 0.000092,
+      "groundMove": 0,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M2/capped",
+      "settledMove": 0.151593,
+      "groundMove": 0.151344,
+      "completionChanged": false,
+      "producedByThreshold": [200, 200, 200]
+    }
+  ],
   "results": [
     {
       "case": "Chelyabinsk",
@@ -14,6 +624,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.514529,
+              "groundShare": 0.00180457,
               "medianMassResidual": 3.44473e-17,
               "medianEnergyResidual": 1.92456e-16
             },
@@ -21,6 +632,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.514691,
+              "groundShare": 0.00180457,
               "medianMassResidual": 3.44473e-17,
               "medianEnergyResidual": 9.78723e-18
             },
@@ -28,6 +640,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.514859,
+              "groundShare": 0.00180457,
               "medianMassResidual": 3.49898e-17,
               "medianEnergyResidual": 1.92548e-16
             }
@@ -40,6 +653,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.0545779,
+              "groundShare": 0.73947,
               "medianMassResidual": 0,
               "medianEnergyResidual": 1.38647e-16
             },
@@ -47,6 +661,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.428794,
+              "groundShare": 0.365278,
               "medianMassResidual": 0,
               "medianEnergyResidual": 2.31929e-18
             },
@@ -54,6 +669,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.760451,
+              "groundShare": 0.0337598,
               "medianMassResidual": 8.67965e-17,
               "medianEnergyResidual": 1.52893e-16
             }
@@ -66,6 +682,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.620359,
+              "groundShare": 0.0316887,
               "medianMassResidual": 4.33982e-18,
               "medianEnergyResidual": 1.33004e-16
             },
@@ -73,6 +690,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.620468,
+              "groundShare": 0.0316887,
               "medianMassResidual": 7.3777e-17,
               "medianEnergyResidual": 1.33038e-16
             },
@@ -80,6 +698,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.620562,
+              "groundShare": 0.0316887,
               "medianMassResidual": 4.33982e-18,
               "medianEnergyResidual": 1.33065e-16
             }
@@ -92,6 +711,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.0871061,
+              "groundShare": 0.37744,
               "medianMassResidual": 1.38874e-16,
               "medianEnergyResidual": 1.67757e-16
             },
@@ -99,6 +719,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.436186,
+              "groundShare": 0.0285211,
               "medianMassResidual": 1.64913e-16,
               "medianEnergyResidual": 2.53586e-16
             },
@@ -106,6 +727,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.436422,
+              "groundShare": 0.0285211,
               "medianMassResidual": 1.64913e-16,
               "medianEnergyResidual": 2.53657e-16
             }
@@ -124,6 +746,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.730835,
+              "groundShare": 0.178843,
               "medianMassResidual": 0,
               "medianEnergyResidual": 2.13091e-16
             },
@@ -131,6 +754,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.907186,
+              "groundShare": 0.00252583,
               "medianMassResidual": 5.72998e-17,
               "medianEnergyResidual": 1.4767e-16
             },
@@ -138,6 +762,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.907233,
+              "groundShare": 0.00252583,
               "medianMassResidual": 1.18374e-16,
               "medianEnergyResidual": 1.47688e-16
             }
@@ -150,6 +775,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.841633,
+              "groundShare": 0.128314,
               "medianMassResidual": 2.19592e-17,
               "medianEnergyResidual": 8.89382e-17
             },
@@ -157,6 +783,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.861829,
+              "groundShare": 0.10812,
               "medianMassResidual": 2.19592e-17,
               "medianEnergyResidual": 3.1413e-16
             },
@@ -164,6 +791,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.969972,
+              "groundShare": 0.00000225061,
               "medianMassResidual": 1.25528e-17,
               "medianEnergyResidual": 1.03902e-16
             }
@@ -176,6 +804,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.61896,
+              "groundShare": 0.0410752,
               "medianMassResidual": 3.84286e-17,
               "medianEnergyResidual": 2.75835e-17
             },
@@ -183,6 +812,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.657455,
+              "groundShare": 0.00268571,
               "medianMassResidual": 5.35255e-17,
               "medianEnergyResidual": 7.58843e-17
             },
@@ -190,6 +820,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.657532,
+              "groundShare": 0.00268571,
               "medianMassResidual": 5.35255e-17,
               "medianEnergyResidual": 7.58884e-17
             }
@@ -202,6 +833,7 @@
               "settleWithin": 0.001,
               "produced": 0,
               "settledShare": null,
+              "groundShare": null,
               "medianMassResidual": null,
               "medianEnergyResidual": null
             },
@@ -209,6 +841,7 @@
               "settleWithin": 0.01,
               "produced": 0,
               "settledShare": null,
+              "groundShare": null,
               "medianMassResidual": null,
               "medianEnergyResidual": null
             },
@@ -216,6 +849,7 @@
               "settleWithin": 0.1,
               "produced": 0,
               "settledShare": null,
+              "groundShare": null,
               "medianMassResidual": null,
               "medianEnergyResidual": null
             }
@@ -234,6 +868,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.527081,
+              "groundShare": 0.150197,
               "medianMassResidual": 3.69824e-17,
               "medianEnergyResidual": 1.13795e-16
             },
@@ -241,6 +876,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.527213,
+              "groundShare": 0.150197,
               "medianMassResidual": 3.85758e-17,
               "medianEnergyResidual": 1.13774e-16
             },
@@ -248,6 +884,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.527255,
+              "groundShare": 0.150197,
               "medianMassResidual": 3.96494e-17,
               "medianEnergyResidual": 1.04608e-16
             }
@@ -260,6 +897,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.254673,
+              "groundShare": 0.428834,
               "medianMassResidual": 2.57951e-17,
               "medianEnergyResidual": 1.03164e-16
             },
@@ -267,6 +905,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.546333,
+              "groundShare": 0.137411,
               "medianMassResidual": 4.51522e-17,
               "medianEnergyResidual": 1.00754e-16
             },
@@ -274,6 +913,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.54649,
+              "groundShare": 0.137411,
               "medianMassResidual": 3.78749e-17,
               "medianEnergyResidual": 1.00847e-16
             }
@@ -286,6 +926,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.501321,
+              "groundShare": 0.195247,
               "medianMassResidual": 5.75653e-17,
               "medianEnergyResidual": 1.12094e-16
             },
@@ -293,6 +934,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.501433,
+              "groundShare": 0.195247,
               "medianMassResidual": 6.27181e-17,
               "medianEnergyResidual": 1.13925e-16
             },
@@ -300,6 +942,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.501465,
+              "groundShare": 0.195247,
               "medianMassResidual": 5.44514e-17,
               "medianEnergyResidual": 1.13948e-16
             }
@@ -312,6 +955,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.252823,
+              "groundShare": 0.442378,
               "medianMassResidual": 5.75653e-17,
               "medianEnergyResidual": 1.35065e-16
             },
@@ -319,6 +963,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.525856,
+              "groundShare": 0.169556,
               "medianMassResidual": 5.47099e-17,
               "medianEnergyResidual": 1.49736e-16
             },
@@ -326,6 +971,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.526004,
+              "groundShare": 0.169556,
               "medianMassResidual": 5.45037e-17,
               "medianEnergyResidual": 1.49773e-16
             }
@@ -344,6 +990,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.457044,
+              "groundShare": 0.117937,
               "medianMassResidual": 3.85758e-17,
               "medianEnergyResidual": 1.15174e-16
             },
@@ -351,6 +998,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.457108,
+              "groundShare": 0.117937,
               "medianMassResidual": 4.02561e-17,
               "medianEnergyResidual": 1.08462e-16
             },
@@ -358,6 +1006,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.457123,
+              "groundShare": 0.117937,
               "medianMassResidual": 4.15677e-17,
               "medianEnergyResidual": 1.18452e-16
             }
@@ -370,6 +1019,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.403847,
+              "groundShare": 0.11655,
               "medianMassResidual": 3.74627e-17,
               "medianEnergyResidual": 1.00682e-16
             },
@@ -377,6 +1027,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.403989,
+              "groundShare": 0.11655,
               "medianMassResidual": 3.87435e-17,
               "medianEnergyResidual": 9.40283e-17
             },
@@ -384,6 +1035,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.404059,
+              "groundShare": 0.11655,
               "medianMassResidual": 3.75997e-17,
               "medianEnergyResidual": 9.90776e-17
             }
@@ -396,6 +1048,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.36038,
+              "groundShare": 0.184634,
               "medianMassResidual": 6.36302e-17,
               "medianEnergyResidual": 1.33682e-16
             },
@@ -403,6 +1056,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.360431,
+              "groundShare": 0.184634,
               "medianMassResidual": 5.26227e-17,
               "medianEnergyResidual": 1.43301e-16
             },
@@ -410,6 +1064,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.360439,
+              "groundShare": 0.184634,
               "medianMassResidual": 6.44098e-17,
               "medianEnergyResidual": 1.3306e-16
             }
@@ -422,6 +1077,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.363651,
+              "groundShare": 0.162603,
               "medianMassResidual": 5.17002e-17,
               "medianEnergyResidual": 1.23835e-16
             },
@@ -429,6 +1085,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.36376,
+              "groundShare": 0.162603,
               "medianMassResidual": 5.67939e-17,
               "medianEnergyResidual": 1.30112e-16
             },
@@ -436,6 +1093,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.363817,
+              "groundShare": 0.162603,
               "medianMassResidual": 5.90023e-17,
               "medianEnergyResidual": 1.32242e-16
             }
@@ -454,6 +1112,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.381708,
+              "groundShare": 0.00477131,
               "medianMassResidual": 3.06733e-17,
               "medianEnergyResidual": 8.96244e-17
             },
@@ -461,6 +1120,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.381826,
+              "groundShare": 0.00477131,
               "medianMassResidual": 3.06733e-17,
               "medianEnergyResidual": 2.11922e-16
             },
@@ -468,6 +1128,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.38188,
+              "groundShare": 0.00477131,
               "medianMassResidual": 9.83659e-17,
               "medianEnergyResidual": 8.96402e-17
             }
@@ -480,6 +1141,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.144915,
+              "groundShare": 0.0301766,
               "medianMassResidual": 2.53848e-17,
               "medianEnergyResidual": 3.81232e-17
             },
@@ -487,6 +1149,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.145119,
+              "groundShare": 0.0301766,
               "medianMassResidual": 9.30775e-17,
               "medianEnergyResidual": 3.81277e-17
             },
@@ -494,6 +1157,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.145176,
+              "groundShare": 0.0301766,
               "medianMassResidual": 8.46159e-18,
               "medianEnergyResidual": 3.81288e-17
             }
@@ -506,6 +1170,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.708665,
+              "groundShare": 0.0131568,
               "medianMassResidual": 1.31155e-16,
               "medianEnergyResidual": 4.08217e-17
             },
@@ -513,6 +1178,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.708746,
+              "groundShare": 0.0131568,
               "medianMassResidual": 1.31155e-16,
               "medianEnergyResidual": 8.14206e-17
             },
@@ -520,6 +1186,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.708786,
+              "groundShare": 0.0131568,
               "medianMassResidual": 4.23079e-18,
               "medianEnergyResidual": 4.08366e-17
             }
@@ -532,6 +1199,7 @@
               "settleWithin": 0.001,
               "produced": 1,
               "settledShare": 0.238711,
+              "groundShare": 0.00549877,
               "medianMassResidual": 3.91348e-17,
               "medianEnergyResidual": 1.31562e-16
             },
@@ -539,6 +1207,7 @@
               "settleWithin": 0.01,
               "produced": 1,
               "settledShare": 0.239016,
+              "groundShare": 0.00549877,
               "medianMassResidual": 1.06828e-16,
               "medianEnergyResidual": 2.53877e-16
             },
@@ -546,6 +1215,7 @@
               "settleWithin": 0.1,
               "produced": 1,
               "settledShare": 0.239169,
+              "groundShare": 0.00549877,
               "medianMassResidual": 1.06828e-16,
               "medianEnergyResidual": 1.31604e-16
             }
@@ -564,6 +1234,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.493054,
+              "groundShare": 0.13501,
               "medianMassResidual": 4.70773e-17,
               "medianEnergyResidual": 9.21919e-17
             },
@@ -571,6 +1242,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.49311,
+              "groundShare": 0.13501,
               "medianMassResidual": 3.52501e-17,
               "medianEnergyResidual": 9.74816e-17
             },
@@ -578,6 +1250,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.49313,
+              "groundShare": 0.13501,
               "medianMassResidual": 3.68969e-17,
               "medianEnergyResidual": 9.22026e-17
             }
@@ -590,6 +1263,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.502785,
+              "groundShare": 0.134135,
               "medianMassResidual": 3.47477e-17,
               "medianEnergyResidual": 8.9284e-17
             },
@@ -597,6 +1271,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.503045,
+              "groundShare": 0.134135,
               "medianMassResidual": 3.91022e-17,
               "medianEnergyResidual": 8.22976e-17
             },
@@ -604,6 +1279,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.503142,
+              "groundShare": 0.134135,
               "medianMassResidual": 3.18812e-17,
               "medianEnergyResidual": 7.76025e-17
             }
@@ -616,6 +1292,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.47424,
+              "groundShare": 0.160752,
               "medianMassResidual": 6.03368e-17,
               "medianEnergyResidual": 1.22768e-16
             },
@@ -623,6 +1300,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.474293,
+              "groundShare": 0.160752,
               "medianMassResidual": 6.16876e-17,
               "medianEnergyResidual": 1.23856e-16
             },
@@ -630,6 +1308,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.474311,
+              "groundShare": 0.160752,
               "medianMassResidual": 5.9269e-17,
               "medianEnergyResidual": 1.17746e-16
             }
@@ -642,6 +1321,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.485153,
+              "groundShare": 0.171278,
               "medianMassResidual": 5.54766e-17,
               "medianEnergyResidual": 1.3225e-16
             },
@@ -649,6 +1329,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.485385,
+              "groundShare": 0.171278,
               "medianMassResidual": 5.91855e-17,
               "medianEnergyResidual": 1.22808e-16
             },
@@ -656,6 +1337,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.485469,
+              "groundShare": 0.171278,
               "medianMassResidual": 6.12286e-17,
               "medianEnergyResidual": 1.3235e-16
             }
@@ -674,6 +1356,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.450873,
+              "groundShare": 0.143297,
               "medianMassResidual": 3.93455e-17,
               "medianEnergyResidual": 8.3181e-17
             },
@@ -681,6 +1364,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.450908,
+              "groundShare": 0.143297,
               "medianMassResidual": 3.65275e-17,
               "medianEnergyResidual": 8.95062e-17
             },
@@ -688,6 +1372,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.450918,
+              "groundShare": 0.143297,
               "medianMassResidual": 3.58025e-17,
               "medianEnergyResidual": 8.7663e-17
             }
@@ -700,6 +1385,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.439496,
+              "groundShare": 0.14187,
               "medianMassResidual": 3.52415e-17,
               "medianEnergyResidual": 8.7826e-17
             },
@@ -707,6 +1393,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.439716,
+              "groundShare": 0.14187,
               "medianMassResidual": 3.52415e-17,
               "medianEnergyResidual": 8.78598e-17
             },
@@ -714,6 +1401,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.439763,
+              "groundShare": 0.14187,
               "medianMassResidual": 3.4426e-17,
               "medianEnergyResidual": 8.58893e-17
             }
@@ -726,6 +1414,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.408215,
+              "groundShare": 0.192059,
               "medianMassResidual": 5.51135e-17,
               "medianEnergyResidual": 1.13067e-16
             },
@@ -733,6 +1422,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.408243,
+              "groundShare": 0.192059,
               "medianMassResidual": 6.58428e-17,
               "medianEnergyResidual": 1.11292e-16
             },
@@ -740,6 +1430,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.408252,
+              "groundShare": 0.192059,
               "medianMassResidual": 5.91659e-17,
               "medianEnergyResidual": 1.16175e-16
             }
@@ -752,6 +1443,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.388601,
+              "groundShare": 0.184585,
               "medianMassResidual": 5.47671e-17,
               "medianEnergyResidual": 1.15123e-16
             },
@@ -759,6 +1451,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.388793,
+              "groundShare": 0.184585,
               "medianMassResidual": 5.70147e-17,
               "medianEnergyResidual": 1.07851e-16
             },
@@ -766,6 +1459,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.388829,
+              "groundShare": 0.184585,
               "medianMassResidual": 5.30333e-17,
               "medianEnergyResidual": 1.22504e-16
             }
@@ -784,6 +1478,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.277495,
+              "groundShare": 0.323471,
               "medianMassResidual": 2.69028e-17,
               "medianEnergyResidual": 9.28857e-17
             },
@@ -791,6 +1486,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.277527,
+              "groundShare": 0.323471,
               "medianMassResidual": 2.75526e-17,
               "medianEnergyResidual": 8.98427e-17
             },
@@ -798,6 +1494,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.277528,
+              "groundShare": 0.323471,
               "medianMassResidual": 2.26485e-17,
               "medianEnergyResidual": 9.19787e-17
             }
@@ -810,6 +1507,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.326913,
+              "groundShare": 0.282713,
               "medianMassResidual": 2.95134e-17,
               "medianEnergyResidual": 8.17224e-17
             },
@@ -817,6 +1515,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.32698,
+              "groundShare": 0.282713,
               "medianMassResidual": 2.87584e-17,
               "medianEnergyResidual": 8.66422e-17
             },
@@ -824,6 +1523,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.326995,
+              "groundShare": 0.282713,
               "medianMassResidual": 3.20235e-17,
               "medianEnergyResidual": 8.94743e-17
             }
@@ -836,6 +1536,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.277361,
+              "groundShare": 0.366503,
               "medianMassResidual": 6.39221e-17,
               "medianEnergyResidual": 1.16081e-16
             },
@@ -843,6 +1544,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.277386,
+              "groundShare": 0.366503,
               "medianMassResidual": 6.05293e-17,
               "medianEnergyResidual": 1.10842e-16
             },
@@ -850,6 +1552,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.277386,
+              "groundShare": 0.366503,
               "medianMassResidual": 5.86749e-17,
               "medianEnergyResidual": 1.18497e-16
             }
@@ -862,6 +1565,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.294729,
+              "groundShare": 0.358658,
               "medianMassResidual": 5.72407e-17,
               "medianEnergyResidual": 1.1315e-16
             },
@@ -869,6 +1573,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.294773,
+              "groundShare": 0.358658,
               "medianMassResidual": 6.24725e-17,
               "medianEnergyResidual": 1.11496e-16
             },
@@ -876,6 +1581,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.294784,
+              "groundShare": 0.358658,
               "medianMassResidual": 5.95142e-17,
               "medianEnergyResidual": 1.1057e-16
             }
@@ -894,6 +1600,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.534788,
+              "groundShare": 0.0895209,
               "medianMassResidual": 3.73444e-17,
               "medianEnergyResidual": 1.11933e-16
             },
@@ -901,6 +1608,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.534863,
+              "groundShare": 0.0895209,
               "medianMassResidual": 3.88336e-17,
               "medianEnergyResidual": 8.89678e-17
             },
@@ -908,6 +1616,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.534893,
+              "groundShare": 0.0895209,
               "medianMassResidual": 3.19268e-17,
               "medianEnergyResidual": 9.35079e-17
             }
@@ -920,6 +1629,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.455324,
+              "groundShare": 0.155104,
               "medianMassResidual": 3.2695e-17,
               "medianEnergyResidual": 1.10698e-16
             },
@@ -927,6 +1637,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.530049,
+              "groundShare": 0.080663,
               "medianMassResidual": 3.65995e-17,
               "medianEnergyResidual": 8.80063e-17
             },
@@ -934,6 +1645,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.530169,
+              "groundShare": 0.080663,
               "medianMassResidual": 3.75773e-17,
               "medianEnergyResidual": 9.3227e-17
             }
@@ -946,6 +1658,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.515066,
+              "groundShare": 0.109667,
               "medianMassResidual": 5.91001e-17,
               "medianEnergyResidual": 1.11226e-16
             },
@@ -953,6 +1666,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.515134,
+              "groundShare": 0.109667,
               "medianMassResidual": 6.48611e-17,
               "medianEnergyResidual": 1.22e-16
             },
@@ -960,6 +1674,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.51516,
+              "groundShare": 0.109667,
               "medianMassResidual": 5.74617e-17,
               "medianEnergyResidual": 1.32963e-16
             }
@@ -972,6 +1687,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.446368,
+              "groundShare": 0.197571,
               "medianMassResidual": 5.34103e-17,
               "medianEnergyResidual": 1.25162e-16
             },
@@ -979,6 +1695,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.525164,
+              "groundShare": 0.119023,
               "medianMassResidual": 5.67695e-17,
               "medianEnergyResidual": 1.29021e-16
             },
@@ -986,6 +1703,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.52526,
+              "groundShare": 0.119023,
               "medianMassResidual": 5.68822e-17,
               "medianEnergyResidual": 1.40026e-16
             }
@@ -1004,6 +1722,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.194847,
+              "groundShare": 0.464243,
               "medianMassResidual": 0,
               "medianEnergyResidual": 8.13555e-17
             },
@@ -1011,6 +1730,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.194853,
+              "groundShare": 0.464243,
               "medianMassResidual": 0,
               "medianEnergyResidual": 7.50076e-17
             },
@@ -1018,6 +1738,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.194855,
+              "groundShare": 0.464243,
               "medianMassResidual": 0,
               "medianEnergyResidual": 7.96977e-17
             }
@@ -1030,6 +1751,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.153857,
+              "groundShare": 0.510579,
               "medianMassResidual": 0,
               "medianEnergyResidual": 7.46452e-17
             },
@@ -1037,6 +1759,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.153923,
+              "groundShare": 0.510579,
               "medianMassResidual": 0,
               "medianEnergyResidual": 8.0669e-17
             },
@@ -1044,6 +1767,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.153926,
+              "groundShare": 0.510579,
               "medianMassResidual": 0,
               "medianEnergyResidual": 8.152e-17
             }
@@ -1056,6 +1780,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.153039,
+              "groundShare": 0.466489,
               "medianMassResidual": 6.01771e-17,
               "medianEnergyResidual": 1.06808e-16
             },
@@ -1063,6 +1788,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.153044,
+              "groundShare": 0.466489,
               "medianMassResidual": 6.56084e-17,
               "medianEnergyResidual": 1.2031e-16
             },
@@ -1070,6 +1796,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.153046,
+              "groundShare": 0.466489,
               "medianMassResidual": 6.13338e-17,
               "medianEnergyResidual": 9.83046e-17
             }
@@ -1082,6 +1809,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.0977437,
+              "groundShare": 0.537056,
               "medianMassResidual": 5.49031e-17,
               "medianEnergyResidual": 1.18853e-16
             },
@@ -1089,6 +1817,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.0977902,
+              "groundShare": 0.537056,
               "medianMassResidual": 5.4988e-17,
               "medianEnergyResidual": 1.05771e-16
             },
@@ -1096,6 +1825,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.0977928,
+              "groundShare": 0.537056,
               "medianMassResidual": 4.7197e-17,
               "medianEnergyResidual": 1.18916e-16
             }
@@ -1114,6 +1844,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.353542,
+              "groundShare": 0.1267,
               "medianMassResidual": 3.61383e-17,
               "medianEnergyResidual": 8.94608e-17
             },
@@ -1121,6 +1852,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.353567,
+              "groundShare": 0.1267,
               "medianMassResidual": 4.303e-17,
               "medianEnergyResidual": 9.91447e-17
             },
@@ -1128,6 +1860,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.353574,
+              "groundShare": 0.1267,
               "medianMassResidual": 3.59387e-17,
               "medianEnergyResidual": 1.04203e-16
             }
@@ -1140,6 +1873,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.348462,
+              "groundShare": 0.133,
               "medianMassResidual": 3.73704e-17,
               "medianEnergyResidual": 9.24121e-17
             },
@@ -1147,6 +1881,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.348629,
+              "groundShare": 0.133,
               "medianMassResidual": 3.5179e-17,
               "medianEnergyResidual": 8.9419e-17
             },
@@ -1154,6 +1889,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.348662,
+              "groundShare": 0.133,
               "medianMassResidual": 3.41808e-17,
               "medianEnergyResidual": 9.08684e-17
             }
@@ -1166,6 +1902,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.338391,
+              "groundShare": 0.145701,
               "medianMassResidual": 6.68793e-17,
               "medianEnergyResidual": 1.05586e-16
             },
@@ -1173,6 +1910,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.338414,
+              "groundShare": 0.145701,
               "medianMassResidual": 6.37065e-17,
               "medianEnergyResidual": 9.7038e-17
             },
@@ -1180,6 +1918,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.338421,
+              "groundShare": 0.145701,
               "medianMassResidual": 7.03265e-17,
               "medianEnergyResidual": 1.0148e-16
             }
@@ -1192,6 +1931,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.340381,
+              "groundShare": 0.164245,
               "medianMassResidual": 5.28228e-17,
               "medianEnergyResidual": 1.18087e-16
             },
@@ -1199,6 +1939,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.340526,
+              "groundShare": 0.164245,
               "medianMassResidual": 5.88929e-17,
               "medianEnergyResidual": 1.16705e-16
             },
@@ -1206,6 +1947,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.340559,
+              "groundShare": 0.164245,
               "medianMassResidual": 6.61177e-17,
               "medianEnergyResidual": 1.29576e-16
             }
@@ -1224,6 +1966,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.399793,
+              "groundShare": 0.248415,
               "medianMassResidual": 3.14544e-17,
               "medianEnergyResidual": 9.8284e-17
             },
@@ -1231,6 +1974,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.399813,
+              "groundShare": 0.248415,
               "medianMassResidual": 2.90856e-17,
               "medianEnergyResidual": 9.82863e-17
             },
@@ -1238,6 +1982,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.399819,
+              "groundShare": 0.248415,
               "medianMassResidual": 2.91752e-17,
               "medianEnergyResidual": 9.82968e-17
             }
@@ -1250,6 +1995,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.430954,
+              "groundShare": 0.231384,
               "medianMassResidual": 2.89239e-17,
               "medianEnergyResidual": 8.94564e-17
             },
@@ -1257,6 +2003,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.431151,
+              "groundShare": 0.231384,
               "medianMassResidual": 3.31452e-17,
               "medianEnergyResidual": 9.39001e-17
             },
@@ -1264,6 +2011,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.431179,
+              "groundShare": 0.231384,
               "medianMassResidual": 2.7431e-17,
               "medianEnergyResidual": 8.85932e-17
             }
@@ -1276,6 +2024,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.339644,
+              "groundShare": 0.284773,
               "medianMassResidual": 5.98723e-17,
               "medianEnergyResidual": 1.19536e-16
             },
@@ -1283,6 +2032,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.339662,
+              "groundShare": 0.284773,
               "medianMassResidual": 5.55185e-17,
               "medianEnergyResidual": 1.19553e-16
             },
@@ -1290,6 +2040,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.339667,
+              "groundShare": 0.284773,
               "medianMassResidual": 5.8137e-17,
               "medianEnergyResidual": 1.01585e-16
             }
@@ -1302,6 +2053,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.342229,
+              "groundShare": 0.297764,
               "medianMassResidual": 5.96073e-17,
               "medianEnergyResidual": 1.10011e-16
             },
@@ -1309,6 +2061,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.342397,
+              "groundShare": 0.297764,
               "medianMassResidual": 5.77687e-17,
               "medianEnergyResidual": 9.81744e-17
             },
@@ -1316,6 +2069,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.342419,
+              "groundShare": 0.297764,
               "medianMassResidual": 6.24896e-17,
               "medianEnergyResidual": 1.10013e-16
             }
@@ -1334,6 +2088,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.437515,
+              "groundShare": 0.148797,
               "medianMassResidual": 3.65839e-17,
               "medianEnergyResidual": 7.88826e-17
             },
@@ -1341,6 +2096,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.437544,
+              "groundShare": 0.148797,
               "medianMassResidual": 3.79066e-17,
               "medianEnergyResidual": 9.47289e-17
             },
@@ -1348,6 +2104,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.437552,
+              "groundShare": 0.148797,
               "medianMassResidual": 3.57907e-17,
               "medianEnergyResidual": 7.80686e-17
             }
@@ -1360,6 +2117,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.453018,
+              "groundShare": 0.141503,
               "medianMassResidual": 3.53833e-17,
               "medianEnergyResidual": 8.32953e-17
             },
@@ -1367,6 +2125,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.453221,
+              "groundShare": 0.141503,
               "medianMassResidual": 3.82247e-17,
               "medianEnergyResidual": 1.02271e-16
             },
@@ -1374,6 +2133,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.453268,
+              "groundShare": 0.141503,
               "medianMassResidual": 3.69832e-17,
               "medianEnergyResidual": 1.04159e-16
             }
@@ -1386,6 +2146,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.344235,
+              "groundShare": 0.200747,
               "medianMassResidual": 5.81109e-17,
               "medianEnergyResidual": 1.16323e-16
             },
@@ -1393,6 +2154,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.344257,
+              "groundShare": 0.200747,
               "medianMassResidual": 5.66789e-17,
               "medianEnergyResidual": 1.17534e-16
             },
@@ -1400,6 +2162,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.344264,
+              "groundShare": 0.200747,
               "medianMassResidual": 5.81109e-17,
               "medianEnergyResidual": 1.27119e-16
             }
@@ -1412,6 +2175,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.399743,
+              "groundShare": 0.156696,
               "medianMassResidual": 5.82708e-17,
               "medianEnergyResidual": 1.10211e-16
             },
@@ -1419,6 +2183,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.399937,
+              "groundShare": 0.156696,
               "medianMassResidual": 6.23794e-17,
               "medianEnergyResidual": 1.10254e-16
             },
@@ -1426,6 +2191,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.399977,
+              "groundShare": 0.156696,
               "medianMassResidual": 5.64416e-17,
               "medianEnergyResidual": 1.18945e-16
             }
@@ -1444,6 +2210,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.465917,
+              "groundShare": 0.0816686,
               "medianMassResidual": 3.6206e-17,
               "medianEnergyResidual": 9.43546e-17
             },
@@ -1451,6 +2218,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.46597,
+              "groundShare": 0.0816686,
               "medianMassResidual": 3.28572e-17,
               "medianEnergyResidual": 9.44088e-17
             },
@@ -1458,6 +2226,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.465988,
+              "groundShare": 0.0816686,
               "medianMassResidual": 3.28338e-17,
               "medianEnergyResidual": 8.98765e-17
             }
@@ -1470,6 +2239,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.467949,
+              "groundShare": 0.0802375,
               "medianMassResidual": 3.79994e-17,
               "medianEnergyResidual": 9.03118e-17
             },
@@ -1477,6 +2247,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.46817,
+              "groundShare": 0.0802375,
               "medianMassResidual": 3.68104e-17,
               "medianEnergyResidual": 9.2653e-17
             },
@@ -1484,6 +2255,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.468244,
+              "groundShare": 0.0802375,
               "medianMassResidual": 3.66134e-17,
               "medianEnergyResidual": 9.06812e-17
             }
@@ -1496,6 +2268,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.453779,
+              "groundShare": 0.105356,
               "medianMassResidual": 6.89835e-17,
               "medianEnergyResidual": 1.26635e-16
             },
@@ -1503,6 +2276,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.453826,
+              "groundShare": 0.105356,
               "medianMassResidual": 5.99443e-17,
               "medianEnergyResidual": 1.26084e-16
             },
@@ -1510,6 +2284,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.453842,
+              "groundShare": 0.105356,
               "medianMassResidual": 6.9314e-17,
               "medianEnergyResidual": 1.20213e-16
             }
@@ -1522,6 +2297,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.399741,
+              "groundShare": 0.113045,
               "medianMassResidual": 6.32364e-17,
               "medianEnergyResidual": 1.17505e-16
             },
@@ -1529,6 +2305,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.399945,
+              "groundShare": 0.113045,
               "medianMassResidual": 5.92127e-17,
               "medianEnergyResidual": 1.15682e-16
             },
@@ -1536,6 +2313,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.400003,
+              "groundShare": 0.113045,
               "medianMassResidual": 6.03913e-17,
               "medianEnergyResidual": 1.05934e-16
             }
@@ -1554,6 +2332,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.226419,
+              "groundShare": 0.457807,
               "medianMassResidual": 0,
               "medianEnergyResidual": 9.41991e-17
             },
@@ -1561,6 +2340,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.226423,
+              "groundShare": 0.457807,
               "medianMassResidual": 0,
               "medianEnergyResidual": 9.44162e-17
             },
@@ -1568,6 +2348,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.226425,
+              "groundShare": 0.457807,
               "medianMassResidual": 0,
               "medianEnergyResidual": 9.29211e-17
             }
@@ -1580,6 +2361,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.207051,
+              "groundShare": 0.468885,
               "medianMassResidual": 0,
               "medianEnergyResidual": 1.00587e-16
             },
@@ -1587,6 +2369,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.207146,
+              "groundShare": 0.468885,
               "medianMassResidual": 0,
               "medianEnergyResidual": 1.00587e-16
             },
@@ -1594,6 +2377,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.20715,
+              "groundShare": 0.468885,
               "medianMassResidual": 0,
               "medianEnergyResidual": 1.07751e-16
             }
@@ -1606,6 +2390,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.186053,
+              "groundShare": 0.497195,
               "medianMassResidual": 4.89882e-17,
               "medianEnergyResidual": 1.09276e-16
             },
@@ -1613,6 +2398,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.186057,
+              "groundShare": 0.497195,
               "medianMassResidual": 5.71316e-17,
               "medianEnergyResidual": 1.14587e-16
             },
@@ -1620,6 +2406,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.186058,
+              "groundShare": 0.497195,
               "medianMassResidual": 5.42586e-17,
               "medianEnergyResidual": 1.23273e-16
             }
@@ -1632,6 +2419,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.154836,
+              "groundShare": 0.532754,
               "medianMassResidual": 5.30898e-17,
               "medianEnergyResidual": 9.99626e-17
             },
@@ -1639,6 +2427,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.15491,
+              "groundShare": 0.532754,
               "medianMassResidual": 5.27662e-17,
               "medianEnergyResidual": 1.19066e-16
             },
@@ -1646,6 +2435,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.154914,
+              "groundShare": 0.532754,
               "medianMassResidual": 5.45287e-17,
               "medianEnergyResidual": 1.01287e-16
             }
@@ -1664,6 +2454,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.471661,
+              "groundShare": 0.111548,
               "medianMassResidual": 4.02975e-17,
               "medianEnergyResidual": 8.4809e-17
             },
@@ -1671,6 +2462,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.471725,
+              "groundShare": 0.111548,
               "medianMassResidual": 4.19189e-17,
               "medianEnergyResidual": 8.99944e-17
             },
@@ -1678,6 +2470,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.471748,
+              "groundShare": 0.111548,
               "medianMassResidual": 3.49843e-17,
               "medianEnergyResidual": 8.68073e-17
             }
@@ -1690,6 +2483,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.477018,
+              "groundShare": 0.134423,
               "medianMassResidual": 4.34226e-17,
               "medianEnergyResidual": 8.35526e-17
             },
@@ -1697,6 +2491,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.499073,
+              "groundShare": 0.1126,
               "medianMassResidual": 3.27418e-17,
               "medianEnergyResidual": 8.67873e-17
             },
@@ -1704,6 +2499,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.499153,
+              "groundShare": 0.1126,
               "medianMassResidual": 4.14239e-17,
               "medianEnergyResidual": 8.49567e-17
             }
@@ -1716,6 +2512,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.433788,
+              "groundShare": 0.144665,
               "medianMassResidual": 5.00208e-17,
               "medianEnergyResidual": 1.20237e-16
             },
@@ -1723,6 +2520,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.433842,
+              "groundShare": 0.144665,
               "medianMassResidual": 6.28784e-17,
               "medianEnergyResidual": 1.27596e-16
             },
@@ -1730,6 +2528,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.433861,
+              "groundShare": 0.144665,
               "medianMassResidual": 6.04614e-17,
               "medianEnergyResidual": 1.112e-16
             }
@@ -1742,6 +2541,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.402135,
+              "groundShare": 0.150729,
               "medianMassResidual": 5.68678e-17,
               "medianEnergyResidual": 1.16692e-16
             },
@@ -1749,6 +2549,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.413947,
+              "groundShare": 0.139151,
               "medianMassResidual": 5.5803e-17,
               "medianEnergyResidual": 1.18713e-16
             },
@@ -1756,6 +2557,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.414019,
+              "groundShare": 0.139151,
               "medianMassResidual": 5.52319e-17,
               "medianEnergyResidual": 1.1957e-16
             }
@@ -1774,6 +2576,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.366374,
+              "groundShare": 0.0533174,
               "medianMassResidual": 3.54131e-17,
               "medianEnergyResidual": 8.36222e-17
             },
@@ -1781,6 +2584,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.366414,
+              "groundShare": 0.0533174,
               "medianMassResidual": 3.54131e-17,
               "medianEnergyResidual": 8.48745e-17
             },
@@ -1788,6 +2592,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.366428,
+              "groundShare": 0.0533174,
               "medianMassResidual": 3.62224e-17,
               "medianEnergyResidual": 8.09569e-17
             }
@@ -1800,6 +2605,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.379508,
+              "groundShare": 0.045888,
               "medianMassResidual": 3.31537e-17,
               "medianEnergyResidual": 8.42686e-17
             },
@@ -1807,6 +2613,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.379647,
+              "groundShare": 0.045888,
               "medianMassResidual": 3.40153e-17,
               "medianEnergyResidual": 8.29947e-17
             },
@@ -1814,6 +2621,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.379696,
+              "groundShare": 0.045888,
               "medianMassResidual": 3.58684e-17,
               "medianEnergyResidual": 8.7027e-17
             }
@@ -1826,6 +2634,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.355405,
+              "groundShare": 0.0620785,
               "medianMassResidual": 6.23375e-17,
               "medianEnergyResidual": 1.16817e-16
             },
@@ -1833,6 +2642,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.355441,
+              "groundShare": 0.0620785,
               "medianMassResidual": 6.2955e-17,
               "medianEnergyResidual": 1.14548e-16
             },
@@ -1840,6 +2650,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.355454,
+              "groundShare": 0.0620785,
               "medianMassResidual": 5.00604e-17,
               "medianEnergyResidual": 1.16825e-16
             }
@@ -1852,6 +2663,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.334735,
+              "groundShare": 0.0679666,
               "medianMassResidual": 5.59389e-17,
               "medianEnergyResidual": 1.07658e-16
             },
@@ -1859,6 +2671,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.334864,
+              "groundShare": 0.0679666,
               "medianMassResidual": 5.661e-17,
               "medianEnergyResidual": 1.01616e-16
             },
@@ -1866,6 +2679,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.334906,
+              "groundShare": 0.0679666,
               "medianMassResidual": 5.47289e-17,
               "medianEnergyResidual": 9.84885e-17
             }
@@ -1884,6 +2698,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.463905,
+              "groundShare": 0.116496,
               "medianMassResidual": 3.18008e-17,
               "medianEnergyResidual": 8.39337e-17
             },
@@ -1891,6 +2706,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.463982,
+              "groundShare": 0.116496,
               "medianMassResidual": 3.15281e-17,
               "medianEnergyResidual": 8.68202e-17
             },
@@ -1898,6 +2714,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.464001,
+              "groundShare": 0.116496,
               "medianMassResidual": 3.54737e-17,
               "medianEnergyResidual": 9.09078e-17
             }
@@ -1910,6 +2727,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.271101,
+              "groundShare": 0.277953,
               "medianMassResidual": 3.21564e-17,
               "medianEnergyResidual": 8.42127e-17
             },
@@ -1917,6 +2735,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.426934,
+              "groundShare": 0.122274,
               "medianMassResidual": 3.55503e-17,
               "medianEnergyResidual": 8.74715e-17
             },
@@ -1924,6 +2743,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.427032,
+              "groundShare": 0.122274,
               "medianMassResidual": 3.80368e-17,
               "medianEnergyResidual": 8.26283e-17
             }
@@ -1936,6 +2756,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.431421,
+              "groundShare": 0.139982,
               "medianMassResidual": 6.3362e-17,
               "medianEnergyResidual": 1.04346e-16
             },
@@ -1943,6 +2764,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.431493,
+              "groundShare": 0.139982,
               "medianMassResidual": 6.1404e-17,
               "medianEnergyResidual": 9.29644e-17
             },
@@ -1950,6 +2772,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.431513,
+              "groundShare": 0.139982,
               "medianMassResidual": 6.03538e-17,
               "medianEnergyResidual": 1.04915e-16
             }
@@ -1962,6 +2785,7 @@
               "settleWithin": 0.001,
               "produced": 200,
               "settledShare": 0.270857,
+              "groundShare": 0.294462,
               "medianMassResidual": 5.84979e-17,
               "medianEnergyResidual": 1.14904e-16
             },
@@ -1969,6 +2793,7 @@
               "settleWithin": 0.01,
               "produced": 200,
               "settledShare": 0.422345,
+              "groundShare": 0.143118,
               "medianMassResidual": 5.04124e-17,
               "medianEnergyResidual": 1.02369e-16
             },
@@ -1976,6 +2801,7 @@
               "settleWithin": 0.1,
               "produced": 200,
               "settledShare": 0.42245,
+              "groundShare": 0.143118,
               "medianMassResidual": 5.82336e-17,
               "medianEnergyResidual": 1.05233e-16
             }

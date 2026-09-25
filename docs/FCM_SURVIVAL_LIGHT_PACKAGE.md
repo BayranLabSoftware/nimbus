@@ -202,25 +202,37 @@ only the ones that land.
 strength — sits at exactly 1 on every one of the tens of thousands of breaks recorded, the bisection's own
 precision; no defect found before any mechanism was looked for.
 
-**What the branch stops accounting for.** Pooled across every case and configuration (weighted by each
-run's own accounted mass): 93.2 % of the body's original mass is no longer integrated past the point a
-cloud comes within `settleWithin` of its own terminal speed (rule 1138 (c)). Only 3.3 % lands as solid
-pieces and 3.5 % as cloud swarm reaching the ground. **Rule 1190, the reviewer's correction**: that stop is
-a numerical condition (deviation D9), not by itself a claim about the material's later, physical fate — a
-real dust cloud disperses and is not the same observable as a recoverable fragment. Nothing here sums the
-93.2 % into any ground- or meteorite-mass claim. What H1, H3 and H5 call "landed mass," and rule 1178 (a)'s
-excess is measured against, was already a small remainder of the entry mass before this audit; this audit
-does not change that finding, only reports the stop that accounts for the rest.
+**What the branch stops accounting for, on the 71 case–configuration pairs that complete.** Pooled and
+weighted by each run's own accounted mass: 93.2 % of the body's original mass is no longer integrated past
+the point a cloud comes within `settleWithin` of its own terminal speed (rule 1138 (c)). Only 3.3 % lands
+as solid pieces and 3.5 % as cloud swarm reaching the ground. **This is an aggregate over the 71 completed
+pairs, not a statement about every event or configuration** (the reviewer's third correction): one
+pair — Tunguska/M2/capped — never completes and contributes nothing to this figure; its own behaviour is
+unknown and is not to be assumed to follow the other 71 (§ below).
+
+**Rule 1190, the reviewer's second correction**: that stop is a numerical condition (deviation D9). That it
+is overwhelmingly the ordinary `terminalVelocity` stop rather than the `nonPhysicalStep` fallback (next
+section) says only _how_ integration ends — it is not itself evidence that the underlying treatment of a
+settled cloud is adequate, or that nothing about it is a modelling gap. What the material does physically
+after the stop — whether it keeps ablating, disperses, stays in suspension, or eventually reaches the
+ground at low speed — is not decided by this audit and is not claimed here. Nothing in this document sums
+the 93.2 % into any ground- or meteorite-mass claim. What H1, H3 and H5 call "landed mass," and rule
+1178 (a)'s excess is measured against, was already a small remainder of the entry mass before this audit;
+this audit does not change that finding, only reports the stop that accounts for the rest.
 
 **The "dominant child" finding was partly a reporting artefact — corrected.** The first report's "largest
 child" could be, and at Chelyabinsk's own single produced draw was, the cloud itself, wherever a draw's own
 cloud share exceeds its largest solid fragment's share — not a bug in what was measured, a gap in how it
 was reported (rule 1190). Corrected to the largest **solid** child only: a median of 56.5 % of the parent's
 mass at the first break, 50.1 % at later breaks (medians of medians, 71 case-configuration pairs) — a much
-smaller, and much less first-break-specific, skew than first reported. It remains true that a break's
-largest solid child typically carries about half the parent's mass or more — a property of the split rule
-itself (rule 1152's shares) — but the sharp first-break/later-break contrast in the original report does
-not survive separating clouds from solids.
+smaller, and much less first-break-specific, skew than first reported.
+
+**The reviewer's fourth correction, stated plainly: this is a description, not a diagnosis.** 56.5 % and
+50.1 % describe the split rule's current partition (rule 1152's shares) on these cases; by themselves they
+are not sufficient evidence that the partition is wrong, nor that it is correct. Whether this level of
+skew is the cause of, a contributor to, or irrelevant to the landed-mass excess is exactly the question the
+causal dossier's second section (§ below) has to address with a discriminating observation and an
+independent source — not read off this number alone.
 
 **Birth altitude and retained fraction move together, in the expected direction, imperfectly.** Landed
 solid pieces born lower (necessarily later, per rule 1189's own qualification on generation) retain a
@@ -231,9 +243,10 @@ holds in the expected direction on nearly three-quarters of cases, not all — a
 break-timing account should use the recorded altitudes directly, not the generation label alone, exactly
 as qualified.
 
-**One case-configuration did not complete**: Tunguska/M2/capped, 0 of 200 draws, even at the domain map's
-retry cap — consistent with this being the branch's most energetic single-draw preset under its most
-structured, most confined configuration; not investigated further here, a measurement round.
+**One case-configuration did not complete, and stays outside every aggregate above**: Tunguska/M2/capped,
+0 of 200 draws, even at the domain map's retry cap — consistent with this being the branch's most energetic
+single-draw preset under its most structured, most confined configuration. Its behaviour is unknown, not
+assumed to match the other 71 pairs, and not investigated further here, a measurement round.
 
 No adoption, no hypothesis tested (rule 1189 (d)): the sealed candidate stays exactly as it is.
 
@@ -243,25 +256,55 @@ Every terminal record's exact stop reason is now recorded apart (rule 1190 (a)):
 (the ordinary case — a cloud reaching its own terminal speed), `'nonPhysicalStep'` (rule 1141 (a)'s
 halving exhausted, the same fallback a solid can also stop in), or `'massFloor'`. Of the pooled 93.21 %
 no-longer-integrated share above, all 93.21 percentage points stop at the ordinary terminal-speed
-condition and essentially none at the non-physical fallback (0 %, `fcmAuditRun.json`'s own figures) — the
-stop is overwhelmingly the intended, ordinary one, not a numerical failure mode.
+condition and essentially none at the non-physical fallback (0 %, `fcmAuditRun.json`'s own figures). **This
+says only how the integration ends, not whether that is adequate**: it rules out one specific failure mode
+(the branch silently stalling for numerical reasons), but it is not evidence that the treatment of a
+settled cloud afterward — where this audit and the sensitivity below stop looking — is itself correct or
+complete.
 
 `docs/FCM_SETTLEWITHIN_SENSITIVITY.md`, `src/physics/validation/fcmSettleWithinSensitivity.json`, from
 `scripts/fcm-settlewithin-sensitivity.ts`: `settleWithin` (rule 1138 (c)) run at a tenth (0.1 %) and ten
 times (10 %) its own baseline value (1 %) on the same 18 development cases, comparing the settled-mass
-share and the ledger's own balance (rule 1141 (a)) across the three — a numerical check, not a tuning,
-since none of H1 through H5's own results depend on this value.
+share, the ground-mass share and the ledger's own balance (rule 1141 (a)) across the three — a numerical
+check, not a tuning, since none of H1 through H5's own results depend on this value. Each case–
+configuration reads from the identical stream key regardless of `settleWithin` — the option is never
+itself drawn — so the three thresholds' draws are identical, not merely aggregately comparable; completion
+itself does not change on any of the 71 pairs.
 
-**Result: the settled-mass share barely moves.** Across the 71 case-configuration pairs compared, the
-median absolute change in settled-mass share between the tightest (0.1 %) and loosest (10 %) threshold is
-**0.0144 percentage points** of the body's entry mass — three orders of magnitude below the 93.2 % share
-itself. Chelyabinsk/M1/unlimited, for instance, moves from 51.45 % to 51.49 % settled across the same
-hundred-fold change in the threshold. The ledger's own balance stays at machine precision throughout
-(residuals of order 10⁻¹⁶, no case exceeding gate 1's tolerance by any margin). **The stop condition itself
-does not govern the result**: a cloud that reaches "close to" its own terminal speed stays there, almost
-independent of how tightly "close" is defined — the settling this audit reports is a stable feature of the
-trajectory, not an artefact of where the threshold happens to sit. This does not answer what the settled
-mass physically becomes next (rule 1190's still-open question); it answers only that the numerical stop
-condition is not, itself, the source of the 93.2 % figure.
+**The reviewer's first correction, applied: median AND max, by configuration, not pooled alone.** The
+pooled median move is small — **0.0144 percentage points** of settled-mass share between the tightest and
+loosest threshold — but the **pooled max move is 70.6 percentage points**, three thousand times larger.
+The tail is not evenly spread: broken down by configuration (18 pairs each, M2/capped 17 since Tunguska
+never completes there), the median stays under 0.03 percentage points in all four, but the max move is
+17.6 % (M1/unlimited), **70.6 % (M1/capped)**, 3.9 % (M2/unlimited), **34.9 % (M2/capped)**. The two
+**capped** configurations are the ones with a large tail; both **unlimited** configurations stay small at
+both the median and the max. The single largest mover is Chelyabinsk/M1/capped itself: settled share goes
+5.5 % (tightest threshold) → 42.9 % (baseline) → 76.0 % (loosest), while ground share — the complementary
+figure, reaching h = 0 — goes the other way, 73.9 % → 36.5 % → 3.4 %, on the SAME single produced draw. A
+hundred-fold change in `settleWithin` very nearly inverts which of "settled" or "reaches the ground" holds
+most of this draw's mass. This is the same configuration already named in deviation D16's capped-cloud
+pathology (a capped cloud's area, and so its ablation rate, stops growing once the cap is reached). This
+audit does not diagnose why the capped configurations are far more sensitive to `settleWithin` than the
+unlimited ones; it reports that they are, and that the two families should not be described by one pooled
+number.
+
+Ground mass (solid pieces plus cloud swarm reaching the ground) is tracked apart from the settled share and
+moves by nearly the same amount in the same pairs (0.7057 vs 0.7059 percentage points at the largest
+mover) — in the capped configurations, a looser threshold does not merely reclassify "settled" mass, it
+moves mass between "settled" and "reaches the ground" categories that this project's own landed-mass
+figures (H1, H3, H5, rule 1178 (a)) are built from. **This is a genuine, unresolved sensitivity in the
+capped configurations specifically — not a claim that `settleWithin` should be changed, and not evidence
+either way about the physical fate of the settled mass** — only that the capped-cloud pathology already
+named in D16 is numerically unstable with respect to this threshold, where the unlimited configurations are
+not. The ledger's own balance stays at machine precision throughout every threshold and every pair
+(residuals of order 10⁻¹⁶, no case exceeding gate 1's tolerance).
+
+**Conclusion, restricted to what this numerical check actually shows**: for the two unlimited-cloud
+configurations, the settling this audit reports is a stable feature of the trajectory, largely independent
+of where `settleWithin` is set. For the two capped-cloud configurations, it is not — a small number of
+cases move substantially with the threshold, entangled with the already-known capped-cloud pathology. This
+does not answer what the settled mass physically becomes next (still open, per rule 1190), and it is not,
+on its own, grounds to retune `settleWithin` or to treat the capped configurations' figures above as
+settled.
 
 These findings inform the causal dossier the reviewer asked for next — not decided here.

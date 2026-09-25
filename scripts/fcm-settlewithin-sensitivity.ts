@@ -104,6 +104,10 @@ interface SettleWithinResult {
   settleWithin: number;
   produced: number;
   settledShare: number | null;
+  /** Rule 1190's own reviewer correction: the ground mass (solid pieces +
+   *  cloud swarm reaching h = 0) is tracked apart from the settled share,
+   *  so a shift in one is never read off the other. */
+  groundShare: number | null;
   medianMassResidual: number | null;
   medianEnergyResidual: number | null;
 }
@@ -122,9 +126,13 @@ interface CaseResult {
 function flyCase(spec: CaseSpec): CaseResult {
   const configurations = CONFIGURATIONS.map(({ structure, cloud }) => {
     const byThreshold = SETTLE_WITHINS.map((settleWithin) => {
+      // The same stream key regardless of settleWithin: the three thresholds
+      // draw identically, draw for draw — settleWithin is never itself
+      // drawn, only read as a fixed option by the engine.
       const u = stream(`fcm-round1/${spec.name}/${structure}/${cloud}`);
       let produced = 0;
       let settledKg = 0;
+      let groundKg = 0;
       let totalKg = 0;
       const massResiduals: number[] = [];
       const energyResiduals: number[] = [];
@@ -141,6 +149,7 @@ function flyCase(spec: CaseSpec): CaseResult {
         if (!r.completed) continue;
         produced += 1;
         settledKg += r.ledger.settledCloudMass;
+        groundKg += r.ledger.groundMass;
         totalKg += r.mass;
         massResiduals.push(Math.abs(r.ledger.massResidual));
         energyResiduals.push(Math.abs(r.ledger.energyResidual));
@@ -149,6 +158,7 @@ function flyCase(spec: CaseSpec): CaseResult {
         settleWithin,
         produced,
         settledShare: totalKg > 0 ? round(settledKg / totalKg, 6) : null,
+        groundShare: totalKg > 0 ? round(groundKg / totalKg, 6) : null,
         medianMassResidual: median(massResiduals),
         medianEnergyResidual: median(energyResiduals),
       };
@@ -177,17 +187,80 @@ function merge(K: number): void {
   }
   results.sort((a, b) => order.indexOf(a.case) - order.indexOf(b.case));
 
-  // How much the settled-mass share moves between the tightest and loosest
-  // threshold, relative to the baseline — the question rule 1190 (c) asks.
-  const moves = results.flatMap((r) =>
+  // How much the settled- and ground-mass shares move between the tightest
+  // and loosest threshold, and whether completion itself changes — the
+  // reviewer's own four points on the first cut of this sensitivity: the
+  // median alone does not answer them; the max, the per-configuration
+  // breakdown and the completion check are reported apart, never folded
+  // into one number.
+  interface Move {
+    case: string;
+    configuration: string;
+    settledMove: number;
+    groundMove: number;
+    completionChanged: boolean;
+    producedByThreshold: number[];
+  }
+  const moves: Move[] = results.flatMap((r) =>
     r.configurations.flatMap((c) => {
-      const tight = c.byThreshold[0]?.settledShare;
-      const loose = c.byThreshold[2]?.settledShare;
-      if (tight === null || tight === undefined || loose === null || loose === undefined) return [];
-      return [Math.abs(loose - tight)];
+      const tight = c.byThreshold[0];
+      const loose = c.byThreshold[2];
+      if (
+        tight?.settledShare === null ||
+        tight?.settledShare === undefined ||
+        loose?.settledShare === null ||
+        loose?.settledShare === undefined ||
+        tight.groundShare === null ||
+        loose.groundShare === null
+      )
+        return [];
+      const producedByThreshold = c.byThreshold.map((t) => t.produced);
+      return [
+        {
+          case: r.case,
+          configuration: c.configuration,
+          settledMove: round(Math.abs(loose.settledShare - tight.settledShare), 6),
+          groundMove: round(Math.abs(loose.groundShare - tight.groundShare), 6),
+          completionChanged: new Set(producedByThreshold).size > 1,
+          producedByThreshold,
+        },
+      ];
     })
   );
-  const out = { rule: '1190 (c)', draws: DRAWS, settleWithins: SETTLE_WITHINS, results };
+  const settledMoves = moves.map((m) => m.settledMove);
+  const groundMoves = moves.map((m) => m.groundMove);
+  const changedCompletion = moves.filter((m) => m.completionChanged);
+
+  // Per-configuration breakdown (M1/unlimited, M1/capped, M2/unlimited,
+  // M2/capped pooled across the 18 cases): the pooled median alone can
+  // hide a configuration that moves far more than the rest.
+  const byConfiguration = CONFIGURATIONS.map(({ structure, cloud }) => {
+    const key = `${structure}/${cloud}`;
+    const here = moves.filter((m) => m.configuration === key);
+    return {
+      configuration: key,
+      pairs: here.length,
+      medianSettledMove: median(here.map((m) => m.settledMove)),
+      maxSettledMove: here.length === 0 ? null : Math.max(...here.map((m) => m.settledMove)),
+      medianGroundMove: median(here.map((m) => m.groundMove)),
+      maxGroundMove: here.length === 0 ? null : Math.max(...here.map((m) => m.groundMove)),
+    };
+  });
+
+  const out = {
+    rule: '1190 (c)',
+    draws: DRAWS,
+    settleWithins: SETTLE_WITHINS,
+    sameDrawStreamAcrossThresholds: true,
+    medianSettledMove: median(settledMoves),
+    maxSettledMove: settledMoves.length === 0 ? null : Math.max(...settledMoves),
+    medianGroundMove: median(groundMoves),
+    maxGroundMove: groundMoves.length === 0 ? null : Math.max(...groundMoves),
+    pairsWithCompletionChange: changedCompletion.length,
+    byConfiguration,
+    moves,
+    results,
+  };
   writeFileSync(
     'src/physics/validation/fcmSettleWithinSensitivity.json',
     `${JSON.stringify(out, null, 1)}\n`
@@ -199,30 +272,60 @@ function merge(K: number): void {
     '',
     'A numerical check, not a tuning: the same 18 development cases and input/parameter streams as the',
     `cascade audit, at \`settleWithin\` = ${String(SETTLE_WITHINS[0] * 100)} %, ${String(SETTLE_WITHINS[1] * 100)} % (the branch's own baseline,`,
-    `rule 1138 (c)) and ${String(SETTLE_WITHINS[2] * 100)} %. None of H1 through H5's own results depend on this value.`,
+    `rule 1138 (c)) and ${String(SETTLE_WITHINS[2] * 100)} %. None of H1 through H5's own results depend on this value. Each`,
+    'case–configuration draws from the same stream key regardless of threshold — `settleWithin` is read as a',
+    'fixed option, never itself drawn — so the three runs are directly comparable draw for draw, not only in',
+    'aggregate.',
     '',
-    `Settled-mass share moves by a median of ${pct(median(moves))} of the body's entry mass between the`,
-    `tightest and loosest threshold, across ${String(moves.length)} case–configuration pairs (both`,
-    'thresholds’ own median ledger residual stayed within gate 1’s tolerance in every pair checked below).',
+    '## Pooled (median AND max — the reviewer’s correction: a small median does not by itself bound the tail)',
+    '',
+    `Settled-mass share: median move ${pct(median(settledMoves))}, **max move ${pct(settledMoves.length === 0 ? null : Math.max(...settledMoves))}**,`,
+    `across ${String(moves.length)} case–configuration pairs.`,
+    `Ground mass (solid pieces + cloud swarm reaching h = 0): median move ${pct(median(groundMoves))}, **max move`,
+    `${pct(groundMoves.length === 0 ? null : Math.max(...groundMoves))}** — tracked apart from the settled share, never read off it.`,
+    `Completion itself changed with the threshold on ${String(changedCompletion.length)} of ${String(moves.length)} pairs` +
+      (changedCompletion.length === 0
+        ? ' (none).'
+        : `: ${changedCompletion.map((m) => `${m.case}/${m.configuration} (${m.producedByThreshold.join('→')})`).join(', ')}.`),
+    '',
+    '## By configuration (pooled across the 18 cases — never a substitute for the by-case table below)',
+    '',
+    '| Configuration | pairs | median settled move | max settled move | median ground move | max ground move |',
+    '| --- | --- | --- | --- | --- | --- |',
+    ...byConfiguration.map(
+      (c) =>
+        `| ${c.configuration} | ${String(c.pairs)} | ${pct(c.medianSettledMove)} | ${pct(c.maxSettledMove)} | ${pct(c.medianGroundMove)} | ${pct(c.maxGroundMove)} |`
+    ),
     '',
     '## By case and configuration',
     '',
     ...results.flatMap((r) => [
       `### ${r.case} (${r.family})`,
       '',
-      '| Configuration | settleWithin | produced | settled share | median |mass residual| | median |energy residual| |',
-      '| --- | --- | --- | --- | --- | --- |',
+      '| Configuration | settleWithin | produced | settled share | ground share | median |mass residual| | median |energy residual| |',
+      '| --- | --- | --- | --- | --- | --- | --- |',
       ...r.configurations.flatMap((c) =>
         c.byThreshold.map(
           (t) =>
-            `| ${c.configuration} | ${String(t.settleWithin * 100)} % | ${String(t.produced)} | ${pct(t.settledShare)} | ${t.medianMassResidual === null ? '—' : String(t.medianMassResidual)} | ${t.medianEnergyResidual === null ? '—' : String(t.medianEnergyResidual)} |`
+            `| ${c.configuration} | ${String(t.settleWithin * 100)} % | ${String(t.produced)} | ${pct(t.settledShare)} | ${pct(t.groundShare)} | ${t.medianMassResidual === null ? '—' : String(t.medianMassResidual)} | ${t.medianEnergyResidual === null ? '—' : String(t.medianEnergyResidual)} |`
         )
       ),
       '',
     ]),
   ];
   writeFileSync('docs/FCM_SETTLEWITHIN_SENSITIVITY.md', lines.join('\n'));
-  console.log(JSON.stringify({ medianMove: median(moves), pairs: moves.length }, null, 1));
+  console.log(
+    JSON.stringify(
+      {
+        medianSettledMove: median(settledMoves),
+        maxSettledMove: settledMoves.length === 0 ? null : Math.max(...settledMoves),
+        pairs: moves.length,
+        completionChanges: changedCompletion.length,
+      },
+      null,
+      1
+    )
+  );
 }
 
 async function all(): Promise<void> {
