@@ -334,3 +334,27 @@ open, per rule 1190), and it is not, on its own, grounds to retune `settleWithin
 configurations' figures above as settled.
 
 These findings inform the causal dossier the reviewer asked for next — not decided here.
+
+## The reading, done (rule 1192)
+
+Six sources — three for the threshold candidate, three for the partition candidate (rule 1191 (d), (e)) —
+read directly, in one batch, not from abstracts. Two of the six named sources turned out to be mis-cited or
+inaccessible and were substituted with a clearly-named, genuinely equivalent open source (rule 1192's own
+text has the detail); the original Denoual & Hild papers sat behind an anti-bot challenge this project does
+not bypass and were replaced the same way.
+
+**Threshold**: all three sources, once read, are strain-rate-**strengthening** laws (strength rises with
+loading rate) — the opposite of the "weakening" direction rule 1191 (d) named as its own discriminating
+case before any reading happened. None supplies a form ready to adopt: each leaves multiple constants
+uncalibrated for any chondritic material, at a lab scale and loading regime far from a continuously
+accelerating atmospheric entry.
+
+**Partition**: all three sources predict continuous, many-fragment spectra — different in kind from the
+branch's fixed larger/rest/cloud split — and each fails a different part of the transferability check (an
+internal-pressure loading regime unlike aerodynamic breakup; an exponent that is itself an unfixed fit; a
+whole parent body's fossilised collisional history rather than one break's own partition).
+
+**Verdict: NOT IDENTIFIABLE for both candidates**, on six sources actually read — the outcome rule 1191
+named as an acceptable result and preferred over a form chosen because it moves the landed mass the right
+way. This closes the reading step rule 1191 (g) authorised. No code, no new prior, no change to the sealed
+candidate (rule 1162).

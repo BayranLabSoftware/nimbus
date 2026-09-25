@@ -1,5 +1,5 @@
 /**
- * Rules 1178 to 1191 — the opening document of the survival–light round, on
+ * Rules 1178 to 1192 — the opening document of the survival–light round, on
  * the reviewer's approval of 25 September 2026: a round of development on the
  * FCM branch's own physics, before any test that could adopt it, and — apart
  * — the custody protocol and the reconnaissance of a genuinely blind fifth
@@ -681,4 +681,99 @@ export const FCM_H5_DOMINANCE_MARGIN = 2;
  * dossier's own preference — restated — is that such a verdict is a better
  * result than a parameter chosen because it moves the landed mass the right
  * way.
+ */
+
+/**
+ * RULE 1192. THE READING, DONE — rule 1191 (g)'s own next step, closed in
+ * one batch as the reviewer asked, direct reading substituted for search
+ * abstracts throughout. Two named sources could not be located as cited:
+ * "Housen & Holsapple (1985)" under that exact authorship does not exist —
+ * the paper at that title is O'Keefe & Ahrens (1985), Icarus 62, 328–338,
+ * read instead; the "Nakamura et al. 2008, Planet. Space Sci." reference
+ * named in rule 1191 (e) could not be located, and Michikami, Nakamura et
+ * al. (2008), Earth Planets Space 60, 13–20 — Itokawa's boulder
+ * size–frequency statistics, genuinely Nakamura-co-authored — was read in
+ * its place. Denoual & Hild's own papers sat behind an anti-bot challenge
+ * this project does not bypass; Hild, Forquin, Denoual & Brajer (2005),
+ * Lat. Am. J. Solids Struct. 2:41–56 — open, co-authored, presenting the
+ * identical obscuration theory — was read instead. Every substitution is
+ * named here, not silently swapped in.
+ *
+ * RULE 1192 (a). THE THRESHOLD CANDIDATE'S THREE FACT SHEETS.
+ *   - Hild, Forquin, Denoual & Brajer (2005): flaw density λ_t(σ) =
+ *     λ₀(σ/σ₀)^m nucleates cracks outside growing "obscuration" zones;
+ *     ultimate strength Σ_max ∝ σ̇^{n/(m+n)} above a size-dependent
+ *     transition rate — strength RISES with loading rate. Read on impulsive
+ *     impact (88 m/s) on ultra-high-performance concrete plates, cm scale,
+ *     a single pulse, not a continuous acceleration. Free: the Weibull
+ *     triplet (m, σ₀, λ₀), the obscuration shape and crack-speed fraction,
+ *     an effective volume — none measured for any chondritic material. Its
+ *     own crack field is checkable against the same impacted plates, no
+ *     meteor data needed. Discriminating prediction: MORE dynamic pressure
+ *     needed at fast ramps, i.e. later, not earlier, breaks — the opposite
+ *     of what rule 1191 (d) named as the candidate's own discriminating
+ *     case before reading it.
+ *   - Levy & Molinari (2010), J. Mech. Phys. Solids 58:12–26: a fragment-
+ *     SIZE law (Grady/Zhou strain-rate^(−2/3) energy balance), not a break
+ *     threshold — read closely, it answers rule 1191 (e)'s question, not
+ *     1191 (d)'s. 2D idealised ceramic ring simulations only, no real
+ *     material; its own "communication factor" is fit from the same
+ *     simulations it is then used to explain — circular as a source of an
+ *     independent form.
+ *   - Vivek, Schäfer, Rae & Kenkmann (2022), Rock Mech. Rock Eng. 56:109–
+ *     128 (arXiv:2110.10072): real basalt, granite, sandstone, marble —
+ *     the closest of the three to stony-body composition — Hopkinson-bar
+ *     tests to 27 /s. Strength again RISES with rate (the same direction
+ *     as Hild et al.); its own reference strength and rate scale are fit
+ *     to the tensile data itself, not derived independently, and an
+ *     exponent is left free. Genuinely independent and fully read; the
+ *     rates tested (≤ 27 /s) and single-pulse loading are far from a
+ *     continuously accelerating atmospheric entry — a large, unvalidated
+ *     extrapolation either way.
+ * ALL THREE, once read rather than searched, are strain-rate-STRENGTHENING
+ * laws — the opposite direction from the "weakening" scenario rule 1191 (d)
+ * posed, before reading, as the discriminating case. This narrows what the
+ * literature says more than it hands the branch an adoptable form.
+ *
+ * RULE 1192 (b). THE PARTITION CANDIDATE'S THREE FACT SHEETS.
+ *   - Moxnes & Børve (2015), Defence Technology 11:319–329 (re-deriving
+ *     Mott 1943/Grady–Kipp): a generalised stretched-exponential fragment-
+ *     count spectrum N(m) = N_total·exp[−(m/μ)ⁿ]; their own simulated
+ *     steel rings fit n ≈ 4, "in contrast to the Mott distribution with a
+ *     shape parameter of ½" — the shape is not even stable within this one
+ *     paper. Explosively (internal-pressure) driven steel rings, cm scale,
+ *     ~10⁴ /s — a loading regime (internal rupture) structurally unlike
+ *     aerodynamic ram-pressure breakup.
+ *   - O'Keefe & Ahrens (1985), Icarus 62:328–338 (substitute for the
+ *     mis-cited "Housen & Holsapple"): a two-parameter power-law ejecta
+ *     mass spectrum, N = Cm^(−b); the exponent b is fit per crater, not
+ *     predicted, and several published values need an ad hoc cutoff to
+ *     stay finite. Impact and explosion CRATER EJECTA — shock and
+ *     rarefaction spallation, not in-flight aerodynamic breakup — read
+ *     from hydrocode work and lab-to-nuclear-scale craters.
+ *   - Michikami, Nakamura et al. (2008), Earth Planets Space 60:13–20:
+ *     Itokawa's own boulder field, cumulative size distribution N(>D) ∝
+ *     D^(−3.1±0.1), varying by region on the one body (−2.8 to −3.2). As
+ *     independent of meteor data as a source can be, but a fossilised
+ *     record of an entire parent body's collisional history, not one
+ *     break's mass partition — converting a whole asteroid's boulder field
+ *     into a per-break rule needs assumptions this source does not supply.
+ * ALL THREE predict continuous, many-fragment spectra — different in KIND
+ * from the branch's fixed larger/rest/cloud split — and each fails a
+ * different part of rule 1191 (e)'s check: source 1's regime is wrong and
+ * its own shape parameter is not stable; source 2's exponent is itself an
+ * unfixed fit; source 3 measures an aggregate multi-event outcome, not a
+ * single break.
+ *
+ * RULE 1192 (c). THE VERDICT, on six sources actually read, not six
+ * abstracts: NOT IDENTIFIABLE for both the threshold candidate and the
+ * partition candidate, exactly the outcome rule 1191 named as an
+ * acceptable result and preferred it over a form chosen because it moves
+ * the landed mass the right way. No source read here supplies a form ready
+ * to adopt without new free constants chosen for this project's own
+ * chondritic-body case — which would be the tuning rule 1181 forbids, one
+ * step removed. This closes rule 1191 (g)'s authorised reading step. No
+ * code, no redraw of `larger`, `alpha` or the break condition, no change to
+ * the sealed candidate (rule 1162): this rule finds no ground to propose
+ * any.
  */
