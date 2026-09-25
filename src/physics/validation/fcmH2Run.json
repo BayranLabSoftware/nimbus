@@ -1,0 +1,1194 @@
+{
+  "rule": "1180 (b), 1186",
+  "draws": 200,
+  "compared": 71,
+  "medianRatio": 1.009,
+  "lowerCount": 10,
+  "higherCount": 18,
+  "sameCount": 43,
+  "results": [
+    {
+      "case": "Chelyabinsk",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 1,
+          "totalLandedKg": 20330,
+          "solidLandedKg": 20330,
+          "cloudLandedKg": 0,
+          "largestKg": 183.6
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 1,
+          "totalLandedKg": 229600,
+          "solidLandedKg": 229600,
+          "cloudLandedKg": 0,
+          "largestKg": 15600
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 1,
+          "totalLandedKg": 304500,
+          "solidLandedKg": 304500,
+          "cloudLandedKg": 0,
+          "largestKg": 2306
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 1,
+          "totalLandedKg": 351500,
+          "solidLandedKg": 351500,
+          "cloudLandedKg": 0,
+          "largestKg": 2975
+        }
+      ]
+    },
+    {
+      "case": "Tunguska",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 1,
+          "totalLandedKg": 763100,
+          "solidLandedKg": 763100,
+          "cloudLandedKg": 0,
+          "largestKg": 73430
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 1,
+          "totalLandedKg": 27130000,
+          "solidLandedKg": 560.9,
+          "cloudLandedKg": 27130000,
+          "largestKg": 19.48
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 1,
+          "totalLandedKg": 1868000,
+          "solidLandedKg": 1868000,
+          "cloudLandedKg": 0,
+          "largestKg": 98310
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 0,
+          "totalLandedKg": null,
+          "solidLandedKg": null,
+          "cloudLandedKg": null,
+          "largestKg": null
+        }
+      ]
+    },
+    {
+      "case": "2008 TC3",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 8066,
+          "solidLandedKg": 8066,
+          "cloudLandedKg": 0,
+          "largestKg": 1228
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 6984,
+          "solidLandedKg": 6984,
+          "cloudLandedKg": 0,
+          "largestKg": 1135
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 10860,
+          "solidLandedKg": 10860,
+          "cloudLandedKg": 0,
+          "largestKg": 1462
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 9353,
+          "solidLandedKg": 9353,
+          "cloudLandedKg": 0,
+          "largestKg": 1328
+        }
+      ]
+    },
+    {
+      "case": "2018 LA",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 183,
+          "solidLandedKg": 183,
+          "cloudLandedKg": 0,
+          "largestKg": 40.5
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 209.4,
+          "solidLandedKg": 209.4,
+          "cloudLandedKg": 0,
+          "largestKg": 43.35
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 319.1,
+          "solidLandedKg": 319.1,
+          "cloudLandedKg": 0,
+          "largestKg": 55.45
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 305.3,
+          "solidLandedKg": 305.3,
+          "cloudLandedKg": 0,
+          "largestKg": 49.27
+        }
+      ]
+    },
+    {
+      "case": "2022 EB5",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 1,
+          "totalLandedKg": 642,
+          "solidLandedKg": 642,
+          "cloudLandedKg": 0,
+          "largestKg": 1.276
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 1,
+          "totalLandedKg": 9276,
+          "solidLandedKg": 9276,
+          "cloudLandedKg": 0,
+          "largestKg": 354.2
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 1,
+          "totalLandedKg": 939.4,
+          "solidLandedKg": 939.4,
+          "cloudLandedKg": 0,
+          "largestKg": 88.42
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 1,
+          "totalLandedKg": 1154,
+          "solidLandedKg": 1154,
+          "cloudLandedKg": 0,
+          "largestKg": 158.9
+        }
+      ]
+    },
+    {
+      "case": "2023 CX1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 124.4,
+          "solidLandedKg": 124.4,
+          "cloudLandedKg": 0,
+          "largestKg": 21.59
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 106.4,
+          "solidLandedKg": 106.4,
+          "cloudLandedKg": 0,
+          "largestKg": 20.9
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 167.8,
+          "solidLandedKg": 167.8,
+          "cloudLandedKg": 0,
+          "largestKg": 27.28
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 174.6,
+          "solidLandedKg": 174.6,
+          "cloudLandedKg": 0,
+          "largestKg": 25.06
+        }
+      ]
+    },
+    {
+      "case": "2024 BX1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 19.74,
+          "solidLandedKg": 19.74,
+          "cloudLandedKg": 0,
+          "largestKg": 4.539
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 22.99,
+          "solidLandedKg": 22.99,
+          "cloudLandedKg": 0,
+          "largestKg": 5.98
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 36.44,
+          "solidLandedKg": 36.44,
+          "cloudLandedKg": 0,
+          "largestKg": 4.752
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 32.55,
+          "solidLandedKg": 32.55,
+          "cloudLandedKg": 0,
+          "largestKg": 4.354
+        }
+      ]
+    },
+    {
+      "case": "2022 WJ1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 50.61,
+          "solidLandedKg": 50.61,
+          "cloudLandedKg": 0,
+          "largestKg": 24.57
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 42.74,
+          "solidLandedKg": 42.74,
+          "cloudLandedKg": 0,
+          "largestKg": 18.29
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 61.91,
+          "solidLandedKg": 61.91,
+          "cloudLandedKg": 0,
+          "largestKg": 23.11
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 56.42,
+          "solidLandedKg": 56.42,
+          "cloudLandedKg": 0,
+          "largestKg": 21.96
+        }
+      ]
+    },
+    {
+      "case": "Carancas",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 289.1,
+          "solidLandedKg": 289.1,
+          "cloudLandedKg": 0,
+          "largestKg": 35.12
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 253,
+          "solidLandedKg": 253,
+          "cloudLandedKg": 0,
+          "largestKg": 35.09
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 465.5,
+          "solidLandedKg": 465.5,
+          "cloudLandedKg": 0,
+          "largestKg": 59.51
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 454.5,
+          "solidLandedKg": 454.5,
+          "cloudLandedKg": 0,
+          "largestKg": 70.72
+        }
+      ]
+    },
+    {
+      "case": "Winchcombe",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 4.701,
+          "solidLandedKg": 4.701,
+          "cloudLandedKg": 0,
+          "largestKg": 3.431
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 5.082,
+          "solidLandedKg": 5.082,
+          "cloudLandedKg": 0,
+          "largestKg": 3.92
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 5.171,
+          "solidLandedKg": 5.171,
+          "cloudLandedKg": 0,
+          "largestKg": 3.013
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 6.216,
+          "solidLandedKg": 6.216,
+          "cloudLandedKg": 0,
+          "largestKg": 4.63
+        }
+      ]
+    },
+    {
+      "case": "Golden",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 10.89,
+          "solidLandedKg": 10.89,
+          "cloudLandedKg": 0,
+          "largestKg": 2.515
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 11.4,
+          "solidLandedKg": 11.4,
+          "cloudLandedKg": 0,
+          "largestKg": 2.703
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 13.81,
+          "solidLandedKg": 13.81,
+          "cloudLandedKg": 0,
+          "largestKg": 2.205
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 16.43,
+          "solidLandedKg": 16.43,
+          "cloudLandedKg": 0,
+          "largestKg": 2.615
+        }
+      ]
+    },
+    {
+      "case": "Madura Cave",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 8.623,
+          "solidLandedKg": 8.623,
+          "cloudLandedKg": 0,
+          "largestKg": 3.706
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 8.305,
+          "solidLandedKg": 8.305,
+          "cloudLandedKg": 0,
+          "largestKg": 3.107
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 10.6,
+          "solidLandedKg": 10.6,
+          "cloudLandedKg": 0,
+          "largestKg": 2.934
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 10.95,
+          "solidLandedKg": 10.95,
+          "cloudLandedKg": 0,
+          "largestKg": 3.279
+        }
+      ]
+    },
+    {
+      "case": "Hamburg",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 11.71,
+          "solidLandedKg": 11.71,
+          "cloudLandedKg": 0,
+          "largestKg": 3.05
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 11.24,
+          "solidLandedKg": 11.24,
+          "cloudLandedKg": 0,
+          "largestKg": 2.666
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 17.62,
+          "solidLandedKg": 17.62,
+          "cloudLandedKg": 0,
+          "largestKg": 3.644
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 14.91,
+          "solidLandedKg": 14.91,
+          "cloudLandedKg": 0,
+          "largestKg": 2.318
+        }
+      ]
+    },
+    {
+      "case": "Traspena",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 131.3,
+          "solidLandedKg": 131.3,
+          "cloudLandedKg": 0,
+          "largestKg": 14.63
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 104.7,
+          "solidLandedKg": 104.7,
+          "cloudLandedKg": 0,
+          "largestKg": 12.83
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 159.1,
+          "solidLandedKg": 159.1,
+          "cloudLandedKg": 0,
+          "largestKg": 24.01
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 204.6,
+          "solidLandedKg": 204.6,
+          "cloudLandedKg": 0,
+          "largestKg": 26.06
+        }
+      ]
+    },
+    {
+      "case": "Cavezzo",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 1.553,
+          "solidLandedKg": 1.553,
+          "cloudLandedKg": 0,
+          "largestKg": 0.9733
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 1.52,
+          "solidLandedKg": 1.52,
+          "cloudLandedKg": 0,
+          "largestKg": 1.093
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 1.56,
+          "solidLandedKg": 1.56,
+          "cloudLandedKg": 0,
+          "largestKg": 0.8371
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 1.832,
+          "solidLandedKg": 1.832,
+          "cloudLandedKg": 0,
+          "largestKg": 1.049
+        }
+      ]
+    },
+    {
+      "case": "Košice",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 264.7,
+          "solidLandedKg": 264.7,
+          "cloudLandedKg": 0,
+          "largestKg": 31.84
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 260.3,
+          "solidLandedKg": 260.3,
+          "cloudLandedKg": 0,
+          "largestKg": 36.28
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 414.4,
+          "solidLandedKg": 414.4,
+          "cloudLandedKg": 0,
+          "largestKg": 59.78
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 385.1,
+          "solidLandedKg": 385.1,
+          "cloudLandedKg": 0,
+          "largestKg": 58.42
+        }
+      ]
+    },
+    {
+      "case": "Benešov",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 86.76,
+          "solidLandedKg": 86.76,
+          "cloudLandedKg": 0,
+          "largestKg": 6.808
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 93.25,
+          "solidLandedKg": 93.25,
+          "cloudLandedKg": 0,
+          "largestKg": 7.41
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 150.8,
+          "solidLandedKg": 150.8,
+          "cloudLandedKg": 0,
+          "largestKg": 17.55
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 125.2,
+          "solidLandedKg": 125.2,
+          "cloudLandedKg": 0,
+          "largestKg": 14.98
+        }
+      ]
+    },
+    {
+      "case": "Tagish Lake",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 7411,
+          "solidLandedKg": 7411,
+          "cloudLandedKg": 0,
+          "largestKg": 1186
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 6690,
+          "solidLandedKg": 6690,
+          "cloudLandedKg": 0,
+          "largestKg": 1373
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 10090,
+          "solidLandedKg": 10090,
+          "cloudLandedKg": 0,
+          "largestKg": 1537
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 10540,
+          "solidLandedKg": 10540,
+          "cloudLandedKg": 0,
+          "largestKg": 1552
+        }
+      ]
+    }
+  ],
+  "comparison": [
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M1/unlimited",
+      "h2": 20330,
+      "h3": 24200,
+      "ratio": 0.8400826446280992
+    },
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M1/capped",
+      "h2": 229600,
+      "h3": 4899000,
+      "ratio": 0.04686670749132476
+    },
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M2/unlimited",
+      "h2": 304500,
+      "h3": 425000,
+      "ratio": 0.7164705882352941
+    },
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M2/capped",
+      "h2": 351500,
+      "h3": 382500,
+      "ratio": 0.918954248366013
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M1/unlimited",
+      "h2": 763100,
+      "h3": 857000,
+      "ratio": 0.8904317386231039
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M1/capped",
+      "h2": 27130000,
+      "h3": 36680000,
+      "ratio": 0.7396401308615049
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M2/unlimited",
+      "h2": 1868000,
+      "h3": 911200,
+      "ratio": 2.0500438981562774
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M1/unlimited",
+      "h2": 8066,
+      "h3": 7119,
+      "ratio": 1.133024301165894
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M1/capped",
+      "h2": 6984,
+      "h3": 6999,
+      "ratio": 0.9978568366909558
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M2/unlimited",
+      "h2": 10860,
+      "h3": 10500,
+      "ratio": 1.0342857142857143
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M2/capped",
+      "h2": 9353,
+      "h3": 10040,
+      "ratio": 0.9315737051792828
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M1/unlimited",
+      "h2": 183,
+      "h3": 170.6,
+      "ratio": 1.0726846424384526
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M1/capped",
+      "h2": 209.4,
+      "h3": 163.7,
+      "ratio": 1.2791692119731217
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M2/unlimited",
+      "h2": 319.1,
+      "h3": 331.9,
+      "ratio": 0.9614341669177464
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M2/capped",
+      "h2": 305.3,
+      "h3": 276.2,
+      "ratio": 1.105358435916003
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M1/unlimited",
+      "h2": 642,
+      "h3": 512.8,
+      "ratio": 1.2519500780031203
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M1/capped",
+      "h2": 9276,
+      "h3": 3244,
+      "ratio": 2.8594327990135633
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M2/unlimited",
+      "h2": 939.4,
+      "h3": 1414,
+      "ratio": 0.6643564356435644
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M2/capped",
+      "h2": 1154,
+      "h3": 591,
+      "ratio": 1.9526226734348562
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M1/unlimited",
+      "h2": 124.4,
+      "h3": 128.5,
+      "ratio": 0.9680933852140078
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M1/capped",
+      "h2": 106.4,
+      "h3": 108.9,
+      "ratio": 0.9770431588613406
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M2/unlimited",
+      "h2": 167.8,
+      "h3": 166.5,
+      "ratio": 1.0078078078078079
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M2/capped",
+      "h2": 174.6,
+      "h3": 180.9,
+      "ratio": 0.9651741293532338
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M1/unlimited",
+      "h2": 19.74,
+      "h3": 21.2,
+      "ratio": 0.9311320754716981
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M1/capped",
+      "h2": 22.99,
+      "h3": 21.42,
+      "ratio": 1.0732959850606907
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M2/unlimited",
+      "h2": 36.44,
+      "h3": 35.63,
+      "ratio": 1.0227336514173448
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M2/capped",
+      "h2": 32.55,
+      "h3": 28.75,
+      "ratio": 1.1321739130434783
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M1/unlimited",
+      "h2": 50.61,
+      "h3": 49.72,
+      "ratio": 1.0179002413515688
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M1/capped",
+      "h2": 42.74,
+      "h3": 43.58,
+      "ratio": 0.9807251032583755
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M2/unlimited",
+      "h2": 61.91,
+      "h3": 61.55,
+      "ratio": 1.0058489033306255
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M2/capped",
+      "h2": 56.42,
+      "h3": 62.4,
+      "ratio": 0.9041666666666667
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M1/unlimited",
+      "h2": 289.1,
+      "h3": 279.9,
+      "ratio": 1.03286888174348
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M1/capped",
+      "h2": 253,
+      "h3": 237.6,
+      "ratio": 1.0648148148148149
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M2/unlimited",
+      "h2": 465.5,
+      "h3": 430.6,
+      "ratio": 1.0810496980956803
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M2/capped",
+      "h2": 454.5,
+      "h3": 450.5,
+      "ratio": 1.0088790233074363
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M1/unlimited",
+      "h2": 4.701,
+      "h3": 5.424,
+      "ratio": 0.8667035398230087
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M1/capped",
+      "h2": 5.082,
+      "h3": 5.974,
+      "ratio": 0.850686307331771
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M2/unlimited",
+      "h2": 5.171,
+      "h3": 5.139,
+      "ratio": 1.0062268923915159
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M2/capped",
+      "h2": 6.216,
+      "h3": 6.298,
+      "ratio": 0.9869799936487774
+    },
+    {
+      "case": "Golden",
+      "configuration": "M1/unlimited",
+      "h2": 10.89,
+      "h3": 9.615,
+      "ratio": 1.1326053042121684
+    },
+    {
+      "case": "Golden",
+      "configuration": "M1/capped",
+      "h2": 11.4,
+      "h3": 10.04,
+      "ratio": 1.1354581673306774
+    },
+    {
+      "case": "Golden",
+      "configuration": "M2/unlimited",
+      "h2": 13.81,
+      "h3": 13.23,
+      "ratio": 1.0438397581254724
+    },
+    {
+      "case": "Golden",
+      "configuration": "M2/capped",
+      "h2": 16.43,
+      "h3": 15.71,
+      "ratio": 1.045830681094844
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M1/unlimited",
+      "h2": 8.623,
+      "h3": 9.054,
+      "ratio": 0.9523967307267505
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M1/capped",
+      "h2": 8.305,
+      "h3": 8.671,
+      "ratio": 0.9577903356014301
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M2/unlimited",
+      "h2": 10.6,
+      "h3": 10.75,
+      "ratio": 0.9860465116279069
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M2/capped",
+      "h2": 10.95,
+      "h3": 11.6,
+      "ratio": 0.9439655172413792
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M1/unlimited",
+      "h2": 11.71,
+      "h3": 12.23,
+      "ratio": 0.9574816026165168
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M1/capped",
+      "h2": 11.24,
+      "h3": 10.35,
+      "ratio": 1.0859903381642513
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M2/unlimited",
+      "h2": 17.62,
+      "h3": 17.76,
+      "ratio": 0.992117117117117
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M2/capped",
+      "h2": 14.91,
+      "h3": 13.07,
+      "ratio": 1.1407804131599082
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M1/unlimited",
+      "h2": 131.3,
+      "h3": 125.4,
+      "ratio": 1.047049441786284
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M1/capped",
+      "h2": 104.7,
+      "h3": 108,
+      "ratio": 0.9694444444444444
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M2/unlimited",
+      "h2": 159.1,
+      "h3": 165.9,
+      "ratio": 0.9590114526823387
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M2/capped",
+      "h2": 204.6,
+      "h3": 179,
+      "ratio": 1.1430167597765364
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M1/unlimited",
+      "h2": 1.553,
+      "h3": 1.694,
+      "ratio": 0.9167650531286895
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M1/capped",
+      "h2": 1.52,
+      "h3": 1.743,
+      "ratio": 0.8720596672403901
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M2/unlimited",
+      "h2": 1.56,
+      "h3": 1.746,
+      "ratio": 0.8934707903780069
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M2/capped",
+      "h2": 1.832,
+      "h3": 1.995,
+      "ratio": 0.9182957393483709
+    },
+    {
+      "case": "Košice",
+      "configuration": "M1/unlimited",
+      "h2": 264.7,
+      "h3": 248.9,
+      "ratio": 1.0634793089594214
+    },
+    {
+      "case": "Košice",
+      "configuration": "M1/capped",
+      "h2": 260.3,
+      "h3": 233.8,
+      "ratio": 1.113344739093242
+    },
+    {
+      "case": "Košice",
+      "configuration": "M2/unlimited",
+      "h2": 414.4,
+      "h3": 385.3,
+      "ratio": 1.0755255644951984
+    },
+    {
+      "case": "Košice",
+      "configuration": "M2/capped",
+      "h2": 385.1,
+      "h3": 346.9,
+      "ratio": 1.1101181896800232
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M1/unlimited",
+      "h2": 86.76,
+      "h3": 70.39,
+      "ratio": 1.2325614433868448
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M1/capped",
+      "h2": 93.25,
+      "h3": 82.58,
+      "ratio": 1.129208040687818
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M2/unlimited",
+      "h2": 150.8,
+      "h3": 139.6,
+      "ratio": 1.0802292263610316
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M2/capped",
+      "h2": 125.2,
+      "h3": 104.6,
+      "ratio": 1.1969407265774379
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M1/unlimited",
+      "h2": 7411,
+      "h3": 6771,
+      "ratio": 1.094520750258455
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M1/capped",
+      "h2": 6690,
+      "h3": 6786,
+      "ratio": 0.9858532272325375
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M2/unlimited",
+      "h2": 10090,
+      "h3": 8771,
+      "ratio": 1.1503819404856914
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M2/capped",
+      "h2": 10540,
+      "h3": 10080,
+      "ratio": 1.0456349206349207
+    }
+  ]
+}

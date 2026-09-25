@@ -60,3 +60,32 @@ coded in this commit.
 
 The capped-cloud finding is set aside from H2's main test (it is a >10 m effect, orthogonal to the
 solid-fragment channel that dominates below it) and named for whoever next works above 10 m.
+
+## H2: run, and not supported
+
+`docs/FCM_H2_RUN.md`, `src/physics/validation/fcmH2Run.json`, from `scripts/fcm-h2-run.ts` (the H2
+engine, `fcmBranchH2.ts`, a fork of the sealed candidate — rule 1162 untouched). Same 18 cases, same
+input and parameter draws as H3; only the ablation representation differs, and its first, broken form
+(σ per individual fragment) was corrected to σ per break before any of this ran (rule 1186's own text
+says so).
+
+Over the 71 case–configuration pairs with a landed mass in both runs, the median ratio of H2's to H3's
+is **1.009** — essentially unchanged. 18 pairs land more than H3 by over 10 %, 10 land less, 43 stay
+within 10 % either way: no systematic reduction. Letting σ vary between breaks, drawn from the same
+unnarrowed prior, is not, by itself, the missing process — the prior's own range, not just its point
+of redraw, may be too low for what H3 found, but rule 1181 forbids narrowing or shifting it to test
+that now; it would need its own citation and its own preregistered rule.
+
+One case shows a large, non-representative drop: Chelyabinsk's M1/capped falls to 5 % of H3's landed
+mass, because that configuration's landed mass was almost entirely the capped-cloud pathology of D16
+(an unablated cloud, not a solid fragment) — there, a single high-drawn σ for that one break consumed
+most of it. This is consistent with D16's own diagnosis (ablation rate ∝ area, and a capped cloud's
+area stops growing) and not a general effect of H2: the other three Chelyabinsk configurations still
+land 0.72 to 0.92 of H3's mass, and no other case's capped configuration shows anything like it.
+
+**H2, as declared, is not supported.** The excess landed mass is not explained by treating the
+ablation coefficient as varying between breaks rather than fixed for the whole cascade. The channel
+H3 found — solid fragments, spread across many, each surviving with too little ablation — remains
+open, and its next candidate account (the prior's own scale, or a mechanism outside σ entirely, such
+as the branch's break condition itself) is for a later, separately preregistered round: not decided
+here, and not tested by narrowing what already failed.
