@@ -43,7 +43,10 @@ Mw 9, between an inland impact and one in the open ocean.
 - Cesium globe with damage zones drawn at true geographic scale, each
   contour captioned on the map, and ≈ 4 000 Natural Earth cities to
   pick an epicentre from (click a name, or search it).
-- WCAG 2.1 AA, full keyboard navigation, English + Italian.
+- WCAG 2.1 AA on the control panel and dialogs (audited by axe-core in CI;
+  the Cesium/R3F canvas itself is excluded from that audit and is not yet
+  keyboard-navigable — picking a point still needs a click or a searched
+  city name), English + Italian.
 - Every scenario state is in the URL — share a link, get the same sim.
 
 ## How it is checked

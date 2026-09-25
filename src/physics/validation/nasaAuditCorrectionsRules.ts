@@ -198,9 +198,25 @@ export const RULE_1194_WRITTEN = '2026-09-25' as const;
  *   default. FIXED (see rule 1194's note on item 10) -- the underlying
  *   inconsistency with the measured cells is not.
  *
- * Left open, not started this round: the 13/13 validation tile computed as
- * count/count rather than against any threshold (`ValidationPage.tsx`); the
- * azimuth cursor not saying it moves nothing for an airburst -- which the
+ * - The 13/13 validation tile (`ValidationPage.tsx`,
+ *   `LandingValidation.tsx`) is a count over its own count, always 100 % by
+ *   construction -- not fixable by computing a different number this round
+ *   has grounds to invent, but its label called that "quantities agreeing
+ *   with the reference program", which claims a threshold the number never
+ *   tested. FIXED: relabelled "quantities compared against the reference
+ *   program" in both places and both languages -- and, found while reading
+ *   it closely, the figure beside it is `Math.abs(geometricMean - 1)`, the
+ *   widest departure of a GEOMETRIC MEAN, which both labels called a
+ *   "median" -- corrected too.
+ * - README.md claimed "full keyboard navigation" flatly. The WCAG suite
+ *   (`tests/e2e/a11y.spec.ts`) excludes the Cesium/R3F canvas from its own
+ *   audit by name, with a comment saying why (axe cannot introspect a
+ *   WebGL surface) -- so the claim was verified for the panel and dialogs
+ *   only, never for the globe, where picking a point still needs a click
+ *   or a searched city name. FIXED: reworded to say which is which.
+ *
+ * Left open, not started this round: the azimuth cursor not saying it moves
+ * nothing for an airburst -- which the
  * panel cannot know until the scenario is simulated, so a text fix alone is
  * not enough; P10/P90 circles and the Monte Carlo probability map drawn
  * without a legend entry or a grammar state; the printed report's missing
@@ -212,3 +228,56 @@ export const RULE_1194_WRITTEN = '2026-09-25' as const;
  * not read carefully enough to touch safely -- left open and said so.
  */
 export const RULE_1195_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1196. A8 -- THE RELEASE GATE COUNTED AN OPEN BUG AS A CLOSED ONE.
+ * Written after the fix (`scripts/release-readiness.ts`, block 1 of this
+ * round) because the fix itself was small and mechanical enough to write
+ * alongside its own discovery; the investigation that followed is the part
+ * worth a rule.
+ *
+ * The defect: `checkBugRegistry`'s `looksFixed` test accepted any non-empty
+ * fix-column text other than `pending`, `tbd`, `n/a` or `-` -- so a row
+ * whose fix column literally reads `OPEN` (B-091) or `OPEN: rules 987 to
+ * 991 refused; ...` (B-126) passed the gate as though it were closed. FIXED:
+ * `!fix.startsWith('open')` added to the rejection list.
+ *
+ * What running the corrected gate found, not assumed: B-077 and B-083 are
+ * ALSO open with a literal "OPEN"/"pending" fix column, and were passing
+ * the same way -- two defects this fix uncovers that neither this round nor
+ * the audit named, both in the earthquake domain (extended-source
+ * thresholds), both out of scope for a round that is impacts only (see
+ * `nimbus-solo-impatti`). Named here, not fixed here, and not silently
+ * left off the list: `docs/BUG_REGISTRY.md` already has their rows, this
+ * finding just means the gate will correctly say NO-GO until they close,
+ * where before it did not.
+ *
+ * B-091 and B-126 were asked for a regression test each (rule 1194's own
+ * text on item (3) is not this rule's; A8 asked separately, "test per
+ * B-091 e B-126 prima di ogni altro lavoro"). Both investigated, neither
+ * written:
+ *
+ * - B-126's own row cites a test, `craterDomainRules.test.ts`, that does
+ *   not contain it -- confirmed absent from the whole test suite, not
+ *   merely misfiled. Not written this round: the row names three refused
+ *   sub-fixes (the flash's ground term, the rings' oblique envelope, the
+ *   timeline's seismic stage) whose current, still-open shape this round
+ *   has not read carefully enough to turn into an honest test rather than
+ *   a guess.
+ * - B-091's own row gives a reproduction (`impactorDiameter:
+ *   2.098110449261881 * 1.01` bursting where the undoubled body lands
+ *   whole). Run against today's code across a 0.99x to 1.02x scan of the
+ *   same body: EVERY point in that range already reads COMPLETE_AIRBURST,
+ *   including the undoubled one the row calls whole. The reproduction is
+ *   stale -- entry physics has moved since 21 September 2026 (rules 691 to
+ *   697 among others) -- and a test written to it now would either fail on
+ *   arrival or silently test nothing. A test was drafted, found to fail
+ *   this way, and withdrawn rather than adjusted to pass: adjusting a test
+ *   to match whatever the code currently does, after finding the one it
+ *   was asked to write does not, is exactly the kind of after-the-fact
+ *   fit this project's own rules forbid elsewhere. Whether the underlying
+ *   defect (a sharp jump at I_f = 1) still exists somewhere in the input
+ *   space, or was incidentally resolved by later work, is not this
+ *   round's to decide -- flagged for the reviewer, not guessed at.
+ */
+export const RULE_1196_WRITTEN = '2026-09-25' as const;
