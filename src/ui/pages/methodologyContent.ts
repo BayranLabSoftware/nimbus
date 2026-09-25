@@ -141,6 +141,17 @@ const prinn1987: Citation = {
   doi: '10.1016/0012-821X(87)90046-X',
 };
 
+// Rule 1213: the default strength law's source (rules 882 to 902); the DOI
+// read from arXiv's own page of 2006.07080 on 26 September 2026.
+const borovicka2020: Citation = {
+  authors: 'Borovička, J., Spurný, P. & Shrbený, L.',
+  year: 2020,
+  title:
+    'Two strengths of ordinary chondritic meteoroids as derived from their atmospheric fragmentation modeling',
+  venue: 'The Astronomical Journal 160 (1), 42',
+  doi: '10.3847/1538-3881/ab9608',
+};
+
 const brittConsolmagno2003: Citation = {
   authors: 'Britt, D. T. & Consolmagno, G. J.',
   year: 2003,
@@ -1657,6 +1668,7 @@ export const CITATIONS = {
   toon1997,
   prinn1987,
   brittConsolmagno2003,
+  borovicka2020,
   glasstoneDolan1977,
   postol1986,
   koshimura2009,

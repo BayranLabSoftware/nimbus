@@ -1574,3 +1574,156 @@ export const RULE_1211_WRITTEN = '2026-09-26' as const;
  * click), so the seal does not move; checked, not assumed, by re-running it.
  */
 export const RULE_1212_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1213. A12, ITEM 10 OF RULE 1203'S LIST, FINISHED: THE PRINTED
+ * REPORT'S FIELDS RULE 1202 LEFT OPEN -- "BANDA I2, VERDETTO DELLA CELLA
+ * MISURATA, ... TABELLA MONTE CARLO E VARIANTI DEL MODELLO ATTIVE, E NON
+ * CITA BOROVIČKA 2020 (LEGGE DI DEFAULT)".
+ *
+ * Read before writing: the panel already prints two of them for every
+ * impact (`SimulatorPanel.tsx`, the entry's block): G4's verdict,
+ * `entryCellSentence(result.measuredCells.entry)`, and I2's band,
+ * `result.entryAltitudeBand` (null outside the measured cells, where the
+ * panel says so). The report (`impactReportModel.ts`, `buildImpactReport`)
+ * prints neither. The Monte Carlo table the panel draws after a run
+ * (`MonteCarloPanel`) never reaches the report, which only knows that a run
+ * happened (`extras.monteCarlo`). The model's variants -- the sixteen
+ * switches `ImpactScenarioInput` carries (the strength law, the entry's
+ * atmosphere and equations, the crater's domain, the ground blast, ...) --
+ * are printed nowhere, so a printed page cannot say which configuration
+ * made it. And `collectImpactCitations` (`reportCitations.ts`) cites
+ * Collins, Chyba, Popova and the rest, but not Borovička, Spurný & Shrbený
+ * (2020), whose second-phase strength the default law starts every stony
+ * body without a class at (rules 882 to 902).
+ *
+ * The fix:
+ *   (a) two rows in the report's entry group, tagged with the entry's
+ *       evidence: the measured cell, in the panel's own sentence (the
+ *       sentence's function given the report's translator, so the seal's
+ *       two languages read it as the page does), and I2's band, or the
+ *       panel's own words where there is none;
+ *   (b) a row in the scenario group, the model's configuration: each of
+ *       the fourteen switches with the value the run used, those set away
+ *       from their default marked -- read from one table of the defaults
+ *       the simulator itself reads (`IMPACT_MODEL_DEFAULTS`, exported beside
+ *       `simulateImpact`), whose test holds it to those constants one by
+ *       one, so the page cannot print a default the code does not use;
+ *   (c) Borovička, Spurný & Shrbený (2020), AJ 160, 42, DOI
+ *       10.3847/1538-3881/ab9608 (arXiv:2006.07080, rule 883; the DOI read
+ *       from arXiv's own page on 26 September 2026), added to the
+ *       bibliography and cited by the report wherever the run started a
+ *       body at the two-stage law's strength;
+ *   (d) the Monte Carlo table printed in the report when a run exists, the
+ *       panel's own table, under a heading and with its footer -- and the
+ *       footer itself corrected, since it would now be printed: "Inputs
+ *       sampled from published distributions ... P10–P90 bracket the 80 %
+ *       confidence band" is rule 1206 (a)'s defect again (a spread of
+ *       outcomes over drawn inputs is not a confidence band) and rule 1206
+ *       (d)'s (the three spreads are the project's -- σ_log 0.15 on the
+ *       diameter and on the density, 10 % on the speed, `uq/conventions.ts`,
+ *       the density's called "a project value" in its own comment --
+ *       informed by Mainzer 2019, JPL's orbital fits and Britt & Consolmagno
+ *       2003, not distributions those sources publish). Reworded to that.
+ * Also, found in the same reading: `ImpactScenarioInput.impactorStrength`'s
+ * doc comment still says it "Defaults to STONY (1 MPa)" -- the default is
+ * the two-stage law's main-stage strength since 23 September; corrected
+ * with rule 1207's figures.
+ *
+ * No number moves. The report's text moves in every scenario (two rows of
+ * the entry, one of the scenario, a citation where the law applies), so the
+ * seal's text digests move: re-sealed under rule 833 with this as the
+ * reason. The drawing does not move.
+ */
+export const RULE_1213_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1214. A12: "I VALORI NON VALIDI DIGITATI NEI CAMPI SONO IGNORATI IN
+ * SILENZIO"; THE AUDIT'S FIX, "VALIDAZIONE DEI CAMPI VISIBILE".
+ *
+ * Read before writing: the impact's number fields (`ImpactCustomInputs.tsx`)
+ * pass every keystroke to an update function that stores the value only if
+ * it parses and lies in the field's domain -- a diameter, a speed and the
+ * two densities above zero, an angle above 0° and at most 90° -- and
+ * otherwise does nothing. `DraftNumberInput` keeps the typed text while the
+ * field has focus and, on leaving it, shows what the store kept. So "-5",
+ * "0" or "95°" is dropped without a word, and the field quietly goes back
+ * to the old value; the validator's feedback (`useFieldIssues`, printed by
+ * `QuantityRow`) only ever sees values that were accepted. The azimuth is a
+ * slider and cannot take an invalid value.
+ *
+ * The fix, in the panel only: each of the five fields keeps the text it
+ * refused, and while it does, its row prints -- where the validator's
+ * issues already go, as an error -- that the text was not accepted, what
+ * the field takes, and the value the scenario keeps. The note clears at the
+ * next accepted keystroke, when the field is emptied to be retyped, and
+ * when a preset replaces the inputs. What each field accepts is the update
+ * function's own test, written once and read by both, so the words and the
+ * test cannot part. Nothing the model computes moves; the seal does not
+ * move.
+ */
+export const RULE_1214_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1215. A12, ITEM 13 OF RULE 1203'S LIST: "IL GLOBO NON È OPERABILE DA
+ * TASTIERA NONOSTANTE IL README"; THE AUDIT'S FIX, "TASTIERA O INSERIMENTO
+ * DI COORDINATE".
+ *
+ * Read before writing: the only keyboard path to a point today is the
+ * panel's city search (`CitySearch.tsx`): a name from the Natural Earth
+ * index, Enter for the first match. A point that is not a city -- open
+ * sea, a coast between towns, a desert -- takes a click on the canvas.
+ * README.md says as much since rule 1195 ("picking a point still needs a
+ * click or a searched city name").
+ *
+ * Of the audit's two ways, the smaller and the one that serves every point:
+ * coordinates, typed where a city already is. The same field reads a
+ * latitude and a longitude -- decimal degrees, signed or with N/S and E/W
+ * (O for "ovest" too), separated by a comma, a semicolon or a space, a
+ * decimal comma accepted where the separator leaves no doubt -- and offers
+ * "go to" those coordinates as its first result, which Enter takes, exactly
+ * as it takes a city. Out-of-range figures (|lat| > 90, |lon| > 180) are
+ * not offered, and the list says why. The parser is a pure function with
+ * its own tests; the pin and the camera move through the same two store
+ * actions a city uses. The label, the placeholder and README.md's sentence
+ * say the field now takes coordinates.
+ *
+ * No number moves; the seal does not move.
+ */
+export const RULE_1215_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1216. A12, ITEM 8 OF RULE 1203'S LIST: "IL CRATERE E L'ANELLO DELLA
+ * CAVITÀ NON HANNO SCHEDA"; THE AUDIT'S FIX, "OGNI OGGETTO SUL GLOBO CON
+ * SCHEDA O NON DISEGNATO".
+ *
+ * Read before writing: `impactFieldRenderer.ts` draws the crater -- a dark
+ * disc, a light rim and a label -- "on every layer" wherever
+ * `damage.craterRim` is above zero; `Globe.tsx` draws the tsunami's source
+ * cavity as a blue ring wherever the result has a tsunami with a cavity
+ * radius above zero (`addCavityRing`). Neither is a layer of the map, so
+ * neither reaches the legend's card (rule 1029) or the report's table of
+ * cards (rule 1037 (b)); the only words they have are a hover tooltip.
+ *
+ * The fix, the card, not the removal (both objects are what the scenario
+ * computes, and what the tooltip already sources): a pure function beside
+ * the layers (`impactFieldMap.ts`, `fixedImpactObjects`) gives, for each
+ * object the globe draws on every layer, its label and rule 1029's five
+ * fields --
+ *   - the crater: its rim's radius; the state A (the crater family's, level
+ *     A) where the crater is computed at 200 m or more, exploratory below
+ *     (rule 955's bound, the report's own `craterExploratory` test), out of
+ *     domain where the crater is (rule 947); the source the tooltip already
+ *     gives (`globe.tooltip.source.impactCrater`); the extent, a disc to the
+ *     rim; beyond it, not applicable -- the rim is the object's edge, not a
+ *     threshold;
+ *   - the cavity: its radius; exploratory (the tsunami family's class); the
+ *     tooltip's source (`globe.tooltip.source.impactCavity`, Ward & Asphaug
+ *     2000); the extent, a ring at that radius; beyond it, not applicable.
+ * The legend lists them under a heading of their own, each with its card;
+ * the report's table of cards prints them after the layers'. The drawing
+ * does not move. The report's text does, in every scenario with a crater or
+ * a cavity: re-sealed under rule 833 with this rule and rule 1213 as the
+ * reasons.
+ */
+export const RULE_1216_WRITTEN = '2026-09-26' as const;

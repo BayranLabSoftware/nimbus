@@ -44,9 +44,10 @@ Mw 9, between an inland impact and one in the open ocean.
   contour captioned on the map, and ≈ 4 000 Natural Earth cities to
   pick an epicentre from (click a name, or search it).
 - WCAG 2.1 AA on the control panel and dialogs (audited by axe-core in CI;
-  the Cesium/R3F canvas itself is excluded from that audit and is not yet
-  keyboard-navigable — picking a point still needs a click or a searched
-  city name), English + Italian.
+  the Cesium/R3F canvas itself is excluded from that audit). The globe
+  itself is not keyboard-navigable, but every point has a keyboard path:
+  the panel's search field takes a city name or coordinates (e.g.
+  `40.85, 14.27` or `33.87S 151.21E`). English + Italian.
 - Every scenario state is in the URL — share a link, get the same sim.
 
 ## How it is checked

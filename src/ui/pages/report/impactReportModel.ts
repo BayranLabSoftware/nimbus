@@ -10,7 +10,7 @@
 import { COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M } from '../../../physics/validation/craterDomainRules.js';
 import type { TFunction } from 'i18next';
 import type { CasualtyEstimate } from '../../../physics/casualties.js';
-import type { ImpactScenarioResult } from '../../../physics/simulate.js';
+import { impactModelSwitches, type ImpactScenarioResult } from '../../../physics/simulate.js';
 import { joulesToMegatons, radiansToDegrees } from '../../../physics/units.js';
 import {
   EVIDENCE_QUANTITIES,
@@ -21,16 +21,19 @@ import { evidenceText, type EvidenceText } from '../../../scene/globe/evidenceTe
 import {
   absentImpactLayers,
   availableImpactLayers,
+  fixedImpactObjects,
   isFieldLayer,
   isolineMembers,
   probabilityRadius,
   windReachM,
   WIND_LEVELS_KMH,
   type ImpactLayerId,
+  type FixedImpactObject,
   type ImpactMapLayer,
   type LayerAbsence,
 } from '../../../scene/globe/impactFieldMap.js';
 import { PLANETARY_EXTRAPOLATION_M } from '../../../scene/globe/mapGrammarRules.js';
+import { entryCellSentenceWith } from '../../../scene/globe/measuredCellText.js';
 import type { Citation } from '../methodologyContent.js';
 import { ringSourceText, tntFromKilograms } from '../../components/ringSource.js';
 import { collectImpactCitations } from '../reportCitations.js';
@@ -139,6 +142,8 @@ export interface ImpactReportModel {
   figures: ReportFigure[];
   /** Rule 1037 (b): the layers the map does not draw, each with its reason. */
   absent: LayerAbsence[];
+  /** Rule 1216: what the globe draws on every layer, each with its card. */
+  fixed: FixedImpactObject[];
   groups: ReportGroup[];
   /** What each family of numbers rests on, every family, in the table's order. */
   evidence: EvidenceText[];
@@ -232,6 +237,19 @@ function scenarioRows(r: ImpactScenarioResult, ctx: ImpactReportContext): Report
       row(t, 'impactorStrength', `${fixed((input.impactorStrength as number) / 1e6, 2, l)} MPa`)
     );
   }
+  // Rule 1213: the configuration that made this page, every switch as the
+  // run used it, those set away from their default marked.
+  rows.push(
+    row(
+      t,
+      'modelSwitches',
+      impactModelSwitches(input)
+        .map(({ key, value, isDefault }) =>
+          isDefault ? `${key} ${value}` : `${key} ${value} (${t('report.impact.notDefault')})`
+        )
+        .join(' · ')
+    )
+  );
   return rows;
 }
 
@@ -347,6 +365,27 @@ function groups(
     tagged(row(t, 'burstAltitude', altitude(r.entry.burstAltitude, l)), 'entry'),
     tagged(
       row(t, 'endVelocity', `${fixed((r.entry.endVelocity as number) / 1_000, 1, l)} km/s`),
+      'entry'
+    ),
+    // Rule 1213: G4's verdict and I2's band, as the panel prints them.
+    tagged(
+      row(
+        t,
+        'entryMeasuredCell',
+        entryCellSentenceWith(r.measuredCells.entry, l, (key, vars = {}) =>
+          t(`measuredCells.entry.${key}`, vars)
+        )
+      ),
+      'entry'
+    ),
+    tagged(
+      row(
+        t,
+        'entryAltitudeBand',
+        r.entryAltitudeBand === null
+          ? t('measuredCells.entry.bandNone')
+          : `${altitude(r.entryAltitudeBand.low, l)} – ${altitude(r.entryAltitudeBand.high, l)}`
+      ),
       'entry'
     ),
   ]);
@@ -754,6 +793,7 @@ export function buildImpactReport(
     keyFigures: keyFigures(result, ctx),
     figures,
     absent: absentImpactLayers(result, mapCtx),
+    fixed: fixedImpactObjects(result, mapCtx),
     groups: groups(result, ctx, figures),
     evidence: EVIDENCE_QUANTITIES.map((q) => evidenceText(q, ctx.t, ctx.language)),
     sources: sources(result, ctx),

@@ -1,12 +1,14 @@
 import type { ChangeEvent, JSX } from 'react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ASTEROID_TAXONOMY, type AsteroidTaxonomyClass } from '../../physics/constants.js';
 import { simulateImpact } from '../../physics/simulate.js';
 import { radiansToDegrees } from '../../physics/units.js';
 import { useAppStore } from '../../store/index.js';
-import { useFieldIssues } from '../../store/useScenarioValidation.js';
+import type { ValidationCode } from '../../physics/validation/inputSchema.js';
+import { useFieldIssues, type FieldIssuesView } from '../../store/useScenarioValidation.js';
 import { DraftNumberInput } from './DraftNumberInput.js';
+import { refusalOf, type RefusableField } from './fieldRefusal.js';
 import { ModelNotes } from './ModelNotes.js';
 import { QuantityKey, QuantityRow } from './QuantityRow.js';
 import { scaleTyped } from './typedNumber.js';
@@ -30,18 +32,65 @@ const TAXONOMY_CLASSES: AsteroidTaxonomyClass[] = [
  * m → km and m/s → km/s only at the display layer for readability.
  */
 export function ImpactCustomInputs(): JSX.Element {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const input = useAppStore((s) => s.impact.input);
+  const preset = useAppStore((s) => s.impact.preset);
   const setImpactInput = useAppStore((s) => s.setImpactInput);
+
+  // Rule 1214: the text each field refused, kept per preset so that picking
+  // one clears them all.
+  const [refused, setRefused] = useState<{
+    preset: string;
+    fields: Partial<Record<RefusableField, { typed: string; code: ValidationCode }>>;
+  }>({ preset, fields: {} });
+  const refusals = refused.preset === preset ? refused.fields : {};
+  /** The value a typed text gives the field, or null where it is refused or
+   *  still being typed (empty); a refusal is kept to be said, a taken value
+   *  clears it. */
+  const take = (field: RefusableField, text: string): number | null => {
+    const code = text.trim() === '' ? null : refusalOf(text, field);
+    setRefused((prev) => {
+      const fields = Object.fromEntries(
+        Object.entries(prev.preset === preset ? prev.fields : {}).filter(([k]) => k !== field)
+      ) as typeof prev.fields;
+      if (code !== null) fields[field] = { typed: text, code };
+      return { preset, fields };
+    });
+    return text.trim() === '' || code !== null ? null : parseFloat(text);
+  };
+  const say = (x: number, digits = 2): string =>
+    x.toLocaleString(i18n.language, { maximumFractionDigits: digits });
+  /** The validator's feedback for a field, or its refusal where there is one. */
+  const withRefusal = (
+    field: RefusableField,
+    issues: FieldIssuesView,
+    kept: string
+  ): FieldIssuesView => {
+    const r = refusals[field];
+    if (r === undefined) return issues;
+    return {
+      ...issues,
+      hasError: true,
+      topCode: r.code,
+      topMessage: t('simulator.fieldRefused', {
+        typed: r.typed,
+        takes: t(
+          field === 'impactAngle' ? 'simulator.fieldTakes.angle' : 'simulator.fieldTakes.positive'
+        ),
+        kept,
+      }),
+    };
+  };
 
   // Validator-driven feedback for the six numeric impact parameters.
   // Field paths follow the validator (`impactorDiameter`, etc.). The
   // azimuth field is wrapped to [0, 360) by the validator and may
   // surface NORMALIZED_AZIMUTH if the user types an out-of-range value.
-  const diameterIssues = useFieldIssues('impact', 'impactorDiameter');
-  const velocityIssues = useFieldIssues('impact', 'impactVelocity');
-  const impactorDensityIssues = useFieldIssues('impact', 'impactorDensity');
-  const angleIssues = useFieldIssues('impact', 'impactAngle');
+  const diameterValidated = useFieldIssues('impact', 'impactorDiameter');
+  const velocityValidated = useFieldIssues('impact', 'impactVelocity');
+  const impactorDensityValidated = useFieldIssues('impact', 'impactorDensity');
+  const targetDensityValidated = useFieldIssues('impact', 'targetDensity');
+  const angleValidated = useFieldIssues('impact', 'impactAngle');
   const azimuthIssues = useFieldIssues('impact', 'impactAzimuthDeg');
 
   // B-082: the diameter was edited in kilometres, so Chelyabinsk — which
@@ -70,26 +119,43 @@ export function ImpactCustomInputs(): JSX.Element {
     [input]
   );
 
+  const diameterIssues = withRefusal('impactorDiameter', diameterValidated, `${say(diameterM)} m`);
+  const velocityIssues = withRefusal(
+    'impactVelocity',
+    velocityValidated,
+    `${say(velocityKms)} km/s`
+  );
+  const impactorDensityIssues = withRefusal(
+    'impactorDensity',
+    impactorDensityValidated,
+    `${say(input.impactorDensity, 0)} kg/m³`
+  );
+  const targetDensityIssues = withRefusal(
+    'targetDensity',
+    targetDensityValidated,
+    `${say(input.targetDensity, 0)} kg/m³`
+  );
+  const angleIssues = withRefusal('impactAngle', angleValidated, `${say(angleDeg)}°`);
+
   const updateDiameter = (text: string): void => {
-    const metres = parseFloat(text);
-    if (Number.isFinite(metres) && metres > 0)
-      setImpactInput({ impactorDiameter: scaleTyped(metres, 1) });
+    const metres = take('impactorDiameter', text);
+    if (metres !== null) setImpactInput({ impactorDiameter: scaleTyped(metres, 1) });
   };
   const updateVelocity = (text: string): void => {
-    const kms = parseFloat(text);
-    if (Number.isFinite(kms) && kms > 0) setImpactInput({ impactVelocity: scaleTyped(kms, 1_000) });
+    const kms = take('impactVelocity', text);
+    if (kms !== null) setImpactInput({ impactVelocity: scaleTyped(kms, 1_000) });
   };
   const updateImpactorDensity = (text: string): void => {
-    const v = parseFloat(text);
-    if (Number.isFinite(v) && v > 0) setImpactInput({ impactorDensity: v });
+    const v = take('impactorDensity', text);
+    if (v !== null) setImpactInput({ impactorDensity: v });
   };
   const updateTargetDensity = (text: string): void => {
-    const v = parseFloat(text);
-    if (Number.isFinite(v) && v > 0) setImpactInput({ targetDensity: v });
+    const v = take('targetDensity', text);
+    if (v !== null) setImpactInput({ targetDensity: v });
   };
   const updateAngle = (text: string): void => {
-    const deg = parseFloat(text);
-    if (Number.isFinite(deg) && deg > 0 && deg <= 90) setImpactInput({ impactAngle: deg });
+    const deg = take('impactAngle', text);
+    if (deg !== null) setImpactInput({ impactAngle: deg });
   };
   const updateAzimuth = (e: ChangeEvent<HTMLInputElement>): void => {
     const deg = parseFloat(e.target.value);
@@ -203,7 +269,13 @@ export function ImpactCustomInputs(): JSX.Element {
         />
       </QuantityRow>
 
-      <QuantityRow label={t('simulator.impact.targetDensity')} unit="kg/m³" source="user">
+      <QuantityRow
+        label={t('simulator.impact.targetDensity')}
+        unit="kg/m³"
+        source="user"
+        field="targetDensity"
+        issues={targetDensityIssues}
+      >
         <DraftNumberInput
           id="impact-target-density"
           inputMode="decimal"
@@ -212,6 +284,7 @@ export function ImpactCustomInputs(): JSX.Element {
           value={input.targetDensity}
           onValueText={updateTargetDensity}
           aria-label={t('simulator.impact.targetDensity')}
+          aria-invalid={targetDensityIssues.hasError || undefined}
         />
       </QuantityRow>
 

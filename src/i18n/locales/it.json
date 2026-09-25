@@ -207,6 +207,12 @@
     "monteCarloLabel": "Analisi d'incertezza Monte Carlo",
     "monteCarloTitle": "Monte Carlo — {{iterations}} campioni",
     "monteCarloFooter": "Input campionati da distribuzioni pubblicate (log-normale / normale); P10–P90 delimitano la banda di confidenza all'80 %.",
+    "fieldRefused": "«{{typed}}» non è stato accettato — il campo accetta {{takes}} — quindi lo scenario mantiene {{kept}}.",
+    "fieldTakes": {
+      "positive": "un numero maggiore di zero",
+      "angle": "un angolo maggiore di 0° e fino a 90°"
+    },
+    "monteCarloFooterImpact": "Ingressi estratti attorno a quelli dello scenario: diametro e densità log-normali (σ_log {{diameter}} e {{density}}), velocità normale (σ {{speed}} %) — dispersioni fissate dal progetto, guidate da Mainzer 2019, dalle orbite del JPL e da Britt & Consolmagno 2003. P10–P90 contengono l'80 % delle corse: la dispersione dell'esito su quegli ingressi estratti, non un intervallo di confidenza.",
     "mcMetric": "Metrica",
     "mcMetrics": {
       "impact": {
@@ -583,10 +589,12 @@
       "factorLabel": "Amplificazione"
     },
     "citySearch": {
-      "label": "Vai a una città",
-      "placeholder": "Cerca una città… (es. Napoli)",
+      "label": "Vai a una città o a coordinate",
+      "placeholder": "Una città, o coordinate… (es. Napoli, o 40,85; 14,27)",
       "empty": "Nessuna città trovata",
-      "go": "Vai"
+      "go": "Vai",
+      "goToPoint": "Vai a {{place}}",
+      "outOfRange": "Coordinate fuori intervallo: latitudine da −90 a 90, longitudine da −180 a 180"
     },
     "tsunamiSeaCoupling": "Accoppiamento al mare",
     "seaCoupling": {
@@ -1323,6 +1331,19 @@
       "tsunamiStreaks": "direzione dell'onda, dove supera 1 m",
       "tsunamiRunupBand": "risalita sulla costa da {{low}} a {{high}}",
       "tsunamiRunupFrom": "risalita sulla costa oltre {{height}}",
+      "fixed": {
+        "heading": "Disegnato su ogni livello",
+        "crater": {
+          "label": "Il cratere",
+          "quantity": "Il cratere, fino al suo orlo finale",
+          "extent": "un disco fino all'orlo, a {{radius}} dal centro"
+        },
+        "cavity": {
+          "label": "La cavità sorgente dello tsunami",
+          "quantity": "La cavità che l'impatto apre nell'acqua",
+          "extent": "un anello a {{radius}} dal centro"
+        }
+      },
       "card": {
         "heading": "Scheda di provenienza",
         "quantity": "Grandezza",
@@ -1526,6 +1547,9 @@
         "breakupAltitude": "Inizio frammentazione",
         "burstAltitude": "Altezza detonazione",
         "endVelocity": "Velocità a fine ingresso",
+        "entryMeasuredCell": "Dove l'ingresso è stato misurato (G4)",
+        "entryAltitudeBand": "Banda della quota di scoppio, 5–95 % dei bolidi di I2",
+        "modelSwitches": "La configurazione del modello (ogni scelta come l'ha usata questa corsa)",
         "transientCrater": "Diametro del cratere transiente",
         "finalCrater": "Diametro del cratere finale",
         "craterDepth": "Profondità del cratere",
@@ -1611,6 +1635,7 @@
         "britt": "Classi di densità per tassonomia del corpo.",
         "herrick": "Profondità di un cratere complesso (Collins et al. 2005, Eq. 28).",
         "chyba": "Il modello a frittella di un corpo che si frantuma (Collins et al. 2005, Eq. 13–20).",
+        "borovicka": "Le due fasi in cui si frammenta un meteoroide roccioso: la resistenza della prima per la prima frammentazione, quella della seconda per la rottura principale dove il corpo non ha una resistenza propria.",
         "popova": "Čeljabinsk 2013, l’airburst su cui è verificato l’ingresso in atmosfera.",
         "collins2017": "Onda d’urto dell’airburst: riflessione regolare (Eq. 7), la sua energia e il suo intervallo di un fattore due.",
         "mcgetchinEjecta": "Assottigliamento in r⁻³ della coltre di ejecta (Collins et al. 2005, Eq. 47).",
@@ -1695,6 +1720,9 @@
       "cardField": "il campo",
       "notAssessable": "non valutabile",
       "notComputed": "non calcolata",
+      "notDefault": "non il default",
+      "monteCarloNote": "Solo esplorativo: la dispersione dell'esito del modello quando gli ingressi sono estratti attorno a quelli dello scenario, con le dispersioni indicate in fondo alla tabella. Nessuna banda qui è stata verificata contro un riferimento.",
+      "monteCarloTitle": "Monte Carlo: come si disperde l'esito",
       "planetaryNote": "† oltre 2000 km la legge della sovrappressione e del vento è un'estrapolazione a scala planetaria: vedi l'avvertenza della figura. I 2000 km segnano dove compare l'avviso, non un confine di validità."
     }
   },

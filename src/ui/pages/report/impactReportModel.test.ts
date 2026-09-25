@@ -315,6 +315,27 @@ describe("an impact's report, in the reader's language (IMP-7c)", () => {
     // matching ImpactCustomInputs.tsx and simulate.ts.
     expect(rowValue(chicxulubModel, 'impactAzimuthDeg')).toBe('90°N');
   });
+
+  it("rule 1213: prints G4's verdict, I2's band and the model's configuration, in the reader's language", async () => {
+    const rowOf = (model: ImpactReportModel, id: string) =>
+      model.groups.flatMap((g) => g.rows).find((r) => r.id === id);
+    for (const lng of ['en', 'it'] as const) {
+      const t = await translator(lng);
+      const model = buildImpactReport(run('TUNGUSKA'), context(t, lng));
+      const cell = rowOf(model, 'entryMeasuredCell');
+      const band = rowOf(model, 'entryAltitudeBand');
+      // Both the entry's, and both translated: no key reaches the page.
+      expect(cell?.evidence).toBe('entry');
+      expect(band?.evidence).toBe('entry');
+      expect(cell?.value).not.toContain('measuredCells.');
+      // Every preset lies outside the measured cells (G4), so no band.
+      expect(band?.value).toBe(t('measuredCells.entry.bandNone'));
+      const config = rowOf(model, 'modelSwitches')?.value ?? '';
+      expect(config).toContain('strengthLaw twoStage');
+      expect(config.split(' · ')).toHaveLength(14);
+      expect(config).not.toContain(t('report.impact.notDefault'));
+    }
+  });
 });
 
 describe('rule 1031 (e): out of the crater’s domain the report gives no number', () => {

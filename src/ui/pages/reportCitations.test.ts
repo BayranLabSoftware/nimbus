@@ -57,6 +57,9 @@ describe('collectImpactCitations', () => {
     expect(ks).not.toContain('wunnemann2007');
     // Tunguska Mw is too low to trigger Youd-Idriss.
     expect(ks).not.toContain('youdIdriss2001');
+    // Rule 1213: a stony body with no strength of its own, on the default
+    // two-stage law.
+    expect(ks).toContain('borovicka2020');
   });
 
   it('Meteor Crater (an iron that breaks up and strikes the ground) cites the pancake, not the airburst', () => {
@@ -67,6 +70,8 @@ describe('collectImpactCitations', () => {
     // Simple crater (well below 3.2 km): the complex-crater depth fit of
     // Herrick et al. 1997 should NOT be cited.
     expect(ks).not.toContain('herrick1997');
+    // Rule 1213: an iron is outside the two-stage law's densities.
+    expect(ks).not.toContain('borovicka2020');
   });
 
   it('de-duplicates — every citation appears at most once', () => {

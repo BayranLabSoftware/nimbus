@@ -22,6 +22,7 @@ import { CascadeTimeline } from '../../components/CascadeTimeline.js';
 import { CasualtiesPanel } from '../../components/CasualtiesPanel.js';
 import { EvidenceTable } from '../../components/EvidenceTable.js';
 import { EvidenceTag } from '../../components/EvidenceTag.js';
+import { MonteCarloPanel } from '../../components/SimulatorPanel.js';
 import {
   buildImpactReport,
   nearestPlace,
@@ -701,6 +702,22 @@ export function ImpactReport({
                   ))}
                 </Fragment>
               ))}
+              {/* Rule 1216: what the globe draws on every layer. */}
+              {model.fixed.length > 0 && (
+                <tr className={styles.cardGroup} data-report-card="fixed">
+                  <td colSpan={5} data-card="quantity">
+                    <b>{t('globe.impactMap.fixed.heading')}</b>
+                  </td>
+                </tr>
+              )}
+              {model.fixed.map((o) => (
+                <CardRow
+                  key={o.id}
+                  what={`${o.card.quantity} · ${o.card.unit}`}
+                  card={o.card}
+                  layer={o.id}
+                />
+              ))}
             </tbody>
           </table>
           {model.absent.length > 0 && (
@@ -721,6 +738,17 @@ export function ImpactReport({
           <h2 className={styles.sectionTitle}>{t('report.impact.numbers')}</h2>
           <Groups groups={model.groups} />
         </Sheet>
+
+        {/* Rule 1213: after a Monte Carlo, its table, said exploratory. */}
+        {monteCarlo !== null && monteCarlo.type === 'impact' && (
+          <Sheet foot={foot} testId="monte-carlo">
+            <h2 className={styles.sectionTitle}>{t('report.impact.monteCarloTitle')}</h2>
+            <p className={styles.note}>{t('report.impact.monteCarloNote')}</p>
+            <div data-tone="paper">
+              <MonteCarloPanel mc={monteCarlo} />
+            </div>
+          </Sheet>
+        )}
 
         <Sheet foot={foot} testId="evidence">
           <EvidenceTable tone="paper" rows={model.evidence} />

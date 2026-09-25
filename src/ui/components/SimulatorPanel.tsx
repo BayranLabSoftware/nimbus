@@ -17,7 +17,7 @@ import {
   buildVolcanoCascade,
 } from '../../physics/cascade.js';
 import { bandFor, type ConfidenceField } from '../../physics/confidence.js';
-import { OUTPUT_SIGMA } from '../../physics/uq/conventions.js';
+import { IMPACT_INPUT_SIGMA, OUTPUT_SIGMA } from '../../physics/uq/conventions.js';
 import type { EvidenceQuantity } from '../../physics/validation/evidenceClasses.js';
 import { clampToGreatCircle, isGlobalReach } from '../../physics/earthScale.js';
 import { IMPACT_PRESETS, type ImpactPresetId } from '../../physics/simulate.js';
@@ -2169,8 +2169,10 @@ function formatPercentShare(share: number): string {
   return pct > 0 && pct < 1 ? '< 1' : Math.round(pct).toString();
 }
 
-function MonteCarloPanel({ mc }: { mc: ActiveMonteCarlo }): JSX.Element {
-  const { t } = useTranslation();
+/** The Monte Carlo's table — the panel's, and the printed report's
+ *  (rule 1213). */
+export function MonteCarloPanel({ mc }: { mc: ActiveMonteCarlo }): JSX.Element {
+  const { t, i18n } = useTranslation();
   const outOfDomainShare =
     (mc.data.metrics as Record<string, { mean: number } | undefined>).craterOutOfDomain?.mean ?? 0;
   return (
@@ -2250,8 +2252,16 @@ function MonteCarloPanel({ mc }: { mc: ActiveMonteCarlo }): JSX.Element {
         </tbody>
       </table>
       <p className={styles.mcFooter}>
-        {t('simulator.monteCarloFooter')} {t('simulator.monteCarloFooterShare')}{' '}
-        {t('simulator.monteCarloFooterRare')}
+        {/* Rule 1213: an impact's spreads are the project's, and P10–P90 is
+            not a confidence interval. The other modules are paused. */}
+        {mc.type === 'impact'
+          ? t('simulator.monteCarloFooterImpact', {
+              diameter: IMPACT_INPUT_SIGMA.diameter.sigma.toLocaleString(i18n.language),
+              density: IMPACT_INPUT_SIGMA.density.sigma.toLocaleString(i18n.language),
+              speed: (IMPACT_INPUT_SIGMA.velocity.sigma * 100).toLocaleString(i18n.language),
+            })
+          : t('simulator.monteCarloFooter')}{' '}
+        {t('simulator.monteCarloFooterShare')} {t('simulator.monteCarloFooterRare')}
       </p>
     </section>
   );

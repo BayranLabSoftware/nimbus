@@ -84,6 +84,19 @@ export function collectImpactCitations(result: ImpactScenarioResult): TriggeredC
       )
     );
   }
+
+  // Rule 1213: the two-stage strength law, the default since 23 September
+  // 2026, drew this body's first fragmentation and the strength its pancake
+  // starts at where the body carries none of its own.
+  if (result.entry.firstFragmentationAltitude !== undefined) {
+    triggers.push(
+      cite(
+        'borovicka2020',
+        'The two phases a stony meteoroid fragments in: the first phase’s strength for the first fragmentation, and the second’s for the main breakup where the body has no strength of its own.',
+        'borovicka'
+      )
+    );
+  }
   if (result.entry.regime === 'COMPLETE_AIRBURST') {
     triggers.push(
       cite('popova2013', 'Chelyabinsk 2013, the airburst the entry is checked on.', 'popova')

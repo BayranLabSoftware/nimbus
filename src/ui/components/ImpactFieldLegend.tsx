@@ -7,6 +7,7 @@ import {
   absentImpactLayers,
   availableImpactLayers,
   BELOW_BAND_CSS,
+  fixedImpactObjects,
   layoutColorbar,
   NOT_MODELLED_CSS,
   rampColor,
@@ -37,13 +38,15 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
   const waveUnpropagatedReachM = useAppStore((s) => s.waveUnpropagatedReachM);
   const language = i18n.language;
 
-  const { layers, layer, absent } = useMemo(() => {
+  const { layers, layer, absent, fixed } = useMemo(() => {
     const ctx = { t, language, uncertaintyKey, waveMap, waveUnpropagatedReachM, preset };
     return {
       layers: availableImpactLayers(result, ctx),
       layer: resolveImpactLayer(result, layerId, ctx),
       // Rule 1032 (c): a layer that draws nothing is never simply missing.
       absent: absentImpactLayers(result, ctx),
+      // Rule 1216: the crater and the cavity, drawn on every layer.
+      fixed: fixedImpactObjects(result, ctx),
     };
   }, [result, t, language, uncertaintyKey, layerId, waveMap, waveUnpropagatedReachM, preset]);
 
@@ -189,6 +192,27 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
             ))}
           </dl>
         </>
+      )}
+      {fixed.length > 0 && (
+        // Rule 1216: what the globe draws on every layer, each with its card.
+        <div className={styles.absent} data-testid="impact-fixed-objects">
+          <p className={styles.absentHeading}>{t('globe.impactMap.fixed.heading')}</p>
+          <ul className={styles.categories}>
+            {fixed.map((o) => (
+              <li
+                key={o.id}
+                className={styles.category}
+                data-testid={`impact-fixed-${o.id}`}
+                data-state={o.card.state}
+              >
+                <details className={styles.markCard}>
+                  <summary>{o.label}</summary>
+                  <CardFields card={o.card} t={t} />
+                </details>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
       {frontActive && (
         // B-107: a row is a promise that something is drawn, so the front has

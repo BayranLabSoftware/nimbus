@@ -36,11 +36,24 @@ export function quoteCellFigure(value: number, language: string): string {
   return value.toLocaleString(locale, { maximumSignificantDigits: 3 });
 }
 
+/** A translator of `measuredCells.entry.*` keys, given without that prefix. */
+export type CellTranslate = (key: string, vars?: Record<string, string | number>) => string;
+
 /** The verdict in a sentence, naming the cell and its rows, or what puts the
  *  scenario out and the set's bound on it. */
 export function entryCellSentence(verdict: CellVerdict, language: string): string {
-  const t = (key: string, vars: Record<string, string | number> = {}): string =>
-    i18next.t(`measuredCells.entry.${key}`, { lng: language, ...vars });
+  return entryCellSentenceWith(verdict, language, (key, vars = {}) =>
+    i18next.t(`measuredCells.entry.${key}`, { lng: language, ...vars })
+  );
+}
+
+/** The same sentence through a translator of the caller's — the printed
+ *  report's, which the seal reads in both languages (rule 1213). */
+export function entryCellSentenceWith(
+  verdict: CellVerdict,
+  language: string,
+  t: CellTranslate
+): string {
   if (verdict.inside) {
     const cell = cellSpans(ENTRY_CELLS, verdict.bins)
       .map(

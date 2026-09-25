@@ -48,6 +48,7 @@ import {
 } from '../../physics/events/impact/seismic.js';
 import type { ImpactScenarioResult } from '../../physics/simulate.js';
 import { DEFAULT_MIN_DEPTH_M } from '../../physics/tsunami/sourcePlacement.js';
+import { COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M } from '../../physics/validation/craterDomainRules.js';
 import { SHORE_DEPTH_CAP_M } from '../../physics/validation/shoreDepthRules.js';
 import { J, m, Pa } from '../../physics/units.js';
 import {
@@ -2453,6 +2454,60 @@ function layerCard(
     extent,
     beyond: edge?.beyond ?? 'notApplicable',
   };
+}
+
+/** Rule 1216: an object the globe draws on every layer, with its card. */
+export interface FixedImpactObject {
+  id: 'crater' | 'cavity';
+  label: string;
+  card: ProvenanceCard;
+}
+
+/** Rule 1216: the crater and the tsunami's source cavity — drawn on every
+ *  layer, neither a layer itself — each with rule 1029's five fields. */
+export function fixedImpactObjects(
+  result: ImpactScenarioResult,
+  ctx: ImpactMapContext
+): FixedImpactObject[] {
+  const { t, language } = ctx;
+  const out: FixedImpactObject[] = [];
+  const rim = result.damage.craterRim as number;
+  if (rim > 0) {
+    const state: EpistemicState =
+      result.crater.state === 'outOfDomain'
+        ? 'outOfDomain'
+        : (result.crater.finalDiameter as number) < COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M
+          ? 'exploratory'
+          : 'verified';
+    out.push({
+      id: 'crater',
+      label: t('globe.impactMap.fixed.crater.label'),
+      card: {
+        quantity: t('globe.impactMap.fixed.crater.quantity'),
+        unit: 'km',
+        state,
+        source: t('globe.tooltip.source.impactCrater'),
+        extent: t('globe.impactMap.fixed.crater.extent', { radius: formatRange(rim, language) }),
+        beyond: 'notApplicable',
+      },
+    });
+  }
+  const cavity = (result.tsunami?.cavityRadius as number | undefined) ?? 0;
+  if (cavity > 0) {
+    out.push({
+      id: 'cavity',
+      label: t('globe.impactMap.fixed.cavity.label'),
+      card: {
+        quantity: t('globe.impactMap.fixed.cavity.quantity'),
+        unit: 'km',
+        state: 'exploratory',
+        source: t('globe.tooltip.source.impactCavity'),
+        extent: t('globe.impactMap.fixed.cavity.extent', { radius: formatRange(cavity, language) }),
+        beyond: 'notApplicable',
+      },
+    });
+  }
+  return out;
 }
 
 /** Rule 1032 (c): a layer this result does not draw, and why. */

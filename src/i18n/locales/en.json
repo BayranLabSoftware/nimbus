@@ -207,6 +207,12 @@
     "monteCarloLabel": "Monte Carlo uncertainty analysis",
     "monteCarloTitle": "Monte Carlo — {{iterations}} samples",
     "monteCarloFooter": "Inputs sampled from published distributions (log-normal / normal); P10–P90 bracket the 80 % confidence band.",
+    "fieldRefused": "“{{typed}}” was not accepted — the field takes {{takes}} — so the scenario keeps {{kept}}.",
+    "fieldTakes": {
+      "positive": "a number above zero",
+      "angle": "an angle above 0° and up to 90°"
+    },
+    "monteCarloFooterImpact": "Inputs drawn around this scenario's own: the diameter and the density log-normal (σ_log {{diameter}} and {{density}}), the speed normal (σ {{speed}} %) — spreads the project sets, informed by Mainzer 2019, JPL's orbital fits and Britt & Consolmagno 2003. P10–P90 hold 80 % of the runs: the spread of the outcome over those drawn inputs, not a confidence interval.",
     "mcMetric": "Metric",
     "mcMetrics": {
       "impact": {
@@ -583,10 +589,12 @@
       "factorLabel": "Amplification"
     },
     "citySearch": {
-      "label": "Go to a city",
-      "placeholder": "Search a city… (e.g. Naples)",
+      "label": "Go to a city or coordinates",
+      "placeholder": "A city, or coordinates… (e.g. Naples, or 40.85, 14.27)",
       "empty": "No city found",
-      "go": "Go"
+      "go": "Go",
+      "goToPoint": "Go to {{place}}",
+      "outOfRange": "Coordinates out of range: latitude from −90 to 90, longitude from −180 to 180"
     },
     "tsunamiSeaCoupling": "Sea coupling",
     "seaCoupling": {
@@ -1323,6 +1331,19 @@
       "tsunamiStreaks": "the wave's direction, where it passes 1 m",
       "tsunamiRunupBand": "run-up on the coast from {{low}} to {{high}}",
       "tsunamiRunupFrom": "run-up on the coast above {{height}}",
+      "fixed": {
+        "heading": "Drawn on every layer",
+        "crater": {
+          "label": "The crater",
+          "quantity": "The crater, out to its final rim",
+          "extent": "a disc out to the rim, {{radius}} from the centre"
+        },
+        "cavity": {
+          "label": "The tsunami's source cavity",
+          "quantity": "The cavity the impact opens in the water",
+          "extent": "a ring at {{radius}} from the centre"
+        }
+      },
       "card": {
         "heading": "Provenance card",
         "quantity": "Quantity",
@@ -1526,6 +1547,9 @@
         "breakupAltitude": "Fragmentation onset",
         "burstAltitude": "Burst altitude",
         "endVelocity": "Speed at the end of entry",
+        "entryMeasuredCell": "Where the entry was measured (G4)",
+        "entryAltitudeBand": "Band of the burst altitude, 5–95 % of I2's fireballs",
+        "modelSwitches": "The model's configuration (every switch as this run used it)",
         "transientCrater": "Transient crater diameter",
         "finalCrater": "Final crater diameter",
         "craterDepth": "Crater depth",
@@ -1611,6 +1635,7 @@
         "britt": "Impactor taxonomy density classes.",
         "herrick": "Complex crater depth (Collins et al. 2005 Eq. 28).",
         "chyba": "The pancake model of a breaking body (Collins et al. 2005 Eqs. 13–20).",
+        "borovicka": "The two phases a stony meteoroid fragments in: the first phase’s strength for the first fragmentation, and the second’s for the main breakup where the body has no strength of its own.",
         "popova": "Chelyabinsk 2013, the airburst the entry is checked on.",
         "collins2017": "Air blast of the airburst: regular reflection (Eq. 7), its energy and its factor-of-two range.",
         "mcgetchinEjecta": "r⁻³ thinning of the ejecta deposit (Collins et al. 2005 Eq. 47).",
@@ -1695,6 +1720,9 @@
       "cardField": "the field",
       "notAssessable": "not assessable",
       "notComputed": "not computed",
+      "notDefault": "not the default",
+      "monteCarloNote": "Exploratory only: the spread of the model's outcome when the inputs are drawn around this scenario's, with the spreads the table's foot names. No band here has been checked against a reference.",
+      "monteCarloTitle": "Monte Carlo: how the outcome spreads",
       "planetaryNote": "† beyond 2,000 km the law of the overpressure and the wind is an extrapolation to a planetary scale: see the figure's warning. The 2,000 km mark where the warning appears, not a frontier of validity."
     }
   },

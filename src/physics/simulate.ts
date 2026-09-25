@@ -26,6 +26,10 @@ import {
   type ClimateTier,
 } from './effects/atmosphere.js';
 import {
+  DEFAULT_ENTRY_ATMOSPHERE,
+  DEFAULT_ENTRY_BOUNDARY,
+  DEFAULT_ENTRY_EQUATIONS,
+  DEFAULT_PANCAKE_GROWTH,
   DEFAULT_STRENGTH_LAW,
   FIRST_STAGE_MAJOR_SHARE,
   FIRST_STAGE_STRENGTH,
@@ -190,6 +194,42 @@ const DEFAULT_MEAN_OCEAN_DEPTH = 4_000;
 const LARGEST_RECORDED_EARTHQUAKE_MW = 9.5;
 
 /**
+ * Rule 1213: the model's switches, each with the default the simulator reads
+ * when the input leaves it out — so a printed report can say which
+ * configuration made it. Held to those constants one by one by its test.
+ */
+export const IMPACT_MODEL_DEFAULTS = {
+  strengthLaw: DEFAULT_STRENGTH_LAW,
+  entryAtmosphere: DEFAULT_ENTRY_ATMOSPHERE,
+  pancakeGrowth: DEFAULT_PANCAKE_GROWTH,
+  entryEquations: DEFAULT_ENTRY_EQUATIONS,
+  entryBoundary: DEFAULT_ENTRY_BOUNDARY,
+  craterDomain: DEFAULT_CRATER_DOMAIN,
+  groundBlast: DEFAULT_GROUND_BLAST,
+  airFlash: DEFAULT_AIR_FLASH,
+  lowBurstFlash: DEFAULT_LOW_BURST_FLASH,
+  lowBurstCrater: DEFAULT_LOW_BURST_CRATER,
+  ironCraterField: DEFAULT_IRON_CRATER_FIELD,
+  craterField: DEFAULT_CRATER_FIELD,
+  airburstRadiation: DEFAULT_AIRBURST_RADIATION,
+  airburstSeismic: DEFAULT_AIRBURST_SEISMIC,
+} as const;
+
+export type ImpactModelSwitch = keyof typeof IMPACT_MODEL_DEFAULTS;
+
+/** Rule 1213: each switch as the run used it, and whether that is its default. */
+export function impactModelSwitches(
+  input: ImpactScenarioInput
+): { key: ImpactModelSwitch; value: string; isDefault: boolean }[] {
+  return (Object.keys(IMPACT_MODEL_DEFAULTS) as ImpactModelSwitch[]).map((key) => {
+    const fallback: string = IMPACT_MODEL_DEFAULTS[key];
+    const given: string | undefined = input[key];
+    const value = given ?? fallback;
+    return { key, value, isDefault: value === fallback };
+  });
+}
+
+/**
  * Full set of inputs for an atmospheric-entry-to-ground impact scenario.
  * Every value crosses the physics boundary as a branded unit.
  */
@@ -209,8 +249,11 @@ export interface ImpactScenarioInput {
    *  4 000 m (global-ocean mean) — matters only for the tsunami travel
    *  time, not the 1/r amplitude decay. */
   meanOceanDepth?: Meters;
-  /** Impactor tensile strength (Pa) — drives the Chyba/Collins airburst
-   *  classifier. Defaults to STONY (1 MPa, ordinary chondrite). */
+  /** Impactor strength (Pa), where the body has one of its own. Without it
+   *  the strength law decides (`strengthLaw`): under the default two-stage
+   *  law a stony body starts at the main stage's ≈ 2.1 MPa (Borovička et al.
+   *  2020), any other at Collins et al.'s Eq. 9 (rules 896 to 902; rule 1213
+   *  corrected a comment that still gave 1 MPa). */
   impactorStrength?: Pascals;
   /** Rules 881 to 889: the law the body's strength follows. */
   strengthLaw?: StrengthLaw;
