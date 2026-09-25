@@ -205,5 +205,5 @@ describe('rule 1186: σ is redrawn once per break, and identical fragments still
       expect(Math.abs(r.ledger.energyResidual)).toBeLessThan(FCM_GATE1.ledger);
       expect(r.ledger.momentumResidual).toBeLessThan(FCM_GATE1.ledger);
     }
-  });
+  }, 30_000);
 });

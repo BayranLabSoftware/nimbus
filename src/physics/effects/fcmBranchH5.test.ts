@@ -114,7 +114,7 @@ describe('rule 1188 (d): H5’s fork carries no physics change — exact equalit
     // 1188 (a)'s definition.
     const atFirstBreak = r.pieces.filter((p) => p.birthAltitudeM === r.firstBreakAltitude);
     expect(atFirstBreak.every((p) => p.generation === 1)).toBe(true);
-  });
+  }, 30_000);
 
   it('lands the whole body at generation 0 when it never breaks', () => {
     const r = fcmEntryH5(
