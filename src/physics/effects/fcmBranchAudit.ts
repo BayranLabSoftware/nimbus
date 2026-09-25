@@ -200,6 +200,19 @@ export type FcmComponentFate =
   | 'settled'
   | 'dust';
 
+/** Rule 1190 (a): the exact numerical reason integration stopped, for every
+ *  terminal fate but `'landedSolid'`/`'landedCloud'` (h reached 0, not a
+ *  stop) and `'aggregated'`/`'brokeAgain'` (a break, not a stop). */
+export type FcmStopReason =
+  /** A cloud within `settleWithin` of its own terminal speed (rule 1138 (c),
+   *  deviation D9) — the reason `'settled'` almost always has. */
+  | 'terminalVelocity'
+  /** Rule 1141 (a)'s halving exhausted before a physical step was found —
+   *  the fallback stop, `'settled'` for a cloud, `'dust'` for a solid. */
+  | 'nonPhysicalStep'
+  /** Below `floorKg`, at birth (`release`) or in flight — always `'dust'`. */
+  | 'massFloor';
+
 /** Rule 1189 (a): one component's birth and eventual fate — the body itself
  *  (generation 0) included. */
 export interface FcmComponentRecord {
@@ -227,6 +240,15 @@ export interface FcmComponentRecord {
   finalMassKg: number | null;
   finalSpeedMS: number | null;
   finalAltitudeM: number | null;
+  /** Rule 1190 (a): set only where `fate` is terminal — the exact reason
+   *  integration stopped, never a physical claim about what the material
+   *  does next. */
+  stopReason: FcmStopReason | null;
+  /** Rule 1190 (a): a cloud only (null for a solid or a non-terminal row) —
+   *  its radius and its own local terminal speed at the stop, the same
+   *  closed form the engine already computes to decide it. */
+  finalRadiusM: number | null;
+  localTerminalSpeedMS: number | null;
 }
 
 export interface FcmAuditResult {
@@ -421,16 +443,31 @@ export function fcmEntryAudit(body: FcmBody, options: FcmOptions): FcmAuditResul
       finalMassKg: null,
       finalSpeedMS: null,
       finalAltitudeM: null,
+      stopReason: null,
+      finalRadiusM: null,
+      localTerminalSpeedMS: null,
     });
     return idx;
   };
-  const setFate = (idx: number, fate: FcmComponentFate, m: number, v: number, h: number): void => {
+  const setFate = (
+    idx: number,
+    fate: FcmComponentFate,
+    m: number,
+    v: number,
+    h: number,
+    reason: FcmStopReason | null = null,
+    radiusM: number | null = null,
+    localTerminalSpeedMS: number | null = null
+  ): void => {
     const r = records[idx];
     if (r === undefined) return;
     r.fate = fate;
     r.finalMassKg = m;
     r.finalSpeedMS = v;
     r.finalAltitudeM = h;
+    r.stopReason = reason;
+    r.finalRadiusM = radiusM;
+    r.localTerminalSpeedMS = localTerminalSpeedMS;
   };
 
   /** d(state)/dh for a component at altitude h, written into `out`. */
@@ -529,8 +566,11 @@ export function fcmEntryAudit(body: FcmBody, options: FcmOptions): FcmAuditResul
     airY.add(n * (y0[2] * y0[0] * Math.sin(y0[1]) - y1[2] * y1[0] * Math.sin(y1[1]) + impulse));
   };
 
-  /** Give a component's whole kinetic energy and momentum to the air here. */
-  const stopHere = (c: Component, into: Sum): void => {
+  /** Give a component's whole kinetic energy and momentum to the air here.
+   *  Rule 1190 (a): `reason` is the exact numerical cause, named by the
+   *  caller, never inferred — a cloud's own radius and local terminal
+   *  speed are recorded alongside it. */
+  const stopHere = (c: Component, into: Sum, reason: FcmStopReason): void => {
     const e = c.n * 0.5 * c.mass * c.v * c.v;
     stoppedEnergy.add(e);
     energyPerBin[binOf(c.h)] = (energyPerBin[binOf(c.h)] ?? 0) + e;
@@ -538,7 +578,21 @@ export function fcmEntryAudit(body: FcmBody, options: FcmOptions): FcmAuditResul
     airX.add(c.n * c.mass * c.v * Math.cos(c.gamma));
     airY.add(c.n * c.mass * c.v * Math.sin(c.gamma));
     into.add(c.n * c.mass);
-    setFate(c.recordIndex, into === settled ? 'settled' : 'dust', c.mass, c.v, c.h);
+    const localTerminal = c.cloud
+      ? Math.sqrt(
+          (2 * c.mass * gravityAt(c.h)) / (Cd * density(c.h) * Math.PI * c.radius * c.radius)
+        )
+      : null;
+    setFate(
+      c.recordIndex,
+      into === settled ? 'settled' : 'dust',
+      c.mass,
+      c.v,
+      c.h,
+      reason,
+      c.cloud ? c.radius : null,
+      localTerminal
+    );
   };
 
   /** A cloud of a parent's debris, the sphere of its mass at first. */
@@ -629,7 +683,7 @@ export function fcmEntryAudit(body: FcmBody, options: FcmOptions): FcmAuditResul
     for (const c of list) {
       count(c.n);
       if (c.mass < floor) {
-        stopHere({ ...c, v: parentForDust.v }, dust);
+        stopHere({ ...c, v: parentForDust.v }, dust, 'massFloor');
         continue;
       }
       queue.push(c);
@@ -662,7 +716,7 @@ export function fcmEntryAudit(body: FcmBody, options: FcmOptions): FcmAuditResul
       const here = (): Component => ({ ...c, v: y[0], gamma: y[1], mass: y[2], radius: y[3], h });
       // A cloud slowed to within 1 % of its terminal speed settles where it is.
       if (c.cloud && withGravity && y[0] <= settleAbove * cloudTerminal(h, y)) {
-        stopHere(here(), settled);
+        stopHere(here(), settled, 'terminalVelocity');
         return;
       }
       let dh = Math.min(step, h - Math.floor((h - 1e-9) / step) * step || step, h);
@@ -674,7 +728,7 @@ export function fcmEntryAudit(body: FcmBody, options: FcmOptions): FcmAuditResul
         next = advance(c, h, y, dh);
       }
       if (!physical(y, next)) {
-        stopHere(here(), c.cloud ? settled : dust);
+        stopHere(here(), c.cloud ? settled : dust, 'nonPhysicalStep');
         return;
       }
       let hNext = h - dh;
@@ -725,7 +779,7 @@ export function fcmEntryAudit(body: FcmBody, options: FcmOptions): FcmAuditResul
       y = next;
       h = hNext;
       if (y[2] < floor) {
-        stopHere(here(), dust);
+        stopHere(here(), dust, 'massFloor');
         return;
       }
       if (h <= 0) {

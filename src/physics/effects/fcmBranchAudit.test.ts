@@ -192,3 +192,65 @@ describe('rule 1189 (a): every break and every component’s fate are recorded c
     }
   }, 30_000);
 });
+
+describe('rule 1190 (a): the exact reason every stopped component stopped, and a cloud’s own metrics there', () => {
+  it('gives every terminal record a stop reason consistent with its fate, and none to a break or a landing', () => {
+    const r = fcmEntryAudit(
+      { diameter: 4, velocity: 19_000, density: 3_000, angle: rad(45), strength: 6e5 },
+      {
+        ablation: 8e-9,
+        cloudDispersion: 2,
+        alpha: 0.3,
+        split: { kind: 'mass', fragments: 2, larger: 0.6, cloud: 0.2 },
+        maxComponents: 5_000,
+      }
+    );
+    expect(r.completed).toBe(true);
+    let settledCount = 0;
+    for (const rec of r.records) {
+      if (rec.fate === 'brokeAgain' || rec.fate === 'aggregated') {
+        expect(rec.stopReason).toBeNull();
+        expect(rec.finalRadiusM).toBeNull();
+        expect(rec.localTerminalSpeedMS).toBeNull();
+      } else if (rec.fate === 'landedSolid' || rec.fate === 'landedCloud') {
+        expect(rec.stopReason).toBeNull();
+      } else if (rec.fate === 'settled') {
+        settledCount += 1;
+        expect(rec.stopReason).not.toBeNull();
+        expect(['terminalVelocity', 'nonPhysicalStep']).toContain(rec.stopReason);
+        expect(rec.isCloud).toBe(true);
+        expect(rec.finalRadiusM).not.toBeNull();
+        expect(rec.finalRadiusM).toBeGreaterThan(0);
+        expect(rec.localTerminalSpeedMS).not.toBeNull();
+      } else {
+        expect(rec.fate).toBe('dust');
+        expect(rec.stopReason).not.toBeNull();
+        expect(['massFloor', 'nonPhysicalStep']).toContain(rec.stopReason);
+      }
+    }
+    expect(settledCount).toBeGreaterThan(0);
+  }, 30_000);
+
+  it('stops a settled cloud within `settleWithin` of its own recorded local terminal speed', () => {
+    const r = fcmEntryAudit(
+      { diameter: 6, velocity: 18_000, density: 3_000, angle: rad(35), strength: 4e5 },
+      {
+        ablation: 6e-9,
+        cloudDispersion: 3,
+        alpha: 0.25,
+        split: { kind: 'cloud' },
+        maxComponents: 5_000,
+      }
+    );
+    expect(r.completed).toBe(true);
+    const settledByTerminal = r.records.filter(
+      (rec) => rec.fate === 'settled' && rec.stopReason === 'terminalVelocity'
+    );
+    expect(settledByTerminal.length).toBeGreaterThan(0);
+    for (const rec of settledByTerminal) {
+      const speed = rec.finalSpeedMS ?? 0;
+      const localTerminal = rec.localTerminalSpeedMS ?? 0;
+      expect(speed).toBeLessThanOrEqual(1.01 * localTerminal + 1e-9);
+    }
+  });
+});
