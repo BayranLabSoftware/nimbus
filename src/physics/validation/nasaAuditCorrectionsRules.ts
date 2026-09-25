@@ -155,22 +155,21 @@ export const RULE_1193_WRITTEN = '2026-09-25' as const;
  *     place. NOT fixed: finding or ruling out a primary source for either.
  *
  * Left open, not started this round, said so rather than left silent: (2)
- * two blast laws inside one casualty count (`casualties.ts:505`,
- * `useAppStore.ts:1764`); (4) fixed nuclear-flash thermal thresholds and the
- * unused E^(1/6) scaling (`constants.ts`, `impactThermal.ts`,
- * `simulate.ts:936`); (5) the seismic magnitude mixing Harkrider's Ms with
- * an energy magnitude, and liquefaction extrapolated to M 9.9
- * (`airburstSeismic.ts`, `simulate.ts:1211`); (6) Synolakis run-up with no
- * breaking branch or ceiling (`simulate.ts:1502-1543`); (9) planar 1/r and
- * r⁻³ geometry for blast and ejecta at planetary range
- * (`airburstBlast.ts:284`, `ejecta.ts:56`); (10, the rest) measured cells
- * that hold only at exactly 3 000 kg/m³ with no strength given, so no
- * taxonomy choice and no preset falls inside one (`entryCells.ts`) -- the
- * note is fixed, the underlying inconsistency is not; (11) 46 `as number`
- * casts in `simulate.ts` and bare
- * numbers in mixed units elsewhere. Each needs either a design decision
- * this file is not the place to make alone, or research this round has not
- * done — continued in a later block of the same round, not abandoned.
+ * DONE as rule 1197, see below; (4) fixed nuclear-flash thermal thresholds
+ * and the unused E^(1/6) scaling (`constants.ts`, `impactThermal.ts`,
+ * `simulate.ts:936`) -- needs Coates et al. 2024, not yet read, and belongs
+ * to Porta 1 of the plan, not this round's corrections; (5) read further
+ * below (liquefaction's own domain); (6) Synolakis run-up with no breaking
+ * branch or ceiling (`simulate.ts:1502-1543`) -- shared with the earthquake
+ * and landslide wave code, out of an impacts-only round's reach; (9) read
+ * further below (the reference's own unsolved problem); (10, the rest)
+ * measured cells that hold only at exactly 3 000 kg/m³ with no strength
+ * given, so no taxonomy choice and no preset falls inside one
+ * (`entryCells.ts`) -- the note is fixed, the underlying inconsistency is
+ * not; (11) 46 `as number` casts in `simulate.ts` and bare numbers in mixed
+ * units elsewhere. Each needs either a design decision this file is not the
+ * place to make alone, or research this round has not done — continued in
+ * a later block of the same round, not abandoned.
  */
 export const RULE_1194_WRITTEN = '2026-09-25' as const;
 
@@ -202,15 +201,13 @@ export const RULE_1194_WRITTEN = '2026-09-25' as const;
  * so the fix is a threading change (`useAppStore.ts` to `casualties.ts`),
  * not a missing piece of physics.
  *
- * NOT fixed this round. The technical path is clear and the functions to
- * do it right already exist, but this touches every casualty count an
- * impact produces, not an isolated reading -- exactly the surface this
- * project has been most careful with
- * (`THIRD_DEGREE_MORTALITY`'s own comment records a past mistake here,
- * "no fire storm occurred at all and the model asserted one anyway").
- * Doing it properly needs the numeric size of the shift measured against
- * the development cases before it is trusted, not assumed small because
- * the reasoning is sound -- a round of its own, not a block of this one.
+ * DONE, in a later block of this same round, as rule 1197: the numeric
+ * size of the shift was measured against every development case before
+ * being trusted (not assumed small because the reasoning is sound), and
+ * came back under 8% everywhere, with the airburst fallback exactly
+ * unchanged by construction -- see rule 1197 and its own measurement note
+ * for the full account. This paragraph is kept as the investigation that
+ * led there, not restated.
  */
 export const RULE_1194_ITEM_2_WRITTEN = '2026-09-25' as const;
 
@@ -321,6 +318,66 @@ export const RULE_1195_WRITTEN = '2026-09-25' as const;
  *   round's to decide -- flagged for the reviewer, not guessed at.
  */
 export const RULE_1196_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1194, ITEM (9), READ FURTHER: the reference this project verifies
+ * against admits, in its own text, that it never solved this.
+ *
+ * Collins, Melosh & Marcus (2005), read directly (not from an abstract or
+ * a summary), on their own air-blast equation: "the peak overpressure
+ * decays to zero at distances so small (<1 km) that the curvature of the
+ * Earth may be ignored. Neither of these assumptions applies to larger
+ * impacts... In the future, we hope to examine the effect of a
+ * variable-density atmosphere and a curved Earth on the blast wave decay
+ * using numerical modeling." No published follow-up does this -- Collins
+ * et al. 2017 (the Mach-stem paper this project also cites) stays
+ * near-field, curvature unmentioned. In place of a geometric correction
+ * the 2005 paper offers only a blunt margin: "Equation 44 probably
+ * overestimates the blast wave effects by a factor of 2-5" for large
+ * impacts, and its Discussion attributes the gap from Toon et al. (1997)
+ * to "our neglect of the effects of Earth curvature." Tellingly, the same
+ * paper DOES apply a rigorous spherical correction elsewhere -- the
+ * fireball's horizon (its Eq. 36-37, h = (1-cos Δ)·R_E) -- so the authors
+ * had the tool and chose not to extend it to the blast.
+ *
+ * What this means for this round: deriving and shipping a spherical
+ * correction to Kinney-Graham or to the program's own air-blast law would
+ * not be restating the reference's own physics, honestly adopted -- it
+ * would be inventing physics the reference's own authors explicitly
+ * declined to publish, on the project's own authority alone. That is
+ * exactly the "no number without a source" discipline this round has
+ * held everywhere else (rule 1194, items 7/8). NOT fixed. What IS true
+ * and citable, and worth carrying into the report: I1's own clause
+ * already documents the two ground-blast departures from Eq. 18 (rules
+ * 630 to 637, 748 to 755) without touching this one, and the reference's
+ * own admitted "factor of 2-5" overestimate at large range is a fact this
+ * project can print next to the affected radii -- a caveat, not a fix,
+ * and a smaller, safer thing to do than inventing the geometry.
+ */
+export const RULE_1194_ITEM_9_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1194, ITEM (5), READ FURTHER: the "max Ms/energy magnitude" choice
+ * is already declared (rules 730-738, B-092) with a physical reason -- the
+ * larger of two real mechanisms, not a guess -- so the audit's real target
+ * is liquefaction, extrapolated on a magnitude no real earthquake has ever
+ * reached. `events/earthquake/liquefaction.ts`'s magnitude scaling factor
+ * (Youd & Idriss 2001) takes any `magnitude` with no domain check; called
+ * from the impacts path in `simulate.ts` on a seismic magnitude that, for
+ * a Chicxulub-class body, reads near 9.9 -- past Mw 9.5 (Valdivia 1960),
+ * the largest instrumentally recorded earthquake, which
+ * `inputValidity.ts:212` already flags as "pure extrapolation" for a
+ * user-CHOSEN earthquake magnitude. The same bound applies here to a
+ * CALCULATED one; the pattern to reuse already exists, just not wired to
+ * this path. NOT fixed this round: doing it honestly means deciding what
+ * "out of domain" returns (zero, which reads as "no liquefaction" and is
+ * not what is meant; or a domain flag threaded through
+ * `SimulatorPanel.tsx`, `SimulationReportPage.tsx` and
+ * `GlossaryDialog.tsx`, three UI surfaces this round has not mapped
+ * carefully enough to touch safely in the time left) -- a real decision,
+ * not a one-line reuse.
+ */
+export const RULE_1194_ITEM_5_WRITTEN = '2026-09-25' as const;
 
 /**
  * RULE 1197. A11, ITEM (2), DONE -- THE CASUALTY BAND EDGES SIT ON THE LAW
