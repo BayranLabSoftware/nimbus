@@ -1,5 +1,5 @@
 /**
- * Rules 1178 to 1186 — the opening document of the survival–light round, on
+ * Rules 1178 to 1187 — the opening document of the survival–light round, on
  * the reviewer's approval of 25 September 2026: a round of development on the
  * FCM branch's own physics, before any test that could adopt it, and — apart
  * — the custody protocol and the reconnaissance of a genuinely blind fifth
@@ -217,3 +217,35 @@ export const FCM_CUSTODY_PROTOCOL = [
 
 /** Rule 1186: H2's σ prior — the same range as rule 1131, unnarrowed. */
 export const FCM_H2_SIGMA_RANGE = [1e-9, 1.6e-8] as const;
+
+/**
+ * RULE 1187. H4, THE PRIOR'S OWN SCALE (declared after H2's null result,
+ * docs/FCM_SURVIVAL_LIGHT_PACKAGE.md). H2 found that letting σ vary between
+ * breaks, inside rule 1131's prior, does not move the landed mass. What is
+ * left untested is the prior's own scale: rule 1131 fixed σ log-uniform on
+ * 1·10⁻⁹ to 1.6·10⁻⁸ s²/m², and named Borovička et al. (2013b)'s upper value
+ * from the dynamics of Chelyabinsk's *small fragments* — 3.5·10⁻⁷ s²/m² — as
+ * «run apart as a sensitivity, never mixed in» (rule 1131, written before
+ * this round, before round 1, before any target of it was read). H4 is that
+ * sensitivity, run at last: every solid component's σ, from the unbroken
+ * body through every fragment, set to that one published value — not a
+ * range, not drawn, the single constant rule 1131 already named. Unlike H2,
+ * H4 is declared directional: a much larger σ should ablate more mass, and
+ * finding that it does would not by itself be a discovery. What is tested,
+ * stated before any run: whether it ablates *enough* — bringing the landed
+ * mass near the references of rule 1178 (a) — and whether it does so without
+ * a new failure (the main peak moving far from where H1/H3's baseline put
+ * it, or a new non-completion pattern). No value between 1.6·10⁻⁸ and
+ * 3.5·10⁻⁷ is tried, and no further value beyond 3.5·10⁻⁷: only the one
+ * already on the books.
+ *
+ * Engine: the same fork, `fcmBranchH2.ts`, unchanged — a degenerate σ range
+ * (`[3.5e-7, 3.5e-7]`) needs no new code or new gate-1 proof; `drawSigma`
+ * already returns a fixed range's single value without consuming a draw
+ * (checked by rule 1182 (c)'s own closed-form test). Run by
+ * `scripts/fcm-h4-run.ts`, a copy of `fcm-h2-run.ts` with one fixed σ in place
+ * of a per-break draw, against the same H3 baseline.
+ */
+
+/** Rule 1187: H4's one value — rule 1131's own named sensitivity. */
+export const FCM_H4_SIGMA_S2_M2 = 3.5e-7;

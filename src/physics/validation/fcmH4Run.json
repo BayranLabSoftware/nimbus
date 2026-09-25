@@ -1,0 +1,1194 @@
+{
+  "rule": "1180 (b), 1187",
+  "draws": 200,
+  "compared": 71,
+  "medianRatio": 0,
+  "lowerCount": 71,
+  "higherCount": 0,
+  "sameCount": 0,
+  "results": [
+    {
+      "case": "Chelyabinsk",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Tunguska",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "2008 TC3",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "2018 LA",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "2022 EB5",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 1,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "2023 CX1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "2024 BX1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "2022 WJ1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Carancas",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Winchcombe",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Golden",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Madura Cave",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Hamburg",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Traspena",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Cavezzo",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Košice",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Benešov",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    },
+    {
+      "case": "Tagish Lake",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "totalLandedKg": 0,
+          "solidLandedKg": 0,
+          "cloudLandedKg": 0,
+          "largestKg": 0
+        }
+      ]
+    }
+  ],
+  "comparison": [
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 24200,
+      "ratio": 0
+    },
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 4899000,
+      "ratio": 0
+    },
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 425000,
+      "ratio": 0
+    },
+    {
+      "case": "Chelyabinsk",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 382500,
+      "ratio": 0
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 857000,
+      "ratio": 0
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 36680000,
+      "ratio": 0
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 911200,
+      "ratio": 0
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 7119,
+      "ratio": 0
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 6999,
+      "ratio": 0
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 10500,
+      "ratio": 0
+    },
+    {
+      "case": "2008 TC3",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 10040,
+      "ratio": 0
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 170.6,
+      "ratio": 0
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 163.7,
+      "ratio": 0
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 331.9,
+      "ratio": 0
+    },
+    {
+      "case": "2018 LA",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 276.2,
+      "ratio": 0
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 512.8,
+      "ratio": 0
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 3244,
+      "ratio": 0
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 1414,
+      "ratio": 0
+    },
+    {
+      "case": "2022 EB5",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 591,
+      "ratio": 0
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 128.5,
+      "ratio": 0
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 108.9,
+      "ratio": 0
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 166.5,
+      "ratio": 0
+    },
+    {
+      "case": "2023 CX1",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 180.9,
+      "ratio": 0
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 21.2,
+      "ratio": 0
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 21.42,
+      "ratio": 0
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 35.63,
+      "ratio": 0
+    },
+    {
+      "case": "2024 BX1",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 28.75,
+      "ratio": 0
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 49.72,
+      "ratio": 0
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 43.58,
+      "ratio": 0
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 61.55,
+      "ratio": 0
+    },
+    {
+      "case": "2022 WJ1",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 62.4,
+      "ratio": 0
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 279.9,
+      "ratio": 0
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 237.6,
+      "ratio": 0
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 430.6,
+      "ratio": 0
+    },
+    {
+      "case": "Carancas",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 450.5,
+      "ratio": 0
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 5.424,
+      "ratio": 0
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 5.974,
+      "ratio": 0
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 5.139,
+      "ratio": 0
+    },
+    {
+      "case": "Winchcombe",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 6.298,
+      "ratio": 0
+    },
+    {
+      "case": "Golden",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 9.615,
+      "ratio": 0
+    },
+    {
+      "case": "Golden",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 10.04,
+      "ratio": 0
+    },
+    {
+      "case": "Golden",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 13.23,
+      "ratio": 0
+    },
+    {
+      "case": "Golden",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 15.71,
+      "ratio": 0
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 9.054,
+      "ratio": 0
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 8.671,
+      "ratio": 0
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 10.75,
+      "ratio": 0
+    },
+    {
+      "case": "Madura Cave",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 11.6,
+      "ratio": 0
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 12.23,
+      "ratio": 0
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 10.35,
+      "ratio": 0
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 17.76,
+      "ratio": 0
+    },
+    {
+      "case": "Hamburg",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 13.07,
+      "ratio": 0
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 125.4,
+      "ratio": 0
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 108,
+      "ratio": 0
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 165.9,
+      "ratio": 0
+    },
+    {
+      "case": "Traspena",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 179,
+      "ratio": 0
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 1.694,
+      "ratio": 0
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 1.743,
+      "ratio": 0
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 1.746,
+      "ratio": 0
+    },
+    {
+      "case": "Cavezzo",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 1.995,
+      "ratio": 0
+    },
+    {
+      "case": "Košice",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 248.9,
+      "ratio": 0
+    },
+    {
+      "case": "Košice",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 233.8,
+      "ratio": 0
+    },
+    {
+      "case": "Košice",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 385.3,
+      "ratio": 0
+    },
+    {
+      "case": "Košice",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 346.9,
+      "ratio": 0
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 70.39,
+      "ratio": 0
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 82.58,
+      "ratio": 0
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 139.6,
+      "ratio": 0
+    },
+    {
+      "case": "Benešov",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 104.6,
+      "ratio": 0
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M1/unlimited",
+      "h2": 0,
+      "h3": 6771,
+      "ratio": 0
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M1/capped",
+      "h2": 0,
+      "h3": 6786,
+      "ratio": 0
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M2/unlimited",
+      "h2": 0,
+      "h3": 8771,
+      "ratio": 0
+    },
+    {
+      "case": "Tagish Lake",
+      "configuration": "M2/capped",
+      "h2": 0,
+      "h3": 10080,
+      "ratio": 0
+    }
+  ]
+}

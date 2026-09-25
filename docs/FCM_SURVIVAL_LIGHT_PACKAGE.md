@@ -86,6 +86,37 @@ land 0.72 to 0.92 of H3's mass, and no other case's capped configuration shows a
 **H2, as declared, is not supported.** The excess landed mass is not explained by treating the
 ablation coefficient as varying between breaks rather than fixed for the whole cascade. The channel
 H3 found — solid fragments, spread across many, each surviving with too little ablation — remains
-open, and its next candidate account (the prior's own scale, or a mechanism outside σ entirely, such
-as the branch's break condition itself) is for a later, separately preregistered round: not decided
-here, and not tested by narrowing what already failed.
+open, and its next candidate account, the prior's own scale, is H4 below (rule 1187, declared before
+this section was written).
+
+## H4: run, and not supported — it overshoots by orders of magnitude
+
+`docs/FCM_H4_RUN.md`, `src/physics/validation/fcmH4Run.json`, from `scripts/fcm-h4-run.ts` (a copy of
+`scripts/fcm-h2-run.ts`; the engine, `fcmBranchH2.ts`, is unchanged — H4 is the same fork with a
+degenerate σ range). Same 18 cases, same input and parameter draws as H3 and H2; every solid
+component's σ fixed at 3.5·10⁻⁷ s²/m², the sensitivity rule 1131 named and set apart, from the dynamics
+of Chelyabinsk's own small late-cascade fragments (Borovička et al. 2013b) — 22 times the top of the
+prior H2 already tried and found wanting.
+
+Over the same 71 case–configuration pairs, **the median ratio of H4's landed mass to H3's is 0**: every
+one of the 71 pairs lands under 10 % of H3's mass — in fact all 71 round to exactly zero kilograms at
+four decimal places (`fcmH4Run.json`'s own numbers), for cases as different as Chelyabinsk's single
+massive body and 2008 TC3's 200-draw ensemble, under every configuration. This is not a null result
+in the H2 sense (a coefficient too weak to matter); it is the opposite failure, and a clean one: a
+value this high, applied for the whole flight rather than only its late, already-decelerated phase,
+ablates away essentially all of a body's mass in the hypersonic phase alone, well before deceleration
+or breakup does any of the work the branch's mechanics are meant to describe. A rough closed-form
+check confirms it is not a numerical artefact: at Chelyabinsk's entry speed, losing even a third of it
+to drag before any break gives `σ·Δv²/2 ≈ 3.5e-7 × 3.75e8 / 2 ≈ 66`, and `exp(-66)` is some 29 orders
+of magnitude below any floating-point mass in kilograms.
+
+**H4, as declared, is not supported.** Rule 1131's sensitivity was derived from fragments already slow
+and small, late in a cascade; applied here, before this round asked it to, to every component from the
+unbroken body onward, it overcorrects catastrophically rather than closing the gap H3 found. The
+excess-mass channel — solid fragments surviving with too little ablation — is not resolved by scaling
+up σ uniformly, whether redrawn per break (H2) or fixed at the one published extreme (H4). What is
+left unexplored, and not decided here: a σ that depends on regime (Jenniskens's own account: shear-melt
+plateau against catastrophic fragmentation) rather than one constant for the whole flight — closer to
+H2's original framing than either run so far tested, and requiring its own preregistered form. This
+round's three tested hypotheses (H1, H3's diagnostic aside) and H4 all close without adopting anything
+into the frozen candidate (rule 1162, still untouched).

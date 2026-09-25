@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   FCM_CUSTODY_PROTOCOL,
   FCM_H2_SIGMA_RANGE,
+  FCM_H4_SIGMA_S2_M2,
   FCM_LUMINOUS_EFFICIENCY,
   FCM_PERMANENT_DEVELOPMENT_SOURCES,
   FCM_SURVIVAL_EXCESS,
@@ -42,5 +43,12 @@ describe('rules 1178 to 1185: the survival–light round’s opening document', 
 describe('rule 1186: H2 redraws σ per solid fragment, from the same unnarrowed prior', () => {
   it('keeps the range identical to rule 1131’s, chosen before H1/H3’s results were read', () => {
     expect(FCM_H2_SIGMA_RANGE).toEqual([1e-9, 1.6e-8]);
+  });
+});
+
+describe('rule 1187: H4 uses rule 1131’s own sensitivity value, not a new one', () => {
+  it('matches the value already named apart before this round', () => {
+    expect(FCM_H4_SIGMA_S2_M2).toBe(3.5e-7);
+    expect(FCM_H4_SIGMA_S2_M2).toBeGreaterThan(FCM_H2_SIGMA_RANGE[1]);
   });
 });
