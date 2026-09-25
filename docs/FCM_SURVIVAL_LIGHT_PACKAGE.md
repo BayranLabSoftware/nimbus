@@ -165,3 +165,26 @@ retained bucket) and risks masking the larger channel rather than testing it. Pe
 adopts nothing: it names the next causal study — break conditions, mass partition and the genealogy of
 children — for a separately preregistered round, and closes the search for an ablation coefficient on
 these cases.
+
+### H5's closing, per the reviewer (25 September 2026)
+
+The reviewer accepted H5 as closing the search for a σ value on these 18 cases, in M1/unlimited, but
+declined the stronger reading: H5 locates _where_ the landed mass sits, not _which equation_ must change
+to reduce it. Three qualifications, carried here unchanged, bind every later round that builds on H5:
+
+1. "Late" means generation 2 or more, not necessarily little residual atmosphere: the rule records birth
+   altitude, speed and mid-descent mass, but classifies by generation. A high-generation piece can still
+   be born high enough to have had a long flight. Any causal claim about _why_ a late piece survives must
+   use the recorded altitudes and the residual trajectory, not the generation label alone.
+2. The decomposition is among **landed** pieces only, not among every child a break produces. Observing
+   only survivors, selected on the very property (surviving) the study is trying to explain, cannot by
+   itself separate a break-threshold effect from a mass-partition effect — the ledger of children that do
+   _not_ land is needed too.
+3. The pooled total is dominated by a few massive events (Tagish Lake ≈2.386 M kg, 2008 TC3 ≈2.095 M kg,
+   of 5.784 M kg overall) — the per-case result is what matters; 89.5 % is not to be extended to the other
+   three configurations or to every body size without its own run.
+
+**The approved closing formula**: "In the M1/unlimited configuration, the landed solid mass on the
+development cases is dominated by descendants of later breaks that retain more than half the mass they
+were born with; this diagnosis directs the study toward genealogy, but does not yet identify whether the
+break threshold, the mass partition, or the children's later evolution is at fault."
