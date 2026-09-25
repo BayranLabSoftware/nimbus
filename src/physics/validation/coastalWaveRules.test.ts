@@ -23,29 +23,29 @@ const coastal = (shoreM: number) =>
 
 describe('rules 267 to 273 — the wave comes from the hole, not from a column', () => {
   it('rule 270(a): the segment is the closed form, half at the edge and nothing past the rim', () => {
-    expect(shoreSegmentFraction(1, 0)).toBe(MAX_SHORE_SEGMENT_FRACTION);
-    expect(shoreSegmentFraction(1, 1)).toBe(0);
-    expect(shoreSegmentFraction(1, 1.5)).toBe(0);
-    expect(shoreSegmentFraction(0, 0)).toBe(0);
+    expect(shoreSegmentFraction(m(1), m(0))).toBe(MAX_SHORE_SEGMENT_FRACTION);
+    expect(shoreSegmentFraction(m(1), m(1))).toBe(0);
+    expect(shoreSegmentFraction(m(1), m(1.5))).toBe(0);
+    expect(shoreSegmentFraction(m(0), m(0))).toBe(0);
     for (const d of [0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99]) {
       const theta = Math.acos(d);
-      expect(shoreSegmentFraction(1, d)).toBeCloseTo(
+      expect(shoreSegmentFraction(m(1), m(d))).toBeCloseTo(
         (theta - Math.sin(theta) * Math.cos(theta)) / Math.PI,
         12
       );
       // Never more than half, wherever the shore is.
-      expect(shoreSegmentFraction(1, d)).toBeLessThanOrEqual(MAX_SHORE_SEGMENT_FRACTION);
+      expect(shoreSegmentFraction(m(1), m(d))).toBeLessThanOrEqual(MAX_SHORE_SEGMENT_FRACTION);
     }
     // And it falls without a step as the shore goes inland.
     let previous = Number.POSITIVE_INFINITY;
     for (const d of [0, 0.1, 0.2, 0.4, 0.6, 0.8, 0.95, 1]) {
-      const f = shoreSegmentFraction(1, d);
+      const f = shoreSegmentFraction(m(1), m(d));
       expect(f).toBeLessThan(previous);
       previous = f;
     }
     // The equal-area circle of that segment.
-    expect(shoreSegmentEquivalentRadius(1_000, 0)).toBeCloseTo(1_000 * Math.SQRT1_2, 9);
-    expect(shoreSegmentEquivalentRadius(1_000, 1_000)).toBe(0);
+    expect(shoreSegmentEquivalentRadius(m(1_000), m(0))).toBeCloseTo(1_000 * Math.SQRT1_2, 9);
+    expect(shoreSegmentEquivalentRadius(m(1_000), m(1_000))).toBe(0);
   });
 
   it('rule 270(b): a sea five kilometres away may not shrink a crater', () => {

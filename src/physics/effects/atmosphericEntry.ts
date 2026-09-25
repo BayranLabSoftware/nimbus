@@ -329,9 +329,10 @@ export const DEFAULT_LOW_BURST_CRATER: LowBurstCrater = 'share';
 /** The share of an airburst's kept energy that radiates as a fireball on the
  *  ground (B-093): 1 − z/R, with R = 0.002 · E^(1/3) the fireball radius of
  *  the kept energy E, and 0 for a burst at or above R. */
-export function groundFireballShare(burstAltitude: number, keptEnergy: number): number {
-  if (!(keptEnergy > 0)) return 0;
-  const radius = 0.002 * Math.cbrt(keptEnergy);
+export function groundFireballShare(burstAltitude: Meters, keptEnergy: Joules): number {
+  const energy = keptEnergy as number;
+  if (!(energy > 0)) return 0;
+  const radius = 0.002 * Math.cbrt(energy);
   const z = Math.max(burstAltitude, 0);
   return z < radius ? 1 - z / radius : 0;
 }
@@ -786,25 +787,29 @@ export function atmosphericEntry(
  * validation/craterFieldRules.ts compare it with the crater the whole swarm
  * would dig (B-123).
  */
+/** Rule 1194, item 11: every field here branded, not plain `number`, so a
+ *  caller cannot pass one unit where another is meant. */
 export function swarmSpreadAtGround(input: {
-  impactorDiameter: number;
-  impactorDensity: number;
-  impactAngle: number;
-  breakupAltitude: number;
+  impactorDiameter: Meters;
+  impactorDensity: KilogramPerCubicMeter;
+  impactAngle: Radians;
+  breakupAltitude: Meters;
   atmosphere?: EntryAtmosphere;
   /** Rule 992: L(0) from Eq. 14 solved, under variant P. */
   pancake?: PancakeGrowth;
 }): Meters {
-  const L0 = input.impactorDiameter;
-  const zStar = input.breakupAltitude;
+  const L0 = input.impactorDiameter as number;
+  const density = input.impactorDensity as number;
+  const angle = input.impactAngle as number;
+  const zStar = input.breakupAltitude as number;
   const table = tableOf(input.atmosphere ?? DEFAULT_ENTRY_ATMOSPHERE);
   if (table !== null) {
     // Rule 909(f): L(0) of rule 909(c).
     const body = {
       diameter: L0,
       velocity: 0,
-      density: input.impactorDensity,
-      sinTheta: Math.sin(input.impactAngle),
+      density,
+      sinTheta: Math.sin(angle),
     };
     return m(integratedSpreadAtGround(table, body, zStar));
   }
@@ -813,8 +818,8 @@ export function swarmSpreadAtGround(input: {
       solveEq14(
         {
           diameter: L0,
-          density: input.impactorDensity,
-          sinTheta: Math.sin(input.impactAngle),
+          density,
+          sinTheta: Math.sin(angle),
           breakupAltitude: zStar,
         },
         { throughBurst: true }
@@ -823,10 +828,7 @@ export function swarmSpreadAtGround(input: {
   }
   const rhoStar = RHO_0 * Math.exp(-zStar / H_SCALE);
   // Eq. 16*.
-  const l =
-    L0 *
-    Math.sin(input.impactAngle) *
-    Math.sqrt(input.impactorDensity / (DRAG_COEFFICIENT * rhoStar));
+  const l = L0 * Math.sin(angle) * Math.sqrt(density / (DRAG_COEFFICIENT * rhoStar));
   // Eq. 15* at z = 0.
   const growth = ((2 * H_SCALE) / l) * (Math.exp(zStar / (2 * H_SCALE)) - 1);
   return m(L0 * Math.sqrt(1 + growth * growth));
@@ -836,10 +838,10 @@ export function swarmSpreadAtGround(input: {
  * The swarm's spread where a complete airburst bursts: the pancake's limit,
  * f_p · L0, which is how Eq. 18 places the burst (rule 846 (ii) of
  * validation/craterFieldJoinedRules.ts reads a low burst's crater field
- * against it).
+ * against it). Rule 1194, item 11: branded, not plain `number`.
  */
-export function swarmSpreadAtBurst(impactorDiameter: number): Meters {
-  return m(PANCAKE_FACTOR * impactorDiameter);
+export function swarmSpreadAtBurst(impactorDiameter: Meters): Meters {
+  return m(PANCAKE_FACTOR * (impactorDiameter as number));
 }
 
 /** A point of an entry's path: what radiates, where, and how fast (B-095). */

@@ -41,21 +41,21 @@ describe('rules 235 to 240 — a burst that never lands has no downrange', () =>
   it('rule 237(a): every ring of a complete airburst is a circle, at every angle', () => {
     for (const angle of SHAPE_SWEEP_ANGLES_DEG) {
       for (const variant of ['overpressure', 'thermal'] as const) {
-        const ring = obliqueImpactRingAsymmetry(angle, 45, variant, false);
+        const ring = obliqueImpactRingAsymmetry(deg(angle), deg(45), variant, false);
         expect(ring.semiMajorMultiplier, `${variant} at ${angle.toString()}°`).toBe(1);
         expect(ring.semiMinorMultiplier, `${variant} at ${angle.toString()}°`).toBe(1);
         expect(ring.centerOffsetMeters).toBe(0);
         // The track is still a fact about the event, and is kept.
         expect(ring.azimuthDeg).toBe(45);
       }
-      expect(obliqueImpactCentreOffset(angle, 100_000, false)).toBe(0);
+      expect(obliqueImpactCentreOffset(deg(angle), m(100_000), false)).toBe(0);
     }
   });
 
   it('rule 237(b): nothing changes for an event that reaches the ground', () => {
     for (const angle of SHAPE_SWEEP_ANGLES_DEG) {
       for (const variant of ['overpressure', 'thermal'] as const) {
-        const ring = obliqueImpactRingAsymmetry(angle, 45, variant, true);
+        const ring = obliqueImpactRingAsymmetry(deg(angle), deg(45), variant, true);
         const was = beforeShape(angle, variant);
         expect(ring.semiMajorMultiplier, `${variant} at ${angle.toString()}°`).toBeCloseTo(
           was.major,
@@ -66,7 +66,7 @@ describe('rules 235 to 240 — a burst that never lands has no downrange', () =>
           12
         );
       }
-      expect(obliqueImpactCentreOffset(angle, 100_000, true)).toBeCloseTo(
+      expect(obliqueImpactCentreOffset(deg(angle), m(100_000), true)).toBeCloseTo(
         beforeShape(angle, 'thermal').offsetPerR * 100_000,
         9
       );

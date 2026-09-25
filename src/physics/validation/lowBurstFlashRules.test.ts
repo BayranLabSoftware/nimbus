@@ -6,7 +6,7 @@ import {
 } from '../effects/atmosphericEntry.js';
 import { impactThermalExposureAt } from '../events/impact/impactField.js';
 import { IMPACT_PRESETS, simulateImpact, type ImpactScenarioInput } from '../simulate.js';
-import { m } from '../units.js';
+import { J, m } from '../units.js';
 import { searchFieldJump } from './fieldJump.js';
 import { LOW_BURST_HELD_OUT_SEED } from './lowBurstFlashRules.js';
 
@@ -79,11 +79,11 @@ describe('rules 714 to 721: a low airburst’s flash where its fireball meets th
   it('rule 714: puts on the ground 1 − z/R of the kept energy, none from R up', () => {
     const energy = 4.184e15;
     const radius = 0.002 * Math.cbrt(energy);
-    expect(groundFireballShare(0, energy)).toBe(1);
-    expect(groundFireballShare(radius / 4, energy)).toBeCloseTo(0.75, 12);
-    expect(groundFireballShare(radius, energy)).toBe(0);
-    expect(groundFireballShare(10 * radius, energy)).toBe(0);
-    expect(groundFireballShare(0, 0)).toBe(0);
+    expect(groundFireballShare(m(0), J(energy))).toBe(1);
+    expect(groundFireballShare(m(radius / 4), J(energy))).toBeCloseTo(0.75, 12);
+    expect(groundFireballShare(m(radius), J(energy))).toBe(0);
+    expect(groundFireballShare(m(10 * radius), J(energy))).toBe(0);
+    expect(groundFireballShare(m(0), J(0))).toBe(0);
   });
 
   it('(b) meets the partial airburst at the switch: rings to 1e-6, the field steep', () => {

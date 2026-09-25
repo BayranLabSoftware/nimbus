@@ -44,30 +44,30 @@ export interface SeaCoupling {
 
 export interface SeaCouplingInput {
   /** Distance to the sea (m); zero or less means the event is in it. */
-  shoreDistanceM: number;
+  shoreDistanceM: Meters;
   /** Radius of the crater rim (m). */
-  craterRimRadiusM: number;
+  craterRimRadiusM: Meters;
   /** Radius the water cavity would have if everything coupled (m).
    *  The larger of this and the rim is the reach of full coupling. */
-  cavityAtFullCouplingM: number;
+  cavityAtFullCouplingM: Meters;
   /** Outer edge of the continuous ejecta blanket (m). Omit when the
    *  event has no ejecta model; the law then stops at the crater. */
-  ejectaReachM?: number;
+  ejectaReachM?: Meters;
 }
 
 /** The law. Pure, and the only place either event type decides how
  *  much of itself the sea receives. */
 export function computeSeaCoupling(input: SeaCouplingInput): SeaCoupling {
-  const shore = Number.isFinite(input.shoreDistanceM) ? Math.max(0, input.shoreDistanceM) : 0;
-  const rim = Number.isFinite(input.craterRimRadiusM) ? Math.max(0, input.craterRimRadiusM) : 0;
-  const cavity = Number.isFinite(input.cavityAtFullCouplingM)
-    ? Math.max(0, input.cavityAtFullCouplingM)
-    : 0;
+  const shoreDistanceM = input.shoreDistanceM as number;
+  const craterRimRadiusM = input.craterRimRadiusM as number;
+  const cavityAtFullCouplingM = input.cavityAtFullCouplingM as number;
+  const ejectaReachM = input.ejectaReachM as number | undefined;
+  const shore = Number.isFinite(shoreDistanceM) ? Math.max(0, shoreDistanceM) : 0;
+  const rim = Number.isFinite(craterRimRadiusM) ? Math.max(0, craterRimRadiusM) : 0;
+  const cavity = Number.isFinite(cavityAtFullCouplingM) ? Math.max(0, cavityAtFullCouplingM) : 0;
   const innerReach = Math.max(rim, cavity);
   const ejectaReach =
-    input.ejectaReachM !== undefined && Number.isFinite(input.ejectaReachM)
-      ? Math.max(0, input.ejectaReachM)
-      : 0;
+    ejectaReachM !== undefined && Number.isFinite(ejectaReachM) ? Math.max(0, ejectaReachM) : 0;
   const reach = Math.max(innerReach, ejectaReach);
   const withinReach = shore <= reach;
   const fraction = shore <= innerReach ? 1 : Math.min(1, innerReach / Math.max(shore, 1e-9));

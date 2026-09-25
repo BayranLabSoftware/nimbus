@@ -1413,7 +1413,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     // the number sitting on the outer edge of its own ellipse, and the damage
     // rings at 0.94 to 0.96.
     for (const angle of [5, 15, 30, 45, 60, 89]) {
-      const crater = craterAsymmetry(angle, 0);
+      const crater = craterAsymmetry(deg(angle), deg(0));
       expect(
         crater.semiMajorMultiplier * crater.semiMinorMultiplier,
         `crater at ${String(angle)}°`
@@ -1424,7 +1424,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
         `envelope at ${String(angle)}°`
       ).toBeCloseTo(Math.max(0.4, Math.cbrt(Math.sin((angle * Math.PI) / 180))), 12);
       for (const kind of ['overpressure', 'thermal'] as const) {
-        const ring = obliqueImpactRingAsymmetry(angle, 0, kind, true);
+        const ring = obliqueImpactRingAsymmetry(deg(angle), deg(0), kind, true);
         expect(
           ring.semiMajorMultiplier * ring.semiMinorMultiplier,
           `${kind} at ${String(angle)}°`
@@ -1667,7 +1667,7 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
     expect(asymmetry).toContain('PERPENDICULAR to the trajectory');
     expect(asymmetry).toContain('interfere destructively');
     // And the law still refuses to be applied where nothing reaches the ground.
-    const ring = obliqueImpactRingAsymmetry(18, 45, 'thermal', false);
+    const ring = obliqueImpactRingAsymmetry(deg(18), deg(45), 'thermal', false);
     expect(ring.semiMajorMultiplier).toBe(1);
     expect(ring.semiMinorMultiplier).toBe(1);
   });

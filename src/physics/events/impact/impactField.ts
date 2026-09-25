@@ -214,7 +214,7 @@ export function impactThermalExposureAt(source: ImpactFieldSource, rangeM: numbe
       : 0;
   const share =
     (source.inputs?.lowBurstFlash ?? DEFAULT_LOW_BURST_FLASH) === 'fireball'
-      ? groundFireballShare(source.entry.burstAltitude, kept)
+      ? groundFireballShare(m(source.entry.burstAltitude), J(kept))
       : 0;
   const onGround = kept * share;
   const inTheAir =

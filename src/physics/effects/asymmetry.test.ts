@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { m, mps } from '../units.js';
+import { deg, m, mps } from '../units.js';
 import {
   ISOTROPIC_RING,
   compose,
@@ -27,7 +27,7 @@ describe('ISOTROPIC_RING', () => {
 
 describe('craterAsymmetry — Pierazzo & Melosh / Gault & Wedekind envelope', () => {
   it('returns a circle for vertical (90°) impacts', () => {
-    const asym = craterAsymmetry(90, 45);
+    const asym = craterAsymmetry(deg(90), deg(45));
     expect(asym.semiMajorMultiplier).toBe(1);
     expect(asym.semiMinorMultiplier).toBe(1);
     expect(asym.centerOffsetMeters).toBe(0);
@@ -37,7 +37,7 @@ describe('craterAsymmetry — Pierazzo & Melosh / Gault & Wedekind envelope', ()
     // Earlier revisions snapped this to a pure circle above 45°, which
     // hid the physically real ≈ 11 % cross-range compression; the
     // smooth envelope keeps Chicxulub / Meteor Crater visibly oblique.
-    const asym = craterAsymmetry(45, 90);
+    const asym = craterAsymmetry(deg(45), deg(90));
     // sin(45°)^(1/3) ≈ 0.891 → 11 % compression on the cross-range axis.
     expect(ba(asym)).toBeCloseTo(0.891, 3);
     // and the ellipse covers the ground its caption claims.
@@ -45,14 +45,14 @@ describe('craterAsymmetry — Pierazzo & Melosh / Gault & Wedekind envelope', ()
   });
 
   it('shows only mild compression at θ = 60° (within Gault & Wedekind scatter)', () => {
-    const asym = craterAsymmetry(60, 0);
+    const asym = craterAsymmetry(deg(60), deg(0));
     // sin(60°)^(1/3) ≈ 0.953 → b/a still ≥ 0.95 — within experimental scatter of 1.0
     expect(ba(asym)).toBeGreaterThanOrEqual(0.94);
     expect(ba(asym)).toBeLessThan(1);
   });
 
   it('elongates downrange below 45° per the cube-root sin envelope', () => {
-    const asym30 = craterAsymmetry(30, 0);
+    const asym30 = craterAsymmetry(deg(30), deg(0));
     // sin(30°)^(1/3) = 0.5^(1/3) ≈ 0.7937
     expect(ba(asym30)).toBeCloseTo(0.7937, 3);
     expect(asym30.semiMajorMultiplier * asym30.semiMinorMultiplier).toBeCloseTo(1, 12);
@@ -70,51 +70,51 @@ describe('craterAsymmetry — Pierazzo & Melosh / Gault & Wedekind envelope', ()
       { angle: 60, ratio: 0.95 },
     ];
     for (const { angle, ratio: expectedRatio } of expected) {
-      const asym = craterAsymmetry(angle, 0);
+      const asym = craterAsymmetry(deg(angle), deg(0));
       expect(Math.abs(ba(asym) - expectedRatio)).toBeLessThanOrEqual(0.06);
     }
   });
 
   it('clamps the envelope at b/a = 0.40 to avoid degenerate ellipses', () => {
-    const grazing = craterAsymmetry(1, 0);
+    const grazing = craterAsymmetry(deg(1), deg(0));
     expect(ba(grazing)).toBeCloseTo(0.4, 12);
     expect(grazing.semiMajorMultiplier * grazing.semiMinorMultiplier).toBeCloseTo(1, 12);
   });
 
   it('normalises the azimuth to [0, 360)', () => {
-    expect(craterAsymmetry(30, 720).azimuthDeg).toBe(0);
-    expect(craterAsymmetry(30, -90).azimuthDeg).toBe(270);
-    expect(craterAsymmetry(30, 359.5).azimuthDeg).toBeCloseTo(359.5, 1);
+    expect(craterAsymmetry(deg(30), deg(720)).azimuthDeg).toBe(0);
+    expect(craterAsymmetry(deg(30), deg(-90)).azimuthDeg).toBe(270);
+    expect(craterAsymmetry(deg(30), deg(359.5)).azimuthDeg).toBeCloseTo(359.5, 1);
   });
 
   it('handles invalid inputs by returning the isotropic ring', () => {
-    expect(craterAsymmetry(NaN, 90)).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 90 });
-    expect(craterAsymmetry(0, 90)).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 90 });
-    expect(craterAsymmetry(-15, 90)).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 90 });
+    expect(craterAsymmetry(deg(NaN), deg(90))).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 90 });
+    expect(craterAsymmetry(deg(0), deg(90))).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 90 });
+    expect(craterAsymmetry(deg(-15), deg(90))).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 90 });
   });
 });
 
 describe('obliqueImpactRingAsymmetry — Pierazzo & Artemieva 2003 envelope', () => {
   it('returns a circle for vertical impacts', () => {
-    const op = obliqueImpactRingAsymmetry(90, 0, 'overpressure', true);
-    const th = obliqueImpactRingAsymmetry(90, 0, 'thermal', true);
+    const op = obliqueImpactRingAsymmetry(deg(90), deg(0), 'overpressure', true);
+    const th = obliqueImpactRingAsymmetry(deg(90), deg(0), 'thermal', true);
     expect(op).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 0 });
     expect(th).toEqual({ ...ISOTROPIC_RING, azimuthDeg: 0 });
   });
 
   it('elongates the thermal contour more than the overpressure (Pierazzo & Artemieva 2003)', () => {
-    const op = obliqueImpactRingAsymmetry(15, 90, 'overpressure', true);
-    const th = obliqueImpactRingAsymmetry(15, 90, 'thermal', true);
+    const op = obliqueImpactRingAsymmetry(deg(15), deg(90), 'overpressure', true);
+    const th = obliqueImpactRingAsymmetry(deg(15), deg(90), 'thermal', true);
     expect(th.semiMajorMultiplier).toBeGreaterThan(op.semiMajorMultiplier);
   });
 
   it('caps the overpressure boost at ≤ 30 % even at extreme grazing', () => {
-    const op = obliqueImpactRingAsymmetry(1, 0, 'overpressure', true);
+    const op = obliqueImpactRingAsymmetry(deg(1), deg(0), 'overpressure', true);
     expect(op.semiMajorMultiplier).toBeLessThanOrEqual(1.3 + 1e-9);
   });
 
   it('caps the thermal boost at ≤ 40 %', () => {
-    const th = obliqueImpactRingAsymmetry(1, 0, 'thermal', true);
+    const th = obliqueImpactRingAsymmetry(deg(1), deg(0), 'thermal', true);
     expect(th.semiMajorMultiplier).toBeLessThanOrEqual(1.4 + 1e-9);
   });
 
@@ -122,43 +122,43 @@ describe('obliqueImpactRingAsymmetry — Pierazzo & Artemieva 2003 envelope', ()
     // sin(45°) ≈ 0.707, obliquity = 0.293
     // overpressure: 0.30 * 0.293 ≈ 0.088 (~8.8 % boost)
     // thermal:      0.40 * 0.293 ≈ 0.117 (~11.7 % boost)
-    const op = obliqueImpactRingAsymmetry(45, 0, 'overpressure', true);
-    const th = obliqueImpactRingAsymmetry(45, 0, 'thermal', true);
+    const op = obliqueImpactRingAsymmetry(deg(45), deg(0), 'overpressure', true);
+    const th = obliqueImpactRingAsymmetry(deg(45), deg(0), 'thermal', true);
     // Spread about one by `equalArea`, so the elongation to read is a/b.
     expect(op.semiMajorMultiplier / op.semiMinorMultiplier).toBeGreaterThan(1.13);
     expect(th.semiMajorMultiplier / th.semiMinorMultiplier).toBeGreaterThan(1.18);
   });
 
   it('compresses the cross-range axis (semi-minor < 1) at non-vertical angles', () => {
-    const op30 = obliqueImpactRingAsymmetry(30, 0, 'overpressure', true);
+    const op30 = obliqueImpactRingAsymmetry(deg(30), deg(0), 'overpressure', true);
     expect(op30.semiMinorMultiplier).toBeLessThan(1);
     expect(op30.semiMinorMultiplier).toBeGreaterThanOrEqual(0.5);
   });
 
   it('floors the cross-range compression at 0.50 to keep a recognisable ellipse', () => {
-    const grazing = obliqueImpactRingAsymmetry(1, 0, 'thermal', true);
+    const grazing = obliqueImpactRingAsymmetry(deg(1), deg(0), 'thermal', true);
     expect(grazing.semiMinorMultiplier).toBeGreaterThanOrEqual(0.5);
   });
 });
 
 describe('obliqueImpactCentreOffset', () => {
   it('returns 0 for vertical impacts', () => {
-    expect(obliqueImpactCentreOffset(90, 1_000, true)).toBe(0);
+    expect(obliqueImpactCentreOffset(deg(90), m(1_000), true)).toBe(0);
   });
 
   it('returns 0 for invalid inputs', () => {
-    expect(obliqueImpactCentreOffset(NaN, 1_000, true)).toBe(0);
-    expect(obliqueImpactCentreOffset(30, 0, true)).toBe(0);
-    expect(obliqueImpactCentreOffset(30, -500, true)).toBe(0);
+    expect(obliqueImpactCentreOffset(deg(NaN), m(1_000), true)).toBe(0);
+    expect(obliqueImpactCentreOffset(deg(30), m(0), true)).toBe(0);
+    expect(obliqueImpactCentreOffset(deg(30), m(-500), true)).toBe(0);
   });
 
   it('shifts the centre downrange by ≈ 10 % of R at θ = 30°', () => {
     // 0.2 · (1 − sin 30°) · R = 0.2 · 0.5 · R = 0.10 R
-    expect(obliqueImpactCentreOffset(30, 1_000, true)).toBeCloseTo(100, 3);
+    expect(obliqueImpactCentreOffset(deg(30), m(1_000), true)).toBeCloseTo(100, 3);
   });
 
   it('caps the offset at ≤ 20 % of R for grazing impacts', () => {
-    expect(obliqueImpactCentreOffset(1, 1_000, true)).toBeLessThanOrEqual(200 + 1e-9);
+    expect(obliqueImpactCentreOffset(deg(1), m(1_000), true)).toBeLessThanOrEqual(200 + 1e-9);
   });
 });
 
@@ -255,13 +255,13 @@ describe('the picture covers the ground its caption claims', () => {
     // Before 19 September 2026 a 45° crater was drawn at 0.891 of it and the
     // damage rings at 0.94 to 0.96 (docs/IMPACT_AUDIT.md §3.2, §3.3).
     for (let angle = 1; angle <= 90; angle += 1) {
-      const crater = craterAsymmetry(angle, 0);
+      const crater = craterAsymmetry(deg(angle), deg(0));
       expect(
         crater.semiMajorMultiplier * crater.semiMinorMultiplier,
         `crater at ${String(angle)}°`
       ).toBeCloseTo(1, 12);
       for (const kind of ['overpressure', 'thermal'] as const) {
-        const ring = obliqueImpactRingAsymmetry(angle, 0, kind, true);
+        const ring = obliqueImpactRingAsymmetry(deg(angle), deg(0), kind, true);
         expect(
           ring.semiMajorMultiplier * ring.semiMinorMultiplier,
           `${kind} at ${String(angle)}°`
@@ -283,7 +283,7 @@ describe('the picture covers the ground its caption claims', () => {
     // major axis WAS the radius, so the caption was the farthest the shape
     // reached and every other direction read less.
     for (const angle of [5, 15, 30, 45, 60, 80]) {
-      const crater = craterAsymmetry(angle, 0);
+      const crater = craterAsymmetry(deg(angle), deg(0));
       expect(crater.semiMajorMultiplier, `crater at ${String(angle)}°`).toBeGreaterThan(1);
       expect(crater.semiMinorMultiplier, `crater at ${String(angle)}°`).toBeLessThan(1);
     }

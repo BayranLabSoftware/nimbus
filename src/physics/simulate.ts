@@ -778,7 +778,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   const ironLaw = input.ironCraterField ?? DEFAULT_IRON_CRATER_FIELD;
   const ironBreaks =
     (input.impactorDensity as number) >= IRON_DENSITY && (entry.breakupAltitude as number) > 0;
-  const strewnShare = ironBreaks ? ironFieldShare(ironLaw, mass, diameterM) : 0;
+  const strewnShare = ironBreaks ? ironFieldShare(ironLaw, mass, m(diameterM)) : 0;
   // Whether the iron's own fragments dig its crater: in its strewn field, and
   // by the body's mass wherever it breaks up.
   const ironDigs = ironBreaks && (strewnShare > 0 || ironLaw === 'mass');
@@ -793,7 +793,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // the ground digs, as the body's mass in that share at its burst speed.
   const lowBurstCraterShare =
     airburst && !ironDigs && (input.lowBurstCrater ?? DEFAULT_LOW_BURST_CRATER) === 'share'
-      ? groundFireballShare(entry.burstAltitude, keptEnergy)
+      ? groundFireballShare(entry.burstAltitude, J(keptEnergy))
       : 0;
   // The crater of the whole body at the speed the entry leaves it: a body or
   // swarm that reaches the ground, and an iron's fragments that dig as one.
@@ -810,14 +810,14 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       ? craterFieldShare(
           input.craterField ?? DEFAULT_CRATER_FIELD,
           swarmSpreadAtGround({
-            impactorDiameter: diameterM,
+            impactorDiameter: m(diameterM),
             impactorDensity: input.impactorDensity,
             impactAngle: input.impactAngle,
             breakupAltitude: entry.breakupAltitude,
             ...(input.entryAtmosphere === undefined ? {} : { atmosphere: input.entryAtmosphere }),
             ...(input.pancakeGrowth === undefined ? {} : { pancake: input.pancakeGrowth }),
           }),
-          wholeCrater()
+          m(wholeCrater())
         )
       : 1;
   // Rule 846 (ii): under `joined`, a low burst's crater is read by the same
@@ -832,7 +832,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
     }) as number) * seafloorScale;
   const lowBurstFieldShare =
     craterLaw === 'joined' && lowBurstCraterShare > 0 && !ironDigs && dryGround
-      ? craterFieldShare(craterLaw, swarmSpreadAtBurst(diameterM), lowBurstWhole())
+      ? craterFieldShare(craterLaw, swarmSpreadAtBurst(m(diameterM)), m(lowBurstWhole()))
       : 1;
   // The largest crater of an iron's strewn field.
   const strewnCrater = (): number =>
@@ -1002,7 +1002,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // it becomes as the burst altitude reaches the ground.
   const lowBurstShare =
     (input.lowBurstFlash ?? DEFAULT_LOW_BURST_FLASH) === 'fireball'
-      ? groundFireballShare(entry.burstAltitude, keptEnergy)
+      ? groundFireballShare(entry.burstAltitude, J(keptEnergy))
       : 0;
   const lowBurstFluence = (range: number): number => {
     const z = airFlash === 'burst' ? (entry.burstAltitude as number) : 0;
@@ -1131,27 +1131,66 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // under the burst (B-067, rules 235 to 240 of
   // validation/airburstShapeRules.ts).
   const couplesToGround = entry.regime !== 'COMPLETE_AIRBURST';
+  // Rule 1194, item 11: craterAsymmetry/obliqueImpactRingAsymmetry/
+  // obliqueImpactCentreOffset now take branded Degrees/Meters.
+  const angleDegBranded = deg(angleDeg);
+  const azimuthDegBranded = deg(azimuthDeg);
   const damageAsymmetry = {
-    craterRim: craterAsymmetry(angleDeg, azimuthDeg),
+    craterRim: craterAsymmetry(angleDegBranded, azimuthDegBranded),
     thirdDegreeBurn: {
-      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'thermal', couplesToGround),
-      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, thermal3Nominal, couplesToGround),
+      ...obliqueImpactRingAsymmetry(angleDegBranded, azimuthDegBranded, 'thermal', couplesToGround),
+      centerOffsetMeters: obliqueImpactCentreOffset(
+        angleDegBranded,
+        m(thermal3Nominal),
+        couplesToGround
+      ),
     },
     secondDegreeBurn: {
-      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'thermal', couplesToGround),
-      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, thermal2Nominal, couplesToGround),
+      ...obliqueImpactRingAsymmetry(angleDegBranded, azimuthDegBranded, 'thermal', couplesToGround),
+      centerOffsetMeters: obliqueImpactCentreOffset(
+        angleDegBranded,
+        m(thermal2Nominal),
+        couplesToGround
+      ),
     },
     overpressure5psi: {
-      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'overpressure', couplesToGround),
-      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, op5psiNominal, couplesToGround),
+      ...obliqueImpactRingAsymmetry(
+        angleDegBranded,
+        azimuthDegBranded,
+        'overpressure',
+        couplesToGround
+      ),
+      centerOffsetMeters: obliqueImpactCentreOffset(
+        angleDegBranded,
+        m(op5psiNominal),
+        couplesToGround
+      ),
     },
     overpressure1psi: {
-      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'overpressure', couplesToGround),
-      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, op1psiNominal, couplesToGround),
+      ...obliqueImpactRingAsymmetry(
+        angleDegBranded,
+        azimuthDegBranded,
+        'overpressure',
+        couplesToGround
+      ),
+      centerOffsetMeters: obliqueImpactCentreOffset(
+        angleDegBranded,
+        m(op1psiNominal),
+        couplesToGround
+      ),
     },
     lightDamage: {
-      ...obliqueImpactRingAsymmetry(angleDeg, azimuthDeg, 'overpressure', couplesToGround),
-      centerOffsetMeters: obliqueImpactCentreOffset(angleDeg, lightDamageNominal, couplesToGround),
+      ...obliqueImpactRingAsymmetry(
+        angleDegBranded,
+        azimuthDegBranded,
+        'overpressure',
+        couplesToGround
+      ),
+      centerOffsetMeters: obliqueImpactCentreOffset(
+        angleDegBranded,
+        m(lightDamageNominal),
+        couplesToGround
+      ),
     },
     // Rule 969 (iv): out of the domain the drawn offset reads no blanket.
     ejectaBlanket: ejectaButterflyAsymmetry(asymmetryFactor, azimuthDeg, shown(blanketEdge1mm)),
@@ -1387,9 +1426,9 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
   // Rule 969 (iii): out of the crater's domain the sea's coupling reads no
   // crater — no cavity on land, no rim and no ejecta reach at sea.
   const transientRadiusM = resolved ? (Dtc as number) / 2 : 0;
-  const segmentFraction = onLand ? shoreSegmentFraction(transientRadiusM, shoreDistanceM) : 0;
+  const segmentFraction = onLand ? shoreSegmentFraction(m(transientRadiusM), m(shoreDistanceM)) : 0;
   const seaCoupling = computeSeaCoupling({
-    shoreDistanceM,
+    shoreDistanceM: m(shoreDistanceM),
     // On dry ground the hole that displaces water is the transient cavity, not
     // the rim left after it collapses: by the time the rim exists the wave is
     // made. Rule 268.

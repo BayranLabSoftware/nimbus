@@ -19,6 +19,7 @@ import {
   CRATER_FIELD_LARGEST_FRAGMENT,
   CRATER_FIELD_THRESHOLD,
 } from '../../validation/craterFieldRules.js';
+import type { Meters } from '../../units.js';
 
 export type CraterField = 'single' | 'field' | 'joined';
 
@@ -28,15 +29,18 @@ export const DEFAULT_CRATER_FIELD: CraterField = 'joined';
 
 /**
  * The share of the whole swarm's transient crater the crater keeps: one for a
- * single crater, the largest fragment's for a field.
+ * single crater, the largest fragment's for a field. Rule 1194, item 11:
+ * `spreadM`/`wholeCraterM` branded, not plain `number`.
  */
-export function craterFieldShare(law: CraterField, spreadM: number, wholeCraterM: number): number {
+export function craterFieldShare(law: CraterField, spreadM: Meters, wholeCraterM: Meters): number {
+  const spread = spreadM as number;
+  const wholeCrater = wholeCraterM as number;
   if (law === 'single') return 1;
-  if (!(wholeCraterM > 0) || !(spreadM > 0)) return 1;
+  if (!(wholeCrater > 0) || !(spread > 0)) return 1;
   if (law === 'field')
-    return spreadM >= CRATER_FIELD_THRESHOLD * wholeCraterM ? CRATER_FIELD_LARGEST_FRAGMENT : 1;
+    return spread >= CRATER_FIELD_THRESHOLD * wholeCrater ? CRATER_FIELD_LARGEST_FRAGMENT : 1;
   // Rule 846 (i): whole up to the threshold, the program's half from twice
   // it, and the whole crater shrinking as the spread passes it between.
-  const joined = (CRATER_FIELD_THRESHOLD * wholeCraterM) / spreadM;
+  const joined = (CRATER_FIELD_THRESHOLD * wholeCrater) / spread;
   return Math.min(1, Math.max(CRATER_FIELD_LARGEST_FRAGMENT, joined));
 }

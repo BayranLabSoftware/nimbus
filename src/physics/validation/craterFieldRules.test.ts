@@ -48,9 +48,9 @@ describe('rules 838 to 845: a scattered body digs a crater field', () => {
       const r = simulateImpact({ ...eiepRowInput(row), entryEquations: 'program' });
       if (r.entry.regime !== 'PARTIAL_AIRBURST') continue;
       const spread = swarmSpreadAtGround({
-        impactorDiameter: row.diameterM,
-        impactorDensity: row.densityKgM3,
-        impactAngle: (row.angleDeg * Math.PI) / 180,
+        impactorDiameter: m(row.diameterM),
+        impactorDensity: kgPerM3(row.densityKgM3),
+        impactAngle: degreesToRadians(deg(row.angleDeg)),
         breakupAltitude: r.entry.breakupAltitude,
       }) as number;
       const half = 0.5 * 10 ** (Math.floor(Math.log10(minor)) - 1);

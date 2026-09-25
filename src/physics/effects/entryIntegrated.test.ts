@@ -239,17 +239,17 @@ describe('rule 910: the integrated entry on Collins’s exponential', () => {
           bad('burst', got.virtualBurstAltitude, ref.burst);
         if (refRegime === 'PARTIAL_AIRBURST') {
           const spreadN = swarmSpreadAtGround({
-            impactorDiameter: c.diameter,
-            impactorDensity: c.density,
-            impactAngle: c.angle,
+            impactorDiameter: m(c.diameter),
+            impactorDensity: kgPerM3(c.density),
+            impactAngle: rad(c.angle),
             breakupAltitude: got.breakupAltitude,
             atmosphere: 'integratedExponential',
           });
           const spreadA = swarmSpreadAtGround({
-            impactorDiameter: c.diameter,
-            impactorDensity: c.density,
-            impactAngle: c.angle,
-            breakupAltitude: ref.breakup,
+            impactorDiameter: m(c.diameter),
+            impactorDensity: kgPerM3(c.density),
+            impactAngle: rad(c.angle),
+            breakupAltitude: m(ref.breakup),
           });
           if (Math.abs(spreadN - spreadA) > ENTRY_ATMOSPHERE_RELATIVE_TOLERANCE * spreadA)
             bad('spread', spreadN, spreadA);

@@ -31,6 +31,7 @@ import {
 import type { EiepRow } from './eiepReference.js';
 import { swarmSpreadAtGround } from '../effects/atmosphericEntry.js';
 import type { ImpactScenarioResult } from '../simulate.js';
+import { deg, degreesToRadians, kgPerM3, m } from '../units.js';
 
 export const LEVEL_A_BARS = { excellent: 0.02, audit: 0.1 } as const;
 
@@ -180,9 +181,9 @@ export const LEVEL_A_DIFFERENCES: readonly LevelADifference[] = [
       const whole = simulateEiepRow(pair.row, { craterField: 'single' });
       if (whole.entry.regime !== 'PARTIAL_AIRBURST') return false;
       const spread = swarmSpreadAtGround({
-        impactorDiameter: pair.row.diameterM,
-        impactorDensity: pair.row.densityKgM3,
-        impactAngle: (pair.row.angleDeg * Math.PI) / 180,
+        impactorDiameter: m(pair.row.diameterM),
+        impactorDensity: kgPerM3(pair.row.densityKgM3),
+        impactAngle: degreesToRadians(deg(pair.row.angleDeg)),
         breakupAltitude: whole.entry.breakupAltitude,
         // Rule 994: the program's pancake is Eq. 15*.
         pancake: 'eq15',

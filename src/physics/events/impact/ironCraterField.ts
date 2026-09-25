@@ -31,6 +31,8 @@
  *   the largest is the geometric mean of the two, weighted by the logarithm
  *   of the mass.
  */
+import type { Kilograms, Meters } from '../../units.js';
+
 export type IronCraterField = 'cut' | 'mass';
 
 /** What an impact that names no iron crater field uses: `mass`, since rules
@@ -54,14 +56,18 @@ export const IRON_FIELD_MULTIPLE_KG = 3e6;
 export const IRON_FIELD_SINGLE_KG = 1e7;
 
 /** The share of the strewn field in the crater of an iron that breaks up: 1
- *  where it is a field of separate craters, 0 where its fragments dig one. */
-export function ironFieldShare(law: IronCraterField, massKg: number, diameterM: number): number {
-  if (law === 'cut') return diameterM < IRON_FIELD_CUT_DIAMETER ? 1 : 0;
-  if (!(massKg > IRON_FIELD_MULTIPLE_KG)) return 1;
-  if (massKg >= IRON_FIELD_SINGLE_KG) return 0;
+ *  where it is a field of separate craters, 0 where its fragments dig one.
+ *  Rule 1194, item 11: `massKg`/`diameterM` branded, not plain `number`, so
+ *  a caller cannot pass one unit where the other is meant. */
+export function ironFieldShare(law: IronCraterField, massKg: Kilograms, diameterM: Meters): number {
+  const mass = massKg as number;
+  const diameter = diameterM as number;
+  if (law === 'cut') return diameter < IRON_FIELD_CUT_DIAMETER ? 1 : 0;
+  if (!(mass > IRON_FIELD_MULTIPLE_KG)) return 1;
+  if (mass >= IRON_FIELD_SINGLE_KG) return 0;
   return (
     1 -
-    Math.log(massKg / IRON_FIELD_MULTIPLE_KG) /
+    Math.log(mass / IRON_FIELD_MULTIPLE_KG) /
       Math.log(IRON_FIELD_SINGLE_KG / IRON_FIELD_MULTIPLE_KG)
   );
 }

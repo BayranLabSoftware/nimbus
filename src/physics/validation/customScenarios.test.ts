@@ -129,10 +129,10 @@ describe('a law stays a law across the whole range', () => {
         let previous = Number.POSITIVE_INFINITY;
         for (let shore = 0; shore <= 3_000_000; shore += 25_000) {
           const f = computeSeaCoupling({
-            shoreDistanceM: shore,
-            craterRimRadiusM: rim,
-            cavityAtFullCouplingM: 0,
-            ejectaReachM: ejecta,
+            shoreDistanceM: m(shore),
+            craterRimRadiusM: m(rim),
+            cavityAtFullCouplingM: m(0),
+            ejectaReachM: m(ejecta),
           }).fraction;
           expect(
             f,

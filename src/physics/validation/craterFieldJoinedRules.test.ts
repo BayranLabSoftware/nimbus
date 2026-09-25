@@ -35,14 +35,14 @@ const at = (k: number, craterField: NonNullable<ImpactScenarioInput['craterField
 
 describe('rules 846 to 853: the crater field, joined', () => {
   it('keeps the whole crater up to the threshold, the half from twice it, and D_tc / L between', () => {
-    expect(craterFieldShare('joined', 900, 1_000)).toBe(1);
-    expect(craterFieldShare('joined', 1_000, 1_000)).toBe(1);
-    expect(craterFieldShare('joined', 1_500, 1_000)).toBeCloseTo(1_000 / 1_500, 12);
-    expect(craterFieldShare('joined', 2_000, 1_000)).toBe(0.5);
-    expect(craterFieldShare('joined', 9_000, 1_000)).toBe(0.5);
+    expect(craterFieldShare('joined', m(900), m(1_000))).toBe(1);
+    expect(craterFieldShare('joined', m(1_000), m(1_000))).toBe(1);
+    expect(craterFieldShare('joined', m(1_500), m(1_000))).toBeCloseTo(1_000 / 1_500, 12);
+    expect(craterFieldShare('joined', m(2_000), m(1_000))).toBe(0.5);
+    expect(craterFieldShare('joined', m(9_000), m(1_000))).toBe(0.5);
     // The refused sharp law, kept by name, still steps.
-    expect(craterFieldShare('field', 1_000, 1_000)).toBe(0.5);
-    expect(craterFieldShare('single', 9_000, 1_000)).toBe(1);
+    expect(craterFieldShare('field', m(1_000), m(1_000))).toBe(0.5);
+    expect(craterFieldShare('single', m(9_000), m(1_000))).toBe(1);
   });
 
   it('is the default since its adoption (rule 853)', () => {
@@ -89,8 +89,8 @@ describe('rules 846 to 853: the crater field, joined', () => {
     const single = simulateImpact({ ...input, craterField: 'single' });
     const joined = simulateImpact({ ...input, craterField: 'joined' });
     const spread = swarmSpreadAtGround({
-      impactorDiameter: 100,
-      impactorDensity: 1_500,
+      impactorDiameter: m(100),
+      impactorDensity: kgPerM3(1_500),
       impactAngle: input.impactAngle,
       breakupAltitude: single.entry.breakupAltitude,
     }) as number;

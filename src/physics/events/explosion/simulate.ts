@@ -682,9 +682,9 @@ export function simulateExplosion(input: ExplosionScenarioInput): ExplosionScena
     // crater fifty metres across lifts the sea by whatever it throws
     // that far, which for a charge with no ejecta model is nothing.
     const seaCoupling = computeSeaCoupling({
-      shoreDistanceM: (input.shoreDistance as number | undefined) ?? 0,
-      craterRimRadiusM: (result.crater.apparentDiameter as number) / 2,
-      cavityAtFullCouplingM: 0,
+      shoreDistanceM: m((input.shoreDistance as number | undefined) ?? 0),
+      craterRimRadiusM: m((result.crater.apparentDiameter as number) / 2),
+      cavityAtFullCouplingM: m(0),
     });
     result.seaCoupling = seaCoupling;
     const tsunami = explosionTsunami({

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { groundFireballShare, type LowBurstCrater } from '../effects/atmosphericEntry.js';
 import { IMPACT_PRESETS, simulateImpact, type ImpactScenarioInput } from '../simulate.js';
-import { m } from '../units.js';
+import { J, m } from '../units.js';
 import { LOW_BURST_CRATER_HELD_OUT_SEED } from './lowBurstCraterRules.js';
 
 /** Rules 756 to 763: a low airburst digs where its kept energy strikes the
@@ -73,7 +73,7 @@ describe('rules 756 to 763: a low airburst digs where its kept energy strikes th
         none.entry.regime === 'COMPLETE_AIRBURST'
           ? Number(none.impactor.kineticEnergy) * Math.min(1, (none.entry.endVelocity / v0) ** 2)
           : 0;
-      const below = kept > 0 && groundFireballShare(none.entry.burstAltitude, kept) > 0;
+      const below = kept > 0 && groundFireballShare(none.entry.burstAltitude, J(kept)) > 0;
       const iron = Number(input.impactorDensity) >= 6_000 && Number(input.impactorDiameter) < 20;
       if (!below || iron) {
         expect(craterOf(share)).toEqual(craterOf(none));

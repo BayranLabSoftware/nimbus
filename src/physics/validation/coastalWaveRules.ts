@@ -102,6 +102,8 @@
  * anyone was counting.
  */
 
+import type { Meters } from '../units.js';
+
 /**
  * The fraction of a crater of radius `R` lying beyond a straight coastline a
  * distance `d` from its centre — the circular segment, in closed form.
@@ -109,18 +111,20 @@
  * Half when the centre is on the water's edge, nothing when the crater stops
  * short. There is no constant in it and nothing to tune.
  */
-export function shoreSegmentFraction(radiusM: number, shoreDistanceM: number): number {
-  if (!Number.isFinite(radiusM) || radiusM <= 0) return 0;
-  if (!Number.isFinite(shoreDistanceM)) return 0;
-  if (shoreDistanceM <= 0) return 0.5;
-  if (shoreDistanceM >= radiusM) return 0;
-  const theta = Math.acos(shoreDistanceM / radiusM);
+export function shoreSegmentFraction(radiusM: Meters, shoreDistanceM: Meters): number {
+  const r = radiusM as number;
+  const d = shoreDistanceM as number;
+  if (!Number.isFinite(r) || r <= 0) return 0;
+  if (!Number.isFinite(d)) return 0;
+  if (d <= 0) return 0.5;
+  if (d >= r) return 0;
+  const theta = Math.acos(d / r);
   return (theta - Math.sin(theta) * Math.cos(theta)) / Math.PI;
 }
 
 /** The equal-area circular source of that segment, as a fraction of `R`. */
-export function shoreSegmentEquivalentRadius(radiusM: number, shoreDistanceM: number): number {
-  return radiusM * Math.sqrt(shoreSegmentFraction(radiusM, shoreDistanceM));
+export function shoreSegmentEquivalentRadius(radiusM: Meters, shoreDistanceM: Meters): number {
+  return (radiusM as number) * Math.sqrt(shoreSegmentFraction(radiusM, shoreDistanceM));
 }
 
 /** Rule 270(a): a land impact can never put more than half its crater in the

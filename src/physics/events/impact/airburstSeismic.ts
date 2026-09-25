@@ -1,5 +1,5 @@
 import { groundFireballShare } from '../../effects/atmosphericEntry.js';
-import { J } from '../../units.js';
+import { J, m } from '../../units.js';
 import { SEISMIC_EFFICIENCY, SEISMIC_EFFICIENCY_RANGE, seismicMagnitude } from './seismic.js';
 
 /**
@@ -175,7 +175,8 @@ export function airburstMagnitude(input: AirburstMagnitudeInput): AirburstMagnit
     input.burstAltitude / 1_000,
     input.overWater ? 'oceanic' : 'continental'
   );
-  const onGround = groundFireballShare(input.burstAltitude, input.keptEnergy) * input.keptEnergy;
+  const onGround =
+    groundFireballShare(m(input.burstAltitude), J(input.keptEnergy)) * input.keptEnergy;
   const groundAt = (efficiency: number): number | null =>
     onGround > 0 ? seismicMagnitude(J(onGround), efficiency) : null;
   const ground = groundAt(SEISMIC_EFFICIENCY);

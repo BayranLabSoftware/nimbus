@@ -1,4 +1,4 @@
-import type { Meters, MetersPerSecond } from '../units.js';
+import type { Degrees, Meters, MetersPerSecond } from '../units.js';
 
 /**
  * Per-ring rendering geometry: how to draw an ellipse instead of a
@@ -139,7 +139,12 @@ export function equalArea(major: number, minor: number): { major: number; minor:
   return { major: major * scale, minor: minor * scale };
 }
 
-export function craterAsymmetry(impactAngleDeg: number, impactAzimuthDeg: number): RingAsymmetry {
+/** Rule 1194, item 11: `impactAngleDeg`/`impactAzimuthDeg` branded, not
+ *  plain `number`, so a caller cannot pass radians where degrees are
+ *  meant. */
+export function craterAsymmetry(angleDeg: Degrees, azimuthDeg: Degrees): RingAsymmetry {
+  const impactAngleDeg = angleDeg as number;
+  const impactAzimuthDeg = azimuthDeg as number;
   if (!Number.isFinite(impactAngleDeg) || impactAngleDeg <= 0) {
     return { ...ISOTROPIC_RING, azimuthDeg: normaliseAzimuth(impactAzimuthDeg) };
   }
@@ -230,12 +235,15 @@ export function craterAsymmetry(impactAngleDeg: number, impactAzimuthDeg: number
  * does, an airburst is drawn as the shape its own source has, and not as one
  * nothing behind the picture supports.
  */
+/** Rule 1194, item 11: `impactAngleDeg`/`impactAzimuthDeg` branded. */
 export function obliqueImpactRingAsymmetry(
-  impactAngleDeg: number,
-  impactAzimuthDeg: number,
+  angleDegInput: Degrees,
+  azimuthDegInput: Degrees,
   variant: 'overpressure' | 'thermal',
   couplesToGround: boolean
 ): RingAsymmetry {
+  const impactAngleDeg = angleDegInput as number;
+  const impactAzimuthDeg = azimuthDegInput as number;
   if (!couplesToGround) {
     return { ...ISOTROPIC_RING, azimuthDeg: normaliseAzimuth(impactAzimuthDeg) };
   }
@@ -271,11 +279,14 @@ export function obliqueImpactRingAsymmetry(
  * keep the multipliers from {@link obliqueImpactRingAsymmetry} and
  * compute the absolute downrange shift in one tidy expression.
  */
+/** Rule 1194, item 11: `impactAngleDeg`/`nominalRadiusMeters` branded. */
 export function obliqueImpactCentreOffset(
-  impactAngleDeg: number,
-  nominalRadiusMeters: number,
+  angleDegInput: Degrees,
+  radiusInput: Meters,
   couplesToGround: boolean
 ): number {
+  const impactAngleDeg = angleDegInput as number;
+  const nominalRadiusMeters = radiusInput as number;
   if (!couplesToGround) return 0;
   if (
     !Number.isFinite(impactAngleDeg) ||

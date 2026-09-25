@@ -466,6 +466,80 @@ export const RULE_1194_ITEM_6_WRITTEN = '2026-09-25' as const;
 export const RULE_1194_ITEM_6_MEASURED = '2026-09-25' as const;
 
 /**
+ * RULE 1194, ITEM (11): the 45 `as number` casts in `simulate.ts`
+ * (49 counted at the expression level; the audit's "46" and this file's
+ * "45"/"49" are different ways of counting the same lines, not a
+ * disagreement), sorted before any signature changes -- a read-only pass
+ * first, so no function's contract changes on a guess.
+ *
+ * 32 are plain arithmetic: a branded value unwrapped for a calculation
+ * already inside this file, the result re-wrapped with `m()`/`J()`/`Mt()`
+ * before it leaves, or a genuinely dimensionless local (a 0-1 share, a
+ * boolean, a solver's own scratch variable). Not a type hole; left
+ * untouched.
+ *
+ * 13, across 7 functions, ARE real ones: the unwrapped value crosses into
+ * a function whose own parameter is plain `number` where it concept­ually
+ * means a specific unit, so nothing stops a future caller passing km
+ * where the function reads metres. Ranked by how many production modules
+ * (not call sites) a signature change touches, lowest first:
+ *
+ *   `ironFieldShare` (ironCraterField.ts) -- 1 call site, this file only.
+ *   `swarmSpreadAtGround`, `swarmSpreadAtBurst` (atmosphericEntry.ts) --
+ *     3 call sites, this file only.
+ *   `craterFieldShare` (impact/craterField.ts) -- 2 call sites, this file
+ *     only.
+ *   `shoreSegmentFraction` (validation/coastalWaveRules.ts) -- reached
+ *     from this file and its own internals.
+ *   `computeSeaCoupling` (effects/seaCoupling.ts) -- ALSO called from
+ *     events/explosion/simulate.ts: a signature change is not contained
+ *     to the impacts module.
+ *   `groundFireballShare` (atmosphericEntry.ts) -- ALSO called from
+ *     airburstSeismic.ts and impactField.ts: same cross-module reach.
+ *   `craterAsymmetry` / `obliqueImpactRingAsymmetry` /
+ *     `obliqueImpactCentreOffset` (effects/asymmetry.ts) -- contained to
+ *     one module, but ~30 tests read their `number` signature directly.
+ *
+ * This block fixes the four contained-to-this-file cases
+ * (`ironFieldShare`, `swarmSpreadAtGround`, `swarmSpreadAtBurst`,
+ * `craterFieldShare`) and the asymmetry family
+ * (`craterAsymmetry`/`obliqueImpactRingAsymmetry`/
+ * `obliqueImpactCentreOffset`): each takes and returns branded units now,
+ * callers updated (production and the ~35 test call sites it touched, in
+ * `simulate.ts`, `asymmetry.test.ts`, `airburstShapeRules.test.ts` and
+ * `regressionRegistry.test.ts`), no behaviour changes (the function
+ * bodies are untouched, only what the type checker can see at the
+ * boundary) -- confirmed independently by the seal, which does not move
+ * at all on this block. The three cross-module cases
+ * (`shoreSegmentFraction`, `computeSeaCoupling`, `groundFireballShare`)
+ * were left for a following block: touching a module outside
+ * simulate.ts is its own change to verify carefully, not a rename to
+ * fold into this one.
+ *
+ * That following block, same day. All three done, each with every caller
+ * across its own module boundary:
+ *
+ *   `shoreSegmentFraction` / `shoreSegmentEquivalentRadius`
+ *     (coastalWaveRules.ts) -- both take `Meters` now; the one production
+ *     caller (simulate.ts) and the eight call sites of
+ *     coastalWaveRules.test.ts updated.
+ *   `computeSeaCoupling` (seaCoupling.ts) -- `SeaCouplingInput`'s four
+ *     fields are `Meters` now; both production callers fixed
+ *     (simulate.ts and events/explosion/simulate.ts, which is the reach
+ *     the audit named) plus the test call sites in seaCoupling.test.ts
+ *     and validation/customScenarios.test.ts.
+ *   `groundFireballShare` (atmosphericEntry.ts) -- takes `Meters, Joules`
+ *     now; every caller found, which is one more module than the audit's
+ *     own count named (simulate.ts itself, twice, in addition to
+ *     airburstSeismic.ts and impactField.ts) plus the two test files
+ *     that call it directly.
+ *
+ * No function body changed, only the boundary; the seal does not move on
+ * this block either, and the full suite is green.
+ */
+export const RULE_1194_ITEM_11_WRITTEN = '2026-09-25' as const;
+
+/**
  * RULE 1197. A11, ITEM (2), DONE -- THE CASUALTY BAND EDGES SIT ON THE LAW
  * THAT DREW THE RINGS THEY ARE MEASURED FROM, FOR AN IMPACT TOO.
  *
