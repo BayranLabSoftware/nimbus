@@ -1,5 +1,5 @@
 /**
- * Rules 1178 to 1187 — the opening document of the survival–light round, on
+ * Rules 1178 to 1186 — the opening document of the survival–light round, on
  * the reviewer's approval of 25 September 2026: a round of development on the
  * FCM branch's own physics, before any test that could adopt it, and — apart
  * — the custody protocol and the reconnaissance of a genuinely blind fifth
@@ -180,3 +180,40 @@ export const FCM_CUSTODY_PROTOCOL = [
   'predictions produced and published from inputs alone',
   'targets extracted after, by a separate procedure, with a page/table record',
 ] as const;
+
+/**
+ * RULE 1186. H2, DECLARED FORM (rule 1180 (b), after H1 and H3's package,
+ * docs/FCM_SURVIVAL_LIGHT_PACKAGE.md). H3 found the excess landed mass is
+ * solid pieces, spread across many discrete fragments, not concentrated in
+ * one and not unablated cloud (below 10 m). The branch draws σ once per whole
+ * draw (rule 1152 (f)) and holds it for every component of the cascade —
+ * parent, every solid descendant, every cloud alike. H2 tests a structural
+ * change, not a directional one: whether letting σ be redrawn at every break
+ * — once per break, shared by every solid child that break produces
+ * (fragments born together stay identical in mass and now in σ, and so still
+ * bundle exactly as one component: no loss of the exactness rule 1141 (a)'s
+ * test checks) — from the same prior (rule 1131's 1·10⁻⁹ to 1.6·10⁻⁸ s²/m²,
+ * log-uniform, unchanged and unnarrowed), changes the landed mass, against
+ * the whole cascade sharing the one value drawn for the body. A structure
+ * group's pieces (identical, W18) share one σ per group, drawn once; a cloud
+ * keeps the σ of the solid piece it broke from; the unbroken body draws once,
+ * as before. A first attempt drew σ per individual fragment rather than per
+ * break: on an even, low-α split it stopped every bundling, and the
+ * resulting cascade of distinct components ran past any reasonable bound — a
+ * cost finding, not a physical one, corrected before any development case
+ * was read (this document, not a later amendment). Nothing is chosen to move
+ * a mass toward a reference (rule 1181): the range is the same one already
+ * in use, only its point of redraw changes, and the direction of any effect
+ * is not predicted before the run.
+ *
+ * Engine: `src/physics/effects/fcmBranchH2.ts`, a fork of the sealed
+ * `fcmBranch.ts` (round 3's candidate, rule 1162, untouched) — H2 is not this
+ * candidate and does not change it. Numerical proof before any development
+ * case (rule 1182 (c)): the closed-form limits of rule 1141 (b) (unaffected,
+ * since an unbroken component still draws σ once); the ledger's balance at
+ * breaks and in flight (rule 1141 (a), 1154 (b)) on cascades with the new
+ * per-break draw.
+ */
+
+/** Rule 1186: H2's σ prior — the same range as rule 1131, unnarrowed. */
+export const FCM_H2_SIGMA_RANGE = [1e-9, 1.6e-8] as const;

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   FCM_CUSTODY_PROTOCOL,
+  FCM_H2_SIGMA_RANGE,
   FCM_LUMINOUS_EFFICIENCY,
   FCM_PERMANENT_DEVELOPMENT_SOURCES,
   FCM_SURVIVAL_EXCESS,
@@ -35,5 +36,11 @@ describe('rules 1178 to 1185: the survival–light round’s opening document', 
     expect(FCM_CUSTODY_PROTOCOL.length).toBe(5);
     expect(FCM_CUSTODY_PROTOCOL[0]).toMatch(/hash/);
     expect(FCM_CUSTODY_PROTOCOL[3]).toMatch(/predictions produced/);
+  });
+});
+
+describe('rule 1186: H2 redraws σ per solid fragment, from the same unnarrowed prior', () => {
+  it('keeps the range identical to rule 1131’s, chosen before H1/H3’s results were read', () => {
+    expect(FCM_H2_SIGMA_RANGE).toEqual([1e-9, 1.6e-8]);
   });
 });
