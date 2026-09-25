@@ -74,7 +74,7 @@
       "eyebrow": "03 — Validation",
       "title": "What the model is measured against",
       "body": "An impact's numbers are held to the Earth Impact Effects Program, the reference implementation of the equations this model cites, and to the bolides whose entry the sky has actually measured. Where nothing has ever been measured — and for an impact that is most of it — the section says so rather than borrowing a proof from another phenomenon.",
-      "quantitiesWithin": "quantities compared against the reference program; the widest departure of a geometric mean is {{percent}} %",
+      "quantitiesWithin": "quantities within {{bar}} % of the reference program in their geometric mean (level A's bar, written before the answers); the widest departure is {{percent}} %",
       "programCases": "comparisons — each one quantity of one impact — on the {{answered}} of {{impacts}} impacts of the first fixed grid the program answered; level A's wider grid of {{casesA}} impacts ({{refusedA}} refused by the program) gives {{readingsA}} readings, in the full report",
       "entryError": "median error on the altitude of peak brightness, over {{bolides}} recorded bolides: the 5 km bar is not met",
       "noToll": "impacts in recorded history with a death toll: the mortality is calibrated on explosions of the same energy, and is an extrapolation",
@@ -2151,7 +2151,7 @@
     "fullReport": "Full report for this model",
     "summaryLabel": "Summary",
     "summary": {
-      "quantities": "quantities compared against the reference program",
+      "quantities": "quantities within {{bar}} % of the reference program in their geometric mean (level A's bar, written before the answers)",
       "quantitiesNote": "widest departure of a geometric mean: {{percent}} %",
       "comparisons": "comparisons against the reference program",
       "comparisonsNote": "each one quantity of one impact, on the {{answered}} of {{impacts}} impacts of the first fixed grid the program answered, read on {{readOn}}; level A's wider grid of {{casesA}} impacts ({{refusedA}} refused by the program), read on {{readOnA}}, gives {{readingsA}} readings in the full report",

@@ -1,11 +1,15 @@
 name: Release
 
-# Cuts a GitHub Release when a signed `v*` tag is pushed. Re-runs
-# every quality gate against the tagged commit first (typecheck,
-# lint, format, unit, build, build-storybook, full Playwright
-# matrix) so a broken release can't slip past just because the
-# tag was pushed locally. The release body is extracted from the
-# matching section of CHANGELOG.md.
+# Cuts a GitHub Release when a signed `v*` tag is pushed. Re-runs,
+# against the tagged commit, typecheck, lint, format, the unit suite,
+# the build and the Storybook build, so a broken release can't slip
+# past just because the tag was pushed locally. It does NOT run what
+# ci.yml also gates on every push -- the Playwright matrix, the
+# validation report's strict gate and freshness, the seal on its
+# pinned platform, the bundle budget (rule 1221 of
+# validation/nasaAuditCorrectionsRules.ts: this comment claimed the
+# Playwright matrix until 26 September 2026). The release body is
+# extracted from the matching section of CHANGELOG.md.
 
 on:
   push:

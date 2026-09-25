@@ -1827,3 +1827,43 @@ export const RULE_1218_WRITTEN = '2026-09-26' as const;
  * under rule 833 with this as the reason.
  */
 export const RULE_1219_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1220. A12: "IL TASSELLO «13 / 13» DELLA PAGINA DI VALIDAZIONE È
+ * CABLATO COME CONTEGGIO/CONTEGGIO E NON CALCOLATO CONTRO ALCUNA SOGLIA";
+ * THE AUDIT'S FIX, "TASSELLI CALCOLATI, NON CABLATI".
+ *
+ * Rule 1195 relabelled the tile ("quantities compared against the reference
+ * program") and left its figure as it was, `{quantities.length} /
+ * {quantities.length}` in both `ValidationPage.tsx` and
+ * `LandingValidation.tsx`, saying no threshold could be computed against
+ * without inventing one. One exists, and was written before any answer was
+ * read: level A's bar (`levelA.ts`, `LEVEL_A_BARS.excellent`, 2 %, commit
+ * 509e3d7). The tile now counts the quantities whose geometric mean of
+ * model over program lies within that bar -- a figure that falls the day a
+ * quantity drifts, which a count over itself never could -- and its words
+ * say which bar, read from the constant, not typed. It reads 13 / 13 today
+ * because every departure is under 0.5 %: the same figure, now computed.
+ * No number of the model moves; the seal does not move.
+ */
+export const RULE_1220_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1221. A8: "RELEASE.YML ESEGUE MENO CONTROLLI DELLA CI ORDINARIA
+ * (NIENTE GATE DI VALIDAZIONE, SIGILLO, BUNDLE NÉ PLAYWRIGHT, CONTRARIAMENTE
+ * AL SUO COMMENTO)".
+ *
+ * Read: `.github/workflows/release.yml`'s header says it "re-runs every
+ * quality gate against the tagged commit first (typecheck, lint, format,
+ * unit, build, build-storybook, full Playwright matrix)"; its one verify job
+ * runs the first six and no Playwright at all, and nothing of what
+ * `ci.yml` also gates -- the validation report's strict gate and freshness,
+ * the seal on its pinned platform, the bundle budget. Whether a release must
+ * run all of them is a decision about releases, which this project has not
+ * yet made (no tag has been cut) and which is Andrea's; what is not a
+ * decision is a comment that claims a check the file does not run. Fixed:
+ * the comment now says what the job runs and names what it does not, with
+ * a pointer to `ci.yml`, where those gates run on every push. No workflow
+ * step changes.
+ */
+export const RULE_1221_WRITTEN = '2026-09-26' as const;

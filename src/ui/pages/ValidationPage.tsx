@@ -3,6 +3,7 @@ import type { JSX, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import report from '../../../docs/VALIDATION_REPORT.json';
 import { MAIN_STAGE_STRENGTH } from '../../physics/effects/atmosphericEntry.js';
+import { LEVEL_A_BARS } from '../../physics/validation/levelA.js';
 import { BUILD_INFO, shortCommit, validationReportUrl, REPOSITORY_URL } from '../../buildInfo.js';
 import { useAppStore } from '../../store/index.js';
 import { EvidenceTable } from '../components/EvidenceTable.js';
@@ -163,6 +164,11 @@ export function ValidationPage(): JSX.Element {
     1
   );
   const comparisons = quantities.reduce((sum, q) => sum + q.pairs, 0);
+  // Rule 1220: counted against level A's bar, written before the answers.
+  const withinBar = quantities.filter(
+    (q) => Math.abs(q.geometricMean - 1) < LEVEL_A_BARS.excellent
+  ).length;
+  const barPercent = dec(LEVEL_A_BARS.excellent * 100, 0);
   const entry = fireball.readings.default;
   // Rule 1207: the miss the bar reads, and each side's range across the
   // cells -- the model on the law it ships, the program on its own (Eq. 9).
@@ -208,9 +214,11 @@ export function ValidationPage(): JSX.Element {
         <ul className={styles.tiles}>
           <li className={styles.tile}>
             <span className={styles.tileValue}>
-              {quantities.length} / {quantities.length}
+              {withinBar} / {quantities.length}
             </span>
-            <span className={styles.tileLabel}>{t('validation.summary.quantities')}</span>
+            <span className={styles.tileLabel}>
+              {t('validation.summary.quantities', { bar: barPercent })}
+            </span>
             <span className={styles.tileNote}>
               {t('validation.summary.quantitiesNote', { percent: worstPercent })}
             </span>

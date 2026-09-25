@@ -74,7 +74,7 @@
       "eyebrow": "03 — Validazione",
       "title": "Contro che cosa è misurato il modello",
       "body": "I numeri di un impatto sono confrontati con l'Earth Impact Effects Program, l'implementazione di riferimento delle equazioni che questo modello cita, e con i bolidi di cui il cielo ha davvero misurato l'ingresso. Dove non è mai stato misurato nulla — e per un impatto è quasi tutto — la sezione lo dice, invece di prendere in prestito una prova da un altro fenomeno.",
-      "quantitiesWithin": "grandezze confrontate col programma di riferimento; lo scarto più largo di una media geometrica è {{percent}} %",
+      "quantitiesWithin": "grandezze entro il {{bar}} % dal programma di riferimento nella media geometrica (la soglia del livello A, scritta prima delle risposte); lo scarto più largo è {{percent}} %",
       "programCases": "confronti — ciascuno una grandezza di un impatto — sui {{answered}} dei {{impacts}} impatti della prima griglia fissata a cui il programma ha risposto; la griglia più ampia del livello A, {{casesA}} impatti ({{refusedA}} rifiutati dal programma), dà {{readingsA}} letture, nel report completo",
       "entryError": "errore mediano sulla quota di massima luminosità, su {{bolides}} bolidi registrati: la barra dei 5 km non è raggiunta",
       "noToll": "impatti nella storia registrata con un bilancio di vittime: la mortalità è tarata su esplosioni di pari energia, ed è un'estrapolazione",
@@ -2247,7 +2247,7 @@
     "fullReport": "Rapporto completo di questo modello",
     "summaryLabel": "Sintesi",
     "summary": {
-      "quantities": "grandezze confrontate col programma di riferimento",
+      "quantities": "grandezze entro il {{bar}} % dal programma di riferimento nella media geometrica (la soglia del livello A, scritta prima delle risposte)",
       "quantitiesNote": "scarto più largo di una media geometrica: {{percent}} %",
       "comparisons": "confronti col programma di riferimento",
       "comparisonsNote": "ciascuno una grandezza di un impatto, sui {{answered}} dei {{impacts}} impatti della prima griglia fissata a cui il programma ha risposto, letti il {{readOn}}; la griglia più ampia del livello A, {{casesA}} impatti ({{refusedA}} rifiutati dal programma), letta il {{readOnA}}, dà {{readingsA}} letture nel report completo",

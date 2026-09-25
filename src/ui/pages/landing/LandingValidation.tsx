@@ -2,6 +2,7 @@ import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import report from '../../../../docs/VALIDATION_REPORT.json';
 import { BUILD_INFO, shortCommit } from '../../../buildInfo.js';
+import { LEVEL_A_BARS } from '../../../physics/validation/levelA.js';
 import { useAppStore } from '../../../store/index.js';
 import { ProgramChart, type ProgramChartRow } from './ProgramChart.js';
 import styles from './LandingValidation.module.css';
@@ -72,6 +73,10 @@ export function LandingValidation(): JSX.Element {
     maximumFractionDigits: 1,
   });
   const cases = quantities.reduce((sum, q) => sum + q.pairs, 0);
+  // Rule 1220: counted against level A's bar, written before the answers.
+  const withinBar = quantities.filter(
+    (q) => Math.abs(q.geometricMean - 1) < LEVEL_A_BARS.excellent
+  ).length;
   const entry = fireball.readings.default;
   const entryError = (entry?.medianAbsoluteErrorKm ?? 0).toLocaleString(locale, {
     minimumFractionDigits: 1,
@@ -83,10 +88,13 @@ export function LandingValidation(): JSX.Element {
       <ul className={styles.tiles}>
         <li className={styles.tile}>
           <span className={styles.value}>
-            {quantities.length} / {quantities.length}
+            {withinBar} / {quantities.length}
           </span>
           <span className={styles.label}>
-            {t('landing.validation.quantitiesWithin', { percent: worstPercent })}
+            {t('landing.validation.quantitiesWithin', {
+              percent: worstPercent,
+              bar: (LEVEL_A_BARS.excellent * 100).toLocaleString(locale),
+            })}
           </span>
         </li>
         <li className={styles.tile}>
