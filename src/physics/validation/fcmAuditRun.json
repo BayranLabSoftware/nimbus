@@ -1,0 +1,5946 @@
+{
+  "rule": "1189 (a) to (c)",
+  "draws": 200,
+  "results": [
+    {
+      "case": "Chelyabinsk",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 1,
+          "entryMassKg": 13412500,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.505077,
+            "medianCloudShare": 0.505077,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 263,
+            "medianLargestChildShare": 0.505077,
+            "medianCloudShare": 0.505077,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.00349388,
+            "landedCloud": 0,
+            "settled": 0.996506,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00349388,
+              "medianRetainedFraction": 0.579723,
+              "medianBirthAltitudeM": 28064
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.246055,
+              "medianRetainedFraction": 0.590254,
+              "altitudeRangeM": [24870, 28040]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.34235,
+              "medianRetainedFraction": 0.579722,
+              "altitudeRangeM": [28040, 28440]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.411595,
+              "medianRetainedFraction": 0.566382,
+              "altitudeRangeM": [28440, 29130]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 1,
+          "entryMassKg": 13412500,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.417511,
+            "medianCloudShare": 0.417511,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 57,
+            "medianLargestChildShare": 0.417511,
+            "medianCloudShare": 0.417511,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.0425148,
+            "landedCloud": 0.417491,
+            "settled": 0.539994,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0425148,
+              "medianRetainedFraction": 0.854886,
+              "medianBirthAltitudeM": 17712.3
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.26231,
+              "medianRetainedFraction": 0.868188,
+              "altitudeRangeM": [14690, 16750]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.299717,
+              "medianRetainedFraction": 0.854886,
+              "altitudeRangeM": [16760, 17750]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.437973,
+              "medianRetainedFraction": 0.844971,
+              "altitudeRangeM": [17750, 22080]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 1,
+          "entryMassKg": 13412500,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.908304,
+            "medianCloudShare": 0.000154873,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 585,
+            "medianLargestChildShare": 0.519182,
+            "medianCloudShare": 0.279357,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.0485907,
+            "landedCloud": 0,
+            "settled": 0.951409,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.000742268,
+              "medianRetainedFraction": 0.764334,
+              "medianBirthAltitudeM": 22969.2
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0478484,
+              "medianRetainedFraction": 0.733615,
+              "medianBirthAltitudeM": 22619.7
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.237197,
+              "medianRetainedFraction": 0.775858,
+              "altitudeRangeM": [19810, 21330]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.31242,
+              "medianRetainedFraction": 0.731819,
+              "altitudeRangeM": [22210, 23600]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.450384,
+              "medianRetainedFraction": 0.6997,
+              "altitudeRangeM": [23600, 27960]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 1,
+          "entryMassKg": 13412500,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.815408,
+            "medianCloudShare": 0.00127857,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 699,
+            "medianLargestChildShare": 0.560337,
+            "medianCloudShare": 0.254547,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.0613743,
+            "landedCloud": 0,
+            "settled": 0.938626,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.00157007,
+              "medianRetainedFraction": 0.584323,
+              "medianBirthAltitudeM": 23947.1
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0598042,
+              "medianRetainedFraction": 0.597314,
+              "medianBirthAltitudeM": 22500.4
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.268322,
+              "medianRetainedFraction": 0.614783,
+              "altitudeRangeM": [20160, 22240]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.251221,
+              "medianRetainedFraction": 0.596792,
+              "altitudeRangeM": [22240, 24720]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.480457,
+              "medianRetainedFraction": 0.534709,
+              "altitudeRangeM": [24720, 29310]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Tunguska",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 1,
+          "entryMassKg": 339292000,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.696023,
+            "medianCloudShare": 0.696023,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 19,
+            "medianLargestChildShare": 0.696023,
+            "medianCloudShare": 0.696023,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.00277652,
+            "landedCloud": 0,
+            "settled": 0.997223,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.000234382,
+              "medianRetainedFraction": 0.72894,
+              "medianBirthAltitudeM": 21107.2
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.001348,
+              "medianRetainedFraction": 0.745788,
+              "medianBirthAltitudeM": 15558.7
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00119414,
+              "medianRetainedFraction": 0.755732,
+              "medianBirthAltitudeM": 14788.3
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.277215,
+              "medianRetainedFraction": 0.758185,
+              "altitudeRangeM": [14010, 14820]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.274676,
+              "medianRetainedFraction": 0.748144,
+              "altitudeRangeM": [14820, 15470]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.448109,
+              "medianRetainedFraction": 0.728217,
+              "altitudeRangeM": [15560, 21110]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 1,
+          "entryMassKg": 339292000,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.841686,
+            "medianCloudShare": 0.841686,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 120,
+            "medianLargestChildShare": 0.841686,
+            "medianCloudShare": 0.841686,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.00000232034,
+            "landedCloud": 0.111467,
+            "settled": 0.88853,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00000232034,
+              "medianRetainedFraction": 0.833414,
+              "medianBirthAltitudeM": 28047.7
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.155848,
+              "medianRetainedFraction": 0.846727,
+              "altitudeRangeM": [27200, 27990]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.270213,
+              "medianRetainedFraction": 0.833413,
+              "altitudeRangeM": [27990, 28460]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.573939,
+              "medianRetainedFraction": 0.827059,
+              "altitudeRangeM": [28490, 29220]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 1,
+          "entryMassKg": 339292000,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.870292,
+            "medianCloudShare": 0.000986996,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 49,
+            "medianLargestChildShare": 0.617576,
+            "medianCloudShare": 0.617576,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.00406839,
+            "landedCloud": 0,
+            "settled": 0.995932,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0000941727,
+              "medianRetainedFraction": 0.302967,
+              "medianBirthAltitudeM": 18291.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.000897482,
+              "medianRetainedFraction": 0.34109,
+              "medianBirthAltitudeM": 16759.6
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00307674,
+              "medianRetainedFraction": 0.348826,
+              "medianBirthAltitudeM": 14342.2
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.202982,
+              "medianRetainedFraction": 0.396109,
+              "altitudeRangeM": [11730, 14220]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.32281,
+              "medianRetainedFraction": 0.348826,
+              "altitudeRangeM": [14230, 16240]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.474208,
+              "medianRetainedFraction": 0.302967,
+              "altitudeRangeM": [16760, 21760]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 0,
+          "entryMassKg": 0,
+          "pressureRatio": {
+            "median": null,
+            "min": null,
+            "max": null
+          },
+          "firstBreak": {
+            "count": 0,
+            "medianLargestChildShare": null,
+            "medianCloudShare": null,
+            "medianChildCount": null
+          },
+          "laterBreaks": {
+            "count": 0,
+            "medianLargestChildShare": null,
+            "medianCloudShare": null,
+            "medianChildCount": null
+          },
+          "fateShare": {
+            "landedSolid": 0,
+            "landedCloud": 0,
+            "settled": 0,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "altitudeRangeM": null
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "altitudeRangeM": null
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "altitudeRangeM": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2008 TC3",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 13945100,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.544866,
+            "medianCloudShare": 0.452125,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 4575,
+            "medianLargestChildShare": 0.52312,
+            "medianCloudShare": 0.186865,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.221723,
+            "landedCloud": 0,
+            "settled": 0.778277,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.00613325,
+              "medianRetainedFraction": 0.799608,
+              "medianBirthAltitudeM": 28193.8
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0516018,
+              "medianRetainedFraction": 0.714269,
+              "medianBirthAltitudeM": 24929.4
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.04554,
+              "medianRetainedFraction": 0.771972,
+              "medianBirthAltitudeM": 24821.4
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0536371,
+              "medianRetainedFraction": 0.763943,
+              "medianBirthAltitudeM": 24823.8
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0648104,
+              "medianRetainedFraction": 0.838966,
+              "medianBirthAltitudeM": 27103.8
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.690347,
+              "medianRetainedFraction": 0.819419,
+              "altitudeRangeM": [17480, 25480]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.210703,
+              "medianRetainedFraction": 0.769348,
+              "altitudeRangeM": [25480, 27760]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0989501,
+              "medianRetainedFraction": 0.889406,
+              "altitudeRangeM": [27760, 33660]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 13945100,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.563588,
+            "medianCloudShare": 0.471267,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 4394,
+            "medianLargestChildShare": 0.530324,
+            "medianCloudShare": 0.209265,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.200968,
+            "landedCloud": 0,
+            "settled": 0.799032,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0140938,
+              "medianRetainedFraction": 0.660887,
+              "medianBirthAltitudeM": 27273.9
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.046405,
+              "medianRetainedFraction": 0.766892,
+              "medianBirthAltitudeM": 24967.2
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0333172,
+              "medianRetainedFraction": 0.776393,
+              "medianBirthAltitudeM": 24280.3
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0438585,
+              "medianRetainedFraction": 0.826711,
+              "medianBirthAltitudeM": 24423.7
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0632936,
+              "medianRetainedFraction": 0.829666,
+              "medianBirthAltitudeM": 27633.5
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.661167,
+              "medianRetainedFraction": 0.825282,
+              "altitudeRangeM": [16690, 25540]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.259135,
+              "medianRetainedFraction": 0.844035,
+              "altitudeRangeM": [25540, 28110]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0796975,
+              "medianRetainedFraction": 0.817259,
+              "altitudeRangeM": [28110, 34610]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 13945100,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.876916,
+            "medianCloudShare": 0.00151184,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 12561,
+            "medianLargestChildShare": 0.493373,
+            "medianCloudShare": 0.0708604,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.280254,
+            "landedCloud": 0,
+            "settled": 0.719746,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0616771,
+              "medianRetainedFraction": 0.749273,
+              "medianBirthAltitudeM": 56994.2
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0320501,
+              "medianRetainedFraction": 0.785549,
+              "medianBirthAltitudeM": 27391
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0414338,
+              "medianRetainedFraction": 0.801676,
+              "medianBirthAltitudeM": 25631.8
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0430847,
+              "medianRetainedFraction": 0.79091,
+              "medianBirthAltitudeM": 25694.6
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.102008,
+              "medianRetainedFraction": 0.839865,
+              "medianBirthAltitudeM": 30272.5
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.628412,
+              "medianRetainedFraction": 0.825639,
+              "altitudeRangeM": [16800, 27660]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.124381,
+              "medianRetainedFraction": 0.780305,
+              "altitudeRangeM": [27660, 31340]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.247208,
+              "medianRetainedFraction": 0.850539,
+              "altitudeRangeM": [31340, 61450]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 13945100,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.88077,
+            "medianCloudShare": 0.00140988,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 4973,
+            "medianLargestChildShare": 0.564427,
+            "medianCloudShare": 0.178483,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.243821,
+            "landedCloud": 0,
+            "settled": 0.756179,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0581135,
+              "medianRetainedFraction": 0.745754,
+              "medianBirthAltitudeM": 57215.1
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0286372,
+              "medianRetainedFraction": 0.844509,
+              "medianBirthAltitudeM": 28028.6
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0402233,
+              "medianRetainedFraction": 0.822708,
+              "medianBirthAltitudeM": 26002.2
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0411872,
+              "medianRetainedFraction": 0.835549,
+              "medianBirthAltitudeM": 24555.5
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0756602,
+              "medianRetainedFraction": 0.770746,
+              "medianBirthAltitudeM": 27951.1
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.537557,
+              "medianRetainedFraction": 0.811115,
+              "altitudeRangeM": [15910, 26470]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.159188,
+              "medianRetainedFraction": 0.664335,
+              "altitudeRangeM": [26470, 28980]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.303255,
+              "medianRetainedFraction": 0.816475,
+              "altitudeRangeM": [28980, 61400]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2018 LA",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 527030,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.554126,
+            "medianCloudShare": 0.469349,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 3130,
+            "medianLargestChildShare": 0.583756,
+            "medianCloudShare": 0.253919,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.205092,
+            "landedCloud": 0,
+            "settled": 0.794908,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0245207,
+              "medianRetainedFraction": 0.639651,
+              "medianBirthAltitudeM": 31214.5
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0573059,
+              "medianRetainedFraction": 0.686146,
+              "medianBirthAltitudeM": 28869.1
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0417878,
+              "medianRetainedFraction": 0.703445,
+              "medianBirthAltitudeM": 29830
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0355144,
+              "medianRetainedFraction": 0.689268,
+              "medianBirthAltitudeM": 30075.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0459633,
+              "medianRetainedFraction": 0.829779,
+              "medianBirthAltitudeM": 33573.2
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.733772,
+              "medianRetainedFraction": 0.732212,
+              "altitudeRangeM": [22090, 30140]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.221455,
+              "medianRetainedFraction": 0.78744,
+              "altitudeRangeM": [30140, 33710]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0447729,
+              "medianRetainedFraction": 0.846163,
+              "altitudeRangeM": [33730, 37770]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 527030,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.538489,
+            "medianCloudShare": 0.408139,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 3797,
+            "medianLargestChildShare": 0.533942,
+            "medianCloudShare": 0.195374,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.223903,
+            "landedCloud": 0,
+            "settled": 0.776097,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0201174,
+              "medianRetainedFraction": 0.536917,
+              "medianBirthAltitudeM": 31094.6
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.049194,
+              "medianRetainedFraction": 0.581239,
+              "medianBirthAltitudeM": 29385.6
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0538702,
+              "medianRetainedFraction": 0.685405,
+              "medianBirthAltitudeM": 29962.1
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0398989,
+              "medianRetainedFraction": 0.601954,
+              "medianBirthAltitudeM": 29766.5
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0608228,
+              "medianRetainedFraction": 0.526993,
+              "medianBirthAltitudeM": 32598
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.749102,
+              "medianRetainedFraction": 0.632237,
+              "altitudeRangeM": [21640, 30530]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.20423,
+              "medianRetainedFraction": 0.530505,
+              "altitudeRangeM": [30530, 33110]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.046668,
+              "medianRetainedFraction": 0.506601,
+              "altitudeRangeM": [33110, 39050]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 527030,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.876592,
+            "medianCloudShare": 0.00139268,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 4539,
+            "medianLargestChildShare": 0.512605,
+            "medianCloudShare": 0.141131,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.338737,
+            "landedCloud": 0,
+            "settled": 0.661263,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0687574,
+              "medianRetainedFraction": 0.571463,
+              "medianBirthAltitudeM": 61835.7
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0385095,
+              "medianRetainedFraction": 0.702861,
+              "medianBirthAltitudeM": 32546.4
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0589594,
+              "medianRetainedFraction": 0.675758,
+              "medianBirthAltitudeM": 30306.5
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0638847,
+              "medianRetainedFraction": 0.6662,
+              "medianBirthAltitudeM": 28873
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.108626,
+              "medianRetainedFraction": 0.666701,
+              "medianBirthAltitudeM": 32298.2
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.59476,
+              "medianRetainedFraction": 0.729867,
+              "altitudeRangeM": [22780, 31100]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.13413,
+              "medianRetainedFraction": 0.7511,
+              "altitudeRangeM": [31100, 33280]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.27111,
+              "medianRetainedFraction": 0.593206,
+              "altitudeRangeM": [33280, 66220]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 527030,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.884852,
+            "medianCloudShare": 0.00165398,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 5813,
+            "medianLargestChildShare": 0.514577,
+            "medianCloudShare": 0.104276,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.308918,
+            "landedCloud": 0,
+            "settled": 0.691082,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0662144,
+              "medianRetainedFraction": 0.577012,
+              "medianBirthAltitudeM": 62406.5
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0248176,
+              "medianRetainedFraction": 0.666684,
+              "medianBirthAltitudeM": 32914.5
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0578617,
+              "medianRetainedFraction": 0.671095,
+              "medianBirthAltitudeM": 29933.4
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0505799,
+              "medianRetainedFraction": 0.670858,
+              "medianBirthAltitudeM": 29623.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.109445,
+              "medianRetainedFraction": 0.783622,
+              "medianBirthAltitudeM": 33199.5
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.642933,
+              "medianRetainedFraction": 0.713086,
+              "altitudeRangeM": [22180, 31850]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0851492,
+              "medianRetainedFraction": 0.802412,
+              "altitudeRangeM": [31850, 33620]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.271918,
+              "medianRetainedFraction": 0.77051,
+              "altitudeRangeM": [33620, 66240]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2022 EB5",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 1,
+          "entryMassKg": 107485,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.391811,
+            "medianCloudShare": 0.34073,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 1374,
+            "medianLargestChildShare": 0.391811,
+            "medianCloudShare": 0.34073,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.0123418,
+            "landedCloud": 0,
+            "settled": 0.987658,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0123418,
+              "medianRetainedFraction": 0.454917,
+              "medianBirthAltitudeM": 29912.9
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.230349,
+              "medianRetainedFraction": 0.492894,
+              "altitudeRangeM": [28770, 29420]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.320733,
+              "medianRetainedFraction": 0.454835,
+              "altitudeRangeM": [29420, 30110]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.448918,
+              "medianRetainedFraction": 0.437133,
+              "altitudeRangeM": [30110, 30790]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 1,
+          "entryMassKg": 107485,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.564563,
+            "medianCloudShare": 0.234165,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 57,
+            "medianLargestChildShare": 0.564563,
+            "medianCloudShare": 0.234165,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.172147,
+            "landedCloud": 0,
+            "settled": 0.827853,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0200118,
+              "medianRetainedFraction": 0.211226,
+              "medianBirthAltitudeM": 24316.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.152135,
+              "medianRetainedFraction": 0.309378,
+              "medianBirthAltitudeM": 19290.2
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.299604,
+              "medianRetainedFraction": 0.331465,
+              "altitudeRangeM": [17670, 19020]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.335476,
+              "medianRetainedFraction": 0.303958,
+              "altitudeRangeM": [19040, 21770]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.36492,
+              "medianRetainedFraction": 0.233907,
+              "altitudeRangeM": [21810, 24350]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 1,
+          "entryMassKg": 107485,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.945203,
+            "medianCloudShare": 0.000383212,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 100,
+            "medianLargestChildShare": 0.470495,
+            "medianCloudShare": 0.470495,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.0182252,
+            "landedCloud": 0,
+            "settled": 0.981775,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.00163098,
+              "medianRetainedFraction": 0.795132,
+              "medianBirthAltitudeM": 20116.9
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.00335702,
+              "medianRetainedFraction": 0.843633,
+              "medianBirthAltitudeM": 17088.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.000567403,
+              "medianRetainedFraction": 0.770617,
+              "medianBirthAltitudeM": 28981.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0126698,
+              "medianRetainedFraction": 0.788786,
+              "medianBirthAltitudeM": 24395.5
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.402435,
+              "medianRetainedFraction": 0.811419,
+              "altitudeRangeM": [17090, 24200]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.244603,
+              "medianRetainedFraction": 0.786627,
+              "altitudeRangeM": [24220, 25580]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.352962,
+              "medianRetainedFraction": 0.758487,
+              "altitudeRangeM": [25580, 30620]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 1,
+          "entryMassKg": 107485,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 1,
+            "medianLargestChildShare": 0.837562,
+            "medianCloudShare": 0.0000355591,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 13,
+            "medianLargestChildShare": 0.721599,
+            "medianCloudShare": 0.721599,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.0224885,
+            "landedCloud": 0,
+            "settled": 0.977511,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.001263,
+              "medianRetainedFraction": 0.274771,
+              "medianBirthAltitudeM": 28041.4
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.00844857,
+              "medianRetainedFraction": 0.367556,
+              "medianBirthAltitudeM": 25692.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0103414,
+              "medianRetainedFraction": 0.28579,
+              "medianBirthAltitudeM": 26451.8
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00243559,
+              "medianRetainedFraction": 0.290473,
+              "medianBirthAltitudeM": 25649.2
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.249082,
+              "medianRetainedFraction": 0.377429,
+              "altitudeRangeM": [21340, 25650]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.374366,
+              "medianRetainedFraction": 0.285795,
+              "altitudeRangeM": [25690, 26510]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.376552,
+              "medianRetainedFraction": 0.271545,
+              "altitudeRangeM": [28040, 32040]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2023 CX1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 274430,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.534335,
+            "medianCloudShare": 0.446463,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 4721,
+            "medianLargestChildShare": 0.465638,
+            "medianCloudShare": 0.276367,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.214943,
+            "landedCloud": 0,
+            "settled": 0.785057,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.00927373,
+              "medianRetainedFraction": 0.564371,
+              "medianBirthAltitudeM": 29410.8
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0446072,
+              "medianRetainedFraction": 0.773802,
+              "medianBirthAltitudeM": 26181.4
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.050407,
+              "medianRetainedFraction": 0.70881,
+              "medianBirthAltitudeM": 25757.6
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0340667,
+              "medianRetainedFraction": 0.702785,
+              "medianBirthAltitudeM": 27128.8
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0765888,
+              "medianRetainedFraction": 0.681761,
+              "medianBirthAltitudeM": 29424.4
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.737031,
+              "medianRetainedFraction": 0.827672,
+              "altitudeRangeM": [18570, 26840]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.219234,
+              "medianRetainedFraction": 0.736456,
+              "altitudeRangeM": [26840, 30310]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0437352,
+              "medianRetainedFraction": 0.546251,
+              "altitudeRangeM": [30310, 35110]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 274430,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.55219,
+            "medianCloudShare": 0.44839,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 5420,
+            "medianLargestChildShare": 0.607184,
+            "medianCloudShare": 0.172043,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.210514,
+            "landedCloud": 0,
+            "settled": 0.789486,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0069969,
+              "medianRetainedFraction": 0.724897,
+              "medianBirthAltitudeM": 29276.3
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.03214,
+              "medianRetainedFraction": 0.756144,
+              "medianBirthAltitudeM": 27525.9
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0701618,
+              "medianRetainedFraction": 0.733087,
+              "medianBirthAltitudeM": 25805
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.037635,
+              "medianRetainedFraction": 0.73587,
+              "medianBirthAltitudeM": 27422.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0635802,
+              "medianRetainedFraction": 0.758132,
+              "medianBirthAltitudeM": 30708.9
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.792044,
+              "medianRetainedFraction": 0.736443,
+              "altitudeRangeM": [18730, 27850]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.172607,
+              "medianRetainedFraction": 0.782659,
+              "altitudeRangeM": [27850, 31220]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0353497,
+              "medianRetainedFraction": 0.756366,
+              "altitudeRangeM": [31220, 35280]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 274430,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.885145,
+            "medianCloudShare": 0.00186769,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 4234,
+            "medianLargestChildShare": 0.549316,
+            "medianCloudShare": 0.241345,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.253135,
+            "landedCloud": 0,
+            "settled": 0.746865,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0509283,
+              "medianRetainedFraction": 0.67964,
+              "medianBirthAltitudeM": 59584.9
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0304946,
+              "medianRetainedFraction": 0.767045,
+              "medianBirthAltitudeM": 30062.9
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.041116,
+              "medianRetainedFraction": 0.758065,
+              "medianBirthAltitudeM": 27283.6
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0475605,
+              "medianRetainedFraction": 0.754718,
+              "medianBirthAltitudeM": 26711.6
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0830358,
+              "medianRetainedFraction": 0.73388,
+              "medianBirthAltitudeM": 29115.7
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.543053,
+              "medianRetainedFraction": 0.785263,
+              "altitudeRangeM": [18500, 27650]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.184519,
+              "medianRetainedFraction": 0.75243,
+              "altitudeRangeM": [27650, 30420]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.272428,
+              "medianRetainedFraction": 0.700319,
+              "altitudeRangeM": [30420, 63280]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 274430,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.875381,
+            "medianCloudShare": 0.00159158,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 4575,
+            "medianLargestChildShare": 0.502247,
+            "medianCloudShare": 0.193619,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.260831,
+            "landedCloud": 0,
+            "settled": 0.739169,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0564488,
+              "medianRetainedFraction": 0.688447,
+              "medianBirthAltitudeM": 59257.6
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.031421,
+              "medianRetainedFraction": 0.786233,
+              "medianBirthAltitudeM": 29462.7
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0466516,
+              "medianRetainedFraction": 0.774634,
+              "medianBirthAltitudeM": 28531.6
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0460507,
+              "medianRetainedFraction": 0.755758,
+              "medianBirthAltitudeM": 26575.6
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0802587,
+              "medianRetainedFraction": 0.859269,
+              "medianBirthAltitudeM": 28925.6
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.539118,
+              "medianRetainedFraction": 0.762711,
+              "altitudeRangeM": [19610, 27650]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.149987,
+              "medianRetainedFraction": 0.866055,
+              "altitudeRangeM": [27660, 30060]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.310894,
+              "medianRetainedFraction": 0.855013,
+              "altitudeRangeM": [30060, 63300]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2024 BX1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 44706.6,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.55484,
+            "medianCloudShare": 0.482824,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 2331,
+            "medianLargestChildShare": 0.556689,
+            "medianCloudShare": 0.181206,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.241158,
+            "landedCloud": 0,
+            "settled": 0.758842,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0144635,
+              "medianRetainedFraction": 0.601314,
+              "medianBirthAltitudeM": 31422.8
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0677301,
+              "medianRetainedFraction": 0.700023,
+              "medianBirthAltitudeM": 27787.6
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.064999,
+              "medianRetainedFraction": 0.704802,
+              "medianBirthAltitudeM": 28008.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0491376,
+              "medianRetainedFraction": 0.69607,
+              "medianBirthAltitudeM": 28036.5
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0448274,
+              "medianRetainedFraction": 0.792126,
+              "medianBirthAltitudeM": 29974
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.601077,
+              "medianRetainedFraction": 0.751938,
+              "altitudeRangeM": [21200, 27790]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.268007,
+              "medianRetainedFraction": 0.788006,
+              "altitudeRangeM": [27790, 30680]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.130916,
+              "medianRetainedFraction": 0.775998,
+              "altitudeRangeM": [30680, 37190]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 44706.6,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.568177,
+            "medianCloudShare": 0.450831,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 2318,
+            "medianLargestChildShare": 0.552643,
+            "medianCloudShare": 0.224631,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.243936,
+            "landedCloud": 0,
+            "settled": 0.756064,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0204181,
+              "medianRetainedFraction": 0.628215,
+              "medianBirthAltitudeM": 30745.4
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0777498,
+              "medianRetainedFraction": 0.749587,
+              "medianBirthAltitudeM": 27451.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0585338,
+              "medianRetainedFraction": 0.699066,
+              "medianBirthAltitudeM": 27701.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0382716,
+              "medianRetainedFraction": 0.755232,
+              "medianBirthAltitudeM": 27751.3
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.048963,
+              "medianRetainedFraction": 0.671201,
+              "medianBirthAltitudeM": 30072
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.611218,
+              "medianRetainedFraction": 0.772283,
+              "altitudeRangeM": [20960, 28150]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.273915,
+              "medianRetainedFraction": 0.67801,
+              "altitudeRangeM": [28150, 30510]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.114867,
+              "medianRetainedFraction": 0.615376,
+              "altitudeRangeM": [30510, 38110]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 44706.6,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.87693,
+            "medianCloudShare": 0.00152524,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 4834,
+            "medianLargestChildShare": 0.581327,
+            "medianCloudShare": 0.123971,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.319937,
+            "landedCloud": 0,
+            "settled": 0.680063,
+            "dust": 3.69346e-8
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0741797,
+              "medianRetainedFraction": 0.599423,
+              "medianBirthAltitudeM": 60362.5
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0361781,
+              "medianRetainedFraction": 0.752127,
+              "medianBirthAltitudeM": 31726.5
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0585893,
+              "medianRetainedFraction": 0.76098,
+              "medianBirthAltitudeM": 28572.5
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0559393,
+              "medianRetainedFraction": 0.676771,
+              "medianBirthAltitudeM": 27892.7
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0950506,
+              "medianRetainedFraction": 0.814704,
+              "medianBirthAltitudeM": 31941.6
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.567485,
+              "medianRetainedFraction": 0.745245,
+              "altitudeRangeM": [20700, 29880]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.157644,
+              "medianRetainedFraction": 0.753482,
+              "altitudeRangeM": [29880, 33460]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.274872,
+              "medianRetainedFraction": 0.833673,
+              "altitudeRangeM": [33460, 64510]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 44706.6,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.879942,
+            "medianCloudShare": 0.00157962,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 7012,
+            "medianLargestChildShare": 0.720957,
+            "medianCloudShare": 0.0569389,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.321925,
+            "landedCloud": 0,
+            "settled": 0.678075,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.077851,
+              "medianRetainedFraction": 0.599108,
+              "medianBirthAltitudeM": 60583.1
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0309167,
+              "medianRetainedFraction": 0.72358,
+              "medianBirthAltitudeM": 32280.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0515787,
+              "medianRetainedFraction": 0.678965,
+              "medianBirthAltitudeM": 28441.8
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0594436,
+              "medianRetainedFraction": 0.740246,
+              "medianBirthAltitudeM": 27675.8
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.102135,
+              "medianRetainedFraction": 0.803884,
+              "medianBirthAltitudeM": 33414.7
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.649957,
+              "medianRetainedFraction": 0.768103,
+              "altitudeRangeM": [20460, 31540]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.083045,
+              "medianRetainedFraction": 0.714115,
+              "altitudeRangeM": [31540, 34030]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.266998,
+              "medianRetainedFraction": 0.870683,
+              "altitudeRangeM": [34030, 64460]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2022 WJ1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 38945.8,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 162,
+            "medianLargestChildShare": 0.52912,
+            "medianCloudShare": 0.417155,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 361,
+            "medianLargestChildShare": 0.52277,
+            "medianCloudShare": 0.224965,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.538222,
+            "landedCloud": 0,
+            "settled": 0.461778,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.35462,
+              "medianRetainedFraction": 0.704803,
+              "medianBirthAltitudeM": 31893.5
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.104402,
+              "medianRetainedFraction": 0.765096,
+              "medianBirthAltitudeM": 31311.5
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0585961,
+              "medianRetainedFraction": 0.802704,
+              "medianBirthAltitudeM": 30858.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0133564,
+              "medianRetainedFraction": 0.765576,
+              "medianBirthAltitudeM": 33395.6
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00724733,
+              "medianRetainedFraction": 0.682553,
+              "medianBirthAltitudeM": 32619.6
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.389307,
+              "medianRetainedFraction": 0.823575,
+              "altitudeRangeM": [22850, 30340]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.198084,
+              "medianRetainedFraction": 0.765094,
+              "altitudeRangeM": [30340, 32900]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.412609,
+              "medianRetainedFraction": 0.6286,
+              "altitudeRangeM": [32910, 100000]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 38945.8,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 175,
+            "medianLargestChildShare": 0.532443,
+            "medianCloudShare": 0.406377,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 551,
+            "medianLargestChildShare": 0.529979,
+            "medianCloudShare": 0.231687,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.463697,
+            "landedCloud": 0,
+            "settled": 0.536303,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.279727,
+              "medianRetainedFraction": 0.6921,
+              "medianBirthAltitudeM": 31433.8
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.104796,
+              "medianRetainedFraction": 0.775585,
+              "medianBirthAltitudeM": 30984.3
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.038971,
+              "medianRetainedFraction": 0.728332,
+              "medianBirthAltitudeM": 32350.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0235305,
+              "medianRetainedFraction": 0.775642,
+              "medianBirthAltitudeM": 31973.2
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0166716,
+              "medianRetainedFraction": 0.797371,
+              "medianBirthAltitudeM": 34678.9
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.479608,
+              "medianRetainedFraction": 0.824356,
+              "altitudeRangeM": [23860, 30910]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.204331,
+              "medianRetainedFraction": 0.780102,
+              "altitudeRangeM": [30910, 33620]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.316061,
+              "medianRetainedFraction": 0.657389,
+              "altitudeRangeM": [33620, 100000]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 38945.8,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.874931,
+            "medianCloudShare": 0.00168815,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 475,
+            "medianLargestChildShare": 0.536519,
+            "medianCloudShare": 0.30361,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.569202,
+            "landedCloud": 0,
+            "settled": 0.430798,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.261209,
+              "medianRetainedFraction": 0.660012,
+              "medianBirthAltitudeM": 58596.1
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.17473,
+              "medianRetainedFraction": 0.810873,
+              "medianBirthAltitudeM": 30422
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0761249,
+              "medianRetainedFraction": 0.80369,
+              "medianBirthAltitudeM": 30879.1
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0358575,
+              "medianRetainedFraction": 0.854449,
+              "medianBirthAltitudeM": 31515.3
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0212813,
+              "medianRetainedFraction": 0.677401,
+              "medianBirthAltitudeM": 32328.7
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.415788,
+              "medianRetainedFraction": 0.850987,
+              "altitudeRangeM": [23260, 31640]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.205562,
+              "medianRetainedFraction": 0.746872,
+              "altitudeRangeM": [31640, 56030]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.37865,
+              "medianRetainedFraction": 0.702824,
+              "altitudeRangeM": [56060, 63280]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 38945.8,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.87669,
+            "medianCloudShare": 0.00139399,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 449,
+            "medianLargestChildShare": 0.544613,
+            "medianCloudShare": 0.282397,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.548884,
+            "landedCloud": 0,
+            "settled": 0.451116,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.222173,
+              "medianRetainedFraction": 0.686496,
+              "medianBirthAltitudeM": 58584.3
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.177579,
+              "medianRetainedFraction": 0.760287,
+              "medianBirthAltitudeM": 31421.2
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0825123,
+              "medianRetainedFraction": 0.802607,
+              "medianBirthAltitudeM": 30962.3
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0476179,
+              "medianRetainedFraction": 0.824961,
+              "medianBirthAltitudeM": 30532.9
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0190021,
+              "medianRetainedFraction": 0.819487,
+              "medianBirthAltitudeM": 31715.3
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.399623,
+              "medianRetainedFraction": 0.820104,
+              "altitudeRangeM": [23780, 31560]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.280525,
+              "medianRetainedFraction": 0.766037,
+              "altitudeRangeM": [31570, 56140]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.319852,
+              "medianRetainedFraction": 0.695982,
+              "altitudeRangeM": [56140, 63250]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Carancas",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 1147750,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.542291,
+            "medianCloudShare": 0.434113,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 22872,
+            "medianLargestChildShare": 0.530584,
+            "medianCloudShare": 0.133375,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.143375,
+            "landedCloud": 0,
+            "settled": 0.856625,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.00166192,
+              "medianRetainedFraction": 0.657793,
+              "medianBirthAltitudeM": 29134.8
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0115036,
+              "medianRetainedFraction": 0.706764,
+              "medianBirthAltitudeM": 24950.3
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0238897,
+              "medianRetainedFraction": 0.763313,
+              "medianBirthAltitudeM": 24397.1
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0336311,
+              "medianRetainedFraction": 0.783617,
+              "medianBirthAltitudeM": 23789.3
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0726884,
+              "medianRetainedFraction": 0.825219,
+              "medianBirthAltitudeM": 30279.7
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.941073,
+              "medianRetainedFraction": 0.738376,
+              "altitudeRangeM": [15670, 28910]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0435227,
+              "medianRetainedFraction": 0.83181,
+              "altitudeRangeM": [28910, 31110]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0154042,
+              "medianRetainedFraction": 0.860122,
+              "altitudeRangeM": [31110, 33840]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 1147750,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.558425,
+            "medianCloudShare": 0.496206,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 15148,
+            "medianLargestChildShare": 0.51695,
+            "medianCloudShare": 0.165178,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.13208,
+            "landedCloud": 0,
+            "settled": 0.86792,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.000596358,
+              "medianRetainedFraction": 0.475442,
+              "medianBirthAltitudeM": 27591.5
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0151045,
+              "medianRetainedFraction": 0.694985,
+              "medianBirthAltitudeM": 24526.1
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0261387,
+              "medianRetainedFraction": 0.737001,
+              "medianBirthAltitudeM": 24229.8
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0285854,
+              "medianRetainedFraction": 0.743246,
+              "medianBirthAltitudeM": 24251.1
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0616552,
+              "medianRetainedFraction": 0.795047,
+              "medianBirthAltitudeM": 29383.4
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.911124,
+              "medianRetainedFraction": 0.761293,
+              "altitudeRangeM": [15810, 27820]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0644645,
+              "medianRetainedFraction": 0.831359,
+              "altitudeRangeM": [27820, 30100]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0244113,
+              "medianRetainedFraction": 0.790713,
+              "altitudeRangeM": [30100, 34210]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 1147750,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.887936,
+            "medianCloudShare": 0.00136611,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 29147,
+            "medianLargestChildShare": 0.474812,
+            "medianCloudShare": 0.115531,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.175523,
+            "landedCloud": 0,
+            "settled": 0.824477,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0195636,
+              "medianRetainedFraction": 0.639099,
+              "medianBirthAltitudeM": 59724.8
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0182333,
+              "medianRetainedFraction": 0.774129,
+              "medianBirthAltitudeM": 26458
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0204108,
+              "medianRetainedFraction": 0.772702,
+              "medianBirthAltitudeM": 26860.1
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0260625,
+              "medianRetainedFraction": 0.737082,
+              "medianBirthAltitudeM": 25714.8
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0912529,
+              "medianRetainedFraction": 0.650994,
+              "medianBirthAltitudeM": 30912.8
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.827815,
+              "medianRetainedFraction": 0.739546,
+              "altitudeRangeM": [16000, 30070]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0279418,
+              "medianRetainedFraction": 0.650992,
+              "altitudeRangeM": [30070, 31170]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.144244,
+              "medianRetainedFraction": 0.493662,
+              "altitudeRangeM": [31170, 66010]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 1147750,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.879022,
+            "medianCloudShare": 0.00158297,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 10677,
+            "medianLargestChildShare": 0.632554,
+            "medianCloudShare": 0.157579,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.184765,
+            "landedCloud": 0,
+            "settled": 0.815235,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0226593,
+              "medianRetainedFraction": 0.675565,
+              "medianBirthAltitudeM": 58956.3
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0220842,
+              "medianRetainedFraction": 0.774921,
+              "medianBirthAltitudeM": 25870.3
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0252949,
+              "medianRetainedFraction": 0.768618,
+              "medianBirthAltitudeM": 25899.7
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0266846,
+              "medianRetainedFraction": 0.746925,
+              "medianBirthAltitudeM": 25647.9
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0880422,
+              "medianRetainedFraction": 0.707391,
+              "medianBirthAltitudeM": 28003.6
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.669045,
+              "medianRetainedFraction": 0.748019,
+              "altitudeRangeM": [16330, 25910]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.185373,
+              "medianRetainedFraction": 0.727893,
+              "altitudeRangeM": [25910, 31010]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.145582,
+              "medianRetainedFraction": 0.701255,
+              "altitudeRangeM": [31020, 65530]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Winchcombe",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 2438.61,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 104,
+            "medianLargestChildShare": 0.574773,
+            "medianCloudShare": 0.50478,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 86,
+            "medianLargestChildShare": 0.502704,
+            "medianCloudShare": 0.292865,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.704363,
+            "landedCloud": 0,
+            "settled": 0.295637,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.62752,
+              "medianRetainedFraction": 0.757125,
+              "medianBirthAltitudeM": 35653.4
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0546791,
+              "medianRetainedFraction": 0.830896,
+              "medianBirthAltitudeM": 33277.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0151483,
+              "medianRetainedFraction": 0.838073,
+              "medianBirthAltitudeM": 33917.6
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.00491135,
+              "medianRetainedFraction": 0.917015,
+              "medianBirthAltitudeM": 33218.7
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00210394,
+              "medianRetainedFraction": 0.889314,
+              "medianBirthAltitudeM": 32841.5
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.200462,
+              "medianRetainedFraction": 0.865949,
+              "altitudeRangeM": [26900, 33130]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.116105,
+              "medianRetainedFraction": 0.796199,
+              "altitudeRangeM": [33130, 35690]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.683434,
+              "medianRetainedFraction": 0.692706,
+              "altitudeRangeM": [35690, 100000]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 2438.61,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 91,
+            "medianLargestChildShare": 0.554982,
+            "medianCloudShare": 0.386,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 89,
+            "medianLargestChildShare": 0.562349,
+            "medianCloudShare": 0.155313,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.768363,
+            "landedCloud": 0,
+            "settled": 0.231637,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.696451,
+              "medianRetainedFraction": 0.7967,
+              "medianBirthAltitudeM": 35905.3
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0400576,
+              "medianRetainedFraction": 0.846666,
+              "medianBirthAltitudeM": 32767.9
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0228444,
+              "medianRetainedFraction": 0.876156,
+              "medianBirthAltitudeM": 33773.5
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.00714795,
+              "medianRetainedFraction": 0.870997,
+              "medianBirthAltitudeM": 34243.3
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00186233,
+              "medianRetainedFraction": 0.891632,
+              "medianBirthAltitudeM": 33298.4
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.190188,
+              "medianRetainedFraction": 0.860797,
+              "altitudeRangeM": [26880, 32770]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.105803,
+              "medianRetainedFraction": 0.869403,
+              "altitudeRangeM": [32780, 35900]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.704009,
+              "medianRetainedFraction": 0.711507,
+              "altitudeRangeM": [35910, 100000]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 2438.61,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.878748,
+            "medianCloudShare": 0.00157421,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 171,
+            "medianLargestChildShare": 0.581039,
+            "medianCloudShare": 0.298123,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.752964,
+            "landedCloud": 0,
+            "settled": 0.24703,
+            "dust": 0.0000060567
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.511704,
+              "medianRetainedFraction": 0.659589,
+              "medianBirthAltitudeM": 58477.2
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.17709,
+              "medianRetainedFraction": 0.767459,
+              "medianBirthAltitudeM": 33179.2
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0472057,
+              "medianRetainedFraction": 0.815876,
+              "medianBirthAltitudeM": 32620
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.011462,
+              "medianRetainedFraction": 0.790156,
+              "medianBirthAltitudeM": 33714.2
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00550204,
+              "medianRetainedFraction": 0.889585,
+              "medianBirthAltitudeM": 34480.3
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.302841,
+              "medianRetainedFraction": 0.815129,
+              "altitudeRangeM": [27300, 36200]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.329463,
+              "medianRetainedFraction": 0.64973,
+              "altitudeRangeM": [36300, 58330]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.367695,
+              "medianRetainedFraction": 0.690503,
+              "altitudeRangeM": [58330, 63040]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 2438.61,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.879745,
+            "medianCloudShare": 0.00154262,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 135,
+            "medianLargestChildShare": 0.541663,
+            "medianCloudShare": 0.295237,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.845961,
+            "landedCloud": 0,
+            "settled": 0.154037,
+            "dust": 0.00000156073
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.667072,
+              "medianRetainedFraction": 0.698049,
+              "medianBirthAltitudeM": 58522.6
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.119194,
+              "medianRetainedFraction": 0.777264,
+              "medianBirthAltitudeM": 34350.2
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0456117,
+              "medianRetainedFraction": 0.848629,
+              "medianBirthAltitudeM": 32702.7
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.00968197,
+              "medianRetainedFraction": 0.874586,
+              "medianBirthAltitudeM": 34088.6
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00440116,
+              "medianRetainedFraction": 0.89681,
+              "medianBirthAltitudeM": 32810.3
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.253527,
+              "medianRetainedFraction": 0.820578,
+              "altitudeRangeM": [26860, 54760]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.377047,
+              "medianRetainedFraction": 0.703662,
+              "altitudeRangeM": [54780, 58890]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.369426,
+              "medianRetainedFraction": 0.683969,
+              "altitudeRangeM": [59000, 62920]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Golden",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 24743.7,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.566538,
+            "medianCloudShare": 0.417106,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 4123,
+            "medianLargestChildShare": 0.58309,
+            "medianCloudShare": 0.140122,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.263812,
+            "landedCloud": 0,
+            "settled": 0.736188,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0194172,
+              "medianRetainedFraction": 0.496121,
+              "medianBirthAltitudeM": 33377.3
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0619507,
+              "medianRetainedFraction": 0.511086,
+              "medianBirthAltitudeM": 30009.5
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0465779,
+              "medianRetainedFraction": 0.550608,
+              "medianBirthAltitudeM": 30602
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0576427,
+              "medianRetainedFraction": 0.62796,
+              "medianBirthAltitudeM": 29938.3
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0782236,
+              "medianRetainedFraction": 0.618369,
+              "medianBirthAltitudeM": 33951.9
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.754288,
+              "medianRetainedFraction": 0.737939,
+              "altitudeRangeM": [23010, 31610]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.209804,
+              "medianRetainedFraction": 0.599209,
+              "altitudeRangeM": [31610, 34560]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0359086,
+              "medianRetainedFraction": 0.584216,
+              "altitudeRangeM": [34570, 40110]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 24743.7,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.541389,
+            "medianCloudShare": 0.399522,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 3440,
+            "medianLargestChildShare": 0.50517,
+            "medianCloudShare": 0.229427,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.276147,
+            "landedCloud": 0,
+            "settled": 0.723853,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0193929,
+              "medianRetainedFraction": 0.469089,
+              "medianBirthAltitudeM": 32378.1
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0730165,
+              "medianRetainedFraction": 0.591356,
+              "medianBirthAltitudeM": 29282.6
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0716229,
+              "medianRetainedFraction": 0.631122,
+              "medianBirthAltitudeM": 30152.3
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0535162,
+              "medianRetainedFraction": 0.614054,
+              "medianBirthAltitudeM": 30597.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0585981,
+              "medianRetainedFraction": 0.649528,
+              "medianBirthAltitudeM": 33816.9
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.74382,
+              "medianRetainedFraction": 0.690865,
+              "altitudeRangeM": [22470, 31020]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.216499,
+              "medianRetainedFraction": 0.475191,
+              "altitudeRangeM": [31020, 34270]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0396809,
+              "medianRetainedFraction": 0.476029,
+              "altitudeRangeM": [34280, 39190]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 24743.7,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.890072,
+            "medianCloudShare": 0.00127409,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 3045,
+            "medianLargestChildShare": 0.604485,
+            "medianCloudShare": 0.183886,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.300963,
+            "landedCloud": 0,
+            "settled": 0.699037,
+            "dust": 8.269e-8
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0747593,
+              "medianRetainedFraction": 0.467405,
+              "medianBirthAltitudeM": 62848
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0365483,
+              "medianRetainedFraction": 0.632811,
+              "medianBirthAltitudeM": 34203.3
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0693651,
+              "medianRetainedFraction": 0.649471,
+              "medianBirthAltitudeM": 30952.5
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0540711,
+              "medianRetainedFraction": 0.586618,
+              "medianBirthAltitudeM": 30386.3
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0662194,
+              "medianRetainedFraction": 0.587286,
+              "medianBirthAltitudeM": 33070.8
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.512045,
+              "medianRetainedFraction": 0.569614,
+              "altitudeRangeM": [23340, 31450]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.186155,
+              "medianRetainedFraction": 0.526164,
+              "altitudeRangeM": [31450, 34590]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.301801,
+              "medianRetainedFraction": 0.5995,
+              "altitudeRangeM": [34590, 66940]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 24743.7,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.878316,
+            "medianCloudShare": 0.00143792,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 3327,
+            "medianLargestChildShare": 0.519417,
+            "medianCloudShare": 0.169251,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.325385,
+            "landedCloud": 0,
+            "settled": 0.674614,
+            "dust": 5.16957e-7
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0774869,
+              "medianRetainedFraction": 0.503957,
+              "medianBirthAltitudeM": 63132.8
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0384052,
+              "medianRetainedFraction": 0.640864,
+              "medianBirthAltitudeM": 34442.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.062157,
+              "medianRetainedFraction": 0.631102,
+              "medianBirthAltitudeM": 31101
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0628911,
+              "medianRetainedFraction": 0.697235,
+              "medianBirthAltitudeM": 30497.9
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0844452,
+              "medianRetainedFraction": 0.830746,
+              "medianBirthAltitudeM": 33884.5
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.499027,
+              "medianRetainedFraction": 0.712183,
+              "altitudeRangeM": [23810, 31440]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.217587,
+              "medianRetainedFraction": 0.634541,
+              "altitudeRangeM": [31440, 35600]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.283386,
+              "medianRetainedFraction": 0.866233,
+              "altitudeRangeM": [35600, 67000]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Madura Cave",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 8990.54,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.577461,
+            "medianCloudShare": 0.471694,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 699,
+            "medianLargestChildShare": 0.53371,
+            "medianCloudShare": 0.228236,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.383222,
+            "landedCloud": 0,
+            "settled": 0.616778,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.186801,
+              "medianRetainedFraction": 0.78927,
+              "medianBirthAltitudeM": 29014.9
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0922392,
+              "medianRetainedFraction": 0.781236,
+              "medianBirthAltitudeM": 29387.4
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0534957,
+              "medianRetainedFraction": 0.741669,
+              "medianBirthAltitudeM": 29876.3
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0292132,
+              "medianRetainedFraction": 0.772093,
+              "medianBirthAltitudeM": 29778.9
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0214725,
+              "medianRetainedFraction": 0.660795,
+              "medianBirthAltitudeM": 31469.2
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.596495,
+              "medianRetainedFraction": 0.824322,
+              "altitudeRangeM": [22420, 28820]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.261382,
+              "medianRetainedFraction": 0.736529,
+              "altitudeRangeM": [28820, 31470]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.142123,
+              "medianRetainedFraction": 0.66744,
+              "altitudeRangeM": [31480, 37790]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 8990.54,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.562332,
+            "medianCloudShare": 0.511267,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 928,
+            "medianLargestChildShare": 0.542194,
+            "medianCloudShare": 0.177778,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.34924,
+            "landedCloud": 0,
+            "settled": 0.65076,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.142806,
+              "medianRetainedFraction": 0.746572,
+              "medianBirthAltitudeM": 28920.5
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.094426,
+              "medianRetainedFraction": 0.778663,
+              "medianBirthAltitudeM": 29532.5
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0523718,
+              "medianRetainedFraction": 0.838896,
+              "medianBirthAltitudeM": 30096
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0358707,
+              "medianRetainedFraction": 0.846361,
+              "medianBirthAltitudeM": 30004.9
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0237658,
+              "medianRetainedFraction": 0.744881,
+              "medianBirthAltitudeM": 31652.9
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.616991,
+              "medianRetainedFraction": 0.837188,
+              "altitudeRangeM": [23310, 29230]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.244994,
+              "medianRetainedFraction": 0.821974,
+              "altitudeRangeM": [29240, 31610]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.138015,
+              "medianRetainedFraction": 0.673683,
+              "altitudeRangeM": [31610, 38530]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 8990.54,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.874813,
+            "medianCloudShare": 0.00151258,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 1083,
+            "medianLargestChildShare": 0.528253,
+            "medianCloudShare": 0.223615,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.45605,
+            "landedCloud": 0,
+            "settled": 0.54395,
+            "dust": 2.22575e-7
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.125071,
+              "medianRetainedFraction": 0.662665,
+              "medianBirthAltitudeM": 58768.9
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.14536,
+              "medianRetainedFraction": 0.698816,
+              "medianBirthAltitudeM": 29313.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0859021,
+              "medianRetainedFraction": 0.733161,
+              "medianBirthAltitudeM": 30023.5
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0469396,
+              "medianRetainedFraction": 0.825958,
+              "medianBirthAltitudeM": 29835
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0527768,
+              "medianRetainedFraction": 0.843165,
+              "medianBirthAltitudeM": 32304.7
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.516778,
+              "medianRetainedFraction": 0.820776,
+              "altitudeRangeM": [23750, 30650]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.167484,
+              "medianRetainedFraction": 0.801347,
+              "altitudeRangeM": [30650, 33720]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.315738,
+              "medianRetainedFraction": 0.696385,
+              "altitudeRangeM": [33720, 63380]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 8990.54,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.87951,
+            "medianCloudShare": 0.00164083,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 1052,
+            "medianLargestChildShare": 0.511691,
+            "medianCloudShare": 0.256205,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.465139,
+            "landedCloud": 0,
+            "settled": 0.534861,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.127323,
+              "medianRetainedFraction": 0.674594,
+              "medianBirthAltitudeM": 59147.4
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.141425,
+              "medianRetainedFraction": 0.764873,
+              "medianBirthAltitudeM": 28733.9
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.10364,
+              "medianRetainedFraction": 0.76442,
+              "medianBirthAltitudeM": 29766.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0524855,
+              "medianRetainedFraction": 0.815601,
+              "medianBirthAltitudeM": 30067.3
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0402657,
+              "medianRetainedFraction": 0.673651,
+              "medianBirthAltitudeM": 32443.5
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.532123,
+              "medianRetainedFraction": 0.783939,
+              "altitudeRangeM": [22300, 30510]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.162019,
+              "medianRetainedFraction": 0.676848,
+              "altitudeRangeM": [30550, 33730]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.305857,
+              "medianRetainedFraction": 0.670125,
+              "altitudeRangeM": [33730, 63290]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Hamburg",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 24094.2,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.53074,
+            "medianCloudShare": 0.428231,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 3044,
+            "medianLargestChildShare": 0.538782,
+            "medianCloudShare": 0.227963,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.253772,
+            "landedCloud": 0,
+            "settled": 0.746228,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0267598,
+              "medianRetainedFraction": 0.627798,
+              "medianBirthAltitudeM": 30888.4
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0679348,
+              "medianRetainedFraction": 0.77625,
+              "medianBirthAltitudeM": 28299.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0573809,
+              "medianRetainedFraction": 0.703865,
+              "medianBirthAltitudeM": 29417.3
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0474068,
+              "medianRetainedFraction": 0.753368,
+              "medianBirthAltitudeM": 29376.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0542895,
+              "medianRetainedFraction": 0.688347,
+              "medianBirthAltitudeM": 32052.9
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.738229,
+              "medianRetainedFraction": 0.761932,
+              "altitudeRangeM": [22400, 30060]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.176863,
+              "medianRetainedFraction": 0.674962,
+              "altitudeRangeM": [30060, 32200]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0849079,
+              "medianRetainedFraction": 0.696825,
+              "altitudeRangeM": [32200, 37620]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 24094.2,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.565108,
+            "medianCloudShare": 0.490741,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 3916,
+            "medianLargestChildShare": 0.507687,
+            "medianCloudShare": 0.136678,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.23793,
+            "landedCloud": 0,
+            "settled": 0.76207,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0249928,
+              "medianRetainedFraction": 0.687293,
+              "medianBirthAltitudeM": 30234.6
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0699238,
+              "medianRetainedFraction": 0.703234,
+              "medianBirthAltitudeM": 28374.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0475121,
+              "medianRetainedFraction": 0.691276,
+              "medianBirthAltitudeM": 29143.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0426135,
+              "medianRetainedFraction": 0.703082,
+              "medianBirthAltitudeM": 29374.3
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0528883,
+              "medianRetainedFraction": 0.757659,
+              "medianBirthAltitudeM": 34220.7
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.845428,
+              "medianRetainedFraction": 0.740301,
+              "altitudeRangeM": [22490, 31070]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.129256,
+              "medianRetainedFraction": 0.716172,
+              "altitudeRangeM": [31070, 34560]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0253163,
+              "medianRetainedFraction": 0.882288,
+              "altitudeRangeM": [34560, 38260]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 24094.2,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.87602,
+            "medianCloudShare": 0.0014466,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 2330,
+            "medianLargestChildShare": 0.507552,
+            "medianCloudShare": 0.241692,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.36834,
+            "landedCloud": 0,
+            "settled": 0.63166,
+            "dust": 7.51394e-8
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0858093,
+              "medianRetainedFraction": 0.591881,
+              "medianBirthAltitudeM": 61626.6
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0432992,
+              "medianRetainedFraction": 0.681094,
+              "medianBirthAltitudeM": 32343.5
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0918571,
+              "medianRetainedFraction": 0.643139,
+              "medianBirthAltitudeM": 28878.8
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0758655,
+              "medianRetainedFraction": 0.683286,
+              "medianBirthAltitudeM": 28879.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0715093,
+              "medianRetainedFraction": 0.792612,
+              "medianBirthAltitudeM": 31645.9
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.534323,
+              "medianRetainedFraction": 0.697627,
+              "altitudeRangeM": [21270, 30100]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.183446,
+              "medianRetainedFraction": 0.802345,
+              "altitudeRangeM": [30100, 33010]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.282231,
+              "medianRetainedFraction": 0.615136,
+              "altitudeRangeM": [33020, 65170]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 24094.2,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.878431,
+            "medianCloudShare": 0.00156715,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 2419,
+            "medianLargestChildShare": 0.516466,
+            "medianCloudShare": 0.325565,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.281507,
+            "landedCloud": 0,
+            "settled": 0.718493,
+            "dust": 7.37099e-8
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0707932,
+              "medianRetainedFraction": 0.602246,
+              "medianBirthAltitudeM": 60997.9
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0359731,
+              "medianRetainedFraction": 0.71073,
+              "medianBirthAltitudeM": 32406
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0617935,
+              "medianRetainedFraction": 0.680478,
+              "medianBirthAltitudeM": 29862.3
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0423697,
+              "medianRetainedFraction": 0.744523,
+              "medianBirthAltitudeM": 29783.8
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0705772,
+              "medianRetainedFraction": 0.690335,
+              "medianBirthAltitudeM": 30936
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.441967,
+              "medianRetainedFraction": 0.697689,
+              "altitudeRangeM": [22160, 29660]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.212206,
+              "medianRetainedFraction": 0.702864,
+              "altitudeRangeM": [29660, 32500]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.345827,
+              "medianRetainedFraction": 0.632328,
+              "altitudeRangeM": [32510, 65190]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Traspena",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 522795,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.545518,
+            "medianCloudShare": 0.440797,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 18217,
+            "medianLargestChildShare": 0.566396,
+            "medianCloudShare": 0.156766,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.149129,
+            "landedCloud": 0,
+            "settled": 0.850871,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0000846261,
+              "medianRetainedFraction": 0.204641,
+              "medianBirthAltitudeM": 32745.6
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0140649,
+              "medianRetainedFraction": 0.645234,
+              "medianBirthAltitudeM": 27011
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0281147,
+              "medianRetainedFraction": 0.636579,
+              "medianBirthAltitudeM": 25302.5
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0285231,
+              "medianRetainedFraction": 0.679275,
+              "medianBirthAltitudeM": 24741.8
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0783413,
+              "medianRetainedFraction": 0.679579,
+              "medianBirthAltitudeM": 30317.1
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.873557,
+              "medianRetainedFraction": 0.750795,
+              "altitudeRangeM": [18190, 28400]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.106065,
+              "medianRetainedFraction": 0.561884,
+              "altitudeRangeM": [28400, 31040]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0203783,
+              "medianRetainedFraction": 0.823794,
+              "altitudeRangeM": [31040, 36150]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 522795,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.549429,
+            "medianCloudShare": 0.464311,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 11440,
+            "medianLargestChildShare": 0.463604,
+            "medianCloudShare": 0.252213,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.14631,
+            "landedCloud": 0,
+            "settled": 0.85369,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.000684102,
+              "medianRetainedFraction": 0.691469,
+              "medianBirthAltitudeM": 30127.4
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.00969707,
+              "medianRetainedFraction": 0.60821,
+              "medianBirthAltitudeM": 26910.1
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0194495,
+              "medianRetainedFraction": 0.665453,
+              "medianBirthAltitudeM": 25665.7
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0446383,
+              "medianRetainedFraction": 0.705881,
+              "medianBirthAltitudeM": 25921.9
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0718412,
+              "medianRetainedFraction": 0.639809,
+              "medianBirthAltitudeM": 30737.1
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.904473,
+              "medianRetainedFraction": 0.714814,
+              "altitudeRangeM": [17820, 28270]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0814269,
+              "medianRetainedFraction": 0.696796,
+              "altitudeRangeM": [28270, 31780]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0141004,
+              "medianRetainedFraction": 0.484573,
+              "altitudeRangeM": [31800, 36050]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 522795,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.877708,
+            "medianCloudShare": 0.00147047,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 15117,
+            "medianLargestChildShare": 0.508139,
+            "medianCloudShare": 0.28498,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.188411,
+            "landedCloud": 0,
+            "settled": 0.811589,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0162178,
+              "medianRetainedFraction": 0.552309,
+              "medianBirthAltitudeM": 61426.7
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0208141,
+              "medianRetainedFraction": 0.691776,
+              "medianBirthAltitudeM": 27314.4
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0210114,
+              "medianRetainedFraction": 0.665192,
+              "medianBirthAltitudeM": 28302.3
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0279682,
+              "medianRetainedFraction": 0.682922,
+              "medianBirthAltitudeM": 27213.8
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.102399,
+              "medianRetainedFraction": 0.739733,
+              "medianBirthAltitudeM": 31136.4
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.751248,
+              "medianRetainedFraction": 0.756442,
+              "altitudeRangeM": [17920, 28540]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.146268,
+              "medianRetainedFraction": 0.70404,
+              "altitudeRangeM": [28540, 33160]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.102484,
+              "medianRetainedFraction": 0.73954,
+              "altitudeRangeM": [33160, 66090]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 522795,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.874557,
+            "medianCloudShare": 0.00166188,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 11847,
+            "medianLargestChildShare": 0.574174,
+            "medianCloudShare": 0.208478,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.220365,
+            "landedCloud": 0,
+            "settled": 0.779635,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0211829,
+              "medianRetainedFraction": 0.507138,
+              "medianBirthAltitudeM": 61551.5
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0218141,
+              "medianRetainedFraction": 0.657412,
+              "medianBirthAltitudeM": 27382.3
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.022144,
+              "medianRetainedFraction": 0.648405,
+              "medianBirthAltitudeM": 27886
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0340822,
+              "medianRetainedFraction": 0.619723,
+              "medianBirthAltitudeM": 26671
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.121142,
+              "medianRetainedFraction": 0.561924,
+              "medianBirthAltitudeM": 28962.9
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.702561,
+              "medianRetainedFraction": 0.725776,
+              "altitudeRangeM": [17480, 27660]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.127249,
+              "medianRetainedFraction": 0.571202,
+              "altitudeRangeM": [27670, 30030]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.17019,
+              "medianRetainedFraction": 0.4887,
+              "altitudeRangeM": [30030, 65940]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Cavezzo",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 771.895,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 117,
+            "medianLargestChildShare": 0.552576,
+            "medianCloudShare": 0.444524,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 124,
+            "medianLargestChildShare": 0.515141,
+            "medianCloudShare": 0.251816,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.669083,
+            "landedCloud": 0,
+            "settled": 0.330917,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.548222,
+              "medianRetainedFraction": 0.767473,
+              "medianBirthAltitudeM": 33563.8
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0829772,
+              "medianRetainedFraction": 0.876852,
+              "medianBirthAltitudeM": 31510.1
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0258,
+              "medianRetainedFraction": 0.852082,
+              "medianBirthAltitudeM": 31799.7
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.00739918,
+              "medianRetainedFraction": 0.872268,
+              "medianBirthAltitudeM": 31834.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00468485,
+              "medianRetainedFraction": 0.942411,
+              "medianBirthAltitudeM": 31182.5
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.228966,
+              "medianRetainedFraction": 0.877008,
+              "altitudeRangeM": [25350, 31050]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.14828,
+              "medianRetainedFraction": 0.803955,
+              "altitudeRangeM": [31100, 33280]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.622754,
+              "medianRetainedFraction": 0.770753,
+              "altitudeRangeM": [33290, 100000]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 771.895,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 114,
+            "medianLargestChildShare": 0.539131,
+            "medianCloudShare": 0.422164,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 90,
+            "medianLargestChildShare": 0.508014,
+            "medianCloudShare": 0.29512,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.693584,
+            "landedCloud": 0,
+            "settled": 0.306416,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.604577,
+              "medianRetainedFraction": 0.790338,
+              "medianBirthAltitudeM": 33734.7
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0701284,
+              "medianRetainedFraction": 0.862474,
+              "medianBirthAltitudeM": 31479.6
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0156677,
+              "medianRetainedFraction": 0.838949,
+              "medianBirthAltitudeM": 31470.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.00217809,
+              "medianRetainedFraction": 0.760443,
+              "medianBirthAltitudeM": 31705.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00103277,
+              "medianRetainedFraction": 0.797301,
+              "medianBirthAltitudeM": 30600.7
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.226121,
+              "medianRetainedFraction": 0.855499,
+              "altitudeRangeM": [25030, 30810]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.132925,
+              "medianRetainedFraction": 0.802821,
+              "altitudeRangeM": [30830, 33480]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.640954,
+              "medianRetainedFraction": 0.731726,
+              "altitudeRangeM": [33520, 100000]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 771.895,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.88041,
+            "medianCloudShare": 0.00134859,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 224,
+            "medianLargestChildShare": 0.496679,
+            "medianCloudShare": 0.318374,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.727661,
+            "landedCloud": 0,
+            "settled": 0.2723,
+            "dust": 0.0000387937
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.50243,
+              "medianRetainedFraction": 0.74373,
+              "medianBirthAltitudeM": 56900.5
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.153087,
+              "medianRetainedFraction": 0.798302,
+              "medianBirthAltitudeM": 31551.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0447383,
+              "medianRetainedFraction": 0.85254,
+              "medianBirthAltitudeM": 32425.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0187991,
+              "medianRetainedFraction": 0.800639,
+              "medianBirthAltitudeM": 32578.1
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00860692,
+              "medianRetainedFraction": 0.893584,
+              "medianBirthAltitudeM": 31916.7
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.265783,
+              "medianRetainedFraction": 0.824311,
+              "altitudeRangeM": [25960, 33640]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.357055,
+              "medianRetainedFraction": 0.74373,
+              "altitudeRangeM": [33670, 55820]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.377162,
+              "medianRetainedFraction": 0.745496,
+              "altitudeRangeM": [55820, 61910]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 771.895,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.877078,
+            "medianCloudShare": 0.00142225,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 220,
+            "medianLargestChildShare": 0.505072,
+            "medianCloudShare": 0.248858,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.774702,
+            "landedCloud": 0,
+            "settled": 0.225263,
+            "dust": 0.0000350012
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.53698,
+              "medianRetainedFraction": 0.73696,
+              "medianBirthAltitudeM": 57344.1
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.165449,
+              "medianRetainedFraction": 0.837457,
+              "medianBirthAltitudeM": 31481.9
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0482157,
+              "medianRetainedFraction": 0.770374,
+              "medianBirthAltitudeM": 31190.9
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0173637,
+              "medianRetainedFraction": 0.802612,
+              "medianBirthAltitudeM": 32239
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.00669444,
+              "medianRetainedFraction": 0.513473,
+              "medianBirthAltitudeM": 33395.2
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.273807,
+              "medianRetainedFraction": 0.802611,
+              "altitudeRangeM": [26400, 34040]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.333715,
+              "medianRetainedFraction": 0.74225,
+              "altitudeRangeM": [34050, 56910]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.392478,
+              "medianRetainedFraction": 0.735184,
+              "altitudeRangeM": [56910, 61930]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Košice",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 905506,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.568434,
+            "medianCloudShare": 0.460692,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 14937,
+            "medianLargestChildShare": 0.633535,
+            "medianCloudShare": 0.0860336,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.191245,
+            "landedCloud": 0,
+            "settled": 0.808755,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.00238878,
+              "medianRetainedFraction": 0.586393,
+              "medianBirthAltitudeM": 29874.9
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0222485,
+              "medianRetainedFraction": 0.613815,
+              "medianBirthAltitudeM": 27037.5
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.03871,
+              "medianRetainedFraction": 0.699649,
+              "medianBirthAltitudeM": 25911.5
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.032213,
+              "medianRetainedFraction": 0.711086,
+              "medianBirthAltitudeM": 26434
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0956852,
+              "medianRetainedFraction": 0.721805,
+              "medianBirthAltitudeM": 31309.5
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.933585,
+              "medianRetainedFraction": 0.777945,
+              "altitudeRangeM": [17470, 29870]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0429878,
+              "medianRetainedFraction": 0.723592,
+              "altitudeRangeM": [29870, 31580]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.023427,
+              "medianRetainedFraction": 0.70538,
+              "altitudeRangeM": [31580, 36460]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 905506,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.568814,
+            "medianCloudShare": 0.454497,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 10203,
+            "medianLargestChildShare": 0.613563,
+            "medianCloudShare": 0.176958,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.184085,
+            "landedCloud": 0,
+            "settled": 0.815915,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.00393164,
+              "medianRetainedFraction": 0.457163,
+              "medianBirthAltitudeM": 30646.2
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0326805,
+              "medianRetainedFraction": 0.742224,
+              "medianBirthAltitudeM": 25865
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0250073,
+              "medianRetainedFraction": 0.66823,
+              "medianBirthAltitudeM": 26775.8
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.042276,
+              "medianRetainedFraction": 0.732579,
+              "medianBirthAltitudeM": 26555.7
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0801899,
+              "medianRetainedFraction": 0.672852,
+              "medianBirthAltitudeM": 31548.4
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.85897,
+              "medianRetainedFraction": 0.75639,
+              "altitudeRangeM": [18010, 27840]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.132487,
+              "medianRetainedFraction": 0.766276,
+              "altitudeRangeM": [27850, 32580]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.00854283,
+              "medianRetainedFraction": 0.426337,
+              "altitudeRangeM": [32580, 35790]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 905506,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.875897,
+            "medianCloudShare": 0.00177394,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 10753,
+            "medianLargestChildShare": 0.523242,
+            "medianCloudShare": 0.109187,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.250066,
+            "landedCloud": 0,
+            "settled": 0.749934,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0354637,
+              "medianRetainedFraction": 0.634061,
+              "medianBirthAltitudeM": 59727.4
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0256643,
+              "medianRetainedFraction": 0.717855,
+              "medianBirthAltitudeM": 28676.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0317003,
+              "medianRetainedFraction": 0.686617,
+              "medianBirthAltitudeM": 27241.4
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0337994,
+              "medianRetainedFraction": 0.722841,
+              "medianBirthAltitudeM": 26790.8
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.123438,
+              "medianRetainedFraction": 0.716607,
+              "medianBirthAltitudeM": 31187.8
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.744367,
+              "medianRetainedFraction": 0.782483,
+              "altitudeRangeM": [16770, 29140]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0727037,
+              "medianRetainedFraction": 0.72942,
+              "altitudeRangeM": [29140, 31280]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.182929,
+              "medianRetainedFraction": 0.715155,
+              "altitudeRangeM": [31280, 64310]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 905506,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.876218,
+            "medianCloudShare": 0.00124785,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 7152,
+            "medianLargestChildShare": 0.543292,
+            "medianCloudShare": 0.193589,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.251585,
+            "landedCloud": 0,
+            "settled": 0.748415,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0362292,
+              "medianRetainedFraction": 0.564915,
+              "medianBirthAltitudeM": 60587.2
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0237278,
+              "medianRetainedFraction": 0.688956,
+              "medianBirthAltitudeM": 29343.4
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0292765,
+              "medianRetainedFraction": 0.640765,
+              "medianBirthAltitudeM": 28108.5
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0434832,
+              "medianRetainedFraction": 0.678655,
+              "medianBirthAltitudeM": 26877.8
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.118869,
+              "medianRetainedFraction": 0.6103,
+              "medianBirthAltitudeM": 28175.8
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.557271,
+              "medianRetainedFraction": 0.72134,
+              "altitudeRangeM": [16180, 26640]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.230416,
+              "medianRetainedFraction": 0.7124,
+              "altitudeRangeM": [26640, 30170]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.212312,
+              "medianRetainedFraction": 0.358325,
+              "altitudeRangeM": [30170, 64330]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Benešov",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 876443,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.548958,
+            "medianCloudShare": 0.443987,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 73666,
+            "medianLargestChildShare": 0.550704,
+            "medianCloudShare": 0.0578665,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.127027,
+            "landedCloud": 0,
+            "settled": 0.872971,
+            "dust": 0.00000138383
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0000148494,
+              "medianRetainedFraction": 0.0395883,
+              "medianBirthAltitudeM": 35941.5
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.00232935,
+              "medianRetainedFraction": 0.333789,
+              "medianBirthAltitudeM": 29076.9
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.00783167,
+              "medianRetainedFraction": 0.426406,
+              "medianBirthAltitudeM": 27647.8
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0101018,
+              "medianRetainedFraction": 0.437857,
+              "medianBirthAltitudeM": 27870.2
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.10675,
+              "medianRetainedFraction": 0.762303,
+              "medianBirthAltitudeM": 33457.8
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.942516,
+              "medianRetainedFraction": 0.575846,
+              "altitudeRangeM": [18840, 32900]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0253889,
+              "medianRetainedFraction": 0.77819,
+              "altitudeRangeM": [32900, 33840]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0320955,
+              "medianRetainedFraction": 0.76237,
+              "altitudeRangeM": [33840, 39150]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 876443,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.549343,
+            "medianCloudShare": 0.466341,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 42734,
+            "medianLargestChildShare": 0.552464,
+            "medianCloudShare": 0.118557,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.107836,
+            "landedCloud": 0,
+            "settled": 0.892164,
+            "dust": 5.36073e-9
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0,
+              "medianRetainedFraction": null,
+              "medianBirthAltitudeM": null
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.00533902,
+              "medianRetainedFraction": 0.282882,
+              "medianBirthAltitudeM": 29293.3
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.00842601,
+              "medianRetainedFraction": 0.538573,
+              "medianBirthAltitudeM": 27251.1
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0135335,
+              "medianRetainedFraction": 0.550916,
+              "medianBirthAltitudeM": 27822.6
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0805373,
+              "medianRetainedFraction": 0.478959,
+              "medianBirthAltitudeM": 32337.2
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.875779,
+              "medianRetainedFraction": 0.62862,
+              "altitudeRangeM": [17750, 30530]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0928546,
+              "medianRetainedFraction": 0.469418,
+              "altitudeRangeM": [30530, 32720]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0313664,
+              "medianRetainedFraction": 0.414118,
+              "altitudeRangeM": [32720, 39710]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 876443,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.875942,
+            "medianCloudShare": 0.00145958,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 46177,
+            "medianLargestChildShare": 0.501198,
+            "medianCloudShare": 0.135232,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.148684,
+            "landedCloud": 0,
+            "settled": 0.851316,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.00797892,
+              "medianRetainedFraction": 0.348382,
+              "medianBirthAltitudeM": 65405.4
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0108322,
+              "medianRetainedFraction": 0.500159,
+              "medianBirthAltitudeM": 28307.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0154501,
+              "medianRetainedFraction": 0.504586,
+              "medianBirthAltitudeM": 29511
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0166904,
+              "medianRetainedFraction": 0.480315,
+              "medianBirthAltitudeM": 28626
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0977324,
+              "medianRetainedFraction": 0.570519,
+              "medianBirthAltitudeM": 33722.2
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.877293,
+              "medianRetainedFraction": 0.588575,
+              "altitudeRangeM": [17490, 32750]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0427366,
+              "medianRetainedFraction": 0.576986,
+              "altitudeRangeM": [32750, 34650]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0799705,
+              "medianRetainedFraction": 0.35757,
+              "altitudeRangeM": [34650, 69340]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 876443,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.880673,
+            "medianCloudShare": 0.00145099,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 53060,
+            "medianLargestChildShare": 0.578215,
+            "medianCloudShare": 0.115709,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.168722,
+            "landedCloud": 0,
+            "settled": 0.831273,
+            "dust": 0.00000492341
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.00649907,
+              "medianRetainedFraction": 0.290182,
+              "medianBirthAltitudeM": 65061.1
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.00875077,
+              "medianRetainedFraction": 0.471023,
+              "medianBirthAltitudeM": 28831.8
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0134379,
+              "medianRetainedFraction": 0.539111,
+              "medianBirthAltitudeM": 29991.7
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0139552,
+              "medianRetainedFraction": 0.479921,
+              "medianBirthAltitudeM": 29613.7
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.126079,
+              "medianRetainedFraction": 0.689647,
+              "medianBirthAltitudeM": 33651.2
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.874713,
+              "medianRetainedFraction": 0.701171,
+              "altitudeRangeM": [18930, 31680]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0729378,
+              "medianRetainedFraction": 0.316891,
+              "altitudeRangeM": [31680, 35260]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0523494,
+              "medianRetainedFraction": 0.81933,
+              "altitudeRangeM": [35260, 69350]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Tagish Lake",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "produced": 200,
+          "entryMassKg": 20479500,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.561988,
+            "medianCloudShare": 0.459671,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 10391,
+            "medianLargestChildShare": 0.578455,
+            "medianCloudShare": 0.139221,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.200689,
+            "landedCloud": 0,
+            "settled": 0.799311,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.00419979,
+              "medianRetainedFraction": 0.816513,
+              "medianBirthAltitudeM": 31280.3
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0272917,
+              "medianRetainedFraction": 0.631754,
+              "medianBirthAltitudeM": 27159.1
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0502022,
+              "medianRetainedFraction": 0.736107,
+              "medianBirthAltitudeM": 26229.8
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0464519,
+              "medianRetainedFraction": 0.73501,
+              "medianBirthAltitudeM": 26406.4
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0725436,
+              "medianRetainedFraction": 0.563835,
+              "medianBirthAltitudeM": 32859.3
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.920659,
+              "medianRetainedFraction": 0.639218,
+              "altitudeRangeM": [19740, 30640]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0689791,
+              "medianRetainedFraction": 0.770828,
+              "altitudeRangeM": [30640, 33330]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.010362,
+              "medianRetainedFraction": 0.390819,
+              "altitudeRangeM": [33330, 35710]
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "produced": 200,
+          "entryMassKg": 20479500,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.575503,
+            "medianCloudShare": 0.465831,
+            "medianChildCount": 3
+          },
+          "laterBreaks": {
+            "count": 5348,
+            "medianLargestChildShare": 0.558854,
+            "medianCloudShare": 0.139802,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.222636,
+            "landedCloud": 0,
+            "settled": 0.777364,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.00533533,
+              "medianRetainedFraction": 0.512625,
+              "medianBirthAltitudeM": 31186.5
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0367816,
+              "medianRetainedFraction": 0.643682,
+              "medianBirthAltitudeM": 26839.2
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0474721,
+              "medianRetainedFraction": 0.592932,
+              "medianBirthAltitudeM": 26402.7
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0486796,
+              "medianRetainedFraction": 0.735264,
+              "medianBirthAltitudeM": 26820
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0843678,
+              "medianRetainedFraction": 0.724661,
+              "medianBirthAltitudeM": 30378.9
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.780992,
+              "medianRetainedFraction": 0.786812,
+              "altitudeRangeM": [18650, 28030]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.156405,
+              "medianRetainedFraction": 0.748778,
+              "altitudeRangeM": [28030, 30830]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.0626031,
+              "medianRetainedFraction": 0.712131,
+              "altitudeRangeM": [30840, 36480]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "produced": 200,
+          "entryMassKg": 20479500,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.879735,
+            "medianCloudShare": 0.00153781,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 8072,
+            "medianLargestChildShare": 0.544839,
+            "medianCloudShare": 0.151965,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.244948,
+            "landedCloud": 0,
+            "settled": 0.755052,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0444524,
+              "medianRetainedFraction": 0.575619,
+              "medianBirthAltitudeM": 61157.3
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0228329,
+              "medianRetainedFraction": 0.703922,
+              "medianBirthAltitudeM": 30721.5
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0340014,
+              "medianRetainedFraction": 0.643349,
+              "medianBirthAltitudeM": 29723.2
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0373945,
+              "medianRetainedFraction": 0.680162,
+              "medianBirthAltitudeM": 28402.1
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.106267,
+              "medianRetainedFraction": 0.682998,
+              "medianBirthAltitudeM": 30779.4
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.637659,
+              "medianRetainedFraction": 0.753632,
+              "altitudeRangeM": [19890, 29670]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0982834,
+              "medianRetainedFraction": 0.6097,
+              "altitudeRangeM": [29670, 31500]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.264057,
+              "medianRetainedFraction": 0.771932,
+              "altitudeRangeM": [31500, 65140]
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "produced": 200,
+          "entryMassKg": 20479500,
+          "pressureRatio": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "firstBreak": {
+            "count": 200,
+            "medianLargestChildShare": 0.87582,
+            "medianCloudShare": 0.00159469,
+            "medianChildCount": 4
+          },
+          "laterBreaks": {
+            "count": 16513,
+            "medianLargestChildShare": 0.615431,
+            "medianCloudShare": 0.0770018,
+            "medianChildCount": 3
+          },
+          "fateShare": {
+            "landedSolid": 0.253099,
+            "landedCloud": 0,
+            "settled": 0.746901,
+            "dust": 0
+          },
+          "aggregatedEvents": 0,
+          "byGeneration": [
+            {
+              "generation": "1",
+              "massShareOfLanded": 0.0540618,
+              "medianRetainedFraction": 0.611789,
+              "medianBirthAltitudeM": 61316.1
+            },
+            {
+              "generation": "2",
+              "massShareOfLanded": 0.0205359,
+              "medianRetainedFraction": 0.62845,
+              "medianBirthAltitudeM": 30801.5
+            },
+            {
+              "generation": "3",
+              "massShareOfLanded": 0.0363298,
+              "medianRetainedFraction": 0.692979,
+              "medianBirthAltitudeM": 28690.8
+            },
+            {
+              "generation": "4",
+              "massShareOfLanded": 0.0504071,
+              "medianRetainedFraction": 0.657546,
+              "medianBirthAltitudeM": 27371
+            },
+            {
+              "generation": "5+",
+              "massShareOfLanded": 0.0917645,
+              "medianRetainedFraction": 0.607905,
+              "medianBirthAltitudeM": 33182.8
+            }
+          ],
+          "byBirthAltitudeTertile": [
+            {
+              "tertile": "low",
+              "massShareOfLanded": 0.692752,
+              "medianRetainedFraction": 0.793421,
+              "altitudeRangeM": [20050, 31290]
+            },
+            {
+              "tertile": "mid",
+              "massShareOfLanded": 0.0838567,
+              "medianRetainedFraction": 0.764848,
+              "altitudeRangeM": [31290, 34920]
+            },
+            {
+              "tertile": "high",
+              "massShareOfLanded": 0.223391,
+              "medianRetainedFraction": 0.577485,
+              "altitudeRangeM": [34920, 65120]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

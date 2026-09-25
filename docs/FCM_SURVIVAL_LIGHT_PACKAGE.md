@@ -188,3 +188,48 @@ to reduce it. Three qualifications, carried here unchanged, bind every later rou
 development cases is dominated by descendants of later breaks that retain more than half the mass they
 were born with; this diagnosis directs the study toward genealogy, but does not yet identify whether the
 break threshold, the mass partition, or the children's later evolution is at fault."
+
+## The cascade audit (rule 1189)
+
+`docs/FCM_AUDIT_RUN.md`, `src/physics/validation/fcmAuditRun.json`, from `scripts/fcm-audit-run.ts` (the
+audit engine, `fcmBranchAudit.ts`, a third fork of the sealed candidate — rule 1162 still untouched, no
+physics change at all, verified to exact equality with the sealed engine's own output on 40 random cases).
+Same 18 cases, same input and parameter streams as H1, H3 and H5 — all four configurations this time, at
+the reviewer's own third qualification, and every break's own state and every child's eventual fate, not
+only the ones that land.
+
+**Sanity check**: the pressure ratio at every recorded break — dynamic pressure over the parent's own
+strength — sits at exactly 1 on every one of the tens of thousands of breaks recorded, the bisection's own
+precision; no defect found before any mechanism was looked for.
+
+**The mass that never lands.** Pooled across every case and configuration (weighted by each run's own
+accounted mass): 93.2 % of the body's original mass **settles mid-flight and never reaches the ground** —
+a cloud slowed to its terminal speed (rule 1138 (c)) well above the surface, where the engine stops
+integrating it. Only 3.3 % lands as solid pieces and 3.5 % as cloud swarm reaching the ground. What H1, H3
+and H5 call "landed mass," and rule 1178 (a)'s excess is measured against, was already a small remainder
+of the entry mass before this audit — placing it beside the much larger settled pool for the first time
+does not change that finding, but sizes it: any causal account of the landed-mass excess concerns a
+channel that was always a small fraction of the body to begin with.
+
+**Every break skews toward one dominant child, not only the first.** The largest child of a break carries
+a median of 81.5 % of the parent's mass at the very first break, and still 53.7 % at every later break
+(medians of each case-configuration's own median, 71 case-configuration pairs). Later breaks are more
+balanced than the first, but still typically leave one child with the majority of the parent's mass —
+this is a property of the split rule itself (rule 1152's shares), acting at every generation, not a
+one-time effect of how the cascade begins.
+
+**Birth altitude and retained fraction move together, in the expected direction, imperfectly.** Landed
+solid pieces born lower (necessarily later, per rule 1189's own qualification on generation) retain a
+higher fraction of their birth mass than those born higher, in 52 of 71 case-configuration pairs — the
+mechanically expected direction (less atmosphere left to ablate through). This supports generation as a
+usable, if imperfect, proxy for residual atmosphere (the reviewer's first qualification): the correlation
+holds in the expected direction on nearly three-quarters of cases, not all — a dossier proposing a
+break-timing account should use the recorded altitudes directly, not the generation label alone, exactly
+as qualified.
+
+**One case-configuration did not complete**: Tunguska/M2/capped, 0 of 200 draws, even at the domain map's
+retry cap — consistent with this being the branch's most energetic single-draw preset under its most
+structured, most confined configuration; not investigated further here, a measurement round.
+
+No adoption, no hypothesis tested (rule 1189 (d)): the sealed candidate stays exactly as it is. These
+findings inform the causal dossier the reviewer asked for next — not decided here.
