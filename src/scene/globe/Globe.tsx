@@ -510,6 +510,19 @@ export function Globe(): JSX.Element {
   // or leaves a tooltip-aware entity, so React re-renders are sparse.
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
 
+  // Rule 1204: the globe's own failures (a lost WebGL context, a render
+  // loop that gave up restarting) used to reach only the console --
+  // visually the canvas just freezes or goes black, and nothing told a
+  // visitor why. 'contextLost' is transient and usually self-heals via
+  // `onContextRestored`; 'stuck' means the retry budget
+  // (`MAX_RENDER_ERROR_RESTARTS`) is spent and nothing will move the
+  // globe again without the retry button below.
+  const [globeStatus, setGlobeStatus] = useState<'ok' | 'contextLost' | 'stuck'>('ok');
+  // Rule 1204: the 'stuck' badge's retry action, set inside the viewer
+  // effect (it needs that closure's own render-error count) and read
+  // from the JSX below.
+  const retryStuckRenderRef = useRef<() => void>(() => undefined);
+
   // True while a Terrarium tile fetch is in-flight for the current
   // pick. Read by the marker halo's CallbackProperty to drive the
   // breathing pulse — gives the user a visible signal that the
@@ -524,7 +537,7 @@ export function Globe(): JSX.Element {
   const impactFieldLayer = useAppStore((s) => s.impactFieldLayer);
   const impactUncertaintyKey = useAppStore((s) => s.impactUncertaintyKey);
   const impactPreset = useAppStore((s) => s.impact.preset);
-  const { i18n: uiI18n } = useTranslation();
+  const { t, i18n: uiI18n } = useTranslation();
   /** The result and layer the camera last framed an impact's map on. */
   const framedLayerRef = useRef<{ result: object; layer: string } | null>(null);
   /** Bumped after the report's photographs, so the map is drawn again. */
@@ -1074,9 +1087,11 @@ export function Globe(): JSX.Element {
       const onContextLost = (e: Event): void => {
         e.preventDefault();
         console.warn('[Globe] WebGL context lost; awaiting restoration.');
+        setGlobeStatus('contextLost');
       };
       const onContextRestored = (): void => {
         console.warn('[Globe] WebGL context restored; forcing re-render.');
+        setGlobeStatus('ok');
         const v = viewerRef.current;
         if (v && !v.isDestroyed()) {
           v.resize();
@@ -1112,6 +1127,11 @@ export function Globe(): JSX.Element {
               `[Globe] render error ${renderErrorCount.toString()}; giving up on restarting the loop.`,
               error
             );
+            // Rule 1204: this is the one case with no recovery already
+            // wired -- (a)'s init failure and (b)'s context loss both
+            // have their own path back; past this point nothing moves
+            // the globe again except the retry button below.
+            setGlobeStatus('stuck');
             return;
           }
           console.warn(
@@ -1122,6 +1142,19 @@ export function Globe(): JSX.Element {
           v.scene.requestRender();
         }
       );
+      // Rule 1204: the "try again" action's own escape hatch, reached
+      // from the JSX below through this ref rather than a prop, since
+      // both live in the same component and the retry needs this
+      // closure's own `renderErrorCount` and `viewer`.
+      retryStuckRenderRef.current = (): void => {
+        renderErrorCount = 0;
+        setGlobeStatus('ok');
+        const v = viewerRef.current;
+        if (v && !v.isDestroyed()) {
+          v.useDefaultRenderLoop = true;
+          v.scene.requestRender();
+        }
+      };
 
       // Cesium's MOUSE_MOVE only fires while the cursor is over the
       // canvas. When the cursor crosses into an overlay (the
@@ -4559,6 +4592,21 @@ export function Globe(): JSX.Element {
     <>
       <div ref={containerRef} className={styles.container} data-testid="globe-viewer" />
       <RingTooltip ref={tooltipElRef} info={hoverInfo} />
+      {globeStatus !== 'ok' && (
+        <div className={styles.statusBadge} data-testid="globe-status-badge">
+          <span>{t(`globe.status.${globeStatus}`)}</span>
+          {globeStatus === 'stuck' && (
+            <button
+              type="button"
+              onClick={() => {
+                retryStuckRenderRef.current();
+              }}
+            >
+              {t('globe.status.retry')}
+            </button>
+          )}
+        </div>
+      )}
     </>
   );
 }

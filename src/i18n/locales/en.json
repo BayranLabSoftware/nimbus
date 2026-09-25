@@ -888,6 +888,11 @@
     "disclaimer": "Exposure ≠ casualties: this is the population total inside the radius. The conversion to casualties, with its assumptions, is in the “Estimated casualties” box."
   },
   "globe": {
+    "status": {
+      "contextLost": "The globe’s display was interrupted (a backgrounded tab or a graphics driver hiccup) — it usually recovers on its own in a moment.",
+      "stuck": "The globe stopped drawing and could not recover on its own. The rest of the panel still works.",
+      "retry": "Try again"
+    },
     "ringLabel": {
       "craterRim": "Crater radius",
       "thirdDegreeBurn": "3rd-degree burn",

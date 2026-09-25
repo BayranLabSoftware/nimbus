@@ -888,6 +888,11 @@
     "disclaimer": "Esposizione ≠ vittime: questo è il totale di popolazione dentro il raggio. La conversione in vittime, con le sue ipotesi, è nel riquadro «Vittime stimate»."
   },
   "globe": {
+    "status": {
+      "contextLost": "La visualizzazione del globo è stata interrotta (una scheda in secondo piano o un intoppo del driver grafico) — di solito si riprende da sola in un momento.",
+      "stuck": "Il globo ha smesso di disegnare e non si è ripreso da solo. Il resto del pannello funziona ancora.",
+      "retry": "Riprova"
+    },
     "ringLabel": {
       "craterRim": "Raggio del cratere",
       "thirdDegreeBurn": "Ustione III°",

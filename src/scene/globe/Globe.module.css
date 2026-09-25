@@ -25,3 +25,49 @@
 .container :global(.cesium-widget-errorPanel) {
   display: none !important;
 }
+
+/* Rule 1204: the globe's own failure states (a lost WebGL context, a
+   render loop that gave up). Sits in a corner, never full-canvas: the
+   SimulatorPanel and the About/Glossary overlays sit above the same
+   canvas and must keep taking clicks, so the badge itself does not
+   capture pointer events — only its retry button does. */
+.statusBadge {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(360px, calc(100vw - 24px));
+  padding: 8px 12px;
+  background: rgba(12, 14, 20, 0.85);
+  border: 1px solid rgba(232, 163, 61, 0.4);
+  border-radius: 6px;
+  color: #f4f1ea;
+  font-size: 12px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.statusBadge button {
+  pointer-events: auto;
+  flex-shrink: 0;
+  font: inherit;
+  font-weight: 600;
+  padding: 4px 10px;
+  background: rgba(232, 163, 61, 0.18);
+  color: #e8a33d;
+  border: 1px solid rgba(232, 163, 61, 0.5);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.statusBadge button:hover {
+  background: rgba(232, 163, 61, 0.28);
+}
+
+.statusBadge button:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}

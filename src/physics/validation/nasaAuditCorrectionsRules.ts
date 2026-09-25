@@ -1053,3 +1053,149 @@ export const RULE_1202_WRITTEN = '2026-09-25' as const;
  * alone.
  */
 export const RULE_1203_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1204. A12, ITEM 12: "IL GLOBO BLOCCATO NON MOSTRA ALCUN MESSAGGIO."
+ *
+ * Traced to three distinct mechanisms in `Globe.tsx`, all silent by the
+ * same shape -- a `console.warn`/`console.error` and nothing a visitor
+ * ever sees:
+ *
+ * (a) Cesium fails to initialise at all (line ~1173): "Browser can't run
+ *     Cesium (e.g. Safari < 16.4 without OffscreenCanvas). Log once; the
+ *     rest of the app keeps working" -- the silence here is DELIBERATE
+ *     and stated: the SimulatorPanel must keep working with no globe at
+ *     all, on a browser too old for one. Left as it is: this is not the
+ *     defect, and a banner over an absent canvas is a design question of
+ *     its own (rule 1195's own scope: correcting a false claim, not
+ *     redesigning around a browser-support edge this round has not been
+ *     asked to weigh).
+ * (b) `webglcontextlost` (line ~1074): the GPU driver drops the context
+ *     (a backgrounded tab, an aggressive resize, a driver hiccup) and the
+ *     canvas freezes on its last frame. `onContextRestored` already
+ *     listens and recovers automatically in the common case; nothing here
+ *     reads as a deliberate choice to stay silent, more an omission -- no
+ *     comment argues for silence the way (a)'s does.
+ * (c) `renderError` exhausts its retries (line ~1110): "the freeze that
+ *     only a reload clears. Nobody was listening, so nobody restarted
+ *     it" -- the code's own words already name the gap; a `renderError`
+ *     handler is written, retries up to `MAX_RENDER_ERROR_RESTARTS` (5)
+ *     times, and on the sixth simply gives up, `console.error` only. This
+ *     is the one unambiguously silent AND unrecovered case: not (a)'s
+ *     declared trade-off, not (b)'s usually-self-healing transient.
+ *
+ * The candidate, decided here before writing it, for (b) and (c) only --
+ * (a) is left exactly as its own comment already justifies. A local
+ * `globeStatus: 'ok' | 'contextLost' | 'stuck'` state in the `Globe`
+ * component: `'contextLost'` set in `onContextLost`, cleared in
+ * `onContextRestored`; `'stuck'` set only past
+ * `MAX_RENDER_ERROR_RESTARTS`, with a "try again" action that re-arms
+ * `useDefaultRenderLoop` and resets the retry count, mirroring what
+ * `onContextRestored` already does for case (b). Rendered as a small,
+ * non-blocking badge over a CORNER of the globe container, never a
+ * full-canvas overlay -- `Globe.module.css`'s own comment on
+ * `.cesium-widget-errorPanel` already states this project's rule for
+ * globe-area chrome: an error must never intercept clicks meant for the
+ * SimulatorPanel, About or Glossary overlays sitting above the canvas.
+ * `pointer-events: none` on the badge's own container, `auto` only on
+ * its retry button. Two languages, both new keys, no existing string
+ * touched.
+ *
+ * What is checked, and how: no unit-test harness in this project mounts
+ * `Globe.tsx` -- it is Cesium-heavy and every existing test of this file
+ * reads the exported pure geometry/format helpers, never the component
+ * (rule 1201's own file split kept that true). Mocking a `Viewer` well
+ * enough to fake `renderError`/`webglcontextlost` would test the mock,
+ * not Cesium's real event wiring, so this was checked instead against
+ * the running app (`?probe` exposes `window.__nimbusViewer`, already
+ * built for exactly this): `canvasEl.dispatchEvent(new
+ * Event('webglcontextlost', {cancelable: true}))` raised the transient
+ * badge in Italian, `defaultPrevented` confirming `preventDefault()`
+ * ran; `dispatchEvent(new Event('webglcontextrestored'))` cleared it;
+ * `viewer.scene.renderError.raiseEvent(viewer.scene, new Error(...))`
+ * called six times (past `MAX_RENDER_ERROR_RESTARTS`, 5) raised the
+ * stuck badge with a working "Riprova" button -- clicking it (`.click()`
+ * on the button element; the harness's coordinate-based click did not
+ * land while the pane was backgrounded, a tooling limit unrelated to
+ * this code) cleared the badge and reset the retry budget. Read, not
+ * assumed: `getComputedStyle` on the badge's container gave
+ * `pointer-events: none`, on the button `auto`.
+ */
+export const RULE_1204_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1205. A12, ITEM 1: THE ENTRY PAGE'S "13.74 KM" READS AS THE SAME
+ * NUMBER AS THE TABLE ABOVE IT, WHICH SAYS "5.3 KM" -- VERIFIED, NEITHER
+ * NUMBER IS WRONG, THE SENTENCE THAT JOINS THEM IS.
+ *
+ * A background agent traced this one in full (its report is this rule's
+ * source, not re-derived here): `barMissed`'s claim that the reference
+ * program "misses the recorded altitude by about as much" as the model is
+ * demonstrably FALSE against the one live comparison actually on the page
+ * -- `entryCells`' six rows (`ValidationPage.tsx:356-368`), where the
+ * model's median error runs 4.5-7 km and the program's 9.5-15.8 km, a
+ * factor of 1.4x-2.9x in the program's disfavour in every cell, no
+ * exception. That much needs no further checking; it is a plain reading
+ * of numbers already on the page and is item 11's own kind of defect,
+ * not a new one -- left for wherever the barMissed sentence is next
+ * touched, since fixing the sentence without the number it is attached to
+ * being current would just move the inaccuracy.
+ *
+ * The harder half, checked here rather than assumed from the agent's
+ * report: `docs/VALIDATION_REPORT.md`'s fireball section shows, four
+ * lines apart, "5.3 km" (the table, `fireballRules.ts`/`fireballRun.ts`,
+ * rules 76-79 -- every one of 357 CNEOS fireballs, the model alone) and
+ * "13.74" (the prose, `fireballAnchorRules.ts`, rules 126-128 -- only the
+ * 356 fireballs where the model AND the program both burst in the air,
+ * scored against a different question: does the model agree with the
+ * program, not how far either sits from the sky). The prose says "The
+ * miss above is the field's own" -- naming the table two paragraphs up as
+ * its source, which it is not.
+ *
+ * Verified directly, not assumed stale: `nasaAuditCorrectionsRules.ts`
+ * (rule 1193) permanently froze I2's evidence text at "13.74 km... 12.75
+ * km" (`goldStandardScorecard.ts` line ~324), and `GOLD_STANDARD.md`
+ * carries the same figures. Rule 691-697's entry change (~21 September)
+ * predates that freeze, so the question was live: is 13.74 the CURRENT
+ * model, or a number rule 1193 itself already inherited stale? Recomputed
+ * today, from `benchmark/results/eiep-fireballs-2026-09-16.json`'s own
+ * saved inputs (`sent`: diameter, density, speed, angle -- the program's
+ * own frozen answers are a fixed external reference and untouched),
+ * calling today's `atmosphericEntry` fresh for all 357 rather than
+ * reading the file's frozen `nimbusBurstKm`: within 352, bm13 4,
+ * unanswered 1, median 13.7432 km / mean 12.7539 -- matching the frozen
+ * 13.7441 / 12.7538 to four figures. **The 13.74 km figure is correct,
+ * current, and unmoved by the entry change.** Rule 1193's freeze, and
+ * GOLD_STANDARD.md's I2 row, are NOT stale and are not touched by this
+ * rule.
+ *
+ * What IS wrong, fixed here: `generate-validation-report.ts`'s own prose
+ * template says "The miss above is the field's own" immediately after
+ * describing the rules-126-128 comparison, pointing a reader at the
+ * rules-76-79 table two paragraphs earlier instead of at the comparison
+ * the sentence itself just finished describing. Reworded to name what it
+ * actually reports (the same 356-fireball, both-burst subset the
+ * sentence's own preceding clause already scoped) rather than "above",
+ * and to say plainly that it is a narrower, different count from the
+ * table's 357/351 -- not a second reading of the same figure. No number
+ * changes; `docs/VALIDATION_REPORT.md`/`.json` are regenerated
+ * (`pnpm validation-report`) so the committed report matches, which CI's
+ * freshness gate already requires.
+ *
+ * What this rule does NOT resolve, named so it is not mistaken for
+ * settled: WHY rules 76-79's reading (5.3 km median, 351 of 357 burst)
+ * and rules 126-128's (13.74 km, 356 of 357 burst, a different
+ * denominator) differ this much for what both call "the same 357
+ * fireballs" is not traced to its mechanism here -- the two pipelines
+ * build the scenario each fireball is run as from the same catalogue row
+ * by two separate code paths (`fireballRun.ts`'s own construction vs.
+ * whatever `scripts/eiep-fireballs.py` sent the program and saved as
+ * `sent`, which this rule's recomputation reused rather than
+ * re-derived), and reconciling them -- or confirming they are correctly
+ * answering two different questions, as rules 126-128's own text already
+ * argues (I2 met by construction vs. I2 as first written) -- is a reading
+ * of its own, not a sentence-level fix. Left open, honestly, rather than
+ * guessed at past midnight on the module this project holds itself to
+ * the most.
+ */
+export const RULE_1205_WRITTEN = '2026-09-25' as const;
