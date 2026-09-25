@@ -252,6 +252,8 @@ describe('useAppStore — terrain before physics', () => {
       // bathymetric layer exists (local only: the mosaic never came).
       expect(s.result.data.tsunami).toBeDefined();
     }
+    // Rule 1198: the tile covered the pick, so nothing was defaulted.
+    expect(s.impactTerrainNotice).toBeNull();
     expect(s.bathymetricTsunami).not.toBeNull();
     expect(s.bathymetricTsunami?.global).toBeUndefined();
   }, 20_000);
@@ -261,6 +263,25 @@ describe('useAppStore — terrain before physics', () => {
     await useAppStore.getState().evaluate();
     expect(useAppStore.getState().elevationGrid).toBeNull();
     expect(useAppStore.getState().result).not.toBeNull();
+  });
+
+  it('rule 1198: names the silent default when no terrain tile ever covers the pick', async () => {
+    // CHICXULUB ships no waterDepth, so the auto-derivation this notice
+    // guards would have run if a tile had arrived — it never does here.
+    useAppStore.getState().selectPreset('CHICXULUB');
+    useAppStore.getState().setLocation({ latitude: 30, longitude: -40 });
+    await useAppStore.getState().evaluate();
+    expect(useAppStore.getState().impactTerrainNotice).toBe('timedOut');
+  });
+
+  it('rule 1198: says nothing when waterDepth was already given, tile or not', async () => {
+    // CHICXULUB_OCEAN carries its own waterDepth: the auto-derivation
+    // never runs for it, so an absent tile is not a degradation to warn
+    // about.
+    useAppStore.getState().selectPreset('CHICXULUB_OCEAN');
+    useAppStore.getState().setLocation({ latitude: 30, longitude: -40 });
+    await useAppStore.getState().evaluate();
+    expect(useAppStore.getState().impactTerrainNotice).toBeNull();
   });
 
   it('a mosaic that lands after Launch completes the tsunami layer of the result on screen', async () => {

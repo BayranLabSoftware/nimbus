@@ -1403,6 +1403,9 @@
     },
     "validationReport": "Rapporto di validazione di questo modello, con ogni cifra confrontata con gli eventi registrati:",
     "validationUnavailable": "Questa stampa non viene da un modello committato, quindi non c'è un rapporto di validazione che la descriva.",
+    "impactTerrainNotice": {
+      "timedOut": "Il terreno sotto questo punto non è arrivato in tempo (o non è arrivato affatto): questa simulazione non ha potuto distinguere mare da terraferma qui, ed è passata per default a terraferma lontana da ogni costa. Se il punto è vicino a una costa o in mare aperto, la profondità dell'acqua e lo tsunami che ne seguirebbe mancano da questo risultato — riprova con una connessione più stabile."
+    },
     "impact": {
       "subtitle": "Impatto cosmico · {{name}}",
       "event": "Impatto cosmico — scenario «{{name}}»",

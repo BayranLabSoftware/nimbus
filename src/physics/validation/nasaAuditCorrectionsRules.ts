@@ -607,3 +607,157 @@ export const RULE_1197_WRITTEN = '2026-09-25' as const;
  * needed a change.
  */
 export const RULE_1197_MEASURED = '2026-09-25' as const;
+
+/**
+ * RULE 1198. A12 — TWO OF THE ITEMS RULE 1195 LEFT OPEN, READ FURTHER: ONE
+ * IS NOT REACHABLE FOR IMPACTS AS THE PANEL STANDS, ONE IS A REAL SILENT
+ * DEGRADATION AND GETS A NOTICE.
+ *
+ * (1) "Silent field-validation failures" -- not reachable for impacts today,
+ * and said so rather than fixed on a guess. `useScenarioValidation.ts`'s own
+ * comment already names the abstract gap: the store setter rejects a
+ * schema-'invalid' input at the boundary and no-ops (`return state`), so
+ * `useFieldIssues` -- which re-validates `state.impact.input`, the last
+ * ACCEPTED value -- can never see a rejected attempt; the field would go
+ * quiet at blur with no explanation. Traced for real against
+ * `ImpactCustomInputs.tsx`, the five numeric handlers
+ * (`updateDiameter`/`updateVelocity`/`updateImpactorDensity`/
+ * `updateTargetDensity`/`updateAngle`) each already guard with
+ * `Number.isFinite(...) && ... > 0` (the angle handler also guards its own
+ * `<= 90`) before ever calling `setImpactInput` -- exactly the conditions
+ * `validateImpactInput` (`inputSchema.ts`) would reject as `NOT_FINITE` /
+ * `ZERO_FORBIDDEN`. `updateAzimuth` guards only `Number.isFinite`, but an
+ * out-of-range or negative azimuth is `normalizeAzimuthDeg`'s WARNING path,
+ * not a rejection. `applyTaxonomy` writes fixed, always-valid table values.
+ * `impactorStrength` is set only by that same taxonomy table; `shoreDistance`
+ * and `waterDepth` are never user fields for impacts, only store-computed
+ * ones. The one real path that CAN hand the store a hard-invalid impact
+ * payload -- a hand-edited shared link -- is already disclosed: `evaluate`'s
+ * link-restore branch (`useAppStore.ts`, the `filled`/`refused` closures)
+ * sets `linkNotice` to name exactly which fields were missing or why the
+ * whole link was refused. So: the gap is real as an abstract property of the
+ * store, and worth the comment that already flags it, but for the impacts
+ * panel as it is wired today every reachable path either cannot produce a
+ * hard-invalid value or already discloses when it does. Left as read, not
+ * patched against a case nothing can drive.
+ *
+ * (2) The terrain 8 s timeout that turns an ocean site into land with no
+ * warning -- real, and reachable on an ordinary slow connection.
+ * `ensureTerrainForEvaluate` (`useAppStore.ts`) gives the per-click
+ * Terrarium tile up to `GLOBAL_MOSAIC_WAIT_MS` (8 s) via `settleWithin`,
+ * then proceeds regardless. `evaluate`'s impact branch samples elevation
+ * only `state.elevationGrid !== null && gridCoversLocation(...)`; when the
+ * tile did not land in time, `impactClickZ` stays `undefined`, the
+ * `waterDepth` auto-derivation block (guarded on
+ * `impactClickZ !== undefined`) never runs, and the impact is simulated as
+ * dry land arbitrarily far from any coast -- identical to what a genuine
+ * inland click produces, with nothing on screen to say the two were told
+ * apart by a stopwatch, not by the map.
+ *
+ * The candidate, decided here before writing it: a new store field,
+ * `impactTerrainNotice: 'timedOut' | null`, alongside `linkNotice` in
+ * `AppStore` and `initialState()`. Set in `evaluate`'s impact branch, once
+ * per run, exactly when a real degradation happened: `state.location` is
+ * not null (a point WAS picked), `impactInput.waterDepth` is `undefined`
+ * (nothing here overrides the auto-derivation this notice is about), and
+ * the elevation grid that reached this point either is null or does not
+ * cover the pick. Cleared to `null` on every run that does not meet all
+ * three -- including a run whose tile arrived, however close to the 8 s
+ * edge, and a run where the user (or a preset) set `waterDepth` by hand,
+ * for whom the auto-derivation this notice concerns never applied. Unlike
+ * `linkNotice` (one string, shared verbatim across every event type and
+ * left in English by an earlier round's own choice), this field is
+ * impacts-only and carries a CODE, not a sentence: `ImpactReport.tsx`
+ * translates it with `t()`, so it comes out in whichever language the
+ * report is already reading in (rule IMP-7c's own discipline), not
+ * hard-coded English bolted onto an Italian page.
+ *
+ * What is checked: a test that starves `evaluate` of a terrain loader
+ * entirely (the existing "does not touch the network when no loaders are
+ * configured" case in `useAppStore.test.ts` already sets this scene) reads
+ * `impactTerrainNotice === 'timedOut'`; a second run with a loader that
+ * resolves in time reads `null`; a preset that ships its own `waterDepth`
+ * (`CHICXULUB_OCEAN`) with no loader configured at all still reads `null`,
+ * because the auto-derivation the notice warns about never runs for it.
+ * Nothing about the 8 s figure itself, or the decision to proceed after it,
+ * changes -- rule 272's own kind of restraint: the timeout stays what
+ * `GLOBAL_MOSAIC_WAIT_MS`'s comment already justifies (generous for a slow
+ * connection, short enough the Launch button is never held hostage); only
+ * the silence after it is fixed.
+ */
+export const RULE_1198_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1199. A7 -- READ IN FULL (page 14 of the audit, not the shorter
+ * paraphrase this round's own `Nimbus-PIANO.md` carried). One of its four
+ * clauses is a small, contained fix with nothing to decide; the other three
+ * invert decisions Andrea already took by name, in rules 836, 837 and 833's
+ * own practice across this very round -- and rule 1193's own word ("any
+ * other choice is mine to take, not the assistant's") says those are not
+ * this round's to make.
+ *
+ * The audit's own four-part "come migliorare", read exactly:
+ * (1) "Sigillo con tolleranza per numero derivata dal condizionamento
+ * misurato (la regola 854 e' la base)" -- move the seal from bit-exact
+ * comparison to a per-number tolerance, using rule 854's Node-22-vs-24
+ * measurement as the method. (2) "preso su Linux x64 nella CI e verificato
+ * anche su macOS" -- move the REFERENCE platform from macOS arm64 to Linux
+ * x64. (3) "le stringhe del report al bit; tolleranza dichiarata nel
+ * report" -- keep report TEXT at bit-exact comparison, and print the
+ * tolerance chosen in the validation report. (4) "risigillo solo a ogni
+ * release" -- re-seal only at a release, not at every round that moves a
+ * number.
+ *
+ * What (1), (2) and (4) would reverse, each named:
+ * - Rule 837 chose macOS arm64 as the platform the seal is taken AND
+ *   compared on -- "on Andrea's word" (rule 854's own phrase for how an
+ *   engine move is decided) is not written of 837 by name, but 837 itself
+ *   records why: the CI's Linux x64 gives other last bits than "the arm64
+ *   Mac the seal is taken on", i.e. Andrea's own machine, and the fix was to
+ *   compare where it is taken rather than change where it is taken. A move
+ *   to Linux x64 as the reference is the opposite choice, not a refinement
+ *   of this one.
+ * - Rule 854 already tried a per-number tolerance, once, for one engine
+ *   move (Node 22 to 24): REFUSED at 10⁻¹² by its own letter, on one number
+ *   in 32 911 (the flash radius conditioning, 3×10⁻¹²), with the explicit
+ *   lesson "a bound for the next move should be set per number... not a
+ *   single figure written before the conditioning was known". Building a
+ *   PERMANENT per-number tolerance into the seal's own comparison (rather
+ *   than a one-off measurement for one engine move, taken and refused on
+ *   its own terms) is a materially bigger change than what 854 did, and
+ *   854's own outcome is a caution against doing this lightly, not a
+ *   green light.
+ * - Rule 833's own discipline -- re-seal at the round that moves a number,
+ *   with that round's reason -- is what every block of this file has
+ *   practiced: four re-seals this round alone (rule 1197's field addition,
+ *   item 5's liquefaction domain, item 6's McCowan cap), each with an
+ *   `--opened-by`/`--moved` reason, each read before the next round began.
+ *   "Risigillo solo a ogni release" is not a bug fix on that practice, it
+ *   is a different practice, with a different cost (a defect sits unsealed
+ *   for however long until the next release) and a different benefit (the
+ *   23-reseals-in-three-days count the audit itself cites stops being
+ *   true). Trading one for the other is Andrea's to weigh, not this
+ *   round's to assume.
+ *
+ * What is NOT in dispute, and is fixed here without asking: the audit's own
+ * evidence line, read in full, adds one clause this round's earlier
+ * reading (via `Nimbus-PIANO.md`'s paraphrase) had not carried at all --
+ * "macos-latest non e' un'immagine fissata". `.github/workflows/ci.yml`'s
+ * `seal` job runs on `macos-latest`, which GitHub's own runner-images
+ * README (read today, 25 September 2026) names as macOS 26 Arm64 --
+ * `macos-latest` moving to a new major, on GitHub's own schedule and with
+ * no line in this repository, is exactly the silent engine-adjacent change
+ * rules 836 and 837 were written against, just one layer further out.
+ * Pinned to `macos-26` (the exact label the same README gives that
+ * version), nothing else changes: `SEAL_PLATFORM` (`impactSeal.ts`) reads
+ * `${process.platform}-${process.arch}`, `darwin-arm64` on any macOS major,
+ * so the pin touches no comparison the seal already makes -- only which
+ * image `-latest` is free to silently become next.
+ *
+ * Left for Andrea, in one question, not decided here: whether to move the
+ * seal's reference platform and comparison from bit-exact-on-macOS-arm64 to
+ * tolerance-on-Linux-x64, and whether to move re-sealing from every
+ * number-moving round to every release. Both cost something this round
+ * cannot weigh for him.
+ */
+export const RULE_1199_WRITTEN = '2026-09-25' as const;

@@ -22,8 +22,14 @@ jobs:
     # skips the comparison and this job makes it, on GitHub's macOS arm64
     # runner. NIMBUS_SEAL_REQUIRED turns a runner that is not that platform
     # into a failure instead of a skip.
+    # Rule 1199 (A7): pinned to the exact image, not `-latest` -- GitHub
+    # moves that label to a new macOS major on its own schedule, which is
+    # the silent engine-adjacent change rules 836/837 were written against,
+    # one layer further out. `macos-26` is what `-latest` names today
+    # (github.com/actions/runner-images); moving it is a platform change
+    # under rule 837(d), decided for itself like any other.
     name: seal (macOS arm64)
-    runs-on: macos-latest
+    runs-on: macos-26
     steps:
       - name: Checkout
         uses: actions/checkout@v4

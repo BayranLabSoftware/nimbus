@@ -1403,6 +1403,9 @@
     },
     "validationReport": "Validation report for this model, with every figure checked against recorded events:",
     "validationUnavailable": "This print does not come from a committed model, so there is no validation report that describes it.",
+    "impactTerrainNotice": {
+      "timedOut": "The terrain under this point did not load in time (or at all): this run could not tell sea from dry land here, and defaulted to dry land far from any coast. If the point is near a coast or over open water, waterDepth and the tsunami it would raise are missing from this result — try again with a steadier connection."
+    },
     "impact": {
       "subtitle": "Cosmic impact · {{name}}",
       "event": "Cosmic impact — scenario “{{name}}”",

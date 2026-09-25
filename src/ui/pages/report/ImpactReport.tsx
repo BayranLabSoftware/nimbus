@@ -305,6 +305,7 @@ export function ImpactReport({
   const bathymetricTsunami = useAppStore((s) => s.bathymetricTsunami);
   const monteCarlo = useAppStore((s) => s.monteCarlo);
   const linkNotice = useAppStore((s) => s.linkNotice);
+  const impactTerrainNotice = useAppStore((s) => s.impactTerrainNotice);
   const shotsRecord = useAppStore((s) => s.reportGlobeShots);
   const setMode = useAppStore((s) => s.setMode);
   const shots = shotsRecord !== null && shotsRecord.result === active ? shotsRecord.shots : {};
@@ -567,6 +568,12 @@ export function ImpactReport({
       {linkNotice !== null && (
         <p role="status" className={styles.linkNotice}>
           {linkNotice}
+        </p>
+      )}
+
+      {impactTerrainNotice !== null && (
+        <p role="status" className={styles.linkNotice}>
+          {t(`report.impactTerrainNotice.${impactTerrainNotice}`)}
         </p>
       )}
 

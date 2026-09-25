@@ -595,6 +595,14 @@ export interface AppStore {
    *  refused and the app's own is showing instead (B-048). Null when the link
    *  was restored, or when there was none. */
   linkNotice: string | null;
+  /** Rule 1198: set once per impact `evaluate()` when a point was picked,
+   *  no `waterDepth` was given, and the elevation tile that would have
+   *  decided sea vs. land did not land in time (or land at all) --
+   *  `ImpactReport.tsx` translates the code and shows it, so a slow
+   *  connection cannot silently turn an ocean click into a dry-land one.
+   *  Null whenever the auto-derivation this warns about did not run, or
+   *  ran on a tile that did cover the pick. */
+  impactTerrainNotice: 'timedOut' | null;
   lastEvaluatedAt: number | null;
   /** Coordinates the most recent `evaluate()` was run against. Used by
    *  the `setElevationGrid` catch-up to decide whether a freshly
@@ -760,6 +768,7 @@ type InitialSlice = Pick<
   | 'status'
   | 'error'
   | 'linkNotice'
+  | 'impactTerrainNotice'
   | 'lastEvaluatedAt'
   | 'lastEvaluatedAtLocation'
   | 'elevationGrid'
@@ -850,6 +859,7 @@ function initialState(): InitialSlice {
     status: 'idle',
     error: null,
     linkNotice: null,
+    impactTerrainNotice: null,
     lastEvaluatedAt: null,
     lastEvaluatedAtLocation: null,
     elevationGrid: null,
@@ -3148,6 +3158,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
     const sim = getSimulationWorker();
     try {
       let result: ActiveResult;
+      // Rule 1198: set only for an impact run, and only when the auto
+      // derivation below actually needed a tile that did not cover the
+      // pick -- cleared on every other run, including one whose tile
+      // simply arrived in time.
+      let impactTerrainNotice: 'timedOut' | null = null;
       if (state.eventType === 'impact') {
         // Auto-derive waterDepth from bathymetry when:
         //   1. user hasn't manually set it (preset CHICXULUB_OCEAN ships
@@ -3179,6 +3194,17 @@ export const useAppStore = create<AppStore>((set, get) => ({
               )
             : undefined;
         const impactClickIsOpenWater = impactClickZ !== undefined && impactClickZ < OCEAN_FLOOR_M;
+        // Rule 1198: the auto-derivation below needed a tile to decide
+        // sea vs. land and did not get one -- a slow (or absent) fetch
+        // silently reads as dry land arbitrarily far from any coast, so
+        // say so. Not raised when the user (or the preset) already gave
+        // `waterDepth`: the derivation this warns about never runs then.
+        impactTerrainNotice =
+          state.location !== null &&
+          impactInput.waterDepth === undefined &&
+          (state.elevationGrid === null || !gridCoversLocation(state.elevationGrid, state.location))
+            ? 'timedOut'
+            : null;
         if (
           impactInput.waterDepth === undefined &&
           impactClickZ !== undefined &&
@@ -3487,6 +3513,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       set({
         result,
         bathymetricTsunami,
+        impactTerrainNotice,
         waveUnpropagatedReachM:
           bathymetricTsunami === null ? (unpropagatedReach.get(result) ?? null) : null,
         populationExposure: null,
