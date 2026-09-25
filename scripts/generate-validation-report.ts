@@ -28,10 +28,12 @@
  */
 
 import { countMagnitudeInversions } from '../src/physics/validation/propertyPrecedenceRules.js';
+import { MAIN_STAGE_STRENGTH } from '../src/physics/effects/atmosphericEntry.js';
 import {
   radiusInversionsWithinRegime,
   walkArea,
 } from '../src/physics/validation/areaPropertyRules.js';
+import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -170,6 +172,12 @@ import {
   LEVEL_B_FROZEN_MODEL,
 } from '../src/physics/validation/levelBProtocolRules.js';
 import { scoreLevelB, type LevelBScore } from '../src/physics/validation/levelBScore.js';
+import { scoreLevelB2, type LevelB2Result } from '../src/physics/validation/levelB2Score.js';
+import {
+  auditThirdSetRun,
+  type AuditResult,
+  type ThirdSetRecord,
+} from '../src/physics/validation/thirdSetAudit.js';
 import {
   residualAgainstReference,
   verifyRings,
@@ -2393,9 +2401,13 @@ function residualJson(run: ResidualRunResult) {
   };
 }
 
+// Rule 1207: each row named by what it runs. The body with no class starts
+// its pancake at the two-stage law's main-stage strength since 23 September
+// 2026; the stony row is a body of 3 000 kg/m³ at 1 MPa, which is not the
+// panel's S-type class (3 300 kg/m³ at 2 MPa).
 const FIREBALL_LABEL: Readonly<Record<string, string>> = {
-  default: 'The body a scenario with no class carries (Collins et al.’s Eq. 9 strength)',
-  stony: 'The panel’s stony class, 1 MPa',
+  default: `The body a scenario with no class carries (the two-stage law's ${((MAIN_STAGE_STRENGTH as number) / 1e6).toFixed(1)} MPa, Borovička et al. 2020, since 23 September 2026)`,
+  stony: 'A stony body at 1 MPa, 3 000 kg/m³',
   iron: 'An iron, 50 MPa at 7 800 kg/m³',
 };
 
@@ -2411,9 +2423,9 @@ function fireballSection(run: FireballRunResult): string {
       ? ''
       : run.meetsBar
         ? `The entry meets the bar docs/GOLD_STANDARD.md sets for it (I2): a median absolute difference of ${FIREBALL_MEDIAN_ERROR_KM.toString()} km or less and a mean within ${FIREBALL_MEAN_ERROR_KM.toString()} km.`
-        : `The entry misses the bar docs/GOLD_STANDARD.md set for it as first written (I2), ${FIREBALL_MEDIAN_ERROR_KM.toString()} km in the median and ${FIREBALL_MEAN_ERROR_KM.toString()} km in the mean, which was declared as a gap until 21 September 2026. Nothing in the model moves on this reading (rule 79), and rule 5 forbids tuning on a set now read. Under that file's amendment of 16 September 2026 the bar is read against the Earth Impact Effects Program's own entry on the same fireballs, and **it is met**: the program, run on these fireballs for the first time (\`scripts/eiep-fireballs.py\`), answers 356 of 357, and the entry here agrees with it on every one — within 1 % on 352, through BM-13's declared I_f on the other 4, median departure 0.086 % (rules 126 to 128, \`validation/fireballAnchorRules.ts\`). That comparison is its own reading, not the table's above: only the 356 fireballs both burst in the air, scored on agreement with the program rather than on distance from the sky. On that narrower set both still miss the sky alike — the program's median 13.68 km, this entry's 13.74 (rule 1205: recomputed today from the program's own saved inputs, unmoved from 16 September's reading to four figures). Where the field's tool misses, a 9 misses too, and this is where the report prints by how much (docs/GOLD_STANDARD.md, the amendment of 16 September 2026): it is the field's error, not a gap of this model's.`;
+        : `The entry misses the bar docs/GOLD_STANDARD.md set for it as first written (I2), ${FIREBALL_MEDIAN_ERROR_KM.toString()} km in the median and ${FIREBALL_MEAN_ERROR_KM.toString()} km in the mean, which was declared as a gap until 21 September 2026: on the law the product ships, the table's first row reads ${km(reading.medianAbsoluteErrorKm, 2)} in the median and ${reading.meanErrorKm === null ? '—' : `${reading.meanErrorKm > 0 ? '+' : ''}${reading.meanErrorKm.toFixed(2)} km`} in the mean. Nothing in the model moves on this reading (rule 79), and rule 5 forbids tuning on a set now read. That law — a stony body's strength in two stages, after Borovička et al. 2020, adopted on 23 September 2026 (rules 896 to 902, \`validation/strengthTwoStageAgainRules.ts\`) — was chosen with these fireballs already read, and says so (rule 900): the table is a reading on development data, not a held-out one. Under that file's amendment of 16 September 2026 the bar was read against the Earth Impact Effects Program's own entry on the same fireballs; since rule 1193 that reading is its own rule, I5, and I2 stays not met. The program, run on these fireballs for the first time (\`scripts/eiep-fireballs.py\`), answers 356 of 357, and the model agrees with it on every one when it runs on the program's own strength law, Collins et al.'s Eq. 9 (rule 898(a)) — within 1 % on 352, through BM-13's declared I_f on the other 4, median departure 0.086 % (rules 126 to 128, \`validation/fireballAnchorRules.ts\`). That comparison is its own reading, not the table's above: the 356 fireballs both burst in the air, on Eq. 9, scored on agreement with the program rather than on distance from the sky. On it the two miss the sky alike — the program's median 13.68 km, the model's on the same law 13.74 — and that 13.7 km is the field's error, printed as such (docs/GOLD_STANDARD.md, the amendment of 16 September 2026). The entry the product ships is not on that law: its miss is the table's, and what it still misses of the bar it misses on its own (rule 1207, which corrects rule 1205's reading of the Eq. 9 figure as the shipped entry's).`;
   return [
-    `The entry is Collins et al. 2005's, and it agrees with their own program within its printed rounding — which says the equations are coded right, not that they match the sky. Rules 76 to 79 (\`validation/fireballRules.ts\`), committed before the model was run on any of them, put it to the ${run.events.bolides.toString()} bolides of NASA JPL's fireball catalogue that carry an altitude of peak brightness, a pre-entry speed with its components and an energy (read on ${FIREBALL_READ_ON}): ${run.events.byEnergy.join(', ')} by energy, ${run.events.fast.toString()} of them at 17 km/s or more. Each body is built from what was measured and run as the panel runs it.`,
+    `The entry is Collins et al. 2005's pancake, and run on the program's own strength law it agrees with their program within its printed rounding — which says the equations are coded right, not that they match the sky; the product runs it on a two-stage strength law (below). Rules 76 to 79 (\`validation/fireballRules.ts\`), committed before the model was run on any of them, put it to the ${run.events.bolides.toString()} bolides of NASA JPL's fireball catalogue that carry an altitude of peak brightness, a pre-entry speed with its components and an energy (read on ${FIREBALL_READ_ON}): ${run.events.byEnergy.join(', ')} by energy, ${run.events.fast.toString()} of them at 17 km/s or more. Each body is built from what was measured and run as the panel runs it.`,
     '',
     '| Body | Burst in the air | Median \\|Δh\\| | Mean Δh | Within 5 km |',
     '|------|----:|----:|----:|----:|',
@@ -2475,7 +2487,7 @@ function entryCellsSection(
   return [
     `G4 asks the product to say, for every input, whether the scenario lies inside the cells a held-out set measured, and the report to give the figures cell by cell. For an impact the set is the ${ENTRY_CELLS.rows.reduce((a, b) => a + b, 0).toString()} fireballs above and the quantity their altitude (rules 722 to 729, \`validation/entryCellsRules.ts\`): rule 78's axes crossed, and closed at the set's bounds — ${ENTRY_CELLS.axes.map((a) => `${(a.edges[0] ?? 0).toString()} to ${(a.edges[a.edges.length - 1] ?? 0).toString()} ${a.unit}`).join(', ')} — for bodies of 3 000 kg/m³ with no class, at ${ENTRY_CELLS_ANGLE_DEG.least.toFixed(2)}° to ${ENTRY_CELLS_ANGLE_DEG.greatest.toFixed(2)}° from the horizontal. The product carries the verdict (\`measuredCells.entry\`) and says it in the panel, under the burst's beacon on the globe and in the legend. The presets: ${presets}.`,
     '',
-    "Cell by cell, the model and the program against the sky (median \\|Δh\\| · mean Δh, over the fireballs both burst in the air), rules 126 to 128's agreement (within 1 % · through BM-13 · departing · one bursting where the other lands · refused by the program), and G2 as rule 128 reads it in every cell of twenty fireballs or more:",
+    "Cell by cell, the model on the law the product ships and the program, each against the sky (median \\|Δh\\| · mean Δh, over the fireballs both burst in the air); rules 126 to 128's agreement, read with the model on the program's own strength law, Collins et al.'s Eq. 9, as rule 898(a) pins it (within 1 % · through BM-13 · departing · one bursting where the other lands · refused by the program); and G2 as rule 128 reads it in every cell of twenty fireballs or more:",
     '',
     '| Cell | Fireballs | The model | The program | Agreement | G2 | Band of the error | G3 |',
     '|------|----:|----:|----:|:--:|:--|:--|:--|',
@@ -3585,6 +3597,141 @@ const EIEP_LABEL: Readonly<Record<EiepQuantity, string>> = {
 };
 
 /** Level B (phase 3 of the plan): the model against observed events, preregistered. */
+/** Rule 1210: the third set's record, as `scripts/third-set-run.ts` saved it. */
+const THIRD_SET_FILE = 'src/physics/validation/thirdSetRun.json';
+/** Rule 1210: the fragment-cloud branch's round 3, as rule 1168 (e) judged it. */
+const FCM_ROUND3_FILE = 'src/physics/validation/fcmRound3Verdict.json';
+
+interface EntryBeyond {
+  levelB2: LevelB2Result;
+  thirdSet: ThirdSetRecord;
+  thirdSetAudit: AuditResult;
+  fcmRound3: { rule: string; verdict: string; why: string };
+}
+
+function readEntryBeyond(): EntryBeyond {
+  const thirdSet = JSON.parse(readFileSync(THIRD_SET_FILE, 'utf8')) as ThirdSetRecord;
+  return {
+    levelB2: scoreLevelB2(),
+    thirdSet,
+    thirdSetAudit: auditThirdSetRun(thirdSet),
+    fcmRound3: JSON.parse(readFileSync(FCM_ROUND3_FILE, 'utf8')) as EntryBeyond['fcmRound3'],
+  };
+}
+
+/** Rule 1210: what the code records about the entry past level B's first
+ *  round, each verdict from the function or the file that owns it. */
+function entryBeyondSection(e: EntryBeyond): string {
+  const km = (m: number): string => fixed(m / 1_000, 2).toString();
+  const bodies = e.thirdSet.bodies.map((b) => {
+    const base = b.o1.baseline;
+    const band =
+      base.band === null
+        ? `no draw of ${b.draws.toString()} releases`
+        : `band ${km(base.band.p5)}–${km(base.band.p95)} km`;
+    const control = b.reading === 'robustnessControl' ? ', a control counted in no decision' : '';
+    return `${b.event} (${b.o1.interval[0].toString()}–${b.o1.interval[1].toString()} km${control}): ${band}, ${base.compatible ? 'compatible' : '**not compatible**'}`;
+  });
+  const checks = e.levelB2.counted.map(
+    (c) => `${c.event} ${c.target}, ${c.pass ? 'pass' : '**fail**'}: ${c.detail}`
+  );
+  return [
+    "The audit of 25 September 2026 found this report silent on what the code already records about the entry past level B's first round (its A2): the second round, the third set and the fragment-cloud branch. Each is given here from its own record — the verdict computed by the function that owns it, or read from the file that holds it, never retyped (rule 1210). The strength law the product ships is in the entry's own section above (rule 1207).",
+    '',
+    `- **Level B, second round** (\`validation/levelB2Score.ts\`, on the predictions committed before any observed value, \`validation/levelB2Predictions.json\`, and the values in \`validation/levelB2Targets.ts\`): **${e.levelB2.verdict}**. ${checks.join('; ')}.`,
+    `- **The third set** (rule 1126's one paired run, \`validation/thirdSetRun.json\`, judged by rules 1100 to 1119 and re-derived apart from the judge by \`validation/thirdSetAudit.ts\`; the account in \`docs/THIRD_SET_RUN.md\`): the candidate S is ${e.thirdSetAudit.verdict.adoptable ? 'adoptable' : '**not adoptable**'} (${e.thirdSet.judge.verdict.reason}), and the audit ${e.thirdSetAudit.failures.length === 0 ? 'finds the same' : `disagrees: ${e.thirdSetAudit.failures.join('; ')}`}. The run's baseline is the product itself (rule 1126 (b)); on the altitude of release its 5–95 % band, against each body's interval widened by 5 km each way: ${bodies.join('; ')}.`,
+    `- **The fragment-cloud branch** (\`effects/fcmBranch.ts\`, after Register, Mathias & Wheeler 2017 and Wheeler et al. 2018): in development and, by its own header, not read by the product — it changes nothing the product prints. Its round 3, judged on the altitude of the atmospheric release alone (\`validation/fcmRound3Verdict.json\`, rule ${e.fcmRound3.rule}): **${e.fcmRound3.verdict}** — ${e.fcmRound3.why}. Its survival-light round and causal dossier were closed by rule 1192 (c) (\`validation/fcmSurvivalLightRules.ts\`): the break threshold and the partition of mass at a break are not identifiable from the six sources read, and no form was adopted.`,
+  ].join('\n');
+}
+
+function entryBeyondJson(e: EntryBeyond) {
+  return {
+    levelB2: {
+      verdict: e.levelB2.verdict,
+      counted: e.levelB2.counted.map((c) => ({
+        event: c.event,
+        target: c.target,
+        pass: c.pass,
+        detail: c.detail,
+      })),
+    },
+    thirdSet: {
+      adoptable: e.thirdSetAudit.verdict.adoptable,
+      reason: e.thirdSet.judge.verdict.reason,
+      auditFailures: e.thirdSetAudit.failures,
+      baseline: e.thirdSet.bodies.map((b) => ({
+        event: b.event,
+        reading: b.reading,
+        compatible: b.o1.baseline.compatible,
+        produced: b.o1.baseline.produced,
+        draws: b.draws,
+      })),
+    },
+    fcmRound3: e.fcmRound3,
+  };
+}
+
+/** Rule 1211: one saved answer set of the reference program. */
+interface ReferenceSet {
+  name: string;
+  file: string;
+  readOn: string;
+  cases: number;
+  refused: number;
+  sha256: string;
+}
+
+const sha256Of = (path: string): string =>
+  createHash('sha256').update(readFileSync(path)).digest('hex');
+
+/** Rule 1211: the program has no version of its own, so its answers are
+ *  fingerprinted — the date read, the cases it refused and the file's hash. */
+function referenceSets(): ReferenceSet[] {
+  const fireballs = JSON.parse(readFileSync(EIEP_FIREBALLS_FILE, 'utf8')) as {
+    readOn: string;
+    rows: { error: string | null }[];
+  };
+  return [
+    {
+      name: `The first grid (answers inline in a TypeScript module: the hash is of its source)`,
+      file: 'src/physics/validation/eiepReference.ts',
+      readOn: EIEP_READ_ON,
+      cases: EIEP_REFERENCE.length,
+      refused: EIEP_REFERENCE.filter((r) => r.error !== null).length,
+      sha256: sha256Of('src/physics/validation/eiepReference.ts'),
+    },
+    {
+      name: "Level A's wide grid",
+      file: 'src/physics/validation/eiepGrid.json',
+      readOn: EIEP_GRID_READ_ON,
+      cases: EIEP_GRID.length,
+      refused: EIEP_GRID.filter((r) => r.error !== null).length,
+      sha256: sha256Of('src/physics/validation/eiepGrid.json'),
+    },
+    {
+      name: 'The CNEOS fireballs (I5 and the entry cells)',
+      file: EIEP_FIREBALLS_FILE,
+      readOn: fireballs.readOn,
+      cases: fireballs.rows.length,
+      refused: fireballs.rows.filter((r) => r.error !== null).length,
+      sha256: sha256Of(EIEP_FIREBALLS_FILE),
+    },
+  ];
+}
+
+function referenceSetsSection(sets: readonly ReferenceSet[]): string {
+  return [
+    "The Earth Impact Effects Program is a web service with no version of its own, so what this report compares against is its answers as they were saved on the day they were asked. Each set is given here with that day, the cases asked, the cases the program refused with an error of its own, and the SHA-256 of the file's bytes, computed from the file at every regeneration (rule 1211): a changed answer changes its hash, and the report with it.",
+    '',
+    '| Answers | File | Read on | Cases | Refused | SHA-256 |',
+    '| --- | --- | --- | --: | --: | --- |',
+    ...sets.map(
+      (r) =>
+        `| ${r.name} | \`${r.file}\` | ${r.readOn} | ${r.cases.toString()} | ${r.refused.toString()} | \`${r.sha256}\` |`
+    ),
+  ].join('\n');
+}
+
 function levelBSection(score: LevelBScore): string {
   const sets = (set: string): string =>
     Object.entries(LEVEL_B_EVENTS)
@@ -3648,7 +3795,7 @@ function levelASection(
   return [
     `Level A of the certification plan of 22 September 2026, implementation verified: the impact pipeline held to the Earth Impact Effects Program case by case, on the ${EIEP_REFERENCE.length.toString()} impacts above and the ${EIEP_GRID.length.toString()} of the wide grid \`scripts/eiep-grid.py\` fixed before the program was asked (commit 58c599f) and read from it on ${EIEP_GRID_READ_ON} (\`validation/eiepGrid.json\`). The bars were written before the answers were read (\`validation/levelA.ts\`, commit 509e3d7): ε = |X − ref| / ref; under ${(LEVEL_A_BARS.excellent * 100).toString()} % excellent; ${(LEVEL_A_BARS.excellent * 100).toString()} to ${(LEVEL_A_BARS.audit * 100).toString()} % explained in writing; over ${(LEVEL_A_BARS.audit * 100).toString()} % audited or a documented difference of design; a constant sign flagged as a possible bug.`,
     '',
-    `${run.cases.toString()} cases; the program failed on ${run.programFailed.toString()} of them (its own answer), the simulator on ${run.modelFailed.length.toString()}; ${run.pairs.length.toString()} readings.`,
+    `${run.cases.toString()} cases; the program failed on ${run.programFailed.toString()} of them (its own answer), the simulator on ${run.modelFailed.length.toString()}; ${run.pairs.length.toString()} readings. A reading is one quantity of one impact, so a row's count is the impacts the program answered that have the quantity — ${(run.cases - run.programFailed).toString()}, the ${run.cases.toString()} less the ${run.programFailed.toString()} refused, where every impact has it. The landing page and the public validation page chart the first grid alone, the ${EIEP_REFERENCE.length.toString()} impacts above, and say so beside its count of comparisons (rule 1209).`,
     '',
     '| Quantity | Readings | Median ε % | P90 ε % | Max ε % | < 2 % | 2–10 % | > 10 % | Unexplained | Constant sign |',
     '| --- | --: | --: | --: | --: | --: | --: | --: | --: | :-: |',
@@ -3712,7 +3859,7 @@ function eiepSection(run: EiepRun): string {
     bullet([
       '**Complex crater depth.** Closed on 16 September 2026 (B-040), and the note that stood here was wrong in a way worth recording: it read "the simulator follows Eq. 28 of the paper, d = 0.4 D^0.3; the online program prints about three quarters of that ... which the authors now intend is a question for them". The paper and the program agree. Eq. 28* is d = 0.294 D^0.301, and 0.4 D^0.3 is Herrick et al.\'s own Venus fit, carried here from a source this project read only through Collins et al. The discrepancy was ours, and the note blamed the reference for it. Fitting the program\'s own thirty-eight complex craters gives 0.2969 D^0.2991, which is Eq. 28* to three figures; the depth is now 0.995× where it was 1.293×.',
       "**Air blast of an impact that reaches the ground.** Closed on 16 September 2026. The simulator read Kinney & Graham's free-air fit on the energy that reaches the ground, and parted from the program by a quarter to eight times, rising with a steeper impact where the program falls (BM-21). The program reads its airburst law at the altitude Collins et al.'s Eq. 18 gives, which for a body that reaches the ground lies below it: the crossover of its Mach relation shortens as a steeper entry puts that altitude deeper. The simulator now does the same (rules 138 to 145); held out on twelve bodies it agreed on 55 of 60 points and was refused on a slow iron whose ground speed the paper's entry gives 1.3 % fast, then, on the program's entry, on 60 of 60 and every breakup and burst altitude of sixteen new bodies.",
-      "**Strength.** Where a strength class is chosen — every impact preset but Tunguska, and the custom panel's taxonomy — the simulator takes it (Popova et al. 2011); the grid, like the program, takes the strength of Collins et al.'s Eq. 9 from density.",
+      `**Strength.** Where a strength class is chosen — every impact preset but Tunguska, and the custom panel's taxonomy — the simulator takes it (Popova et al. 2011). Where none is, since 23 September 2026 it starts a stony body (2 500 to 5 000 kg/m³) at the second stage's strength of meteoroids, the two-stage law's ${((MAIN_STAGE_STRENGTH as number) / 1e6).toFixed(1)} MPa (Borovička et al. 2020; rules 896 to 902), and any other body at Eq. 9 (rule 1207). The grid, like the program, takes the strength of Collins et al.'s Eq. 9 from density: level A pins that law, and rule 1193(b) reads the shipped one beside it, below.`,
       "**An iron's airburst.** For the grid's one iron that bursts, 30 m at 20 km/s and 45 degrees, the program prints no crater's size — \"Large fragments strike the surface and may create a crater strewn field\" — and its map draws the ejecta of the whole body's crater at its residual speed. Since 21 September 2026 the simulator digs that crater (rules 764 to 771, B-098: from 10⁷ kg an iron's fragments dig as one, Bland & Artemieva 2006), and its blanket lies within 1 % of the map's at every thickness. The same map draws a blanket for every stony airburst too, where the program prints that no crater forms; the simulator draws none there.",
     ]),
   ].join('\n');
@@ -4191,6 +4338,8 @@ function main(): void {
   const levelA = runLevelASync([...EIEP_REFERENCE, ...EIEP_GRID]);
   const levelAShippedConfig = runLevelAShippedConfig([...EIEP_REFERENCE, ...EIEP_GRID]);
   const levelB = scoreLevelB();
+  const entryBeyond = readEntryBeyond();
+  const references = referenceSets();
   const ringChecks = verifyRings();
   const contourLaws = runContourLaws();
   const ground = runGround(ruleSets, contourLaws.tolls.boore2014);
@@ -4406,9 +4555,17 @@ ${eiepSection(eiep)}
 
 ${levelASection(levelA, levelAShippedConfig)}
 
+### The reference's answers, fingerprinted
+
+${referenceSetsSection(references)}
+
 ### Level B: the model against observed events, preregistered
 
 ${levelBSection(levelB)}
+
+### What else the code records about the entry
+
+${entryBeyondSection(entryBeyond)}
 
 ### The intensity rings against their authors' code
 
@@ -4954,6 +5111,8 @@ otherwise.
           logRatio: t.logRatio === null ? null : fixed(t.logRatio, 4),
         })),
       },
+      entryBeyond: entryBeyondJson(entryBeyond),
+      referenceSets: references,
       levelA: {
         readOn: EIEP_GRID_READ_ON,
         cases: levelA.cases,

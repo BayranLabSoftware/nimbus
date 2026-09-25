@@ -710,6 +710,21 @@ configuration the product actually ships (`strengthLaw: 'twoStage'`,
 I1 is unchanged; `docs/VALIDATION_REPORT.md` now prints that second grid
 beside the first, under a heading that says which is which.
 
+**Correction of 26 September 2026 (rule 1207 of
+`validation/nasaAuditCorrectionsRules.ts`), to the figures above and not to
+the status.** The amendment gives I2's miss as "13.74 km median, 12.75 km
+mean ... rules 76 to 79". Those are the model's figures on the program's own
+strength law, Collins et al.'s Eq. 9 (rules 126 to 128). Rules 76 to 79 have
+run the law the product ships since 23 September 2026 — a stony body's
+strength in two stages, after Borovička et al. 2020 (rules 896 to 902) — and
+on it the same 357 fireballs read 5.30 km in the median and +1.69 km in the
+mean. The median is over the 5 km bar, so I2 as first written is **not met**
+on either law and its frozen status stands; the mean alone would be within
+its 3 km. That law was chosen with these fireballs already read (rule 900),
+so its figures are a reading on development data, not a held-out one. The
+paragraph above stays as written, as every record in this file does; this
+note is what corrects it.
+
 ## Three decisions of 21 September 2026, which change no rule
 
 Taken in the plan Andrea asked for that morning, and accepted by Andrea

@@ -321,7 +321,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         measure: 'beyond',
         status: 'not met',
         evidence:
-          "FROZEN by rule 1193 (nasaAuditCorrectionsRules.ts) at the status the bound as first written gives it, permanently: an outside audit (25 September 2026) found the counted status here reflected only the reading the amendment of 16 September 2026 introduced — agreement with the Earth Impact Effects Program's own entry, not with the sky — while the rule's own text never asked for that. Against the bound as first written (median ≤ 5 km, mean ≤ 3 km, on the same 357 CNEOS fireballs): the model misses by 13.74 km in the median and 12.75 km in the mean (rules 76 to 79). NOT MET, and this status does not change again; what the 16 September amendment measured is I5.",
+          "FROZEN by rule 1193 (nasaAuditCorrectionsRules.ts) at the status the bound as first written gives it, permanently: an outside audit (25 September 2026) found the counted status here reflected only the reading the amendment of 16 September 2026 introduced — agreement with the Earth Impact Effects Program's own entry, not with the sky — while the rule's own text never asked for that. Against the bound as first written (median ≤ 5 km, mean ≤ 3 km, on the same 357 CNEOS fireballs): the entry the product ships, on its two-stage strength law since 23 September 2026, misses by 5.30 km in the median, over the bar, and by +1.69 km in the mean, within it (rules 76 to 79); on the program's own strength law, Collins et al.'s Eq. 9, the model misses by 13.74 km and 12.75 km (rules 126 to 128). NOT MET on either law, and this status does not change again; what the 16 September amendment measured is I5. [Corrected by rule 1207, 26 September 2026: this text first gave the Eq. 9 figures, 13.74 and 12.75 km, as the reading of rules 76 to 79, which have run the shipped law since 23 September.]",
       },
       {
         rule: 'I3',
@@ -367,7 +367,7 @@ export const GOLD_STANDARD_SCORECARD: readonly DomainScorecard[] = [
         measure: 'fidelity',
         status: 'met',
         evidence:
-          "Opened by rule 1193, carrying forward what the amendment of 16 September 2026 measured before I2 was frozen. Read against the program's entry on the 357 CNEOS fireballs (rules 126 to 128, validation/fireballAnchorRules.ts). Rescored on 21 September 2026 when the entry went back to Eq. 12's I_f (rules 691 to 697): 352 within 1 %, 4 through BM-13, 1 refused by the program — the model is the field's tool on this set, by construction (G1), so the held-out miss (13.74 km model, 13.68 km program, in the median) is printed as what it says of the field and not read as a bar.",
+          "Opened by rule 1193, carrying forward what the amendment of 16 September 2026 measured before I2 was frozen. Read against the program's entry on the 357 CNEOS fireballs (rules 126 to 128, validation/fireballAnchorRules.ts). Rescored on 21 September 2026 when the entry went back to Eq. 12's I_f (rules 691 to 697): 352 within 1 %, 4 through BM-13, 1 refused by the program — the model is the field's tool on this set, by construction (G1), so the held-out miss (13.74 km for the model on the program's own strength law, Eq. 9, and 13.68 km for the program, in the median) is printed as what it says of the field and not read as a bar; the entry the product ships runs a two-stage law and misses by its own figure, I2's (rule 1207).",
       },
       {
         rule: 'I6',

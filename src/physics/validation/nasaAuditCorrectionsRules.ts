@@ -1197,6 +1197,16 @@ export const RULE_1204_WRITTEN = '2026-09-25' as const;
  * of its own, not a sentence-level fix. Left open, honestly, rather than
  * guessed at past midnight on the module this project holds itself to
  * the most.
+ *
+ * [Correction, rule 1207, 26 September 2026: the paragraph above that calls
+ * 13.74 km "correct, current, and unmoved by the entry change" and rule
+ * 1193's freeze "NOT stale" is wrong. Its recomputation called
+ * `atmosphericEntry` with no strength, which reads Collins et al.'s Eq. 9 --
+ * the program's law, not the two-stage law the product has shipped since 23
+ * September 2026 (rules 896 to 902). On the shipped law the same 357 read
+ * 5.30 km in the median and +1.69 km in the mean, the table's figures; the
+ * gap this rule left open is that law, and rule 1207 traces it and corrects
+ * every text that printed the Eq. 9 figure as the shipped entry's.]
  */
 export const RULE_1205_WRITTEN = '2026-09-25' as const;
 
@@ -1263,3 +1273,304 @@ export const RULE_1205_WRITTEN = '2026-09-25' as const;
  * reason.
  */
 export const RULE_1206_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1207. A12, ITEM 2 OF RULE 1203'S LIST, AND THE SENTENCE A2 QUOTES:
+ * THE ENTRY'S FIGURES WERE READ ON TWO STRENGTH LAWS AND PRINTED AS ONE --
+ * AND RULE 1205'S CONCLUSION, WHICH WAS WRONG.
+ *
+ * (a) What rule 1205 left open, traced to its mechanism: the 5.30 km of
+ *     rules 76 to 79 and the 13.74 km of rules 126 to 128 differ by the
+ *     strength law, not by the two pipelines. `fireballRun.ts`'s
+ *     `fireballRow` runs every bolide under `DEFAULT_STRENGTH_LAW`, which is
+ *     `'twoStage'` since c9d35e8 (23 September 2026, rules 896 to 902): a
+ *     body of 3 000 kg/m³ with no strength given starts its pancake at the
+ *     second stage's strength of meteoroids, `MAIN_STAGE_STRENGTH`, about
+ *     2.12 MPa (the geometric mean of Borovička et al. 2020's 0.9-5 MPa).
+ *     The comparison with the program (rules 126 to 128; in the report
+ *     `readEntryCellsFor(runFireball('density'))`, rule 898(a)) is pinned to
+ *     the program's own law, Collins et al.'s Eq. 9 -- and so was rule
+ *     1205's recomputation, which called `atmosphericEntry` with no strength
+ *     and therefore read Eq. 9 too. Read again on 26 September 2026 from the
+ *     same saved inputs (`benchmark/results/eiep-fireballs-2026-09-16.json`,
+ *     `sent`), both ways, through rules 126 to 128's own
+ *     `fireballAnchorVerdict`: on Eq. 9, within 1 % on 352, BM-13 on 4, 1
+ *     refused, median 13.743 km, mean +12.754 km; on the shipped two-stage
+ *     law, within 1 % on 0, BM-13 on 351, regime 5, 1 refused, median
+ *     5.300 km, mean +1.692 km -- the report's table to the digit. The
+ *     adoption's own outcome (`strengthTwoStageAgainRules.ts`, (b)) already
+ *     said so on 23 September: "13.74 km under `density`, 5.30 km under
+ *     `twoStage`".
+ *
+ * (b) So rule 1205 was wrong in the part it called verified. "The 13.74 km
+ *     figure is correct, current, and unmoved by the entry change" is true
+ *     of the model run on the program's law and false of the entry the
+ *     product ships; "rule 1193's freeze, and GOLD_STANDARD.md's I2 row, are
+ *     NOT stale" is wrong in the one place that matters -- both give 13.74
+ *     and 12.75 as the reading of "rules 76 to 79", which have read 5.30 and
+ *     +1.69 since 23 September. The audit had it right on its first page
+ *     ("5,3 km ... barra 5 km non raggiunta; 13,7 km sulle equazioni del
+ *     programma") and quoted the sentence in A2: "il programma manca di
+ *     13,68 km, questo ingresso di 13,74, accanto a una tabella che per la
+ *     stessa riga mostra 5,3 km". Rule 1205 re-read the number and not the
+ *     law it was computed on. A bracketed correction is added at its end, as
+ *     rule 1195's was, so its conclusion is not read as settled.
+ *
+ * (c) What is false, and the fix for each. No number moves; no status moves.
+ *     1. `validation.entry.barMissed` (en, it): "neither by this model nor
+ *        by the reference program, which misses the recorded altitude by
+ *        about as much. It is a gap of the published equations, not of this
+ *        implementation" -- false against the page's own cells (the model
+ *        4.5-7 km, the program 9.5-15.8 km). Rewritten to say what the page
+ *        shows: the bar is missed by this model's median, on the two-stage
+ *        law (Borovička et al. 2020, adopted on 23 September 2026 and chosen
+ *        with these bolides already read, rule 900 -- so not a held-out
+ *        reading); the program, on Eq. 9, misses by its own range across the
+ *        cells below, the model by its. Every figure interpolated from the
+ *        report's JSON, none written into the string.
+ *     2. `validation.entry.readings.default` (en, it): "As the panel runs it
+ *        (stony, 1 MPa)" -- the row is the body with no class, which carries
+ *        about 2.1 MPa under the two-stage law; 1 MPa is the next row's body.
+ *        Rewritten to name the law and its strength.
+ *     3. `validation.entry.within` (en, it): "Inside the cell's band" heads
+ *        `counts.within`, which is rules 126 to 128's count of the fireballs
+ *        where the model, on Eq. 9, agrees with the program within 1 % -- not
+ *        the band of rules 739 to 747. Rewritten to say what it counts.
+ *     4. `generate-validation-report.ts`, `FIREBALL_LABEL`: the default
+ *        body's label, "(Collins et al.'s Eq. 9 strength)", names the law
+ *        the product left on 23 September; and the stony row's, "The panel's
+ *        stony class, 1 MPa", names a class the panel does not have -- its
+ *        S-type is 3 300 kg/m³ at 2 MPa (`ASTEROID_TAXONOMY`), while the row
+ *        runs 3 000 kg/m³ at 1 MPa. Both relabelled to what the row runs.
+ *     5. The report's verdict paragraph: "and **it is met**" gives I2 a
+ *        status rule 1193 took from it (the amendment's reading is I5);
+ *        "this entry's 13.74" is the model on the program's law; and "it is
+ *        the field's error, not a gap of this model's" is false of the
+ *        shipped entry, whose 5.3 km is its own. Rewritten to name each law
+ *        with its figure and to say that the shipped law's 5.3 km was read
+ *        on bolides its choice was not blind to (rule 900).
+ *     6. The report's cell table: its lead-in says which column is read on
+ *        which law -- the model's miss on the shipped law, the agreement
+ *        with the program on Eq. 9 (rule 898(a)) -- which the table itself
+ *        never said.
+ *     7. `goldStandardScorecard.ts`, I2's frozen evidence: the figures it
+ *        gives as "rules 76 to 79" are rules 126 to 128's on Eq. 9. The
+ *        STATUS does not move: the shipped entry's median, 5.30 km, is over
+ *        the 5 km bar, so I2 as first written is not met on either law (its
+ *        mean, +1.69 km, is within 3 km; the median alone fails it). The
+ *        figures sentence is corrected, with a bracketed note saying what it
+ *        first said and which rule changed it. I5's evidence names the law
+ *        its 13.74 km is read on.
+ *     8. `docs/GOLD_STANDARD.md`, rule 1193's amendment paragraph: the same
+ *        attribution. That file never rewrites a record in place, so the
+ *        paragraph stays as written and a dated correction follows it.
+ *     9. The report's list of what parts from the program by design,
+ *        "**Strength.**": it says a chosen class is taken and that the grid
+ *        reads Eq. 9, and says nothing of a body with no class -- which is
+ *        the two-stage law's since 23 September. The sentence that says so
+ *        is added; the audit's "il report non nomina ... la legge a due
+ *        stadi" (A2) is this, for the entry.
+ *
+ * (d) Left as they are, and why: GOLD_STANDARD.md's lines of 16 September
+ *     (the dated entry "I2 met" and the row of "Where each domain stands, 15
+ *     September 2026") are dated records, true on the law in force that day
+ *     -- Eq. 9 was the default until 23 September. The page's third row,
+ *     "Iron strength", is true as it stands.
+ *
+ * No number of any scenario moves and nothing the globe or the impact report
+ * draws or prints is touched, so the seal does not move. The validation
+ * report moves in its prose and its labels: regenerated once.
+ */
+export const RULE_1207_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1208. A12, ITEM 4 OF RULE 1203'S LIST: "CODICI DELLE REGOLE (I1, G3)
+ * SENZA DESCRIZIONE".
+ *
+ * Read before writing: the validation page's table of the gold standard's
+ * rules (`ValidationPage.tsx`, section `validation-rules`) prints each rule
+ * by its code alone -- I1 to I6, G3 to G7, the eleven the Impacts domain
+ * counts since rule 1193 -- beside what it measures (fidelity or beyond) and
+ * its verdict. What each code asks is written only in
+ * `docs/GOLD_STANDARD.md`, which the page does not link from the table. A
+ * visitor reads "G3 -- not held" and cannot tell what was not held. The
+ * codes elsewhere in the interface (the panel's and the globe's "(I1)",
+ * "(I2)") already sit inside a sentence that says what was measured, so
+ * they are citations, not bare codes; they are not touched.
+ *
+ * The fix: a column "What it asks" in that table, one sentence per rule in
+ * both languages, each a plain reading of the rule's own text in
+ * `docs/GOLD_STANDARD.md` ("Every domain" for G3 to G7, "Impacts" for I1 to
+ * I6) -- the bound as written, never the amended reading and never a
+ * verdict; the verdict stays in its own column. The frozen rules (I2, I3)
+ * are described as first written, which is what their status now counts.
+ * The page's existing test that every measure of a rule has words is
+ * extended to every code the report hands the page, so a rule opened later
+ * cannot reach the page as a raw key.
+ *
+ * Found while reading the same table: its lead-in, `validation.rules.body`,
+ * says the letter gives the measure -- "I-rules for fidelity to the
+ * equations, G-rules for what lies beyond them" -- which the table's own
+ * second column has contradicted since rule 1194 re-read I2 and I3 as
+ * 'beyond' (both ask the model to match the sky, which no tool of the field
+ * computes). The letter says whose rule it is -- I the Impacts domain's own,
+ * G every domain's -- and the column says what it measures. And its last
+ * sentence, "A rule holds or it does not; there is no partial credit", is
+ * true of the "held" count and false of the reading printed right under it:
+ * `ruleCredit` gives a rule with clauses the share of them that holds (I3's
+ * two of four earn 0.5 of the 6.9). Both reworded to what the code does, in
+ * both languages.
+ *
+ * No number moves; nothing the globe or the impact report prints is
+ * touched, so the seal does not move.
+ */
+export const RULE_1208_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1209. A12, ITEM 3 OF RULE 1203'S LIST: "DUE DENOMINATORI (938 SU 83
+ * IMPATTI; 1 794 IMPATTI) SENZA SPIEGAZIONE".
+ *
+ * Read before writing. The landing page and the validation page each carry
+ * a tile "938 -- comparisons, over 83 impacts of a fixed grid"
+ * (`landing.validation.programCases`, `validation.summary.comparisons` and
+ * its note). The 938 is the sum of `verification.eiep.summaries[].pairs`:
+ * one pair is one quantity of one impact, thirteen quantities, not all of
+ * which an impact has (a ground impact has no burst altitude, an airburst
+ * no crater), on the 81 of the grid's 83 impacts the program answered (it
+ * refuses 2), and the ejecta edge read at several distances (281 pairs).
+ * Nothing on either page says any of that, so 938 "over 83" reads as a
+ * count that cannot be. The report's level A, meanwhile, gives its own
+ * readings per quantity -- 1 794 for the energy -- over a different grid:
+ * the same 83 plus the 1 782 `scripts/eiep-grid.py` fixed, 1 865 in all, of
+ * which the program refused 71; and nothing on the pages says that grid
+ * exists, so a reader of both meets two counts of "impacts compared" and no
+ * word joining them.
+ *
+ * The fix, in words only -- no count changes:
+ *   (a) the two tiles say what one comparison is, and how many of the grid's
+ *       impacts the program answered: "one quantity of one impact, on the
+ *       {{answered}} of {{impacts}} impacts of the first fixed grid the
+ *       program answered";
+ *   (b) both then name level A's wider grid in one clause, from the report's
+ *       own `verification.levelA` (cases, the program's refusals, readings,
+ *       the date read), so the second count is on the page with what it
+ *       counts rather than only in the report;
+ *   (c) the report's level A lead-in says, beside its own count, that a
+ *       row's readings are the grid's impacts the program answered for that
+ *       quantity -- 1 794 = 1 865 - 71 where every impact has it -- and that
+ *       the public pages' 938 is the first grid's.
+ * The figures are interpolated from the report's JSON, none written into a
+ * string. Nothing the globe or the impact report prints is touched; the
+ * seal does not move.
+ */
+export const RULE_1209_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1210. A2, "PORTARE NEL REPORT CIÒ CHE IL CODICE SA (WJ1, TERZO
+ * INSIEME, FCM, DUE STADI)" -- THE THREE OF THE FOUR RULE 1207 DID NOT
+ * COVER.
+ *
+ * Read before writing: at d9adf46 `docs/VALIDATION_REPORT.md` names none of
+ * them -- "WJ1" 0 times, "third set" 0, "FCM" and "fragment-cloud" 0,
+ * "two-stage" 0 (the one "twoStage" is rule 1193(b)'s configuration name).
+ * Rule 1207 brought the two-stage law into the entry's section. The other
+ * three each have their record in the repository, and two have a function
+ * that recomputes their verdict:
+ *   - Level B's second round: `levelB2Score.ts`, `scoreLevelB2()`, over the
+ *     predictions committed before any observed value
+ *     (`levelB2Predictions.json`, aaec9bf) and `levelB2Targets.ts`. Read on
+ *     26 September 2026: "incompatible with 2022 WJ1; no class B" -- E1
+ *     fails (8.2 % of the draws answer that no crater forms, against a bar
+ *     of 90 %), E3 holds on the draws that dig none.
+ *   - The third set: `thirdSetRun.json`, rule 1126's one paired run, whose
+ *     verdict `thirdSetAudit.ts`'s `auditThirdSetRun()` re-derives apart from
+ *     the judge: S not adoptable under version 2. Its baseline is the
+ *     product itself (`simulateImpact`, rule 1126 (b)), so the record also
+ *     says, body by body, whether the product's release band meets the
+ *     observed interval -- `bodies[].o1.baseline.compatible`.
+ *   - The fragment-cloud branch: `effects/fcmBranch.ts`, in development and
+ *     "not read by the product" by its own header; its round 3 judged by
+ *     `fcmRound3Verdict.json` (rule 1168 (e)); its survival-light round and
+ *     causal dossier closed by rule 1192 (c), "NOT IDENTIFIABLE" for both
+ *     candidates, in `fcmSurvivalLightRules.ts`.
+ *
+ * The fix: a section of the report after level B's, one paragraph for each
+ * of the three, every verdict computed by the function that owns it or read
+ * from the record that holds it -- never retyped into the generator -- and
+ * the report's JSON carries the same verdicts. What each paragraph may say
+ * is what its record says; nothing is summarised past it, and each names
+ * its file so a reviewer can read the rest there.
+ *
+ * No number of any scenario moves and nothing the globe or the impact
+ * report prints is touched; the seal does not move.
+ */
+export const RULE_1210_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1211. A2, "VERSIONARE IL RIFERIMENTO (DATA, CASI RIFIUTATI, HASH
+ * DELLE RISPOSTE)".
+ *
+ * Read before writing: the reference is a web service with no version of
+ * its own (the audit's words: "un servizio web non versionato"); what this
+ * repository compares against is its answers, saved on the day they were
+ * asked. Three sets: the first grid of 83 impacts (read 14 September 2026),
+ * level A's wide grid (`validation/eiepGrid.json`, 1 865 impacts, read 23
+ * September 2026) and the 357 CNEOS fireballs
+ * (`benchmark/results/eiep-fireballs-2026-09-16.json`). The report gives
+ * each one's date and, for level A, its refusals; it gives no fingerprint of
+ * any answer file, so a reader cannot tell that the answers compared today
+ * are the ones read that day.
+ *
+ * The fix: a table in the report, one row per saved answer set -- its file,
+ * the date read, the cases asked, the cases the program refused (its own
+ * error text), and the SHA-256 of the file's bytes, computed by the
+ * generator from the file itself at every regeneration. The JSON carries
+ * the same. A changed answer file changes its hash, which changes the
+ * report, which CI's freshness gate already refuses to let pass
+ * unregenerated: the fingerprint is kept honest by the machinery that
+ * already exists, not by a new test. Where a set's answers live in a
+ * TypeScript module rather than a file of their own, the hash is of that
+ * module's source and the row says so.
+ *
+ * No number of any scenario moves; the seal does not move.
+ */
+export const RULE_1211_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1212. A12, ITEM 9 OF RULE 1203'S LIST: THE "COASTAL DEEP DIVE (TIER
+ * 2)" -- "SENZA CLASSE DI EVIDENZA E SOLO IN INGLESE"; THE AUDIT'S FIX, "OGNI
+ * OGGETTO ... CON SCHEDA O NON DISEGNATO".
+ *
+ * Read before writing (`SimulatorPanel.tsx`, `DeepDivePanel` and the button
+ * that runs it; `useAppStore.ts`, `evaluateDeepDive`): a 1D radial
+ * Saint-Venant solver (`physics/tsunami/saintVenant1D.ts`, MUSCL-RK2, Manning
+ * n = 0.025) on a flat basin of one depth -- the scenario's mean ocean
+ * depth -- 400 cells of 10 km, started from a Gaussian hump whose height is
+ * the scenario's tsunami source amplitude (Ward & Asphaug's cavity, through
+ * `impactSourceAmplitude`) and whose σ is a fixed 350 km, whatever the
+ * cavity's own size; no dispersion, no bathymetry, no coast; the peak |η|
+ * read at 100, 500, 1 000, 2 000 and 3 000 km. Nothing in the repository
+ * checks it against a reference for an impact. Every word it prints --
+ * the button, its title, the heading, the table's columns, the chart's
+ * label, the footer, the three error messages the store sets -- is English
+ * written into the code, and no class of evidence goes with any number.
+ *
+ * Of the audit's two ways ("con scheda o non disegnato"), the one that
+ * takes no decision away from Andrea: the card. Whether to keep the panel
+ * at all is his, and is put to him. What changes:
+ *   (a) every string in both languages, the store's three messages turned
+ *       into codes the panel words (a solver's own exception text is
+ *       printed as it comes, after a translated lead);
+ *   (b) under the table, rule 1029's five-field card, drawn by the same
+ *       `CardFields` the globe's legend uses: the quantity (the peak surface
+ *       elevation, m); the state, exploratory; the source and model, as read
+ *       above, the 350 km σ said to be fixed and not the cavity's; the
+ *       extent, the five probe ranges; beyond them, not modelled (no coast,
+ *       no run-up, no bathymetry);
+ *   (c) the button's own title says the class too, so it is known before
+ *       the solver runs.
+ * No number moves -- the solver, its source and its probes are untouched.
+ * The panel is not part of the seal's digests (it prints only after a
+ * click), so the seal does not move; checked, not assumed, by re-running it.
+ */
+export const RULE_1212_WRITTEN = '2026-09-26' as const;

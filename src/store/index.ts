@@ -1,6 +1,7 @@
 export {
   TRANSITION_HALF_MS,
   CLOSE_UP_VIEW_ENABLED,
+  DEEP_DIVE_ERROR_CODES,
   configurePopulationDensity,
   configurePopulationLookup,
   configureTerrainLoaders,
@@ -14,6 +15,7 @@ export {
   type ActiveMonteCarlo,
   type ActiveResult,
   type ActiveVolcanoPreset,
+  type DeepDiveErrorCode,
   type DeepDiveResult,
   type AnyPresetId,
   type AppStore,

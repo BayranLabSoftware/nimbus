@@ -75,7 +75,7 @@
       "title": "Contro che cosa è misurato il modello",
       "body": "I numeri di un impatto sono confrontati con l'Earth Impact Effects Program, l'implementazione di riferimento delle equazioni che questo modello cita, e con i bolidi di cui il cielo ha davvero misurato l'ingresso. Dove non è mai stato misurato nulla — e per un impatto è quasi tutto — la sezione lo dice, invece di prendere in prestito una prova da un altro fenomeno.",
       "quantitiesWithin": "grandezze confrontate col programma di riferimento; lo scarto più largo di una media geometrica è {{percent}} %",
-      "programCases": "confronti, su {{impacts}} impatti di una griglia fissata",
+      "programCases": "confronti — ciascuno una grandezza di un impatto — sui {{answered}} dei {{impacts}} impatti della prima griglia fissata a cui il programma ha risposto; la griglia più ampia del livello A, {{casesA}} impatti ({{refusedA}} rifiutati dal programma), dà {{readingsA}} letture, nel report completo",
       "entryError": "errore mediano sulla quota di massima luminosità, su {{bolides}} bolidi registrati: la barra dei 5 km non è raggiunta",
       "noToll": "impatti nella storia registrata con un bilancio di vittime: la mortalità è tarata su esplosioni di pari energia, ed è un'estrapolazione",
       "figure": "Figura 2",
@@ -126,6 +126,28 @@
     "credits": "Ispirato da MetaBallStudios · Asset da Poly Haven e Sketchfab CC0 · Scienza dalla letteratura pubblicata, ogni formula citata"
   },
   "simulator": {
+    "deepDive": {
+      "run": "Approfondimento costiero (livello 2)",
+      "running": "Approfondimento costiero in corso…",
+      "rerun": "Ripeti l'approfondimento costiero",
+      "buttonTitle": "Un solutore di Saint-Venant 1D radiale su un bacino piatto — esplorativo, non verificato contro alcun riferimento",
+      "title": "Approfondimento costiero — Saint-Venant, 1D radiale",
+      "range": "Distanza",
+      "peak": "|η| di picco",
+      "chart": "Approfondimento costiero: ampiezza di picco in funzione della distanza",
+      "footer": "Sorgente {{source}} m, bacino {{basin}} km, {{cells}} celle × {{width}} km · {{ms}} ms",
+      "error": {
+        "noResult": "Approfondimento costiero: non c'è una simulazione da leggere.",
+        "unsupportedSource": "L'approfondimento costiero vale solo per gli tsunami da impatto e da terremoto: il solutore radiale non rappresenta una sorgente vulcanica, da frana o da esplosione.",
+        "zeroSource": "Approfondimento costiero: l'ampiezza della sorgente è zero — non c'è nulla da propagare.",
+        "solver": "Approfondimento costiero: il solutore si è fermato ({{message}})."
+      },
+      "card": {
+        "quantity": "Elevazione di picco della superficie |η| a cinque distanze",
+        "source": "Un solutore di Saint-Venant 1D radiale (MUSCL-RK2, Manning n = 0,025) su un bacino piatto profondo {{basin}} km, 400 celle da 10 km, avviato da una gobba gaussiana alta quanto l'ampiezza della sorgente dello scenario (la cavità di Ward & Asphaug) e con σ fissa di 350 km, non la dimensione della cavità; niente dispersione, niente batimetria, niente costa. Non verificato contro alcun riferimento per un impatto.",
+        "extent": "Il picco a {{ranges}} km dalla sorgente"
+      }
+    },
     "panelLabel": "Controlli del simulatore",
     "collapsePanel": "Riduci pannello simulatore",
     "expandPanel": "Espandi pannello simulatore",
@@ -2181,7 +2203,7 @@
       "quantities": "grandezze confrontate col programma di riferimento",
       "quantitiesNote": "scarto più largo di una media geometrica: {{percent}} %",
       "comparisons": "confronti col programma di riferimento",
-      "comparisonsNote": "su {{impacts}} impatti di una griglia fissata, letti il {{readOn}}",
+      "comparisonsNote": "ciascuno una grandezza di un impatto, sui {{answered}} dei {{impacts}} impatti della prima griglia fissata a cui il programma ha risposto, letti il {{readOn}}; la griglia più ampia del livello A, {{casesA}} impatti ({{refusedA}} rifiutati dal programma), letta il {{readOnA}}, dà {{readingsA}} letture nel report completo",
       "entry": "errore mediano sulla quota d'ingresso",
       "entryNote": "su {{bolides}} bolidi registrati: la barra dei 5 km non è raggiunta",
       "tollsMeasured": "impatti con un bilancio di vittime registrato",
@@ -2437,18 +2459,18 @@
       "withinFive": "Entro 5 km",
       "toTheGround": "Che arrivano al suolo",
       "readings": {
-        "default": "Come lo esegue il pannello (roccioso, 1 MPa)",
+        "default": "Un corpo senza classe, come lo esegue il pannello (legge a due stadi, {{strength}} MPa)",
         "stony": "Resistenza da condrite ordinaria",
         "iron": "Resistenza da ferro"
       },
       "barMet": "La barra di un errore mediano sotto i 5 km è raggiunta.",
-      "barMissed": "La barra di un errore mediano sotto i 5 km non è raggiunta — né da questo modello né dal programma di riferimento, che manca la quota registrata all'incirca allo stesso modo. È una lacuna delle equazioni pubblicate, non di questa implementazione, e colmarla è un lavoro a sé.",
+      "barMissed": "La barra di un errore mediano sotto i 5 km non è raggiunta: questo modello manca la quota registrata di {{median}} km in mediana. La sua legge di resistenza a due stadi per i corpi rocciosi (Borovička et al. 2020), adottata il 23 settembre 2026, è stata scelta con questi bolidi già letti: non è quindi una lettura su dati tenuti da parte. Il programma di riferimento, con la legge di resistenza delle equazioni pubblicate (l'Eq. 9 di Collins et al.), la manca di {{programFrom}}–{{programTo}} km in mediana nelle celle qui sotto; questo modello di {{modelFrom}}–{{modelTo}} km.",
       "cells": "L'ingresso, cella per cella",
       "cell": "Cella",
       "rows": "Bolidi",
       "model": "Questo modello",
       "program": "Programma di riferimento",
-      "within": "Dentro la banda della cella",
+      "within": "Entro l'1 % dal programma (sulla sua legge di resistenza)",
       "span": {
         "energy": "energia",
         "speed": "velocità"
@@ -2457,10 +2479,24 @@
     },
     "rules": {
       "title": "Le regole del gold standard",
-      "body": "La barra che il dominio si è dato, scritta prima di misurare: regole I per la fedeltà alle equazioni, regole G per ciò che sta oltre — insiemi tenuti da parte, bande, il cielo. Una regola tiene o non tiene; non esistono mezzi crediti.",
+      "body": "La barra che il dominio si è dato, scritta prima di misurare: le regole I sono proprie degli impatti, le regole G di ogni dominio, e la colonna accanto a ciascuna dice se misura la fedeltà alle equazioni o ciò che sta oltre — insiemi tenuti da parte, bande, il cielo. Una regola tiene solo se tiene tutta; la lettura dà a una regola con clausole la quota di esse che tiene.",
       "reading": "{{held}} regole su {{of}} tengono: il dominio legge {{reading}} su 9.",
       "rule": "Regola",
       "measure": "Che cosa misura",
+      "asks": "Che cosa chiede",
+      "ask": {
+        "I1": "Ogni grandezza che stampa anche l'Earth Impact Effects Program — l'ingresso, lo scoppio, il cratere, la sfera di fuoco, l'esposizione termica, gli ejecta, l'onda d'urto, la magnitudo sismica, lo tsunami — concorda con la sua entro l'1 % o il suo arrotondamento; ogni scostamento porta la sua ragione.",
+        "I2": "Su almeno 300 bolidi CNEOS tenuti da parte, la quota a cui il modello deposita l'energia sta entro 5 km da quella di massima luminosità in mediana, con un errore medio entro 3 km.",
+        "I3": "La banda del raggio dell'onda d'urto di un airburst tiene la foresta abbattuta a Tunguska, i vetri rotti a Čeljabinsk e almeno il 90 % delle corse shock-physics di Collins et al. 2017, ed è larga al più ×3.",
+        "I4": "Le persone dentro ogni anello sono contate entro il 5 % di un conteggio esatto sullo stesso raster, e il bilancio porta il suo tetto.",
+        "I5": "Sugli stessi bolidi, la quota di scoppio del modello concorda con quella dell'Earth Impact Effects Program — o, dove se ne scosta oltre un'eccezione dichiarata, non manca il cielo più del programma.",
+        "I6": "Per ogni airburst completo, la banda dell'onda d'urto risponde alle approssimazioni di Collins et al. 2017 e tiene tante loro corse shock-physics quante ne tiene la stessa banda disegnata attorno alla sorgente del programma.",
+        "G3": "Ogni grandezza porta una banda che copre l'85–95 % di un insieme tenuto da parte, almeno l'80 % in ogni cella di venti righe o più, e non è più larga di quanto consente il suo limite su σ.",
+        "G4": "Per ogni ingresso, il prodotto dice se lo scenario sta dentro le celle misurate da un insieme tenuto da parte, e il report dà le cifre cella per cella.",
+        "G5": "Cinquemila scenari casuali finiscono tutti, con numeri finiti, nessuna area più grande della Terra e monotoni dove lo è la fisica; l'applicazione stampa ciò che il modello calcola in Node.",
+        "G6": "Ogni lacuna è dichiarata nel report.",
+        "G7": "Ogni default cambia con regole scritte prima di eseguire il candidato, e ogni esito, adottato o no, è registrato."
+      },
       "status": "Esito",
       "measures": {
         "fidelity": "fedeltà alle equazioni",

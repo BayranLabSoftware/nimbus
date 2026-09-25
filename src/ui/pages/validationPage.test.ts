@@ -115,6 +115,7 @@ describe('the validation page has words for everything its data can say', () => 
       'rules.title',
       'rules.body',
       'rules.reading',
+      'rules.asks',
       'rules.held',
       'rules.notHeld',
       'unmeasured.title',
@@ -151,6 +152,8 @@ describe('the validation page has words for everything its data can say', () => 
     expect(impacts, 'the report has no Impacts domain').toBeDefined();
     for (const rule of impacts?.rules ?? []) {
       expectText(`validation.rules.measures.${rule.measure}`);
+      // Rule 1208: every code the table prints says what it asks.
+      expectText(`validation.rules.ask.${rule.rule}`);
     }
   });
 

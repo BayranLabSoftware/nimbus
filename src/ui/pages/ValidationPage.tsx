@@ -2,6 +2,7 @@ import type { TFunction } from 'i18next';
 import type { JSX, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import report from '../../../docs/VALIDATION_REPORT.json';
+import { MAIN_STAGE_STRENGTH } from '../../physics/effects/atmosphericEntry.js';
 import { BUILD_INFO, shortCommit, validationReportUrl, REPOSITORY_URL } from '../../buildInfo.js';
 import { useAppStore } from '../../store/index.js';
 import { EvidenceTable } from '../components/EvidenceTable.js';
@@ -88,6 +89,12 @@ interface ReportData {
       regimes: Record<string, number>;
       craters: Record<string, number>;
     };
+    levelA: {
+      readOn: string;
+      cases: number;
+      programFailed: number;
+      readings: number;
+    };
   };
   calibration: {
     fireball: {
@@ -138,7 +145,7 @@ export function ValidationPage(): JSX.Element {
     n.toLocaleString(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits });
   const ratio = (v: number): string => `${dec(v, 3)}×`;
 
-  const { eiep } = DATA.verification;
+  const { eiep, levelA } = DATA.verification;
   const { fireball, entryCells } = DATA.calibration;
   const impacts = DATA.goldStandard.domains.find((d) => d.domain === 'Impacts');
   const quantities = eiep.summaries;
@@ -148,6 +155,14 @@ export function ValidationPage(): JSX.Element {
   );
   const comparisons = quantities.reduce((sum, q) => sum + q.pairs, 0);
   const entry = fireball.readings.default;
+  // Rule 1207: the miss the bar reads, and each side's range across the
+  // cells -- the model on the law it ships, the program on its own (Eq. 9).
+  const span = (xs: number[]): { from: string; to: string } => ({
+    from: dec(Math.min(...xs), 2),
+    to: dec(Math.max(...xs), 2),
+  });
+  const programSpan = span(entryCells.map((c) => c.program.medianAbsKm));
+  const modelSpan = span(entryCells.map((c) => c.model.medianAbsKm));
 
   const provenance = (): JSX.Element => {
     if (BUILD_INFO.commit === null) return <>{t('validation.provenanceUnknown')}</>;
@@ -196,8 +211,13 @@ export function ValidationPage(): JSX.Element {
             <span className={styles.tileLabel}>{t('validation.summary.comparisons')}</span>
             <span className={styles.tileNote}>
               {t('validation.summary.comparisonsNote', {
-                impacts: eiep.impacts,
+                answered: int(eiep.impacts - eiep.failed),
+                impacts: int(eiep.impacts),
                 readOn: eiep.readOn,
+                casesA: int(levelA.cases),
+                refusedA: int(levelA.programFailed),
+                readingsA: int(levelA.readings),
+                readOnA: levelA.readOn,
               })}
             </span>
           </li>
@@ -308,7 +328,11 @@ export function ValidationPage(): JSX.Element {
                 if (row === undefined) return null;
                 return (
                   <tr key={key}>
-                    <th scope="row">{t(`validation.entry.readings.${key}`)}</th>
+                    <th scope="row">
+                      {t(`validation.entry.readings.${key}`, {
+                        strength: dec((MAIN_STAGE_STRENGTH as number) / 1e6, 1),
+                      })}
+                    </th>
                     <td className={styles.num}>{dec(row.medianAbsoluteErrorKm, 2)} km</td>
                     <td className={styles.num}>{dec(row.meanErrorKm, 2)} km</td>
                     <td className={styles.num}>
@@ -322,7 +346,15 @@ export function ValidationPage(): JSX.Element {
           </table>
         </TableRegion>
         <p className={styles.note}>
-          {t(fireball.meetsBar ? 'validation.entry.barMet' : 'validation.entry.barMissed')}
+          {fireball.meetsBar
+            ? t('validation.entry.barMet')
+            : t('validation.entry.barMissed', {
+                median: entry === undefined ? '—' : dec(entry.medianAbsoluteErrorKm, 2),
+                programFrom: programSpan.from,
+                programTo: programSpan.to,
+                modelFrom: modelSpan.from,
+                modelTo: modelSpan.to,
+              })}
         </p>
         <TableRegion label={t('validation.entry.cells')}>
           <table className={styles.table}>
@@ -385,6 +417,7 @@ export function ValidationPage(): JSX.Element {
               <thead>
                 <tr>
                   <th scope="col">{t('validation.rules.rule')}</th>
+                  <th scope="col">{t('validation.rules.asks')}</th>
                   <th scope="col">{t('validation.rules.measure')}</th>
                   <th scope="col">{t('validation.rules.status')}</th>
                 </tr>
@@ -393,6 +426,7 @@ export function ValidationPage(): JSX.Element {
                 {impacts.rules.map((rule) => (
                   <tr key={rule.rule}>
                     <th scope="row">{rule.rule}</th>
+                    <td>{t(`validation.rules.ask.${rule.rule}`)}</td>
                     <td>{t(`validation.rules.measures.${rule.measure}`)}</td>
                     <td>
                       <span className={rule.holds ? styles.inside : styles.misses}>

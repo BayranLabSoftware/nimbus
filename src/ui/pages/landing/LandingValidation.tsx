@@ -12,7 +12,13 @@ interface LandingReportData {
     eiep: {
       readOn: string;
       impacts: number;
+      failed: number;
       summaries: ProgramChartRow[];
+    };
+    levelA: {
+      cases: number;
+      programFailed: number;
+      readings: number;
     };
   };
   calibration: {
@@ -53,7 +59,7 @@ export function LandingValidation(): JSX.Element {
   const setMode = useAppStore((s) => s.setMode);
   const locale = i18n.language.toLowerCase().startsWith('it') ? 'it-IT' : 'en-US';
 
-  const { eiep } = DATA.verification;
+  const { eiep, levelA } = DATA.verification;
   const { fireball } = DATA.calibration;
   const quantities = eiep.summaries;
 
@@ -86,7 +92,13 @@ export function LandingValidation(): JSX.Element {
         <li className={styles.tile}>
           <span className={styles.value}>{cases.toLocaleString(locale)}</span>
           <span className={styles.label}>
-            {t('landing.validation.programCases', { impacts: eiep.impacts })}
+            {t('landing.validation.programCases', {
+              answered: (eiep.impacts - eiep.failed).toLocaleString(locale),
+              impacts: eiep.impacts.toLocaleString(locale),
+              casesA: levelA.cases.toLocaleString(locale),
+              refusedA: levelA.programFailed.toLocaleString(locale),
+              readingsA: levelA.readings.toLocaleString(locale),
+            })}
           </span>
         </li>
         <li className={styles.tile}>

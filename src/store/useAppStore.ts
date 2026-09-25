@@ -394,6 +394,11 @@ export type AnyPresetId =
  * the originating event type so UIs can switch on `type` to choose a
  * render path.
  */
+/** Rule 1212: the reasons `evaluateDeepDive` refuses before the solver runs,
+ *  worded by the panel in the reader's language. */
+export const DEEP_DIVE_ERROR_CODES = ['noResult', 'unsupportedSource', 'zeroSource'] as const;
+export type DeepDiveErrorCode = (typeof DEEP_DIVE_ERROR_CODES)[number];
+
 /** Phase-21d Tier 2 Saint-Venant 1D-radial solver output, sampled at
  *  a fixed list of probe ranges from the source. Surfaced to the
  *  report panel as the "Coastal Deep Dive" diagnostic. */
@@ -586,8 +591,10 @@ export interface AppStore {
    *  `error` on failure. The button shows a small spinner during
    *  `running`. */
   deepDiveStatus: 'idle' | 'running' | 'error';
-  /** Last error message from `evaluateDeepDive`, surfaced under the
-   *  button when status === 'error'. */
+  /** Why `evaluateDeepDive` failed, surfaced under the button when status
+   *  === 'error': one of the codes the panel words in the reader's language
+   *  (`DEEP_DIVE_ERROR_CODES`, rule 1212), or the solver's own exception
+   *  text, printed after a translated lead. */
   deepDiveError: string | null;
   status: SimulationStatus;
   error: string | null;
@@ -3641,7 +3648,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
     const state = get();
     const result = state.result;
     if (result === null) {
-      set({ deepDiveStatus: 'error', deepDiveError: 'No active simulation result' });
+      set({ deepDiveStatus: 'error', deepDiveError: 'noResult' });
       return;
     }
     // Pull the source amplitude + basin depth from the active result.
@@ -3660,18 +3667,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
       sourceAmplitudeM = result.data.tsunami.initialAmplitude;
       basinDepthM = 4_000;
     } else {
-      set({
-        deepDiveStatus: 'error',
-        deepDiveError:
-          'Deep Dive runs on impact and earthquake tsunamis only — the radial solver cannot represent a volcano, landslide or explosion source',
-      });
+      set({ deepDiveStatus: 'error', deepDiveError: 'unsupportedSource' });
       return;
     }
     if (!Number.isFinite(sourceAmplitudeM) || sourceAmplitudeM <= 0) {
-      set({
-        deepDiveStatus: 'error',
-        deepDiveError: 'Source amplitude is zero — nothing to propagate',
-      });
+      set({ deepDiveStatus: 'error', deepDiveError: 'zeroSource' });
       return;
     }
 

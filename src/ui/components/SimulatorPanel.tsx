@@ -25,9 +25,11 @@ import { availableImpactLayers, isFieldLayer } from '../../scene/globe/impactFie
 import { takeGlobeShots } from '../../scene/globe/globeShots.js';
 import { joulesToMegatons } from '../../physics/units.js';
 import {
+  DEEP_DIVE_ERROR_CODES,
   useAppStore,
   type ActiveMonteCarlo,
   type AnyPresetId,
+  type DeepDiveErrorCode,
   type DeepDiveResult,
   type EventType,
 } from '../../store/index.js';
@@ -48,6 +50,7 @@ import { entryRegimeExplainKey } from './entryRegimeExplain.js';
 import { CasualtiesPanel } from './CasualtiesPanel.js';
 import { envelopeOf } from '../../physics/validation/calibrationEnvelope.js';
 import { CitySearch } from './CitySearch.js';
+import { CardFields } from './ImpactFieldLegend.js';
 import { monteCarloRow } from './monteCarloRow.js';
 import { COLLINS_GRAVITY_REGIME_MIN_DIAMETER_M } from '../../physics/validation/craterDomainRules.js';
 import { ringSourceText, tntFromKilograms } from './ringSource.js';
@@ -2138,18 +2141,22 @@ export function SimulatorPanel(): JSX.Element {
               data-state={
                 deepDiveStatus === 'running' ? 'running' : deepDive === null ? 'idle' : 'ready'
               }
-              title="Tier 2 Saint-Venant 1D-radial solver"
+              title={t('simulator.deepDive.buttonTitle')}
             >
               {deepDiveStatus === 'running'
-                ? 'Running Coastal Deep Dive…'
+                ? t('simulator.deepDive.running')
                 : deepDive === null
-                  ? 'Coastal Deep Dive (Tier 2)'
-                  : 'Re-run Coastal Deep Dive'}
+                  ? t('simulator.deepDive.run')
+                  : t('simulator.deepDive.rerun')}
             </button>
           );
         })()}
         {deepDiveStatus === 'error' && deepDiveError !== null && (
-          <p className={styles.presetNote} role="alert">{`Deep Dive error: ${deepDiveError}`}</p>
+          <p className={styles.presetNote} role="alert">
+            {(DEEP_DIVE_ERROR_CODES as readonly string[]).includes(deepDiveError)
+              ? t(`simulator.deepDive.error.${deepDiveError as DeepDiveErrorCode}`)
+              : t('simulator.deepDive.error.solver', { message: deepDiveError })}
+          </p>
         )}
       </div>
     </aside>
@@ -2258,6 +2265,12 @@ function MonteCarloPanel({ mc }: { mc: ActiveMonteCarlo }): JSX.Element {
  * popular-science user opts into rather than reading by default.
  */
 function DeepDivePanel({ dd }: { dd: DeepDiveResult }): JSX.Element {
+  const { t, i18n } = useTranslation();
+  const num = (x: number, digits: number): string =>
+    x.toLocaleString(i18n.language, {
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
+    });
   // Compact sparkline: log-x range vs amplitude, normalised to peak
   // source amplitude. Pure SVG, no chart library — keeps the bundle
   // delta at zero.
@@ -2277,22 +2290,22 @@ function DeepDivePanel({ dd }: { dd: DeepDiveResult }): JSX.Element {
     })
     .join(' ');
   return (
-    <section className={styles.result} aria-label="Coastal Deep Dive (Tier 2)">
+    <section className={styles.result} aria-label={t('simulator.deepDive.run')}>
       <h3 className={styles.resultLabel} style={{ marginTop: 0 }}>
-        Coastal Deep Dive — Saint-Venant 1D-radial
+        {t('simulator.deepDive.title')}
       </h3>
       <table className={styles.mcTable}>
         <thead>
           <tr>
-            <th>Range</th>
-            <th>Peak |η|</th>
+            <th>{t('simulator.deepDive.range')}</th>
+            <th>{t('simulator.deepDive.peak')}</th>
           </tr>
         </thead>
         <tbody>
           {dd.rangesM.map((r, i) => (
             <tr key={r}>
-              <td>{`${(r / 1000).toFixed(0)} km`}</td>
-              <td>{`${(dd.peakAmplitudesM[i] ?? 0).toFixed(3)} m`}</td>
+              <td>{`${num(r / 1000, 0)} km`}</td>
+              <td>{`${num(dd.peakAmplitudesM[i] ?? 0, 3)} m`}</td>
             </tr>
           ))}
         </tbody>
@@ -2302,7 +2315,7 @@ function DeepDivePanel({ dd }: { dd: DeepDiveResult }): JSX.Element {
         width={W}
         height={H}
         role="img"
-        aria-label="Coastal Deep Dive amplitude vs range"
+        aria-label={t('simulator.deepDive.chart')}
         style={{ marginTop: 6 }}
       >
         <polyline points={points} fill="none" stroke="#fbbf24" strokeWidth="1.5" />
@@ -2316,8 +2329,33 @@ function DeepDivePanel({ dd }: { dd: DeepDiveResult }): JSX.Element {
         })}
       </svg>
       <p className={styles.mcFooter}>
-        {`Source ${dd.sourceAmplitudeM.toFixed(2)} m, basin ${(dd.basinDepthM / 1000).toFixed(1)} km, ${dd.gridCells.toString()} cells × ${(dd.cellWidthM / 1000).toFixed(0)} km · ${dd.computeMs.toFixed(0)} ms`}
+        {t('simulator.deepDive.footer', {
+          source: num(dd.sourceAmplitudeM, 2),
+          basin: num(dd.basinDepthM / 1000, 1),
+          cells: num(dd.gridCells, 0),
+          width: num(dd.cellWidthM / 1000, 0),
+          ms: num(dd.computeMs, 0),
+        })}
       </p>
+      {/* Rule 1212: the audit's "con scheda": rule 1029's five fields. */}
+      <details className={styles.presetNote} data-testid="deep-dive-card">
+        <summary>{t('globe.impactMap.card.heading')}</summary>
+        <CardFields
+          card={{
+            quantity: t('simulator.deepDive.card.quantity'),
+            unit: 'm',
+            state: 'exploratory',
+            source: t('simulator.deepDive.card.source', {
+              basin: num(dd.basinDepthM / 1000, 1),
+            }),
+            extent: t('simulator.deepDive.card.extent', {
+              ranges: dd.rangesM.map((r) => num(r / 1000, 0)).join(', '),
+            }),
+            beyond: 'notModelled',
+          }}
+          t={t}
+        />
+      </details>
     </section>
   );
 }

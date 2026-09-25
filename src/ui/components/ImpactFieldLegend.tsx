@@ -202,8 +202,9 @@ export function ImpactFieldLegend({ result }: { result: ImpactScenarioResult }):
   );
 }
 
-/** Rule 1029: a card's five fixed fields. */
-function CardFields({ card, t }: { card: ProvenanceCard; t: TFunction }): JSX.Element {
+/** Rule 1029: a card's five fixed fields — the globe's legend's, and the
+ *  panel's for the Coastal Deep Dive (rule 1212). */
+export function CardFields({ card, t }: { card: ProvenanceCard; t: TFunction }): JSX.Element {
   return (
     <dl className={styles.notes} data-beyond={card.beyond}>
       {(

@@ -75,7 +75,7 @@
       "title": "What the model is measured against",
       "body": "An impact's numbers are held to the Earth Impact Effects Program, the reference implementation of the equations this model cites, and to the bolides whose entry the sky has actually measured. Where nothing has ever been measured — and for an impact that is most of it — the section says so rather than borrowing a proof from another phenomenon.",
       "quantitiesWithin": "quantities compared against the reference program; the widest departure of a geometric mean is {{percent}} %",
-      "programCases": "comparisons, over {{impacts}} impacts of a fixed grid",
+      "programCases": "comparisons — each one quantity of one impact — on the {{answered}} of {{impacts}} impacts of the first fixed grid the program answered; level A's wider grid of {{casesA}} impacts ({{refusedA}} refused by the program) gives {{readingsA}} readings, in the full report",
       "entryError": "median error on the altitude of peak brightness, over {{bolides}} recorded bolides: the 5 km bar is not met",
       "noToll": "impacts in recorded history with a death toll: the mortality is calibrated on explosions of the same energy, and is an extrapolation",
       "figure": "Figure 2",
@@ -126,6 +126,28 @@
     "credits": "Inspired by MetaBallStudios · Assets from Poly Haven and Sketchfab CC0 · Science from the published literature, every formula cited"
   },
   "simulator": {
+    "deepDive": {
+      "run": "Coastal Deep Dive (Tier 2)",
+      "running": "Running Coastal Deep Dive…",
+      "rerun": "Re-run Coastal Deep Dive",
+      "buttonTitle": "A 1D radial Saint-Venant solver on a flat basin — exploratory, checked against no reference",
+      "title": "Coastal Deep Dive — Saint-Venant, 1D radial",
+      "range": "Range",
+      "peak": "Peak |η|",
+      "chart": "Coastal Deep Dive: peak amplitude against range",
+      "footer": "Source {{source}} m, basin {{basin}} km, {{cells}} cells × {{width}} km · {{ms}} ms",
+      "error": {
+        "noResult": "Coastal Deep Dive: there is no simulation to read.",
+        "unsupportedSource": "Coastal Deep Dive runs on impact and earthquake tsunamis only: the radial solver cannot represent a volcano, landslide or explosion source.",
+        "zeroSource": "Coastal Deep Dive: the source amplitude is zero — nothing to propagate.",
+        "solver": "Coastal Deep Dive: the solver failed ({{message}})."
+      },
+      "card": {
+        "quantity": "Peak surface elevation |η| at five ranges",
+        "source": "A 1D radial Saint-Venant solver (MUSCL-RK2, Manning n = 0.025) on a flat basin {{basin}} km deep, 400 cells of 10 km, started from a Gaussian hump whose height is the scenario's source amplitude (Ward & Asphaug's cavity) and whose σ is a fixed 350 km, not the cavity's own size; no dispersion, no bathymetry, no coast. Checked against no reference for an impact.",
+        "extent": "The peak at {{ranges}} km from the source"
+      }
+    },
     "panelLabel": "Simulator controls",
     "collapsePanel": "Collapse simulator panel",
     "expandPanel": "Expand simulator panel",
@@ -2094,7 +2116,7 @@
       "quantities": "quantities compared against the reference program",
       "quantitiesNote": "widest departure of a geometric mean: {{percent}} %",
       "comparisons": "comparisons against the reference program",
-      "comparisonsNote": "over {{impacts}} impacts of a fixed grid, read on {{readOn}}",
+      "comparisonsNote": "each one quantity of one impact, on the {{answered}} of {{impacts}} impacts of the first fixed grid the program answered, read on {{readOn}}; level A's wider grid of {{casesA}} impacts ({{refusedA}} refused by the program), read on {{readOnA}}, gives {{readingsA}} readings in the full report",
       "entry": "median error on the entry's altitude",
       "entryNote": "over {{bolides}} recorded bolides: the 5 km bar is not met",
       "tollsMeasured": "impacts with a recorded death toll",
@@ -2350,18 +2372,18 @@
       "withinFive": "Within 5 km",
       "toTheGround": "Reaching the ground",
       "readings": {
-        "default": "As the panel runs it (stony, 1 MPa)",
+        "default": "A body with no class, as the panel runs it (two-stage law, {{strength}} MPa)",
         "stony": "Ordinary chondrite strength",
         "iron": "Iron strength"
       },
       "barMet": "The bar of a median error under 5 km is met.",
-      "barMissed": "The bar of a median error under 5 km is not met — neither by this model nor by the reference program, which misses the recorded altitude by about as much. It is a gap of the published equations, not of this implementation, and closing it is work of its own.",
+      "barMissed": "The bar of a median error under 5 km is not met: this model misses the recorded altitude by {{median}} km in the median. Its two-stage strength law for stony bodies (Borovička et al. 2020), adopted on 23 September 2026, was chosen with these bolides already read, so this is not a held-out reading. The reference program, on the published equations' own strength law (Collins et al.'s Eq. 9), misses by {{programFrom}} to {{programTo}} km in the median across the cells below; this model by {{modelFrom}} to {{modelTo}} km.",
       "cells": "The entry, cell by cell",
       "cell": "Cell",
       "rows": "Bolides",
       "model": "This model",
       "program": "Reference program",
-      "within": "Inside the cell's band",
+      "within": "Within 1 % of the program (on its own strength law)",
       "span": {
         "energy": "energy",
         "speed": "speed"
@@ -2370,10 +2392,24 @@
     },
     "rules": {
       "title": "The rules of the gold standard",
-      "body": "The domain's own bar, written before it was measured: I-rules for fidelity to the equations, G-rules for what lies beyond them — held-out sets, bands, the sky. A rule holds or it does not; there is no partial credit.",
+      "body": "The domain's own bar, written before it was measured: I-rules are the impacts' own, G-rules every domain's, and the column beside each says whether it measures fidelity to the equations or what lies beyond them — held-out sets, bands, the sky. A rule holds only when all of it holds; the reading gives a rule with clauses the share of them that holds.",
       "reading": "{{held}} of {{of}} rules hold: the domain reads {{reading}} out of 9.",
       "rule": "Rule",
       "measure": "What it measures",
+      "asks": "What it asks",
+      "ask": {
+        "I1": "Every quantity the Earth Impact Effects Program also prints — the entry, the burst, the crater, the fireball, the thermal exposure, the ejecta, the air blast, the seismic magnitude, the tsunami — agrees with it within 1 % or its printed rounding; every departure carries its reason.",
+        "I2": "On at least 300 held-out CNEOS fireballs, the altitude at which the model deposits its energy lies within 5 km of the altitude of peak brightness in the median, with a mean error within 3 km.",
+        "I3": "The band of an airburst's blast radius holds the forest flattened at Tunguska, the windows broken at Chelyabinsk and at least 90 % of Collins et al. 2017's shock-physics runs, and is no wider than ×3.",
+        "I4": "The people inside each ring are counted within 5 % of an exact count on the same raster, and the toll carries its ceiling.",
+        "I5": "On the same fireballs, the model's burst altitude agrees with the Earth Impact Effects Program's — or, where it departs beyond a named exception, misses the sky by no more than the program does.",
+        "I6": "For every complete airburst, the blast band answers to Collins et al. 2017's own approximations, and holds as many of their shock-physics runs as the same band drawn about the program's own source.",
+        "G3": "Each quantity carries a band that covers 85–95 % of a held-out set, at least 80 % in every cell of twenty rows or more, and is no wider than its σ bound allows.",
+        "G4": "For every input, the product says whether the scenario lies inside the cells a held-out set measured, and the report gives the figures cell by cell.",
+        "G5": "Five thousand random scenarios all finish, with finite numbers, no area larger than the Earth and monotone wherever the physics is; the application prints what the model computes in Node.",
+        "G6": "Every gap is declared in the report.",
+        "G7": "Every default changes by rules written before its candidate was run, and every outcome, adopted or not, is recorded."
+      },
       "status": "Verdict",
       "measures": {
         "fidelity": "fidelity to the equations",

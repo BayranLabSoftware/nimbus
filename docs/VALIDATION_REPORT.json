@@ -7555,6 +7555,234 @@
         }
       ]
     },
+    "entryBeyond": {
+      "levelB2": {
+        "verdict": "incompatible with 2022 WJ1; no class B",
+        "counted": [
+          {
+            "event": "2022 WJ1",
+            "target": "E1",
+            "pass": false,
+            "detail": "8.2 % of the draws answer \"none\" (bar 90 %)"
+          },
+          {
+            "event": "2022 WJ1",
+            "target": "E3",
+            "pass": true,
+            "detail": "median 29789, band 28655–30843 against 33995–38655, on the 82 draws that dig no crater: band meets the flares ±5000"
+          }
+        ]
+      },
+      "thirdSet": {
+        "adoptable": false,
+        "reason": "fewer than two decisive observables improve",
+        "auditFailures": [],
+        "baseline": [
+          {
+            "event": "Winchcombe",
+            "reading": "robustnessControl",
+            "compatible": false,
+            "produced": 1000,
+            "draws": 1000
+          },
+          {
+            "event": "Golden",
+            "reading": "counted",
+            "compatible": true,
+            "produced": 1000,
+            "draws": 1000
+          },
+          {
+            "event": "Madura Cave",
+            "reading": "counted",
+            "compatible": true,
+            "produced": 831,
+            "draws": 1000
+          },
+          {
+            "event": "Hamburg",
+            "reading": "counted",
+            "compatible": false,
+            "produced": 1000,
+            "draws": 1000
+          },
+          {
+            "event": "Traspena",
+            "reading": "counted",
+            "compatible": true,
+            "produced": 1000,
+            "draws": 1000
+          },
+          {
+            "event": "Cavezzo",
+            "reading": "counted",
+            "compatible": false,
+            "produced": 0,
+            "draws": 1000
+          }
+        ]
+      },
+      "fcmRound3": {
+        "rule": "1168 (e)",
+        "verdict": "inconclusive",
+        "why": "1 assessable event(s), 1 strong — rule 1167 asks at least 5 and 3",
+        "assessable": 1,
+        "strong": 1,
+        "rows": [
+          {
+            "event": "Aguas Zarcas",
+            "assessable": true,
+            "reason": "assessable",
+            "kind": "proxy",
+            "quality": "A",
+            "interval": [
+              24.1,
+              26.1
+            ],
+            "branch": {
+              "median": 32.97,
+              "distanceKm": 6.87,
+              "intervalScore": 51.67
+            },
+            "baseline": {
+              "median": 55.34,
+              "distanceKm": 29.24,
+              "intervalScore": 585.1
+            },
+            "exponential": {
+              "median": 35.73,
+              "distanceKm": 9.63,
+              "outcome": "favourable"
+            },
+            "outcome": "favourable",
+            "configurations": [
+              {
+                "configuration": "M1/unlimited",
+                "medianKm": 32.52,
+                "distanceKm": 6.42,
+                "producedShare": 1,
+                "notRobustShare": 0.035,
+                "severe": false
+              },
+              {
+                "configuration": "M1/capped",
+                "medianKm": 32.88,
+                "distanceKm": 6.78,
+                "producedShare": 1,
+                "notRobustShare": 0.025,
+                "severe": false
+              },
+              {
+                "configuration": "M2/unlimited",
+                "medianKm": 33.14,
+                "distanceKm": 7.04,
+                "producedShare": 1,
+                "notRobustShare": 0.015,
+                "severe": true
+              },
+              {
+                "configuration": "M2/capped",
+                "medianKm": 33.38,
+                "distanceKm": 7.28,
+                "producedShare": 1,
+                "notRobustShare": 0.03,
+                "severe": true
+              }
+            ],
+            "severeStructural": true
+          },
+          {
+            "event": "Grimsby",
+            "assessable": false,
+            "reason": "not judged: its kind is diagnostic",
+            "diagnostics": {
+              "HfKm": {
+                "heightKm": 37.9,
+                "branchMinusKm": -0.89,
+                "baselineMinusKm": 2.36
+              },
+              "HdKm": {
+                "heightKm": 29,
+                "branchMinusKm": 8.01,
+                "baselineMinusKm": 11.26
+              }
+            }
+          },
+          {
+            "event": "Bunburra Rockhole",
+            "assessable": false,
+            "reason": "not judged: its kind is diagnostic",
+            "diagnostics": {
+              "HfKm": {
+                "heightKm": 36,
+                "branchMinusKm": -5.36,
+                "baselineMinusKm": null
+              },
+              "HdKm": {
+                "heightKm": 33.9,
+                "branchMinusKm": -3.26,
+                "baselineMinusKm": null
+              }
+            }
+          },
+          {
+            "event": "Mason Gully",
+            "assessable": false,
+            "reason": "not judged: its kind is diagnostic",
+            "diagnostics": {
+              "HfKm": {
+                "heightKm": 34.4,
+                "branchMinusKm": -2.16,
+                "baselineMinusKm": -2.31
+              },
+              "HdKm": {
+                "heightKm": 28.1,
+                "branchMinusKm": 4.14,
+                "baselineMinusKm": 3.99
+              }
+            }
+          },
+          {
+            "event": "Neuschwanstein",
+            "assessable": false,
+            "reason": "not judged: its kind is diagnostic",
+            "diagnostics": {
+              "HdKm": {
+                "heightKm": 22.2,
+                "branchMinusKm": 15.08,
+                "baselineMinusKm": 18.21
+              }
+            }
+          }
+        ]
+      }
+    },
+    "referenceSets": [
+      {
+        "name": "The first grid (answers inline in a TypeScript module: the hash is of its source)",
+        "file": "src/physics/validation/eiepReference.ts",
+        "readOn": "2026-09-14",
+        "cases": 83,
+        "refused": 2,
+        "sha256": "1c429eb50705f567563909aa988a22f579264f28e8b3b9ff2cdcd6690e2c2a9b"
+      },
+      {
+        "name": "Level A's wide grid",
+        "file": "src/physics/validation/eiepGrid.json",
+        "readOn": "2026-09-23",
+        "cases": 1782,
+        "refused": 69,
+        "sha256": "4d11407c265de03cdf3d4b9c6eef32f9a79ed6f8278de62fd7321f275d6b26ab"
+      },
+      {
+        "name": "The CNEOS fireballs (I5 and the entry cells)",
+        "file": "benchmark/results/eiep-fireballs-2026-09-16.json",
+        "readOn": "2026-09-16",
+        "cases": 357,
+        "refused": 1,
+        "sha256": "a8bf8ff862d48864564a0431de398620722bd00af8420364152a40ed8a4c7451"
+      }
+    ],
     "levelA": {
       "readOn": "2026-09-23",
       "cases": 1865,
