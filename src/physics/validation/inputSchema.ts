@@ -1118,7 +1118,7 @@ export function validateImpactInput(raw: ImpactRawInput): ValidationResult<Impac
     warnings.push({
       field: 'impactorDiameter',
       code: 'PHYS_SUSPICIOUS_HIGH',
-      message: `impactorDiameter ${(D / 1_000).toString()} km exceeds the largest known crater-forming body (Vredefort, ~10-15 km)`,
+      message: `impactorDiameter ${(D / 1_000).toString()} km exceeds this validator's own 100 km ceiling, well past the largest impactor Earth's geological record attests (Vredefort's, ~10-15 km)`,
       rawValue: D,
     });
   }
@@ -1126,7 +1126,7 @@ export function validateImpactInput(raw: ImpactRawInput): ValidationResult<Impac
     warnings.push({
       field: 'impactVelocity',
       code: 'PHYS_SUSPICIOUS_LOW',
-      message: `impactVelocity ${v.toString()} m/s is below Earth escape velocity (~11.2 km/s); cosmic impacts arrive at ≥ 11.2 km/s`,
+      message: `impactVelocity ${v.toString()} m/s is below 1 km/s, this validator's own floor for a plausible cosmic impact -- real ones arrive at Earth's escape velocity or faster (~11.2 km/s)`,
       rawValue: v,
     });
   }
@@ -1134,7 +1134,7 @@ export function validateImpactInput(raw: ImpactRawInput): ValidationResult<Impac
     warnings.push({
       field: 'impactVelocity',
       code: 'PHYS_SUSPICIOUS_HIGH',
-      message: `impactVelocity ${(v / 1_000).toString()} km/s exceeds heliocentric retrograde maximum (~73 km/s)`,
+      message: `impactVelocity ${(v / 1_000).toString()} km/s exceeds this validator's own 80 km/s ceiling, a margin above the heliocentric retrograde maximum (~73 km/s)`,
       rawValue: v,
     });
   }
@@ -1142,7 +1142,7 @@ export function validateImpactInput(raw: ImpactRawInput): ValidationResult<Impac
     warnings.push({
       field: 'impactorDensity',
       code: rhoI < 500 ? 'PHYS_SUSPICIOUS_LOW' : 'PHYS_SUSPICIOUS_HIGH',
-      message: `impactorDensity ${rhoI.toString()} kg/m³ is outside the [600 cometary, 7800 iron] taxonomy envelope`,
+      message: `impactorDensity ${rhoI.toString()} kg/m³ is outside this validator's own [500, 8000] kg/m³ margin around the [600 cometary, 7800 iron] taxonomy envelope`,
       rawValue: rhoI,
     });
   }
@@ -1263,7 +1263,7 @@ export function validateImpactInput(raw: ImpactRawInput): ValidationResult<Impac
       warnings.push({
         field: 'shoreDistance',
         code: 'PHYS_SUSPICIOUS_HIGH',
-        message: `shoreDistance ${(raw.shoreDistance / 1_000).toString()} km is farther from the sea than any point on Earth (~2 650 km)`,
+        message: `shoreDistance ${(raw.shoreDistance / 1_000).toString()} km exceeds this validator's own 5 000 km ceiling, well past the farthest any point on Earth sits from open water (~2 650 km)`,
         rawValue: raw.shoreDistance,
       });
     }

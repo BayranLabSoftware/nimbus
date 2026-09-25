@@ -261,12 +261,19 @@ export const RULE_1194_ITEM_2_WRITTEN = '2026-09-25' as const;
  * Several need code most of the way through the render path this round has
  * not read carefully enough to touch safely -- left open and said so.
  *
- * [Correction, same round: "the keyboard-navigation claim" in that list was
- * a slip, not a sixth open item -- README's flat "full keyboard navigation"
- * is the SAME claim this rule's own third paragraph above already marked
- * FIXED (reworded to name the panel and dialogs, not the canvas). Listing
- * it again as open contradicted the paragraph a few lines above it; struck
- * here rather than left to be re-discovered as a phantom item later.]
+ * [Correction, a later round, after reading A12's own page of the PDF in
+ * full rather than through this file's own paraphrase (the mistake rule
+ * 1199 named for A7, repeated here for A12): "the keyboard-navigation
+ * claim" was NOT a slip to strike. The audit's own sentence is "il globo
+ * non e' operabile da tastiera nonostante il README" -- not "the claim is
+ * false" (which this rule's third paragraph above did fix, by reading
+ * README's wording down to the panel and dialogs) but a functional gap:
+ * the globe itself has no keyboard path, and the audit's "come
+ * migliorare" names two possible fixes, not one -- "tastiera O inserimento
+ * di coordinate" (keyboard OR coordinate entry). Wording the claim
+ * honestly did not close this; conflating the two -- as the struck
+ * paragraph below did -- would have let a real open item disappear under
+ * a correct-sounding sentence. Left open, correctly, until it is done.]
  */
 export const RULE_1195_WRITTEN = '2026-09-25' as const;
 
@@ -950,3 +957,99 @@ export const RULE_1201_WRITTEN = '2026-09-25' as const;
  * addition like this block's -- left open deliberately, not silently.
  */
 export const RULE_1202_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1203. A12, READ AGAIN IN FULL (page 18 of the audit) -- WHAT SIX
+ * BLOCKS OF WORK FROM ITS OWN PARAPHRASE IN `Nimbus-PIANO.md` MISSED.
+ *
+ * The same mistake rule 1199 named for A7: this whole round's A12 work
+ * (rules 1195, 1198, 1200, 1201, 1202) was done against `Nimbus-PIANO.md`'s
+ * one-paragraph summary of A12, not the audit's own page. Reading the page
+ * itself now, after believing A12 closed, finds thirteen sentences the
+ * paraphrase carried none of. Listed here in the audit's own order, each
+ * marked with what this round has now done about it:
+ *
+ * 1. "'confidence interval' su un intervallo Monte Carlo, e linee
+ *    tratteggiate che dal 22-09 non esistono più" -- NOT YET READ. Where
+ *    on the landing/methodology page, and against what the 22 September
+ *    grammar round actually removed, this round has not traced.
+ * 2. "il testo dell'ingresso dice che il programma 'manca di circa
+ *    altrettanto' accanto a celle che mostrano 4,5-7 km / 9,5-15,8 km" --
+ *    NOT YET READ.
+ * 3. "due denominatori (938 su 83 impatti; 1 794 impatti) senza
+ *    spiegazione" -- NOT YET READ.
+ * 4. "codici delle regole (I1, G3) senza descrizione" -- NOT YET READ.
+ * 5. "la vista di probabilità eredita l'etichetta 'A' ... mentre la sua σ
+ *    è una convenzione del progetto che la legenda chiama 'dispersione
+ *    pubblicata' (impactFieldMap.ts:498, visualContracts.ts:653)" -- NOT
+ *    YET READ.
+ * 6. "lo stato 'diagnostico' della grammatica non è mai assegnato" -- NOT
+ *    YET READ; `EpistemicState` (mapGrammarRules.ts) does carry
+ *    `'diagnostic'` in its type, so this is whether any object actually
+ *    gets it, not whether the state exists.
+ * 7. "dopo un Monte Carlo... cerchi P10/P90 e mappa di probabilità...
+ *    senza voce di legenda né scheda" -- the legend-entry half is DONE
+ *    (rule 1201, this round); the per-object provenance CARD (rule 1029's
+ *    five fields) is not, and neither is "in gradi (distorti alle grandi
+ *    distanze)" -- whether the halo geometry itself needs the sphere
+ *    correction the impact rings already have (rule 1194 item 8's
+ *    domain), separate from naming what is drawn.
+ * 8. "il cratere e l'anello della cavità non hanno scheda" -- NOT YET
+ *    READ.
+ * 9. "il 'Coastal Deep Dive (Tier 2)'... senza classe di evidenza e solo
+ *    in inglese" -- NOT YET READ; a different report section
+ *    (`DeepDiveResult`) from anything this round's A12 work touched.
+ * 10. The printed report's missing fields -- FOUR of seven DONE (rule
+ *     1202: azimuth, burst/breakup altitude, end velocity); I2's band,
+ *     the measured cell's verdict, the Monte Carlo table and active
+ *     model variants remain, as rule 1202 itself already said; "non cita
+ *     Borovička 2020 (legge di default)" is a FIFTH still-open field
+ *     this round's earlier reading of A12 never carried at all.
+ * 11. "le soglie di avviso contraddicono i loro testi (velocità 1 km/s
+ *     contro '11,2', densità 500-8 000 contro '600-7 800')" -- DONE, this
+ *     rule, immediately below.
+ * 12. "il globo bloccato non mostra alcun messaggio" -- NOT YET READ; what
+ *     "bloccato" names (a hung render, a failed tile fetch, a worker
+ *     that never resolves) is not yet traced to a mechanism.
+ * 13. "il globo non è operabile da tastiera... tastiera O inserimento di
+ *     coordinate" -- corrected above (rule 1195's struck paragraph):
+ *     wording the claim honestly (done) is not the same as closing the
+ *     functional gap (not done).
+ *
+ * What this rule does, now: item 11, the one already fully traced and
+ * safe to fix without further reading -- and read past the audit's own
+ * two named examples, into every warning `validateImpactInput`
+ * (`inputSchema.ts`) has, because "le soglie di avviso contraddicono i
+ * loro testi" names a pattern, not a two-item list, and a search that
+ * stopped at the two the audit happened to quote would repeat A12's own
+ * lesson (reading a summary instead of the source). Five, all of the
+ * same shape -- the CODE threshold and the number the message cites as
+ * though it were the threshold are different:
+ *   - `impactVelocity < 1_000` (1 km/s) message cited "~11.2 km/s"
+ *     (Earth escape velocity) as though it were the floor -- eleven
+ *     times off.
+ *   - `impactorDensity < 500 || > 8_000` message cited "[600, 7800]"
+ *     (the taxonomy envelope itself) as the bound.
+ *   - `impactorDiameter > 100_000` (100 km) message cited Vredefort's
+ *     impactor "~10-15 km" as though that were the ceiling -- an order
+ *     of magnitude off.
+ *   - `impactVelocity > 80_000` (80 km/s) message cited "~73 km/s"
+ *     (the heliocentric retrograde maximum) as the ceiling.
+ *   - `shoreDistance > 5_000_000` (5 000 km) message cited "~2 650 km"
+ *     (the farthest any point on Earth sits from open water) as the
+ *     ceiling -- nearly double.
+ * A reader who trusts any of these five and types a value the text
+ * implies should warn -- 5 km/s, 550 kg/m³, 50 km, 75 km/s, 3 000 km
+ * shore distance -- gets nothing. The candidate, for all five: reword to
+ * state the validator's OWN threshold first ("this validator's own
+ * 100 km ceiling"), then the physical reference it sits near or above,
+ * so the two numbers are never presented as one. No threshold moves --
+ * the same fix in kind as rule 1195's angle note, a true sentence about
+ * an unchanged number, not a re-tuning (rules 5, 6).
+ *
+ * The other twelve items are named here so they are not lost the way A12
+ * itself was nearly lost to a paraphrase -- left open, each for a
+ * dedicated reading before it is touched, not guessed at from this list
+ * alone.
+ */
+export const RULE_1203_WRITTEN = '2026-09-25' as const;
