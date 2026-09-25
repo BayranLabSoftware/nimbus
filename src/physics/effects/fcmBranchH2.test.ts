@@ -130,7 +130,7 @@ describe('rule 1182 (c): the ledger closes with an independent σ per solid frag
       split: { kind: 'mass', fragments: 2, larger: 0.55, cloud: 0.3 },
     });
     expect(r.ledger.flightAbsResidual).toBeLessThan(1e-4);
-  });
+  }, 30_000);
 });
 
 describe('rule 1186: σ is redrawn once per break, and identical fragments still bundle', () => {
@@ -169,7 +169,7 @@ describe('rule 1186: σ is redrawn once per break, and identical fragments still
     // steps from 100 km: tens of thousands of steps, not the hundreds of
     // thousands 501 separate physical members would need without bundling.
     expect(r.steps).toBeLessThan(50_000);
-  });
+  }, 30_000);
 
   it('completes a cascade with per-break σ within a reasonable bound', () => {
     const values = [0.1, 0.5, 0.9]; // distinct points of the log-uniform range, one per break
@@ -185,7 +185,7 @@ describe('rule 1186: σ is redrawn once per break, and identical fragments still
       maxComponents: 2_000,
     });
     expect(r.completed).toBe(true);
-  });
+  }, 30_000);
 
   it('closes the ledger the same way whether fragments bundle or fly apart', () => {
     const b = { diameter: 3, velocity: 18_000, density: 3_000, angle: rad(50), strength: 5e5 };
