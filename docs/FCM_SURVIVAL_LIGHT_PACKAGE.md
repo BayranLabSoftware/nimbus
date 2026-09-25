@@ -189,7 +189,7 @@ development cases is dominated by descendants of later breaks that retain more t
 were born with; this diagnosis directs the study toward genealogy, but does not yet identify whether the
 break threshold, the mass partition, or the children's later evolution is at fault."
 
-## The cascade audit (rule 1189)
+## The cascade audit (rules 1189, 1190)
 
 `docs/FCM_AUDIT_RUN.md`, `src/physics/validation/fcmAuditRun.json`, from `scripts/fcm-audit-run.ts` (the
 audit engine, `fcmBranchAudit.ts`, a third fork of the sealed candidate — rule 1162 still untouched, no
@@ -202,21 +202,25 @@ only the ones that land.
 strength — sits at exactly 1 on every one of the tens of thousands of breaks recorded, the bisection's own
 precision; no defect found before any mechanism was looked for.
 
-**The mass that never lands.** Pooled across every case and configuration (weighted by each run's own
-accounted mass): 93.2 % of the body's original mass **settles mid-flight and never reaches the ground** —
-a cloud slowed to its terminal speed (rule 1138 (c)) well above the surface, where the engine stops
-integrating it. Only 3.3 % lands as solid pieces and 3.5 % as cloud swarm reaching the ground. What H1, H3
-and H5 call "landed mass," and rule 1178 (a)'s excess is measured against, was already a small remainder
-of the entry mass before this audit — placing it beside the much larger settled pool for the first time
-does not change that finding, but sizes it: any causal account of the landed-mass excess concerns a
-channel that was always a small fraction of the body to begin with.
+**What the branch stops accounting for.** Pooled across every case and configuration (weighted by each
+run's own accounted mass): 93.2 % of the body's original mass is no longer integrated past the point a
+cloud comes within `settleWithin` of its own terminal speed (rule 1138 (c)). Only 3.3 % lands as solid
+pieces and 3.5 % as cloud swarm reaching the ground. **Rule 1190, the reviewer's correction**: that stop is
+a numerical condition (deviation D9), not by itself a claim about the material's later, physical fate — a
+real dust cloud disperses and is not the same observable as a recoverable fragment. Nothing here sums the
+93.2 % into any ground- or meteorite-mass claim. What H1, H3 and H5 call "landed mass," and rule 1178 (a)'s
+excess is measured against, was already a small remainder of the entry mass before this audit; this audit
+does not change that finding, only reports the stop that accounts for the rest.
 
-**Every break skews toward one dominant child, not only the first.** The largest child of a break carries
-a median of 81.5 % of the parent's mass at the very first break, and still 53.7 % at every later break
-(medians of each case-configuration's own median, 71 case-configuration pairs). Later breaks are more
-balanced than the first, but still typically leave one child with the majority of the parent's mass —
-this is a property of the split rule itself (rule 1152's shares), acting at every generation, not a
-one-time effect of how the cascade begins.
+**The "dominant child" finding was partly a reporting artefact — corrected.** The first report's "largest
+child" could be, and at Chelyabinsk's own single produced draw was, the cloud itself, wherever a draw's own
+cloud share exceeds its largest solid fragment's share — not a bug in what was measured, a gap in how it
+was reported (rule 1190). Corrected to the largest **solid** child only: a median of 56.5 % of the parent's
+mass at the first break, 50.1 % at later breaks (medians of medians, 71 case-configuration pairs) — a much
+smaller, and much less first-break-specific, skew than first reported. It remains true that a break's
+largest solid child typically carries about half the parent's mass or more — a property of the split rule
+itself (rule 1152's shares) — but the sharp first-break/later-break contrast in the original report does
+not survive separating clouds from solids.
 
 **Birth altitude and retained fraction move together, in the expected direction, imperfectly.** Landed
 solid pieces born lower (necessarily later, per rule 1189's own qualification on generation) retain a
@@ -231,5 +235,33 @@ as qualified.
 retry cap — consistent with this being the branch's most energetic single-draw preset under its most
 structured, most confined configuration; not investigated further here, a measurement round.
 
-No adoption, no hypothesis tested (rule 1189 (d)): the sealed candidate stays exactly as it is. These
-findings inform the causal dossier the reviewer asked for next — not decided here.
+No adoption, no hypothesis tested (rule 1189 (d)): the sealed candidate stays exactly as it is.
+
+### The cloud's own audit (rule 1190) — the stop, classified
+
+Every terminal record's exact stop reason is now recorded apart (rule 1190 (a)): `'terminalVelocity'`
+(the ordinary case — a cloud reaching its own terminal speed), `'nonPhysicalStep'` (rule 1141 (a)'s
+halving exhausted, the same fallback a solid can also stop in), or `'massFloor'`. Of the pooled 93.21 %
+no-longer-integrated share above, all 93.21 percentage points stop at the ordinary terminal-speed
+condition and essentially none at the non-physical fallback (0 %, `fcmAuditRun.json`'s own figures) — the
+stop is overwhelmingly the intended, ordinary one, not a numerical failure mode.
+
+`docs/FCM_SETTLEWITHIN_SENSITIVITY.md`, `src/physics/validation/fcmSettleWithinSensitivity.json`, from
+`scripts/fcm-settlewithin-sensitivity.ts`: `settleWithin` (rule 1138 (c)) run at a tenth (0.1 %) and ten
+times (10 %) its own baseline value (1 %) on the same 18 development cases, comparing the settled-mass
+share and the ledger's own balance (rule 1141 (a)) across the three — a numerical check, not a tuning,
+since none of H1 through H5's own results depend on this value.
+
+**Result: the settled-mass share barely moves.** Across the 71 case-configuration pairs compared, the
+median absolute change in settled-mass share between the tightest (0.1 %) and loosest (10 %) threshold is
+**0.0144 percentage points** of the body's entry mass — three orders of magnitude below the 93.2 % share
+itself. Chelyabinsk/M1/unlimited, for instance, moves from 51.45 % to 51.49 % settled across the same
+hundred-fold change in the threshold. The ledger's own balance stays at machine precision throughout
+(residuals of order 10⁻¹⁶, no case exceeding gate 1's tolerance by any margin). **The stop condition itself
+does not govern the result**: a cloud that reaches "close to" its own terminal speed stays there, almost
+independent of how tightly "close" is defined — the settling this audit reports is a stable feature of the
+trajectory, not an artefact of where the threshold happens to sit. This does not answer what the settled
+mass physically becomes next (rule 1190's still-open question); it answers only that the numerical stop
+condition is not, itself, the source of the 93.2 % figure.
+
+These findings inform the causal dossier the reviewer asked for next — not decided here.

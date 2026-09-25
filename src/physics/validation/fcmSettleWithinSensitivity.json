@@ -1,0 +1,1987 @@
+{
+  "rule": "1190 (c)",
+  "draws": 200,
+  "settleWithins": [0.001, 0.01, 0.1],
+  "results": [
+    {
+      "case": "Chelyabinsk",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.514529,
+              "medianMassResidual": 3.44473e-17,
+              "medianEnergyResidual": 1.92456e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.514691,
+              "medianMassResidual": 3.44473e-17,
+              "medianEnergyResidual": 9.78723e-18
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.514859,
+              "medianMassResidual": 3.49898e-17,
+              "medianEnergyResidual": 1.92548e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.0545779,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 1.38647e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.428794,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 2.31929e-18
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.760451,
+              "medianMassResidual": 8.67965e-17,
+              "medianEnergyResidual": 1.52893e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.620359,
+              "medianMassResidual": 4.33982e-18,
+              "medianEnergyResidual": 1.33004e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.620468,
+              "medianMassResidual": 7.3777e-17,
+              "medianEnergyResidual": 1.33038e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.620562,
+              "medianMassResidual": 4.33982e-18,
+              "medianEnergyResidual": 1.33065e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.0871061,
+              "medianMassResidual": 1.38874e-16,
+              "medianEnergyResidual": 1.67757e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.436186,
+              "medianMassResidual": 1.64913e-16,
+              "medianEnergyResidual": 2.53586e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.436422,
+              "medianMassResidual": 1.64913e-16,
+              "medianEnergyResidual": 2.53657e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Tunguska",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.730835,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 2.13091e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.907186,
+              "medianMassResidual": 5.72998e-17,
+              "medianEnergyResidual": 1.4767e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.907233,
+              "medianMassResidual": 1.18374e-16,
+              "medianEnergyResidual": 1.47688e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.841633,
+              "medianMassResidual": 2.19592e-17,
+              "medianEnergyResidual": 8.89382e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.861829,
+              "medianMassResidual": 2.19592e-17,
+              "medianEnergyResidual": 3.1413e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.969972,
+              "medianMassResidual": 1.25528e-17,
+              "medianEnergyResidual": 1.03902e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.61896,
+              "medianMassResidual": 3.84286e-17,
+              "medianEnergyResidual": 2.75835e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.657455,
+              "medianMassResidual": 5.35255e-17,
+              "medianEnergyResidual": 7.58843e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.657532,
+              "medianMassResidual": 5.35255e-17,
+              "medianEnergyResidual": 7.58884e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 0,
+              "settledShare": null,
+              "medianMassResidual": null,
+              "medianEnergyResidual": null
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 0,
+              "settledShare": null,
+              "medianMassResidual": null,
+              "medianEnergyResidual": null
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 0,
+              "settledShare": null,
+              "medianMassResidual": null,
+              "medianEnergyResidual": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2008 TC3",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.527081,
+              "medianMassResidual": 3.69824e-17,
+              "medianEnergyResidual": 1.13795e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.527213,
+              "medianMassResidual": 3.85758e-17,
+              "medianEnergyResidual": 1.13774e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.527255,
+              "medianMassResidual": 3.96494e-17,
+              "medianEnergyResidual": 1.04608e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.254673,
+              "medianMassResidual": 2.57951e-17,
+              "medianEnergyResidual": 1.03164e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.546333,
+              "medianMassResidual": 4.51522e-17,
+              "medianEnergyResidual": 1.00754e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.54649,
+              "medianMassResidual": 3.78749e-17,
+              "medianEnergyResidual": 1.00847e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.501321,
+              "medianMassResidual": 5.75653e-17,
+              "medianEnergyResidual": 1.12094e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.501433,
+              "medianMassResidual": 6.27181e-17,
+              "medianEnergyResidual": 1.13925e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.501465,
+              "medianMassResidual": 5.44514e-17,
+              "medianEnergyResidual": 1.13948e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.252823,
+              "medianMassResidual": 5.75653e-17,
+              "medianEnergyResidual": 1.35065e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.525856,
+              "medianMassResidual": 5.47099e-17,
+              "medianEnergyResidual": 1.49736e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.526004,
+              "medianMassResidual": 5.45037e-17,
+              "medianEnergyResidual": 1.49773e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2018 LA",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.457044,
+              "medianMassResidual": 3.85758e-17,
+              "medianEnergyResidual": 1.15174e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.457108,
+              "medianMassResidual": 4.02561e-17,
+              "medianEnergyResidual": 1.08462e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.457123,
+              "medianMassResidual": 4.15677e-17,
+              "medianEnergyResidual": 1.18452e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.403847,
+              "medianMassResidual": 3.74627e-17,
+              "medianEnergyResidual": 1.00682e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.403989,
+              "medianMassResidual": 3.87435e-17,
+              "medianEnergyResidual": 9.40283e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.404059,
+              "medianMassResidual": 3.75997e-17,
+              "medianEnergyResidual": 9.90776e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.36038,
+              "medianMassResidual": 6.36302e-17,
+              "medianEnergyResidual": 1.33682e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.360431,
+              "medianMassResidual": 5.26227e-17,
+              "medianEnergyResidual": 1.43301e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.360439,
+              "medianMassResidual": 6.44098e-17,
+              "medianEnergyResidual": 1.3306e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.363651,
+              "medianMassResidual": 5.17002e-17,
+              "medianEnergyResidual": 1.23835e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.36376,
+              "medianMassResidual": 5.67939e-17,
+              "medianEnergyResidual": 1.30112e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.363817,
+              "medianMassResidual": 5.90023e-17,
+              "medianEnergyResidual": 1.32242e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2022 EB5",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.381708,
+              "medianMassResidual": 3.06733e-17,
+              "medianEnergyResidual": 8.96244e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.381826,
+              "medianMassResidual": 3.06733e-17,
+              "medianEnergyResidual": 2.11922e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.38188,
+              "medianMassResidual": 9.83659e-17,
+              "medianEnergyResidual": 8.96402e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.144915,
+              "medianMassResidual": 2.53848e-17,
+              "medianEnergyResidual": 3.81232e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.145119,
+              "medianMassResidual": 9.30775e-17,
+              "medianEnergyResidual": 3.81277e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.145176,
+              "medianMassResidual": 8.46159e-18,
+              "medianEnergyResidual": 3.81288e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.708665,
+              "medianMassResidual": 1.31155e-16,
+              "medianEnergyResidual": 4.08217e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.708746,
+              "medianMassResidual": 1.31155e-16,
+              "medianEnergyResidual": 8.14206e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.708786,
+              "medianMassResidual": 4.23079e-18,
+              "medianEnergyResidual": 4.08366e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 1,
+              "settledShare": 0.238711,
+              "medianMassResidual": 3.91348e-17,
+              "medianEnergyResidual": 1.31562e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 1,
+              "settledShare": 0.239016,
+              "medianMassResidual": 1.06828e-16,
+              "medianEnergyResidual": 2.53877e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 1,
+              "settledShare": 0.239169,
+              "medianMassResidual": 1.06828e-16,
+              "medianEnergyResidual": 1.31604e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2023 CX1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.493054,
+              "medianMassResidual": 4.70773e-17,
+              "medianEnergyResidual": 9.21919e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.49311,
+              "medianMassResidual": 3.52501e-17,
+              "medianEnergyResidual": 9.74816e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.49313,
+              "medianMassResidual": 3.68969e-17,
+              "medianEnergyResidual": 9.22026e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.502785,
+              "medianMassResidual": 3.47477e-17,
+              "medianEnergyResidual": 8.9284e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.503045,
+              "medianMassResidual": 3.91022e-17,
+              "medianEnergyResidual": 8.22976e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.503142,
+              "medianMassResidual": 3.18812e-17,
+              "medianEnergyResidual": 7.76025e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.47424,
+              "medianMassResidual": 6.03368e-17,
+              "medianEnergyResidual": 1.22768e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.474293,
+              "medianMassResidual": 6.16876e-17,
+              "medianEnergyResidual": 1.23856e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.474311,
+              "medianMassResidual": 5.9269e-17,
+              "medianEnergyResidual": 1.17746e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.485153,
+              "medianMassResidual": 5.54766e-17,
+              "medianEnergyResidual": 1.3225e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.485385,
+              "medianMassResidual": 5.91855e-17,
+              "medianEnergyResidual": 1.22808e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.485469,
+              "medianMassResidual": 6.12286e-17,
+              "medianEnergyResidual": 1.3235e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2024 BX1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.450873,
+              "medianMassResidual": 3.93455e-17,
+              "medianEnergyResidual": 8.3181e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.450908,
+              "medianMassResidual": 3.65275e-17,
+              "medianEnergyResidual": 8.95062e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.450918,
+              "medianMassResidual": 3.58025e-17,
+              "medianEnergyResidual": 8.7663e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.439496,
+              "medianMassResidual": 3.52415e-17,
+              "medianEnergyResidual": 8.7826e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.439716,
+              "medianMassResidual": 3.52415e-17,
+              "medianEnergyResidual": 8.78598e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.439763,
+              "medianMassResidual": 3.4426e-17,
+              "medianEnergyResidual": 8.58893e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.408215,
+              "medianMassResidual": 5.51135e-17,
+              "medianEnergyResidual": 1.13067e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.408243,
+              "medianMassResidual": 6.58428e-17,
+              "medianEnergyResidual": 1.11292e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.408252,
+              "medianMassResidual": 5.91659e-17,
+              "medianEnergyResidual": 1.16175e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.388601,
+              "medianMassResidual": 5.47671e-17,
+              "medianEnergyResidual": 1.15123e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.388793,
+              "medianMassResidual": 5.70147e-17,
+              "medianEnergyResidual": 1.07851e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.388829,
+              "medianMassResidual": 5.30333e-17,
+              "medianEnergyResidual": 1.22504e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "2022 WJ1",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.277495,
+              "medianMassResidual": 2.69028e-17,
+              "medianEnergyResidual": 9.28857e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.277527,
+              "medianMassResidual": 2.75526e-17,
+              "medianEnergyResidual": 8.98427e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.277528,
+              "medianMassResidual": 2.26485e-17,
+              "medianEnergyResidual": 9.19787e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.326913,
+              "medianMassResidual": 2.95134e-17,
+              "medianEnergyResidual": 8.17224e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.32698,
+              "medianMassResidual": 2.87584e-17,
+              "medianEnergyResidual": 8.66422e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.326995,
+              "medianMassResidual": 3.20235e-17,
+              "medianEnergyResidual": 8.94743e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.277361,
+              "medianMassResidual": 6.39221e-17,
+              "medianEnergyResidual": 1.16081e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.277386,
+              "medianMassResidual": 6.05293e-17,
+              "medianEnergyResidual": 1.10842e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.277386,
+              "medianMassResidual": 5.86749e-17,
+              "medianEnergyResidual": 1.18497e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.294729,
+              "medianMassResidual": 5.72407e-17,
+              "medianEnergyResidual": 1.1315e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.294773,
+              "medianMassResidual": 6.24725e-17,
+              "medianEnergyResidual": 1.11496e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.294784,
+              "medianMassResidual": 5.95142e-17,
+              "medianEnergyResidual": 1.1057e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Carancas",
+      "family": "rule 961",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.534788,
+              "medianMassResidual": 3.73444e-17,
+              "medianEnergyResidual": 1.11933e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.534863,
+              "medianMassResidual": 3.88336e-17,
+              "medianEnergyResidual": 8.89678e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.534893,
+              "medianMassResidual": 3.19268e-17,
+              "medianEnergyResidual": 9.35079e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.455324,
+              "medianMassResidual": 3.2695e-17,
+              "medianEnergyResidual": 1.10698e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.530049,
+              "medianMassResidual": 3.65995e-17,
+              "medianEnergyResidual": 8.80063e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.530169,
+              "medianMassResidual": 3.75773e-17,
+              "medianEnergyResidual": 9.3227e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.515066,
+              "medianMassResidual": 5.91001e-17,
+              "medianEnergyResidual": 1.11226e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.515134,
+              "medianMassResidual": 6.48611e-17,
+              "medianEnergyResidual": 1.22e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.51516,
+              "medianMassResidual": 5.74617e-17,
+              "medianEnergyResidual": 1.32963e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.446368,
+              "medianMassResidual": 5.34103e-17,
+              "medianEnergyResidual": 1.25162e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.525164,
+              "medianMassResidual": 5.67695e-17,
+              "medianEnergyResidual": 1.29021e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.52526,
+              "medianMassResidual": 5.68822e-17,
+              "medianEnergyResidual": 1.40026e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Winchcombe",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.194847,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 8.13555e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.194853,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 7.50076e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.194855,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 7.96977e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.153857,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 7.46452e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.153923,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 8.0669e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.153926,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 8.152e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.153039,
+              "medianMassResidual": 6.01771e-17,
+              "medianEnergyResidual": 1.06808e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.153044,
+              "medianMassResidual": 6.56084e-17,
+              "medianEnergyResidual": 1.2031e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.153046,
+              "medianMassResidual": 6.13338e-17,
+              "medianEnergyResidual": 9.83046e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.0977437,
+              "medianMassResidual": 5.49031e-17,
+              "medianEnergyResidual": 1.18853e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.0977902,
+              "medianMassResidual": 5.4988e-17,
+              "medianEnergyResidual": 1.05771e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.0977928,
+              "medianMassResidual": 4.7197e-17,
+              "medianEnergyResidual": 1.18916e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Golden",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.353542,
+              "medianMassResidual": 3.61383e-17,
+              "medianEnergyResidual": 8.94608e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.353567,
+              "medianMassResidual": 4.303e-17,
+              "medianEnergyResidual": 9.91447e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.353574,
+              "medianMassResidual": 3.59387e-17,
+              "medianEnergyResidual": 1.04203e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.348462,
+              "medianMassResidual": 3.73704e-17,
+              "medianEnergyResidual": 9.24121e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.348629,
+              "medianMassResidual": 3.5179e-17,
+              "medianEnergyResidual": 8.9419e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.348662,
+              "medianMassResidual": 3.41808e-17,
+              "medianEnergyResidual": 9.08684e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.338391,
+              "medianMassResidual": 6.68793e-17,
+              "medianEnergyResidual": 1.05586e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.338414,
+              "medianMassResidual": 6.37065e-17,
+              "medianEnergyResidual": 9.7038e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.338421,
+              "medianMassResidual": 7.03265e-17,
+              "medianEnergyResidual": 1.0148e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.340381,
+              "medianMassResidual": 5.28228e-17,
+              "medianEnergyResidual": 1.18087e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.340526,
+              "medianMassResidual": 5.88929e-17,
+              "medianEnergyResidual": 1.16705e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.340559,
+              "medianMassResidual": 6.61177e-17,
+              "medianEnergyResidual": 1.29576e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Madura Cave",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.399793,
+              "medianMassResidual": 3.14544e-17,
+              "medianEnergyResidual": 9.8284e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.399813,
+              "medianMassResidual": 2.90856e-17,
+              "medianEnergyResidual": 9.82863e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.399819,
+              "medianMassResidual": 2.91752e-17,
+              "medianEnergyResidual": 9.82968e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.430954,
+              "medianMassResidual": 2.89239e-17,
+              "medianEnergyResidual": 8.94564e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.431151,
+              "medianMassResidual": 3.31452e-17,
+              "medianEnergyResidual": 9.39001e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.431179,
+              "medianMassResidual": 2.7431e-17,
+              "medianEnergyResidual": 8.85932e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.339644,
+              "medianMassResidual": 5.98723e-17,
+              "medianEnergyResidual": 1.19536e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.339662,
+              "medianMassResidual": 5.55185e-17,
+              "medianEnergyResidual": 1.19553e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.339667,
+              "medianMassResidual": 5.8137e-17,
+              "medianEnergyResidual": 1.01585e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.342229,
+              "medianMassResidual": 5.96073e-17,
+              "medianEnergyResidual": 1.10011e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.342397,
+              "medianMassResidual": 5.77687e-17,
+              "medianEnergyResidual": 9.81744e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.342419,
+              "medianMassResidual": 6.24896e-17,
+              "medianEnergyResidual": 1.10013e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Hamburg",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.437515,
+              "medianMassResidual": 3.65839e-17,
+              "medianEnergyResidual": 7.88826e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.437544,
+              "medianMassResidual": 3.79066e-17,
+              "medianEnergyResidual": 9.47289e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.437552,
+              "medianMassResidual": 3.57907e-17,
+              "medianEnergyResidual": 7.80686e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.453018,
+              "medianMassResidual": 3.53833e-17,
+              "medianEnergyResidual": 8.32953e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.453221,
+              "medianMassResidual": 3.82247e-17,
+              "medianEnergyResidual": 1.02271e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.453268,
+              "medianMassResidual": 3.69832e-17,
+              "medianEnergyResidual": 1.04159e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.344235,
+              "medianMassResidual": 5.81109e-17,
+              "medianEnergyResidual": 1.16323e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.344257,
+              "medianMassResidual": 5.66789e-17,
+              "medianEnergyResidual": 1.17534e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.344264,
+              "medianMassResidual": 5.81109e-17,
+              "medianEnergyResidual": 1.27119e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.399743,
+              "medianMassResidual": 5.82708e-17,
+              "medianEnergyResidual": 1.10211e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.399937,
+              "medianMassResidual": 6.23794e-17,
+              "medianEnergyResidual": 1.10254e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.399977,
+              "medianMassResidual": 5.64416e-17,
+              "medianEnergyResidual": 1.18945e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Traspena",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.465917,
+              "medianMassResidual": 3.6206e-17,
+              "medianEnergyResidual": 9.43546e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.46597,
+              "medianMassResidual": 3.28572e-17,
+              "medianEnergyResidual": 9.44088e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.465988,
+              "medianMassResidual": 3.28338e-17,
+              "medianEnergyResidual": 8.98765e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.467949,
+              "medianMassResidual": 3.79994e-17,
+              "medianEnergyResidual": 9.03118e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.46817,
+              "medianMassResidual": 3.68104e-17,
+              "medianEnergyResidual": 9.2653e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.468244,
+              "medianMassResidual": 3.66134e-17,
+              "medianEnergyResidual": 9.06812e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.453779,
+              "medianMassResidual": 6.89835e-17,
+              "medianEnergyResidual": 1.26635e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.453826,
+              "medianMassResidual": 5.99443e-17,
+              "medianEnergyResidual": 1.26084e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.453842,
+              "medianMassResidual": 6.9314e-17,
+              "medianEnergyResidual": 1.20213e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.399741,
+              "medianMassResidual": 6.32364e-17,
+              "medianEnergyResidual": 1.17505e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.399945,
+              "medianMassResidual": 5.92127e-17,
+              "medianEnergyResidual": 1.15682e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.400003,
+              "medianMassResidual": 6.03913e-17,
+              "medianEnergyResidual": 1.05934e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Cavezzo",
+      "family": "third set",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.226419,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 9.41991e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.226423,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 9.44162e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.226425,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 9.29211e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.207051,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 1.00587e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.207146,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 1.00587e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.20715,
+              "medianMassResidual": 0,
+              "medianEnergyResidual": 1.07751e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.186053,
+              "medianMassResidual": 4.89882e-17,
+              "medianEnergyResidual": 1.09276e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.186057,
+              "medianMassResidual": 5.71316e-17,
+              "medianEnergyResidual": 1.14587e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.186058,
+              "medianMassResidual": 5.42586e-17,
+              "medianEnergyResidual": 1.23273e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.154836,
+              "medianMassResidual": 5.30898e-17,
+              "medianEnergyResidual": 9.99626e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.15491,
+              "medianMassResidual": 5.27662e-17,
+              "medianEnergyResidual": 1.19066e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.154914,
+              "medianMassResidual": 5.45287e-17,
+              "medianEnergyResidual": 1.01287e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Košice",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.471661,
+              "medianMassResidual": 4.02975e-17,
+              "medianEnergyResidual": 8.4809e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.471725,
+              "medianMassResidual": 4.19189e-17,
+              "medianEnergyResidual": 8.99944e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.471748,
+              "medianMassResidual": 3.49843e-17,
+              "medianEnergyResidual": 8.68073e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.477018,
+              "medianMassResidual": 4.34226e-17,
+              "medianEnergyResidual": 8.35526e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.499073,
+              "medianMassResidual": 3.27418e-17,
+              "medianEnergyResidual": 8.67873e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.499153,
+              "medianMassResidual": 4.14239e-17,
+              "medianEnergyResidual": 8.49567e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.433788,
+              "medianMassResidual": 5.00208e-17,
+              "medianEnergyResidual": 1.20237e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.433842,
+              "medianMassResidual": 6.28784e-17,
+              "medianEnergyResidual": 1.27596e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.433861,
+              "medianMassResidual": 6.04614e-17,
+              "medianEnergyResidual": 1.112e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.402135,
+              "medianMassResidual": 5.68678e-17,
+              "medianEnergyResidual": 1.16692e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.413947,
+              "medianMassResidual": 5.5803e-17,
+              "medianEnergyResidual": 1.18713e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.414019,
+              "medianMassResidual": 5.52319e-17,
+              "medianEnergyResidual": 1.1957e-16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Benešov",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.366374,
+              "medianMassResidual": 3.54131e-17,
+              "medianEnergyResidual": 8.36222e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.366414,
+              "medianMassResidual": 3.54131e-17,
+              "medianEnergyResidual": 8.48745e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.366428,
+              "medianMassResidual": 3.62224e-17,
+              "medianEnergyResidual": 8.09569e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.379508,
+              "medianMassResidual": 3.31537e-17,
+              "medianEnergyResidual": 8.42686e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.379647,
+              "medianMassResidual": 3.40153e-17,
+              "medianEnergyResidual": 8.29947e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.379696,
+              "medianMassResidual": 3.58684e-17,
+              "medianEnergyResidual": 8.7027e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.355405,
+              "medianMassResidual": 6.23375e-17,
+              "medianEnergyResidual": 1.16817e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.355441,
+              "medianMassResidual": 6.2955e-17,
+              "medianEnergyResidual": 1.14548e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.355454,
+              "medianMassResidual": 5.00604e-17,
+              "medianEnergyResidual": 1.16825e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.334735,
+              "medianMassResidual": 5.59389e-17,
+              "medianEnergyResidual": 1.07658e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.334864,
+              "medianMassResidual": 5.661e-17,
+              "medianEnergyResidual": 1.01616e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.334906,
+              "medianMassResidual": 5.47289e-17,
+              "medianEnergyResidual": 9.84885e-17
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "Tagish Lake",
+      "family": "W18",
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.463905,
+              "medianMassResidual": 3.18008e-17,
+              "medianEnergyResidual": 8.39337e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.463982,
+              "medianMassResidual": 3.15281e-17,
+              "medianEnergyResidual": 8.68202e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.464001,
+              "medianMassResidual": 3.54737e-17,
+              "medianEnergyResidual": 9.09078e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.271101,
+              "medianMassResidual": 3.21564e-17,
+              "medianEnergyResidual": 8.42127e-17
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.426934,
+              "medianMassResidual": 3.55503e-17,
+              "medianEnergyResidual": 8.74715e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.427032,
+              "medianMassResidual": 3.80368e-17,
+              "medianEnergyResidual": 8.26283e-17
+            }
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.431421,
+              "medianMassResidual": 6.3362e-17,
+              "medianEnergyResidual": 1.04346e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.431493,
+              "medianMassResidual": 6.1404e-17,
+              "medianEnergyResidual": 9.29644e-17
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.431513,
+              "medianMassResidual": 6.03538e-17,
+              "medianEnergyResidual": 1.04915e-16
+            }
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "byThreshold": [
+            {
+              "settleWithin": 0.001,
+              "produced": 200,
+              "settledShare": 0.270857,
+              "medianMassResidual": 5.84979e-17,
+              "medianEnergyResidual": 1.14904e-16
+            },
+            {
+              "settleWithin": 0.01,
+              "produced": 200,
+              "settledShare": 0.422345,
+              "medianMassResidual": 5.04124e-17,
+              "medianEnergyResidual": 1.02369e-16
+            },
+            {
+              "settleWithin": 0.1,
+              "produced": 200,
+              "settledShare": 0.42245,
+              "medianMassResidual": 5.82336e-17,
+              "medianEnergyResidual": 1.05233e-16
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

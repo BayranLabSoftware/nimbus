@@ -9,21 +9,29 @@ tested: a measurement, reported by case and by configuration throughout.
 
 Break pressure ratio: every case-configuration’s own median sits at 1 (the bisection’s own precision — a sanity check, not a result).
 
-Where the body’s mass ends up, pooled across every case and configuration that completed:
+What the branch stops accounting for, pooled across every case and configuration that completed —
+**rule 1190: "settled" is a numerical stopping condition, not a claim about the material’s later,
+physical fate; nothing here sums it into a ground- or meteorite-mass claim**:
 
-|                                                   | share       |
-| ------------------------------------------------- | ----------- |
-| Landed, solid                                     | 3.253 %     |
-| Landed, cloud                                     | 3.538 %     |
-| **Settled mid-flight (never reaches the ground)** | **93.21 %** |
-| Turned to dust (mass floor / non-physical step)   | 4.588e-7 %  |
+|                                                                               | share      |
+| ----------------------------------------------------------------------------- | ---------- |
+| Landed, solid                                                                 | 3.253 %    |
+| Landed, cloud                                                                 | 3.538 %    |
+| No longer integrated: a cloud within `settleWithin` of its own terminal speed | 93.21 %    |
+| No longer integrated: a non-physical-step fallback, as a settled cloud        | 0 %        |
+| Turned to dust: below the mass floor                                          | 4.588e-7 % |
+| Turned to dust: a non-physical-step fallback                                  | 0 %        |
 
-The great majority of the body’s original mass, pooled, never reaches the ground at all: it settles
-as an airborne cloud once its fall slows to terminal speed (rule 1138 (c)), well above the surface, and
-the engine stops integrating it there. What H1, H3 and H5 call "landed mass" — the quantity with an
-excess against the references of rule 1178 (a) — is already a small remainder of the entry mass by the
-time it reaches the ground; this audit does not change that finding, only places it beside the much
-larger settled-mass pool for the first time.
+What H1, H3 and H5 call "landed mass" — the quantity with an excess against the references of rule
+1178 (a) — is already a small remainder of the entry mass by the time it reaches the ground; this audit
+does not change that finding. The great majority of the remaining mass stops being integrated once a
+cloud nears its own terminal speed, well above the surface (rule 1138 (c), deviation D9); this audit
+reports that stop, not the material’s subsequent, physical fate, which it has no physics to decide
+(rule 1190).
+
+Largest child at a break, corrected (rule 1190): reported separately for any component and for a
+solid fragment only, since a draw’s cloud can itself be the largest child — first break, solid only,
+median of medians 56.46 %; later breaks, solid only, 50.12 %.
 
 ## By case and configuration
 
@@ -31,10 +39,10 @@ larger settled-mass pool for the first time.
 
 **M1/unlimited** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 50.51 % of parent mass (median), cloud 50.51 %, 3 distinct children (median).
-Later breaks: 263 events, largest child 50.51 % of parent mass (median), cloud 50.51 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 50.51 %, largest **solid** child 26.79 % of parent mass (medians), cloud 50.51 %, 3 distinct children (median).
+Later breaks: 263 events — largest child (any) 50.51 %, largest **solid** child 26.79 % of parent mass (medians), cloud 50.51 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 0.3494 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 99.65 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 0.3494 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 99.65 % (of which 99.65 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -52,10 +60,10 @@ Where the body's mass ends up — **landed** solid 0.3494 %, **landed** cloud 0 
 
 **M1/capped** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 41.75 % of parent mass (median), cloud 41.75 %, 3 distinct children (median).
-Later breaks: 57 events, largest child 41.75 % of parent mass (median), cloud 41.75 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 41.75 %, largest **solid** child 31.06 % of parent mass (medians), cloud 41.75 %, 3 distinct children (median).
+Later breaks: 57 events — largest child (any) 41.75 %, largest **solid** child 31.06 % of parent mass (medians), cloud 41.75 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 4.251 %, **landed** cloud 41.75 %, **settled mid-flight (never reaches the ground)** 54 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 4.251 %, **landed** cloud 41.75 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 54 % (of which 54 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -73,10 +81,10 @@ Where the body's mass ends up — **landed** solid 4.251 %, **landed** cloud 41.
 
 **M2/unlimited** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 90.83 % of parent mass (median), cloud 0.01549 %, 4 distinct children (median).
-Later breaks: 585 events, largest child 51.92 % of parent mass (median), cloud 27.94 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 90.83 %, largest **solid** child 90.83 % of parent mass (medians), cloud 0.01549 %, 4 distinct children (median).
+Later breaks: 585 events — largest child (any) 51.92 %, largest **solid** child 51.92 % of parent mass (medians), cloud 27.94 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 4.859 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 95.14 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 4.859 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 95.14 % (of which 95.14 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -94,10 +102,10 @@ Where the body's mass ends up — **landed** solid 4.859 %, **landed** cloud 0 %
 
 **M2/capped** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 81.54 % of parent mass (median), cloud 0.1279 %, 4 distinct children (median).
-Later breaks: 699 events, largest child 56.03 % of parent mass (median), cloud 25.45 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 81.54 %, largest **solid** child 81.54 % of parent mass (medians), cloud 0.1279 %, 4 distinct children (median).
+Later breaks: 699 events — largest child (any) 56.03 %, largest **solid** child 56.03 % of parent mass (medians), cloud 25.45 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 6.137 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 93.86 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 6.137 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 93.86 % (of which 93.86 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -117,10 +125,10 @@ Where the body's mass ends up — **landed** solid 6.137 %, **landed** cloud 0 %
 
 **M1/unlimited** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 69.6 % of parent mass (median), cloud 69.6 %, 3 distinct children (median).
-Later breaks: 19 events, largest child 69.6 % of parent mass (median), cloud 69.6 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 69.6 %, largest **solid** child 23.73 % of parent mass (medians), cloud 69.6 %, 3 distinct children (median).
+Later breaks: 19 events — largest child (any) 69.6 %, largest **solid** child 23.73 % of parent mass (medians), cloud 69.6 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 0.2777 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 99.72 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 0.2777 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 99.72 % (of which 99.72 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -138,10 +146,10 @@ Where the body's mass ends up — **landed** solid 0.2777 %, **landed** cloud 0 
 
 **M1/capped** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 84.17 % of parent mass (median), cloud 84.17 %, 3 distinct children (median).
-Later breaks: 120 events, largest child 84.17 % of parent mass (median), cloud 84.17 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 84.17 %, largest **solid** child 10.02 % of parent mass (medians), cloud 84.17 %, 3 distinct children (median).
+Later breaks: 120 events — largest child (any) 84.17 %, largest **solid** child 10.02 % of parent mass (medians), cloud 84.17 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 0.000232 %, **landed** cloud 11.15 %, **settled mid-flight (never reaches the ground)** 88.85 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 0.000232 %, **landed** cloud 11.15 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 88.85 % (of which 88.85 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -159,10 +167,10 @@ Where the body's mass ends up — **landed** solid 0.000232 %, **landed** cloud 
 
 **M2/unlimited** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 87.03 % of parent mass (median), cloud 0.0987 %, 4 distinct children (median).
-Later breaks: 49 events, largest child 61.76 % of parent mass (median), cloud 61.76 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 87.03 %, largest **solid** child 87.03 % of parent mass (medians), cloud 0.0987 %, 4 distinct children (median).
+Later breaks: 49 events — largest child (any) 61.76 %, largest **solid** child 27.02 % of parent mass (medians), cloud 61.76 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 0.4068 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 99.59 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 0.4068 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 99.59 % (of which 99.59 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -180,10 +188,10 @@ Where the body's mass ends up — **landed** solid 0.4068 %, **landed** cloud 0 
 
 **M2/capped** — 0 draws produced, pressure ratio at the break null (median, null–null)
 
-First break: 0 events, largest child — of parent mass (median), cloud —, null distinct children (median).
-Later breaks: 0 events, largest child — of parent mass (median), cloud —, null distinct children (median).
+First break: 0 events — largest child (any) —, largest **solid** child — (every child a cloud) of parent mass (medians), cloud —, null distinct children (median).
+Later breaks: 0 events — largest child (any) —, largest **solid** child — (every child a cloud) of parent mass (medians), cloud —, null distinct children (median).
 
-Where the body's mass ends up — **landed** solid 0 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 0 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 0 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 0 % (of which 0 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -203,10 +211,10 @@ Where the body's mass ends up — **landed** solid 0 %, **landed** cloud 0 %, **
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 54.49 % of parent mass (median), cloud 45.21 %, 3 distinct children (median).
-Later breaks: 4575 events, largest child 52.31 % of parent mass (median), cloud 18.69 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 54.49 %, largest **solid** child 34.43 % of parent mass (medians), cloud 45.21 %, 3 distinct children (median).
+Later breaks: 4575 events — largest child (any) 52.31 %, largest **solid** child 48.64 % of parent mass (medians), cloud 18.69 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 22.17 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 77.83 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 22.17 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 77.83 % (of which 77.83 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -224,10 +232,10 @@ Where the body's mass ends up — **landed** solid 22.17 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 56.36 % of parent mass (median), cloud 47.13 %, 3 distinct children (median).
-Later breaks: 4394 events, largest child 53.03 % of parent mass (median), cloud 20.93 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 56.36 %, largest **solid** child 34.26 % of parent mass (medians), cloud 47.13 %, 3 distinct children (median).
+Later breaks: 4394 events — largest child (any) 53.03 %, largest **solid** child 51.92 % of parent mass (medians), cloud 20.93 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 20.1 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 79.9 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 20.1 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 79.9 % (of which 79.9 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -245,10 +253,10 @@ Where the body's mass ends up — **landed** solid 20.1 %, **landed** cloud 0 %,
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.69 % of parent mass (median), cloud 0.1512 %, 4 distinct children (median).
-Later breaks: 12561 events, largest child 49.34 % of parent mass (median), cloud 7.086 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.69 %, largest **solid** child 87.69 % of parent mass (medians), cloud 0.1512 %, 4 distinct children (median).
+Later breaks: 12561 events — largest child (any) 49.34 %, largest **solid** child 49.34 % of parent mass (medians), cloud 7.086 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 28.03 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 71.97 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 28.03 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 71.97 % (of which 71.97 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -266,10 +274,10 @@ Where the body's mass ends up — **landed** solid 28.03 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 88.08 % of parent mass (median), cloud 0.141 %, 4 distinct children (median).
-Later breaks: 4973 events, largest child 56.44 % of parent mass (median), cloud 17.85 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 88.08 %, largest **solid** child 88.08 % of parent mass (medians), cloud 0.141 %, 4 distinct children (median).
+Later breaks: 4973 events — largest child (any) 56.44 %, largest **solid** child 56.42 % of parent mass (medians), cloud 17.85 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 24.38 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 75.62 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 24.38 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 75.62 % (of which 75.62 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -289,10 +297,10 @@ Where the body's mass ends up — **landed** solid 24.38 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 55.41 % of parent mass (median), cloud 46.93 %, 3 distinct children (median).
-Later breaks: 3130 events, largest child 58.38 % of parent mass (median), cloud 25.39 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 55.41 %, largest **solid** child 34.43 % of parent mass (medians), cloud 46.93 %, 3 distinct children (median).
+Later breaks: 3130 events — largest child (any) 58.38 %, largest **solid** child 49.27 % of parent mass (medians), cloud 25.39 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 20.51 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 79.49 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 20.51 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 79.49 % (of which 79.49 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -310,10 +318,10 @@ Where the body's mass ends up — **landed** solid 20.51 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 53.85 % of parent mass (median), cloud 40.81 %, 3 distinct children (median).
-Later breaks: 3797 events, largest child 53.39 % of parent mass (median), cloud 19.54 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 53.85 %, largest **solid** child 37.67 % of parent mass (medians), cloud 40.81 %, 3 distinct children (median).
+Later breaks: 3797 events — largest child (any) 53.39 %, largest **solid** child 50.55 % of parent mass (medians), cloud 19.54 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 22.39 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 77.61 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 22.39 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 77.61 % (of which 77.61 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -331,10 +339,10 @@ Where the body's mass ends up — **landed** solid 22.39 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.66 % of parent mass (median), cloud 0.1393 %, 4 distinct children (median).
-Later breaks: 4539 events, largest child 51.26 % of parent mass (median), cloud 14.11 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.66 %, largest **solid** child 87.66 % of parent mass (medians), cloud 0.1393 %, 4 distinct children (median).
+Later breaks: 4539 events — largest child (any) 51.26 %, largest **solid** child 48.63 % of parent mass (medians), cloud 14.11 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 33.87 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 66.13 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 33.87 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 66.13 % (of which 66.13 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -352,10 +360,10 @@ Where the body's mass ends up — **landed** solid 33.87 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 88.49 % of parent mass (median), cloud 0.1654 %, 4 distinct children (median).
-Later breaks: 5813 events, largest child 51.46 % of parent mass (median), cloud 10.43 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 88.49 %, largest **solid** child 88.49 % of parent mass (medians), cloud 0.1654 %, 4 distinct children (median).
+Later breaks: 5813 events — largest child (any) 51.46 %, largest **solid** child 51.46 % of parent mass (medians), cloud 10.43 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 30.89 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 69.11 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 30.89 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 69.11 % (of which 69.11 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -375,10 +383,10 @@ Where the body's mass ends up — **landed** solid 30.89 %, **landed** cloud 0 %
 
 **M1/unlimited** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 39.18 % of parent mass (median), cloud 34.07 %, 3 distinct children (median).
-Later breaks: 1374 events, largest child 39.18 % of parent mass (median), cloud 34.07 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 39.18 %, largest **solid** child 39.18 % of parent mass (medians), cloud 34.07 %, 3 distinct children (median).
+Later breaks: 1374 events — largest child (any) 39.18 %, largest **solid** child 39.18 % of parent mass (medians), cloud 34.07 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 1.234 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 98.77 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 1.234 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 98.77 % (of which 98.77 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -396,10 +404,10 @@ Where the body's mass ends up — **landed** solid 1.234 %, **landed** cloud 0 %
 
 **M1/capped** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 56.46 % of parent mass (median), cloud 23.42 %, 3 distinct children (median).
-Later breaks: 57 events, largest child 56.46 % of parent mass (median), cloud 23.42 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 56.46 %, largest **solid** child 56.46 % of parent mass (medians), cloud 23.42 %, 3 distinct children (median).
+Later breaks: 57 events — largest child (any) 56.46 %, largest **solid** child 56.46 % of parent mass (medians), cloud 23.42 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 17.21 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 82.79 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 17.21 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 82.79 % (of which 82.79 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -417,10 +425,10 @@ Where the body's mass ends up — **landed** solid 17.21 %, **landed** cloud 0 %
 
 **M2/unlimited** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 94.52 % of parent mass (median), cloud 0.03832 %, 4 distinct children (median).
-Later breaks: 100 events, largest child 47.05 % of parent mass (median), cloud 47.05 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 94.52 %, largest **solid** child 94.52 % of parent mass (medians), cloud 0.03832 %, 4 distinct children (median).
+Later breaks: 100 events — largest child (any) 47.05 %, largest **solid** child 39.92 % of parent mass (medians), cloud 47.05 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 1.823 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 98.18 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 1.823 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 98.18 % (of which 98.18 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -438,10 +446,10 @@ Where the body's mass ends up — **landed** solid 1.823 %, **landed** cloud 0 %
 
 **M2/capped** — 1 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 1 events, largest child 83.76 % of parent mass (median), cloud 0.003556 %, 4 distinct children (median).
-Later breaks: 13 events, largest child 72.16 % of parent mass (median), cloud 72.16 %, 3 distinct children (median).
+First break: 1 events — largest child (any) 83.76 %, largest **solid** child 83.76 % of parent mass (medians), cloud 0.003556 %, 4 distinct children (median).
+Later breaks: 13 events — largest child (any) 72.16 %, largest **solid** child 21.87 % of parent mass (medians), cloud 72.16 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 2.249 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 97.75 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 2.249 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 97.75 % (of which 97.75 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -461,10 +469,10 @@ Where the body's mass ends up — **landed** solid 2.249 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 53.43 % of parent mass (median), cloud 44.65 %, 3 distinct children (median).
-Later breaks: 4721 events, largest child 46.56 % of parent mass (median), cloud 27.64 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 53.43 %, largest **solid** child 36.54 % of parent mass (medians), cloud 44.65 %, 3 distinct children (median).
+Later breaks: 4721 events — largest child (any) 46.56 %, largest **solid** child 45.33 % of parent mass (medians), cloud 27.64 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 21.49 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 78.51 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 21.49 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 78.51 % (of which 78.51 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -482,10 +490,10 @@ Where the body's mass ends up — **landed** solid 21.49 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 55.22 % of parent mass (median), cloud 44.84 %, 3 distinct children (median).
-Later breaks: 5420 events, largest child 60.72 % of parent mass (median), cloud 17.2 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 55.22 %, largest **solid** child 35.06 % of parent mass (medians), cloud 44.84 %, 3 distinct children (median).
+Later breaks: 5420 events — largest child (any) 60.72 %, largest **solid** child 55.97 % of parent mass (medians), cloud 17.2 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 21.05 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 78.95 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 21.05 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 78.95 % (of which 78.95 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -503,10 +511,10 @@ Where the body's mass ends up — **landed** solid 21.05 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 88.51 % of parent mass (median), cloud 0.1868 %, 4 distinct children (median).
-Later breaks: 4234 events, largest child 54.93 % of parent mass (median), cloud 24.13 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 88.51 %, largest **solid** child 88.51 % of parent mass (medians), cloud 0.1868 %, 4 distinct children (median).
+Later breaks: 4234 events — largest child (any) 54.93 %, largest **solid** child 51.01 % of parent mass (medians), cloud 24.13 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 25.31 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 74.69 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 25.31 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 74.69 % (of which 74.69 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -524,10 +532,10 @@ Where the body's mass ends up — **landed** solid 25.31 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.54 % of parent mass (median), cloud 0.1592 %, 4 distinct children (median).
-Later breaks: 4575 events, largest child 50.22 % of parent mass (median), cloud 19.36 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.54 %, largest **solid** child 87.54 % of parent mass (medians), cloud 0.1592 %, 4 distinct children (median).
+Later breaks: 4575 events — largest child (any) 50.22 %, largest **solid** child 49.22 % of parent mass (medians), cloud 19.36 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 26.08 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 73.92 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 26.08 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 73.92 % (of which 73.92 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -547,10 +555,10 @@ Where the body's mass ends up — **landed** solid 26.08 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 55.48 % of parent mass (median), cloud 48.28 %, 3 distinct children (median).
-Later breaks: 2331 events, largest child 55.67 % of parent mass (median), cloud 18.12 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 55.48 %, largest **solid** child 34.55 % of parent mass (medians), cloud 48.28 %, 3 distinct children (median).
+Later breaks: 2331 events — largest child (any) 55.67 %, largest **solid** child 52.16 % of parent mass (medians), cloud 18.12 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 24.12 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 75.88 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 24.12 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 75.88 % (of which 75.88 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -568,10 +576,10 @@ Where the body's mass ends up — **landed** solid 24.12 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 56.82 % of parent mass (median), cloud 45.08 %, 3 distinct children (median).
-Later breaks: 2318 events, largest child 55.26 % of parent mass (median), cloud 22.46 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 56.82 %, largest **solid** child 34.9 % of parent mass (medians), cloud 45.08 %, 3 distinct children (median).
+Later breaks: 2318 events — largest child (any) 55.26 %, largest **solid** child 52.9 % of parent mass (medians), cloud 22.46 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 24.39 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 75.61 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 24.39 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 75.61 % (of which 75.61 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -589,10 +597,10 @@ Where the body's mass ends up — **landed** solid 24.39 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.69 % of parent mass (median), cloud 0.1525 %, 4 distinct children (median).
-Later breaks: 4834 events, largest child 58.13 % of parent mass (median), cloud 12.4 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.69 %, largest **solid** child 87.69 % of parent mass (medians), cloud 0.1525 %, 4 distinct children (median).
+Later breaks: 4834 events — largest child (any) 58.13 %, largest **solid** child 56.12 % of parent mass (medians), cloud 12.4 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 31.99 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 68.01 %, dust 0.000003693 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 31.99 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 68.01 % (of which 68.01 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.000003693 % (0.000003693 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -610,10 +618,10 @@ Where the body's mass ends up — **landed** solid 31.99 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.99 % of parent mass (median), cloud 0.158 %, 4 distinct children (median).
-Later breaks: 7012 events, largest child 72.1 % of parent mass (median), cloud 5.694 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.99 %, largest **solid** child 87.99 % of parent mass (medians), cloud 0.158 %, 4 distinct children (median).
+Later breaks: 7012 events — largest child (any) 72.1 %, largest **solid** child 67.03 % of parent mass (medians), cloud 5.694 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 32.19 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 67.81 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 32.19 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 67.81 % (of which 67.81 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -633,10 +641,10 @@ Where the body's mass ends up — **landed** solid 32.19 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 162 events, largest child 52.91 % of parent mass (median), cloud 41.72 %, 3 distinct children (median).
-Later breaks: 361 events, largest child 52.28 % of parent mass (median), cloud 22.5 %, 3 distinct children (median).
+First break: 162 events — largest child (any) 52.91 %, largest **solid** child 37.06 % of parent mass (medians), cloud 41.72 %, 3 distinct children (median).
+Later breaks: 361 events — largest child (any) 52.28 %, largest **solid** child 49.26 % of parent mass (medians), cloud 22.5 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 53.82 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 46.18 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 53.82 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 46.18 % (of which 46.18 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -654,10 +662,10 @@ Where the body's mass ends up — **landed** solid 53.82 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 175 events, largest child 53.24 % of parent mass (median), cloud 40.64 %, 3 distinct children (median).
-Later breaks: 551 events, largest child 53 % of parent mass (median), cloud 23.17 %, 3 distinct children (median).
+First break: 175 events — largest child (any) 53.24 %, largest **solid** child 37.64 % of parent mass (medians), cloud 40.64 %, 3 distinct children (median).
+Later breaks: 551 events — largest child (any) 53 %, largest **solid** child 48.64 % of parent mass (medians), cloud 23.17 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 46.37 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 53.63 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 46.37 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 53.63 % (of which 53.63 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -675,10 +683,10 @@ Where the body's mass ends up — **landed** solid 46.37 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.49 % of parent mass (median), cloud 0.1688 %, 4 distinct children (median).
-Later breaks: 475 events, largest child 53.65 % of parent mass (median), cloud 30.36 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.49 %, largest **solid** child 87.49 % of parent mass (medians), cloud 0.1688 %, 4 distinct children (median).
+Later breaks: 475 events — largest child (any) 53.65 %, largest **solid** child 45.15 % of parent mass (medians), cloud 30.36 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 56.92 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 43.08 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 56.92 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 43.08 % (of which 43.08 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -696,10 +704,10 @@ Where the body's mass ends up — **landed** solid 56.92 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.67 % of parent mass (median), cloud 0.1394 %, 4 distinct children (median).
-Later breaks: 449 events, largest child 54.46 % of parent mass (median), cloud 28.24 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.67 %, largest **solid** child 87.67 % of parent mass (medians), cloud 0.1394 %, 4 distinct children (median).
+Later breaks: 449 events — largest child (any) 54.46 %, largest **solid** child 43.28 % of parent mass (medians), cloud 28.24 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 54.89 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 45.11 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 54.89 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 45.11 % (of which 45.11 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -719,10 +727,10 @@ Where the body's mass ends up — **landed** solid 54.89 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 54.23 % of parent mass (median), cloud 43.41 %, 3 distinct children (median).
-Later breaks: 22872 events, largest child 53.06 % of parent mass (median), cloud 13.34 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 54.23 %, largest **solid** child 35.09 % of parent mass (medians), cloud 43.41 %, 3 distinct children (median).
+Later breaks: 22872 events — largest child (any) 53.06 %, largest **solid** child 53.06 % of parent mass (medians), cloud 13.34 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 14.34 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 85.66 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 14.34 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 85.66 % (of which 85.66 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -740,10 +748,10 @@ Where the body's mass ends up — **landed** solid 14.34 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 55.84 % of parent mass (median), cloud 49.62 %, 3 distinct children (median).
-Later breaks: 15148 events, largest child 51.7 % of parent mass (median), cloud 16.52 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 55.84 %, largest **solid** child 31.67 % of parent mass (medians), cloud 49.62 %, 3 distinct children (median).
+Later breaks: 15148 events — largest child (any) 51.7 %, largest **solid** child 50.38 % of parent mass (medians), cloud 16.52 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 13.21 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 86.79 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 13.21 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 86.79 % (of which 86.79 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -761,10 +769,10 @@ Where the body's mass ends up — **landed** solid 13.21 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 88.79 % of parent mass (median), cloud 0.1366 %, 4 distinct children (median).
-Later breaks: 29147 events, largest child 47.48 % of parent mass (median), cloud 11.55 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 88.79 %, largest **solid** child 88.79 % of parent mass (medians), cloud 0.1366 %, 4 distinct children (median).
+Later breaks: 29147 events — largest child (any) 47.48 %, largest **solid** child 47.48 % of parent mass (medians), cloud 11.55 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 17.55 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 82.45 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 17.55 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 82.45 % (of which 82.45 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -782,10 +790,10 @@ Where the body's mass ends up — **landed** solid 17.55 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.9 % of parent mass (median), cloud 0.1583 %, 4 distinct children (median).
-Later breaks: 10677 events, largest child 63.26 % of parent mass (median), cloud 15.76 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.9 %, largest **solid** child 87.9 % of parent mass (medians), cloud 0.1583 %, 4 distinct children (median).
+Later breaks: 10677 events — largest child (any) 63.26 %, largest **solid** child 59.55 % of parent mass (medians), cloud 15.76 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 18.48 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 81.52 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 18.48 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 81.52 % (of which 81.52 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -805,10 +813,10 @@ Where the body's mass ends up — **landed** solid 18.48 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 104 events, largest child 57.48 % of parent mass (median), cloud 50.48 %, 3 distinct children (median).
-Later breaks: 86 events, largest child 50.27 % of parent mass (median), cloud 29.29 %, 3 distinct children (median).
+First break: 104 events — largest child (any) 57.48 %, largest **solid** child 33.62 % of parent mass (medians), cloud 50.48 %, 3 distinct children (median).
+Later breaks: 86 events — largest child (any) 50.27 %, largest **solid** child 46.66 % of parent mass (medians), cloud 29.29 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 70.44 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 29.56 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 70.44 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 29.56 % (of which 29.56 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -826,10 +834,10 @@ Where the body's mass ends up — **landed** solid 70.44 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 91 events, largest child 55.5 % of parent mass (median), cloud 38.6 %, 3 distinct children (median).
-Later breaks: 89 events, largest child 56.23 % of parent mass (median), cloud 15.53 %, 3 distinct children (median).
+First break: 91 events — largest child (any) 55.5 %, largest **solid** child 38.52 % of parent mass (medians), cloud 38.6 %, 3 distinct children (median).
+Later breaks: 89 events — largest child (any) 56.23 %, largest **solid** child 55.43 % of parent mass (medians), cloud 15.53 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 76.84 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 23.16 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 76.84 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 23.16 % (of which 23.16 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -847,10 +855,10 @@ Where the body's mass ends up — **landed** solid 76.84 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.87 % of parent mass (median), cloud 0.1574 %, 4 distinct children (median).
-Later breaks: 171 events, largest child 58.1 % of parent mass (median), cloud 29.81 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.87 %, largest **solid** child 87.87 % of parent mass (medians), cloud 0.1574 %, 4 distinct children (median).
+Later breaks: 171 events — largest child (any) 58.1 %, largest **solid** child 43 % of parent mass (medians), cloud 29.81 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 75.3 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 24.7 %, dust 0.0006057 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 75.3 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 24.7 % (of which 24.7 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.0006057 % (0.0006057 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -868,10 +876,10 @@ Where the body's mass ends up — **landed** solid 75.3 %, **landed** cloud 0 %,
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.97 % of parent mass (median), cloud 0.1543 %, 4 distinct children (median).
-Later breaks: 135 events, largest child 54.17 % of parent mass (median), cloud 29.52 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.97 %, largest **solid** child 87.97 % of parent mass (medians), cloud 0.1543 %, 4 distinct children (median).
+Later breaks: 135 events — largest child (any) 54.17 %, largest **solid** child 46.51 % of parent mass (medians), cloud 29.52 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 84.6 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 15.4 %, dust 0.0001561 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 84.6 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 15.4 % (of which 15.4 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.0001561 % (0.0001561 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -891,10 +899,10 @@ Where the body's mass ends up — **landed** solid 84.6 %, **landed** cloud 0 %,
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 56.65 % of parent mass (median), cloud 41.71 %, 3 distinct children (median).
-Later breaks: 4123 events, largest child 58.31 % of parent mass (median), cloud 14.01 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 56.65 %, largest **solid** child 37.88 % of parent mass (medians), cloud 41.71 %, 3 distinct children (median).
+Later breaks: 4123 events — largest child (any) 58.31 %, largest **solid** child 57.3 % of parent mass (medians), cloud 14.01 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 26.38 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 73.62 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 26.38 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 73.62 % (of which 73.62 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -912,10 +920,10 @@ Where the body's mass ends up — **landed** solid 26.38 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 54.14 % of parent mass (median), cloud 39.95 %, 3 distinct children (median).
-Later breaks: 3440 events, largest child 50.52 % of parent mass (median), cloud 22.94 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 54.14 %, largest **solid** child 39.24 % of parent mass (medians), cloud 39.95 %, 3 distinct children (median).
+Later breaks: 3440 events — largest child (any) 50.52 %, largest **solid** child 49.76 % of parent mass (medians), cloud 22.94 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 27.61 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 72.39 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 27.61 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 72.39 % (of which 72.39 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -933,10 +941,10 @@ Where the body's mass ends up — **landed** solid 27.61 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 89.01 % of parent mass (median), cloud 0.1274 %, 4 distinct children (median).
-Later breaks: 3045 events, largest child 60.45 % of parent mass (median), cloud 18.39 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 89.01 %, largest **solid** child 89.01 % of parent mass (medians), cloud 0.1274 %, 4 distinct children (median).
+Later breaks: 3045 events — largest child (any) 60.45 %, largest **solid** child 53.55 % of parent mass (medians), cloud 18.39 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 30.1 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 69.9 %, dust 0.000008269 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 30.1 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 69.9 % (of which 69.9 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.000008269 % (0.000008269 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -954,10 +962,10 @@ Where the body's mass ends up — **landed** solid 30.1 %, **landed** cloud 0 %,
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.83 % of parent mass (median), cloud 0.1438 %, 4 distinct children (median).
-Later breaks: 3327 events, largest child 51.94 % of parent mass (median), cloud 16.93 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.83 %, largest **solid** child 87.83 % of parent mass (medians), cloud 0.1438 %, 4 distinct children (median).
+Later breaks: 3327 events — largest child (any) 51.94 %, largest **solid** child 51.94 % of parent mass (medians), cloud 16.93 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 32.54 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 67.46 %, dust 0.0000517 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 32.54 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 67.46 % (of which 67.46 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.0000517 % (0.0000517 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -977,10 +985,10 @@ Where the body's mass ends up — **landed** solid 32.54 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 57.75 % of parent mass (median), cloud 47.17 %, 3 distinct children (median).
-Later breaks: 699 events, largest child 53.37 % of parent mass (median), cloud 22.82 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 57.75 %, largest **solid** child 34.65 % of parent mass (medians), cloud 47.17 %, 3 distinct children (median).
+Later breaks: 699 events — largest child (any) 53.37 %, largest **solid** child 48.8 % of parent mass (medians), cloud 22.82 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 38.32 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 61.68 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 38.32 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 61.68 % (of which 61.68 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -998,10 +1006,10 @@ Where the body's mass ends up — **landed** solid 38.32 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 56.23 % of parent mass (median), cloud 51.13 %, 3 distinct children (median).
-Later breaks: 928 events, largest child 54.22 % of parent mass (median), cloud 17.78 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 56.23 %, largest **solid** child 31.94 % of parent mass (medians), cloud 51.13 %, 3 distinct children (median).
+Later breaks: 928 events — largest child (any) 54.22 %, largest **solid** child 50.84 % of parent mass (medians), cloud 17.78 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 34.92 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 65.08 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 34.92 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 65.08 % (of which 65.08 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1019,10 +1027,10 @@ Where the body's mass ends up — **landed** solid 34.92 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.48 % of parent mass (median), cloud 0.1513 %, 4 distinct children (median).
-Later breaks: 1083 events, largest child 52.83 % of parent mass (median), cloud 22.36 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.48 %, largest **solid** child 87.48 % of parent mass (medians), cloud 0.1513 %, 4 distinct children (median).
+Later breaks: 1083 events — largest child (any) 52.83 %, largest **solid** child 46.14 % of parent mass (medians), cloud 22.36 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 45.61 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 54.4 %, dust 0.00002226 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 45.61 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 54.4 % (of which 54.4 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.00002226 % (0.00002226 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1040,10 +1048,10 @@ Where the body's mass ends up — **landed** solid 45.61 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.95 % of parent mass (median), cloud 0.1641 %, 4 distinct children (median).
-Later breaks: 1052 events, largest child 51.17 % of parent mass (median), cloud 25.62 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.95 %, largest **solid** child 87.95 % of parent mass (medians), cloud 0.1641 %, 4 distinct children (median).
+Later breaks: 1052 events — largest child (any) 51.17 %, largest **solid** child 43.99 % of parent mass (medians), cloud 25.62 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 46.51 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 53.49 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 46.51 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 53.49 % (of which 53.49 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1063,10 +1071,10 @@ Where the body's mass ends up — **landed** solid 46.51 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 53.07 % of parent mass (median), cloud 42.82 %, 3 distinct children (median).
-Later breaks: 3044 events, largest child 53.88 % of parent mass (median), cloud 22.8 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 53.07 %, largest **solid** child 36.49 % of parent mass (medians), cloud 42.82 %, 3 distinct children (median).
+Later breaks: 3044 events — largest child (any) 53.88 %, largest **solid** child 51.35 % of parent mass (medians), cloud 22.8 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 25.38 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 74.62 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 25.38 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 74.62 % (of which 74.62 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1084,10 +1092,10 @@ Where the body's mass ends up — **landed** solid 25.38 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 56.51 % of parent mass (median), cloud 49.07 %, 3 distinct children (median).
-Later breaks: 3916 events, largest child 50.77 % of parent mass (median), cloud 13.67 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 56.51 %, largest **solid** child 33.65 % of parent mass (medians), cloud 49.07 %, 3 distinct children (median).
+Later breaks: 3916 events — largest child (any) 50.77 %, largest **solid** child 48.17 % of parent mass (medians), cloud 13.67 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 23.79 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 76.21 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 23.79 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 76.21 % (of which 76.21 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1105,10 +1113,10 @@ Where the body's mass ends up — **landed** solid 23.79 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.6 % of parent mass (median), cloud 0.1447 %, 4 distinct children (median).
-Later breaks: 2330 events, largest child 50.76 % of parent mass (median), cloud 24.17 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.6 %, largest **solid** child 87.6 % of parent mass (medians), cloud 0.1447 %, 4 distinct children (median).
+Later breaks: 2330 events — largest child (any) 50.76 %, largest **solid** child 46.85 % of parent mass (medians), cloud 24.17 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 36.83 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 63.17 %, dust 0.000007514 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 36.83 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 63.17 % (of which 63.17 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.000007514 % (0.000007514 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1126,10 +1134,10 @@ Where the body's mass ends up — **landed** solid 36.83 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.84 % of parent mass (median), cloud 0.1567 %, 4 distinct children (median).
-Later breaks: 2419 events, largest child 51.65 % of parent mass (median), cloud 32.56 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.84 %, largest **solid** child 87.84 % of parent mass (medians), cloud 0.1567 %, 4 distinct children (median).
+Later breaks: 2419 events — largest child (any) 51.65 %, largest **solid** child 45.7 % of parent mass (medians), cloud 32.56 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 28.15 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 71.85 %, dust 0.000007371 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 28.15 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 71.85 % (of which 71.85 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.000007371 % (0.000007371 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1149,10 +1157,10 @@ Where the body's mass ends up — **landed** solid 28.15 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 54.55 % of parent mass (median), cloud 44.08 %, 3 distinct children (median).
-Later breaks: 18217 events, largest child 56.64 % of parent mass (median), cloud 15.68 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 54.55 %, largest **solid** child 35.53 % of parent mass (medians), cloud 44.08 %, 3 distinct children (median).
+Later breaks: 18217 events — largest child (any) 56.64 %, largest **solid** child 53.85 % of parent mass (medians), cloud 15.68 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 14.91 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 85.09 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 14.91 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 85.09 % (of which 85.09 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1170,10 +1178,10 @@ Where the body's mass ends up — **landed** solid 14.91 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 54.94 % of parent mass (median), cloud 46.43 %, 3 distinct children (median).
-Later breaks: 11440 events, largest child 46.36 % of parent mass (median), cloud 25.22 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 54.94 %, largest **solid** child 35.21 % of parent mass (medians), cloud 46.43 %, 3 distinct children (median).
+Later breaks: 11440 events — largest child (any) 46.36 %, largest **solid** child 44.58 % of parent mass (medians), cloud 25.22 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 14.63 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 85.37 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 14.63 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 85.37 % (of which 85.37 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1191,10 +1199,10 @@ Where the body's mass ends up — **landed** solid 14.63 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.77 % of parent mass (median), cloud 0.147 %, 4 distinct children (median).
-Later breaks: 15117 events, largest child 50.81 % of parent mass (median), cloud 28.5 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.77 %, largest **solid** child 87.77 % of parent mass (medians), cloud 0.147 %, 4 distinct children (median).
+Later breaks: 15117 events — largest child (any) 50.81 %, largest **solid** child 47.64 % of parent mass (medians), cloud 28.5 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 18.84 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 81.16 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 18.84 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 81.16 % (of which 81.16 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1212,10 +1220,10 @@ Where the body's mass ends up — **landed** solid 18.84 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.46 % of parent mass (median), cloud 0.1662 %, 4 distinct children (median).
-Later breaks: 11847 events, largest child 57.42 % of parent mass (median), cloud 20.85 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.46 %, largest **solid** child 87.46 % of parent mass (medians), cloud 0.1662 %, 4 distinct children (median).
+Later breaks: 11847 events — largest child (any) 57.42 %, largest **solid** child 55.36 % of parent mass (medians), cloud 20.85 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 22.04 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 77.96 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 22.04 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 77.96 % (of which 77.96 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1235,10 +1243,10 @@ Where the body's mass ends up — **landed** solid 22.04 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 117 events, largest child 55.26 % of parent mass (median), cloud 44.45 %, 3 distinct children (median).
-Later breaks: 124 events, largest child 51.51 % of parent mass (median), cloud 25.18 %, 3 distinct children (median).
+First break: 117 events — largest child (any) 55.26 %, largest **solid** child 34.05 % of parent mass (medians), cloud 44.45 %, 3 distinct children (median).
+Later breaks: 124 events — largest child (any) 51.51 %, largest **solid** child 47.69 % of parent mass (medians), cloud 25.18 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 66.91 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 33.09 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 66.91 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 33.09 % (of which 33.09 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1256,10 +1264,10 @@ Where the body's mass ends up — **landed** solid 66.91 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 114 events, largest child 53.91 % of parent mass (median), cloud 42.22 %, 3 distinct children (median).
-Later breaks: 90 events, largest child 50.8 % of parent mass (median), cloud 29.51 %, 3 distinct children (median).
+First break: 114 events — largest child (any) 53.91 %, largest **solid** child 35.96 % of parent mass (medians), cloud 42.22 %, 3 distinct children (median).
+Later breaks: 90 events — largest child (any) 50.8 %, largest **solid** child 45.12 % of parent mass (medians), cloud 29.51 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 69.36 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 30.64 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 69.36 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 30.64 % (of which 30.64 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1277,10 +1285,10 @@ Where the body's mass ends up — **landed** solid 69.36 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 88.04 % of parent mass (median), cloud 0.1349 %, 4 distinct children (median).
-Later breaks: 224 events, largest child 49.67 % of parent mass (median), cloud 31.84 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 88.04 %, largest **solid** child 88.04 % of parent mass (medians), cloud 0.1349 %, 4 distinct children (median).
+Later breaks: 224 events — largest child (any) 49.67 %, largest **solid** child 44.03 % of parent mass (medians), cloud 31.84 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 72.77 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 27.23 %, dust 0.003879 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 72.77 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 27.23 % (of which 27.23 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.003879 % (0.003879 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1298,10 +1306,10 @@ Where the body's mass ends up — **landed** solid 72.77 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.71 % of parent mass (median), cloud 0.1422 %, 4 distinct children (median).
-Later breaks: 220 events, largest child 50.51 % of parent mass (median), cloud 24.89 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.71 %, largest **solid** child 87.71 % of parent mass (medians), cloud 0.1422 %, 4 distinct children (median).
+Later breaks: 220 events — largest child (any) 50.51 %, largest **solid** child 44.51 % of parent mass (medians), cloud 24.89 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 77.47 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 22.53 %, dust 0.0035 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 77.47 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 22.53 % (of which 22.53 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.0035 % (0.0035 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1321,10 +1329,10 @@ Where the body's mass ends up — **landed** solid 77.47 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 56.84 % of parent mass (median), cloud 46.07 %, 3 distinct children (median).
-Later breaks: 14937 events, largest child 63.35 % of parent mass (median), cloud 8.603 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 56.84 %, largest **solid** child 34.77 % of parent mass (medians), cloud 46.07 %, 3 distinct children (median).
+Later breaks: 14937 events — largest child (any) 63.35 %, largest **solid** child 63.35 % of parent mass (medians), cloud 8.603 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 19.12 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 80.88 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 19.12 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 80.88 % (of which 80.88 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1342,10 +1350,10 @@ Where the body's mass ends up — **landed** solid 19.12 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 56.88 % of parent mass (median), cloud 45.45 %, 3 distinct children (median).
-Later breaks: 10203 events, largest child 61.36 % of parent mass (median), cloud 17.7 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 56.88 %, largest **solid** child 36.58 % of parent mass (medians), cloud 45.45 %, 3 distinct children (median).
+Later breaks: 10203 events — largest child (any) 61.36 %, largest **solid** child 58.91 % of parent mass (medians), cloud 17.7 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 18.41 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 81.59 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 18.41 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 81.59 % (of which 81.59 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1363,10 +1371,10 @@ Where the body's mass ends up — **landed** solid 18.41 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.59 % of parent mass (median), cloud 0.1774 %, 4 distinct children (median).
-Later breaks: 10753 events, largest child 52.32 % of parent mass (median), cloud 10.92 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.59 %, largest **solid** child 87.59 % of parent mass (medians), cloud 0.1774 %, 4 distinct children (median).
+Later breaks: 10753 events — largest child (any) 52.32 %, largest **solid** child 52.32 % of parent mass (medians), cloud 10.92 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 25.01 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 74.99 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 25.01 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 74.99 % (of which 74.99 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1384,10 +1392,10 @@ Where the body's mass ends up — **landed** solid 25.01 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.62 % of parent mass (median), cloud 0.1248 %, 4 distinct children (median).
-Later breaks: 7152 events, largest child 54.33 % of parent mass (median), cloud 19.36 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.62 %, largest **solid** child 87.62 % of parent mass (medians), cloud 0.1248 %, 4 distinct children (median).
+Later breaks: 7152 events — largest child (any) 54.33 %, largest **solid** child 53.4 % of parent mass (medians), cloud 19.36 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 25.16 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 74.84 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 25.16 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 74.84 % (of which 74.84 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1407,10 +1415,10 @@ Where the body's mass ends up — **landed** solid 25.16 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 54.9 % of parent mass (median), cloud 44.4 %, 3 distinct children (median).
-Later breaks: 73666 events, largest child 55.07 % of parent mass (median), cloud 5.787 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 54.9 %, largest **solid** child 36.34 % of parent mass (medians), cloud 44.4 %, 3 distinct children (median).
+Later breaks: 73666 events — largest child (any) 55.07 %, largest **solid** child 55.07 % of parent mass (medians), cloud 5.787 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 12.7 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 87.3 %, dust 0.0001384 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 12.7 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 87.3 % (of which 87.3 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.0001384 % (0.0001384 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1428,10 +1436,10 @@ Where the body's mass ends up — **landed** solid 12.7 %, **landed** cloud 0 %,
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 54.93 % of parent mass (median), cloud 46.63 %, 3 distinct children (median).
-Later breaks: 42734 events, largest child 55.25 % of parent mass (median), cloud 11.86 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 54.93 %, largest **solid** child 34.24 % of parent mass (medians), cloud 46.63 %, 3 distinct children (median).
+Later breaks: 42734 events — largest child (any) 55.25 %, largest **solid** child 55.25 % of parent mass (medians), cloud 11.86 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 10.78 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 89.22 %, dust 5.361e-7 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 10.78 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 89.22 % (of which 89.22 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 5.361e-7 % (5.361e-7 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1449,10 +1457,10 @@ Where the body's mass ends up — **landed** solid 10.78 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.59 % of parent mass (median), cloud 0.146 %, 4 distinct children (median).
-Later breaks: 46177 events, largest child 50.12 % of parent mass (median), cloud 13.52 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.59 %, largest **solid** child 87.59 % of parent mass (medians), cloud 0.146 %, 4 distinct children (median).
+Later breaks: 46177 events — largest child (any) 50.12 %, largest **solid** child 50.12 % of parent mass (medians), cloud 13.52 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 14.87 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 85.13 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 14.87 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 85.13 % (of which 85.13 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1470,10 +1478,10 @@ Where the body's mass ends up — **landed** solid 14.87 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 88.07 % of parent mass (median), cloud 0.1451 %, 4 distinct children (median).
-Later breaks: 53060 events, largest child 57.82 % of parent mass (median), cloud 11.57 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 88.07 %, largest **solid** child 88.07 % of parent mass (medians), cloud 0.1451 %, 4 distinct children (median).
+Later breaks: 53060 events — largest child (any) 57.82 %, largest **solid** child 57.82 % of parent mass (medians), cloud 11.57 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 16.87 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 83.13 %, dust 0.0004923 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 16.87 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 83.13 % (of which 83.13 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0.0004923 % (0.0004923 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1493,10 +1501,10 @@ Where the body's mass ends up — **landed** solid 16.87 %, **landed** cloud 0 %
 
 **M1/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 56.2 % of parent mass (median), cloud 45.97 %, 3 distinct children (median).
-Later breaks: 10391 events, largest child 57.85 % of parent mass (median), cloud 13.92 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 56.2 %, largest **solid** child 35.87 % of parent mass (medians), cloud 45.97 %, 3 distinct children (median).
+Later breaks: 10391 events — largest child (any) 57.85 %, largest **solid** child 57.05 % of parent mass (medians), cloud 13.92 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 20.07 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 79.93 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 20.07 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 79.93 % (of which 79.93 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1514,10 +1522,10 @@ Where the body's mass ends up — **landed** solid 20.07 %, **landed** cloud 0 %
 
 **M1/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 57.55 % of parent mass (median), cloud 46.58 %, 3 distinct children (median).
-Later breaks: 5348 events, largest child 55.89 % of parent mass (median), cloud 13.98 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 57.55 %, largest **solid** child 34.77 % of parent mass (medians), cloud 46.58 %, 3 distinct children (median).
+Later breaks: 5348 events — largest child (any) 55.89 %, largest **solid** child 55.89 % of parent mass (medians), cloud 13.98 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 22.26 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 77.74 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 22.26 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 77.74 % (of which 77.74 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1535,10 +1543,10 @@ Where the body's mass ends up — **landed** solid 22.26 %, **landed** cloud 0 %
 
 **M2/unlimited** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.97 % of parent mass (median), cloud 0.1538 %, 4 distinct children (median).
-Later breaks: 8072 events, largest child 54.48 % of parent mass (median), cloud 15.2 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.97 %, largest **solid** child 87.97 % of parent mass (medians), cloud 0.1538 %, 4 distinct children (median).
+Later breaks: 8072 events — largest child (any) 54.48 %, largest **solid** child 51.47 % of parent mass (medians), cloud 15.2 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 24.49 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 75.51 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 24.49 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 75.51 % (of which 75.51 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |
@@ -1556,10 +1564,10 @@ Where the body's mass ends up — **landed** solid 24.49 %, **landed** cloud 0 %
 
 **M2/capped** — 200 draws produced, pressure ratio at the break 1 (median, 1–1)
 
-First break: 200 events, largest child 87.58 % of parent mass (median), cloud 0.1595 %, 4 distinct children (median).
-Later breaks: 16513 events, largest child 61.54 % of parent mass (median), cloud 7.7 %, 3 distinct children (median).
+First break: 200 events — largest child (any) 87.58 %, largest **solid** child 87.58 % of parent mass (medians), cloud 0.1595 %, 4 distinct children (median).
+Later breaks: 16513 events — largest child (any) 61.54 %, largest **solid** child 60.22 % of parent mass (medians), cloud 7.7 %, 3 distinct children (median).
 
-Where the body's mass ends up — **landed** solid 25.31 %, **landed** cloud 0 %, **settled mid-flight (never reaches the ground)** 74.69 %, dust 0 %; 0 breaks folded wholly into the aggregated tail (rule 1150).
+Where the run's own accounting stands — **landed** solid 25.31 %, **landed** cloud 0 %, **no longer integrated, as a cloud (rule 1190: a stop, not a fate)** 74.69 % (of which 74.69 % at the terminal-speed stop, 0 % at a non-physical-step fallback), dust 0 % (0 % at the mass floor, 0 % at a non-physical-step fallback); 0 breaks folded wholly into the aggregated tail (rule 1150).
 
 | Generation | share of landed mass | median retained fraction | median birth altitude (m) |
 | ---------- | -------------------- | ------------------------ | ------------------------- |

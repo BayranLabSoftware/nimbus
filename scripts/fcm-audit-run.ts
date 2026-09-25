@@ -1,10 +1,16 @@
 /**
- * Rule 1189 (a) to (c) (`src/physics/validation/fcmSurvivalLightRules.ts`):
- * the cascade audit — every break and every component's fate, on all four
- * configurations (M1 and M2, clouds unlimited and capped) and the same 18
- * development cases and input/parameter streams as H1, H3 and H5. No new
- * physics, no hypothesis tested: a measurement, reported by case AND by
- * configuration (rule 1189 (c)), never only pooled.
+ * Rules 1189 (a) to (c), 1190 (a) (`src/physics/validation/
+ * fcmSurvivalLightRules.ts`): the cascade audit — every break and every
+ * component's fate, on all four configurations (M1 and M2, clouds unlimited
+ * and capped) and the same 18 development cases and input/parameter streams
+ * as H1, H3 and H5. No new physics, no hypothesis tested: a measurement,
+ * reported by case AND by configuration (rule 1189 (c)), never only pooled.
+ * Per rule 1190: a stopped component's exact reason (`stopReason`) is
+ * reported apart from "settled"/"dust" and never summed into a ground- or
+ * meteorite-mass claim; the largest child at a break is reported both for
+ * any component and for a solid fragment only, since a draw's cloud can
+ * itself be the largest child (rule 1190's own correction, found on
+ * Chelyabinsk's report).
  *
  *   pnpm exec tsx scripts/fcm-audit-run.ts all
  *   pnpm exec tsx scripts/fcm-audit-run.ts shard k K
@@ -106,15 +112,20 @@ interface ConfigAccumulator {
   entryMassKg: number;
   pressureRatios: number[];
   firstBreakLargestShare: number[];
+  firstBreakLargestSolidShare: number[];
   firstBreakCloudShare: number[];
   firstBreakChildCount: number[];
   laterBreakLargestShare: number[];
+  laterBreakLargestSolidShare: number[];
   laterBreakCloudShare: number[];
   laterBreakChildCount: number[];
   landedSolidKg: number;
   landedCloudKg: number;
   settledKg: number;
   dustKg: number;
+  /** Rule 1190 (a): a stopped (settled or dust) component's exact reason. */
+  settledByReason: Record<'terminalVelocity' | 'nonPhysicalStep', number>;
+  dustByReason: Record<'massFloor' | 'nonPhysicalStep', number>;
   aggregatedEvents: number;
   byGeneration: Record<GenBucket, { massKg: number; retained: number[]; birthAltM: number[] }>;
   landedBirthAltM: number[];
@@ -131,15 +142,19 @@ function newAccumulator(): ConfigAccumulator {
     entryMassKg: 0,
     pressureRatios: [],
     firstBreakLargestShare: [],
+    firstBreakLargestSolidShare: [],
     firstBreakCloudShare: [],
     firstBreakChildCount: [],
     laterBreakLargestShare: [],
+    laterBreakLargestSolidShare: [],
     laterBreakCloudShare: [],
     laterBreakChildCount: [],
     landedSolidKg: 0,
     landedCloudKg: 0,
     settledKg: 0,
     dustKg: 0,
+    settledByReason: { terminalVelocity: 0, nonPhysicalStep: 0 },
+    dustByReason: { massFloor: 0, nonPhysicalStep: 0 },
     aggregatedEvents: 0,
     byGeneration,
     landedBirthAltM: [],
@@ -159,10 +174,17 @@ function absorb(acc: ConfigAccumulator, r: ReturnType<typeof fcmEntryAudit>): vo
     });
     const massOf = (rec: FcmComponentRecord): number => rec.count * rec.birthMassKg;
     const largestShare = Math.max(...children.map(massOf), 0) / b.parentMassKg;
+    const solidMasses = children.filter((c) => !c.isCloud).map(massOf);
+    const largestSolidShare =
+      solidMasses.length === 0 ? null : Math.max(...solidMasses) / b.parentMassKg;
     const cloudShare =
       children.filter((c) => c.isCloud).reduce((a, c) => a + massOf(c), 0) / b.parentMassKg;
     const isFirst = b.generation === 0;
     (isFirst ? acc.firstBreakLargestShare : acc.laterBreakLargestShare).push(largestShare);
+    if (largestSolidShare !== null)
+      (isFirst ? acc.firstBreakLargestSolidShare : acc.laterBreakLargestSolidShare).push(
+        largestSolidShare
+      );
     (isFirst ? acc.firstBreakCloudShare : acc.laterBreakCloudShare).push(cloudShare);
     (isFirst ? acc.firstBreakChildCount : acc.laterBreakChildCount).push(children.length);
   }
@@ -182,8 +204,12 @@ function absorb(acc: ConfigAccumulator, r: ReturnType<typeof fcmEntryAudit>): vo
       acc.landedCloudKg += rec.count * rec.finalMassKg;
     } else if (rec.fate === 'settled' && rec.finalMassKg !== null) {
       acc.settledKg += rec.count * rec.finalMassKg;
+      if (rec.stopReason === 'terminalVelocity' || rec.stopReason === 'nonPhysicalStep')
+        acc.settledByReason[rec.stopReason] += rec.count * rec.finalMassKg;
     } else if (rec.fate === 'dust' && rec.finalMassKg !== null) {
       acc.dustKg += rec.count * rec.finalMassKg;
+      if (rec.stopReason === 'massFloor' || rec.stopReason === 'nonPhysicalStep')
+        acc.dustByReason[rec.stopReason] += rec.count * rec.finalMassKg;
     }
   }
 }
@@ -196,12 +222,14 @@ interface ConfigReport {
   firstBreak: {
     count: number;
     medianLargestChildShare: number | null;
+    medianLargestSolidChildShare: number | null;
     medianCloudShare: number | null;
     medianChildCount: number | null;
   };
   laterBreaks: {
     count: number;
     medianLargestChildShare: number | null;
+    medianLargestSolidChildShare: number | null;
     medianCloudShare: number | null;
     medianChildCount: number | null;
   };
@@ -210,6 +238,14 @@ interface ConfigReport {
     landedCloud: number;
     settled: number;
     dust: number;
+  };
+  /** Rule 1190 (a): each stopped fate's own share, split by exact reason —
+   *  never summed into a ground- or meteorite-mass claim (rule 1190). */
+  stopReasonShare: {
+    settledTerminalVelocity: number;
+    settledNonPhysicalStep: number;
+    dustMassFloor: number;
+    dustNonPhysicalStep: number;
   };
   aggregatedEvents: number;
   byGeneration: {
@@ -275,12 +311,14 @@ function report(configuration: string, acc: ConfigAccumulator): ConfigReport {
     firstBreak: {
       count: acc.firstBreakLargestShare.length,
       medianLargestChildShare: median(acc.firstBreakLargestShare),
+      medianLargestSolidChildShare: median(acc.firstBreakLargestSolidShare),
       medianCloudShare: median(acc.firstBreakCloudShare),
       medianChildCount: median(acc.firstBreakChildCount),
     },
     laterBreaks: {
       count: acc.laterBreakLargestShare.length,
       medianLargestChildShare: median(acc.laterBreakLargestShare),
+      medianLargestSolidChildShare: median(acc.laterBreakLargestSolidShare),
       medianCloudShare: median(acc.laterBreakCloudShare),
       medianChildCount: median(acc.laterBreakChildCount),
     },
@@ -289,6 +327,15 @@ function report(configuration: string, acc: ConfigAccumulator): ConfigReport {
       landedCloud: totalLanded > 0 ? round(acc.landedCloudKg / totalLanded, 6) : 0,
       settled: totalLanded > 0 ? round(acc.settledKg / totalLanded, 6) : 0,
       dust: totalLanded > 0 ? round(acc.dustKg / totalLanded, 6) : 0,
+    },
+    stopReasonShare: {
+      settledTerminalVelocity:
+        totalLanded > 0 ? round(acc.settledByReason.terminalVelocity / totalLanded, 6) : 0,
+      settledNonPhysicalStep:
+        totalLanded > 0 ? round(acc.settledByReason.nonPhysicalStep / totalLanded, 6) : 0,
+      dustMassFloor: totalLanded > 0 ? round(acc.dustByReason.massFloor / totalLanded, 6) : 0,
+      dustNonPhysicalStep:
+        totalLanded > 0 ? round(acc.dustByReason.nonPhysicalStep / totalLanded, 6) : 0,
     },
     aggregatedEvents: acc.aggregatedEvents,
     byGeneration,
@@ -342,7 +389,7 @@ function merge(K: number): void {
   }
   results.sort((a, b) => order.indexOf(a.case) - order.indexOf(b.case));
 
-  const out = { rule: '1189 (a) to (c)', draws: DRAWS, results };
+  const out = { rule: '1189 (a) to (c), 1190 (a)', draws: DRAWS, results };
   writeFileSync('src/physics/validation/fcmAuditRun.json', `${JSON.stringify(out, null, 1)}\n`);
 
   const pct = (x: number): string => `${String(round(x * 100, 4))} %`;
@@ -366,8 +413,28 @@ function merge(K: number): void {
     settled: weightedMean((c) => c.fateShare.settled),
     dust: weightedMean((c) => c.fateShare.dust),
   };
+  const pooledStopReason = {
+    settledTerminalVelocity: weightedMean((c) => c.stopReasonShare.settledTerminalVelocity),
+    settledNonPhysicalStep: weightedMean((c) => c.stopReasonShare.settledNonPhysicalStep),
+    dustMassFloor: weightedMean((c) => c.stopReasonShare.dustMassFloor),
+    dustNonPhysicalStep: weightedMean((c) => c.stopReasonShare.dustNonPhysicalStep),
+  };
   const pooledPressure = allConfigs.flatMap((c) =>
     c.pressureRatio.median === null ? [] : [c.pressureRatio.median]
+  );
+  const pooledFirstLargestSolid = median(
+    allConfigs.flatMap((c) =>
+      c.firstBreak.medianLargestSolidChildShare === null
+        ? []
+        : [c.firstBreak.medianLargestSolidChildShare]
+    )
+  );
+  const pooledLaterLargestSolid = median(
+    allConfigs.flatMap((c) =>
+      c.laterBreaks.medianLargestSolidChildShare === null
+        ? []
+        : [c.laterBreaks.medianLargestSolidChildShare]
+    )
   );
 
   const lines = [
@@ -383,21 +450,29 @@ function merge(K: number): void {
     `Break pressure ratio: every case-configuration’s own median sits at ${median(pooledPressure) === null ? '—' : String(median(pooledPressure))}` +
       ' (the bisection’s own precision — a sanity check, not a result).',
     '',
-    'Where the body’s mass ends up, pooled across every case and configuration that completed:',
+    'What the branch stops accounting for, pooled across every case and configuration that completed —',
+    '**rule 1190: "settled" is a numerical stopping condition, not a claim about the material’s later,',
+    'physical fate; nothing here sums it into a ground- or meteorite-mass claim**:',
     '',
     '| | share |',
     '| --- | --- |',
     `| Landed, solid | ${pct(pooledFate.landedSolid)} |`,
     `| Landed, cloud | ${pct(pooledFate.landedCloud)} |`,
-    `| **Settled mid-flight (never reaches the ground)** | **${pct(pooledFate.settled)}** |`,
-    `| Turned to dust (mass floor / non-physical step) | ${pct(pooledFate.dust)} |`,
+    `| No longer integrated: a cloud within \`settleWithin\` of its own terminal speed | ${pct(pooledStopReason.settledTerminalVelocity)} |`,
+    `| No longer integrated: a non-physical-step fallback, as a settled cloud | ${pct(pooledStopReason.settledNonPhysicalStep)} |`,
+    `| Turned to dust: below the mass floor | ${pct(pooledStopReason.dustMassFloor)} |`,
+    `| Turned to dust: a non-physical-step fallback | ${pct(pooledStopReason.dustNonPhysicalStep)} |`,
     '',
-    'The great majority of the body’s original mass, pooled, never reaches the ground at all: it settles',
-    'as an airborne cloud once its fall slows to terminal speed (rule 1138 (c)), well above the surface, and',
-    'the engine stops integrating it there. What H1, H3 and H5 call "landed mass" — the quantity with an',
-    'excess against the references of rule 1178 (a) — is already a small remainder of the entry mass by the',
-    'time it reaches the ground; this audit does not change that finding, only places it beside the much',
-    'larger settled-mass pool for the first time.',
+    'What H1, H3 and H5 call "landed mass" — the quantity with an excess against the references of rule',
+    '1178 (a) — is already a small remainder of the entry mass by the time it reaches the ground; this audit',
+    'does not change that finding. The great majority of the remaining mass stops being integrated once a',
+    'cloud nears its own terminal speed, well above the surface (rule 1138 (c), deviation D9); this audit',
+    'reports that stop, not the material’s subsequent, physical fate, which it has no physics to decide',
+    '(rule 1190).',
+    '',
+    'Largest child at a break, corrected (rule 1190): reported separately for any component and for a',
+    `solid fragment only, since a draw’s cloud can itself be the largest child — first break, solid only,`,
+    `median of medians ${pooledFirstLargestSolid === null ? '—' : pct(pooledFirstLargestSolid)}; later breaks, solid only, ${pooledLaterLargestSolid === null ? '—' : pct(pooledLaterLargestSolid)}.`,
     '',
     '## By case and configuration',
     '',
@@ -408,16 +483,19 @@ function merge(K: number): void {
         `**${c.configuration}** — ${String(c.produced)} draws produced, pressure ratio at the break ` +
           `${String(c.pressureRatio.median)} (median, ${String(c.pressureRatio.min)}–${String(c.pressureRatio.max)})`,
         '',
-        `First break: ${String(c.firstBreak.count)} events, largest child ${c.firstBreak.medianLargestChildShare === null ? '—' : pct(c.firstBreak.medianLargestChildShare)} ` +
-          `of parent mass (median), cloud ${c.firstBreak.medianCloudShare === null ? '—' : pct(c.firstBreak.medianCloudShare)}, ` +
+        `First break: ${String(c.firstBreak.count)} events — largest child (any) ${c.firstBreak.medianLargestChildShare === null ? '—' : pct(c.firstBreak.medianLargestChildShare)}, ` +
+          `largest **solid** child ${c.firstBreak.medianLargestSolidChildShare === null ? '— (every child a cloud)' : pct(c.firstBreak.medianLargestSolidChildShare)} ` +
+          `of parent mass (medians), cloud ${c.firstBreak.medianCloudShare === null ? '—' : pct(c.firstBreak.medianCloudShare)}, ` +
           `${String(c.firstBreak.medianChildCount)} distinct children (median).`,
-        `Later breaks: ${String(c.laterBreaks.count)} events, largest child ${c.laterBreaks.medianLargestChildShare === null ? '—' : pct(c.laterBreaks.medianLargestChildShare)} ` +
-          `of parent mass (median), cloud ${c.laterBreaks.medianCloudShare === null ? '—' : pct(c.laterBreaks.medianCloudShare)}, ` +
+        `Later breaks: ${String(c.laterBreaks.count)} events — largest child (any) ${c.laterBreaks.medianLargestChildShare === null ? '—' : pct(c.laterBreaks.medianLargestChildShare)}, ` +
+          `largest **solid** child ${c.laterBreaks.medianLargestSolidChildShare === null ? '— (every child a cloud)' : pct(c.laterBreaks.medianLargestSolidChildShare)} ` +
+          `of parent mass (medians), cloud ${c.laterBreaks.medianCloudShare === null ? '—' : pct(c.laterBreaks.medianCloudShare)}, ` +
           `${String(c.laterBreaks.medianChildCount)} distinct children (median).`,
         '',
-        `Where the body's mass ends up — **landed** solid ${pct(c.fateShare.landedSolid)}, **landed** cloud ${pct(c.fateShare.landedCloud)}, ` +
-          `**settled mid-flight (never reaches the ground)** ${pct(c.fateShare.settled)}, dust ${pct(c.fateShare.dust)}; ${String(c.aggregatedEvents)} ` +
-          'breaks folded wholly into the aggregated tail (rule 1150).',
+        `Where the run's own accounting stands — **landed** solid ${pct(c.fateShare.landedSolid)}, **landed** cloud ${pct(c.fateShare.landedCloud)}, ` +
+          `**no longer integrated, as a cloud (rule 1190: a stop, not a fate)** ${pct(c.fateShare.settled)} (of which ${pct(c.stopReasonShare.settledTerminalVelocity)} at the terminal-speed stop, ${pct(c.stopReasonShare.settledNonPhysicalStep)} at a non-physical-step fallback), ` +
+          `dust ${pct(c.fateShare.dust)} (${pct(c.stopReasonShare.dustMassFloor)} at the mass floor, ${pct(c.stopReasonShare.dustNonPhysicalStep)} at a non-physical-step fallback); ` +
+          `${String(c.aggregatedEvents)} breaks folded wholly into the aggregated tail (rule 1150).`,
         '',
         '| Generation | share of landed mass | median retained fraction | median birth altitude (m) |',
         '| --- | --- | --- | --- |',
