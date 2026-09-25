@@ -147,6 +147,22 @@ export interface ImpactReportModel {
 
 const F = 'report.impact.field';
 
+/**
+ * Rule 1202: `length()` (via `formatRange`) reads a radius or distance of
+ * zero as "no effect drawn" and prints NONE for it — right for a damage
+ * ring, wrong for an altitude, where zero is a fact (no airburst; the
+ * body never breaks up), not an absence. Scales to km past 1000 m, same
+ * as `SimulatorPanel.tsx`'s own `TIERS_METERS` (which this model cannot
+ * import: it resolves its decimal separator from the global i18next
+ * instance, not from `language`, and this file stays pure — every number
+ * through the `language` this call was given, never global state). Built
+ * on `fixed()`, already used by every other number in this file.
+ */
+function altitude(m: number, language: string): string {
+  if (!Number.isFinite(m)) return NONE;
+  return m >= 1_000 ? `${fixed(m / 1_000, 1, language)} km` : `${fixed(m, 0, language)} m`;
+}
+
 /** The figure numbers, in the order the atlas prints the layers. */
 function figureNumbers(figures: ReportFigure[]): (id: ImpactLayerId) => number | undefined {
   return (id) => figures.find((f) => f.layer.id === id)?.number;
@@ -176,6 +192,10 @@ function scenarioRows(r: ImpactScenarioResult, ctx: ImpactReportContext): Report
     row(t, 'impactorDensity', `${fixed(input.impactorDensity, 0, l)} kg/m³`),
     row(t, 'targetDensity', `${fixed(input.targetDensity, 0, l)} kg/m³`),
     row(t, 'impactAngle', `${fixed(radiansToDegrees(input.impactAngle), 0, l)}°`),
+    // Rule 1202: the same fallback `ImpactCustomInputs.tsx` and
+    // `simulate.ts` (line 1102) apply -- the model always uses an azimuth,
+    // 90° when none was typed, so the report never implies none was used.
+    row(t, 'impactAzimuthDeg', `${fixed(input.impactAzimuthDeg ?? 90, 0, l)}°N`),
   ];
   const water = input.waterDepth as number | undefined;
   if (water !== undefined && water > 0) {
@@ -320,6 +340,15 @@ function groups(
     tagged(row(t, 'kineticEnergy', tnt(joulesToMegatons(r.impactor.kineticEnergy), l)), 'energy'),
     tagged(row(t, 'entryRegime', t(`report.impact.enum.regime.${r.entry.regime}`)), 'entry'),
     tagged(row(t, 'energyToGround', energyShare(r.entry.energyFractionToGround, l)), 'entry'),
+    // Rule 1202: on the panel's Esito tab already, never on this page
+    // before -- a reader with the PDF alone could not see where the body
+    // broke up, where it burst, or how fast it was going when it did.
+    tagged(row(t, 'breakupAltitude', altitude(r.entry.breakupAltitude, l)), 'entry'),
+    tagged(row(t, 'burstAltitude', altitude(r.entry.burstAltitude, l)), 'entry'),
+    tagged(
+      row(t, 'endVelocity', `${fixed((r.entry.endVelocity as number) / 1_000, 1, l)} km/s`),
+      'entry'
+    ),
   ]);
 
   // Rule 947: out of the domain of its law the crater is not resolved.

@@ -168,6 +168,7 @@
       "angleNote": "misurato dall'orizzonte: 90° è una caduta verticale",
       "azimuthLabel": "Direzione di volo",
       "azimuthNote": "{{degrees}}° — verso dove vola l’impattore, da nord",
+      "azimuthNoteAirburst": "con gli altri valori attuali questo corpo si disintegra del tutto in aria: la sorgente dell'Earth Impact Effects Program è simmetrica in azimut, quindi questa direzione non cambia nulla di ciò che è disegnato sul globo",
       "diameterInKm": "{{value}} km",
       "taxonomyNote": "riempie densità e resistenza con i valori della classe — dare qui una resistenza toglie l'ingresso dalla legge a due stadi predefinita, portandolo su questo unico valore di classe (regola 1194, A11)"
     },
@@ -932,6 +933,14 @@
         "localOnly": "Mappa tsunami: solo layer locale (~150 km) — il mosaico planetario non era pronto per questa simulazione; verrà completata appena arriva, altrimenti premi di nuovo Avvia simulazione.",
         "globalLoading": "Mappa tsunami: solo layer locale — mosaico globale in caricamento, premi Launch tra un momento."
       },
+      "monteCarlo": {
+        "intro": "I due anelli tenui in più intorno ad alcuni contorni sono la dispersione Monte Carlo P10–P90 — non una soglia di danno in più, ma quanto il decimo e il novantesimo percentile della simulazione si scostano dall'unica corsa disegnata altrove:",
+        "metric": {
+          "finalCraterDiameter": "Diametro cratere",
+          "firestormIgnition": "Innesco firestorm"
+        },
+        "heatmap": "Il bagliore tenue sotto quegli anelli è la stessa dispersione resa come sfumatura: più denso dove cadono più estrazioni della simulazione, sfumato verso quelle rare e più estreme."
+      },
       "field": {
         "title": "Campo di scuotimento",
         "note": "Intensità prevista sul terreno che c’è davvero, letto dalle tessere Vs30 spedite — non è una misura. La dispersione pubblicata è di circa un grado MMI, quindi una banda può valere un gradino in più o in meno. Gli anelli qui sopra sono gli stessi livelli su roccia di riferimento."
@@ -1476,6 +1485,7 @@
         "impactorDensity": "Densità del corpo",
         "targetDensity": "Densità del bersaglio",
         "impactAngle": "Angolo d’impatto",
+        "impactAzimuthDeg": "Direzione di volo",
         "nearestSea": "Mare più vicino che un’onda potrebbe attraversare",
         "waterDepth": "Profondità dell’acqua nel punto d’impatto",
         "meanBasinDepth": "Profondità media del bacino",
@@ -1484,6 +1494,9 @@
         "kineticEnergy": "Energia cinetica",
         "entryRegime": "Regime d’ingresso",
         "energyToGround": "Frazione dell’energia al suolo",
+        "breakupAltitude": "Inizio frammentazione",
+        "burstAltitude": "Altezza detonazione",
+        "endVelocity": "Velocità a fine ingresso",
         "transientCrater": "Diametro del cratere transiente",
         "finalCrater": "Diametro del cratere finale",
         "craterDepth": "Profondità del cratere",

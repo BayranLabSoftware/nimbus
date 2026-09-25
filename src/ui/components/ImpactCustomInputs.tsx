@@ -1,6 +1,8 @@
 import type { ChangeEvent, JSX } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ASTEROID_TAXONOMY, type AsteroidTaxonomyClass } from '../../physics/constants.js';
+import { simulateImpact } from '../../physics/simulate.js';
 import { radiansToDegrees } from '../../physics/units.js';
 import { useAppStore } from '../../store/index.js';
 import { useFieldIssues } from '../../store/useScenarioValidation.js';
@@ -55,6 +57,18 @@ export function ImpactCustomInputs(): JSX.Element {
   // an integer (e.g. Tunguska 30°).
   const angleDeg = Math.round((radiansToDegrees(input.impactAngle) as number) * 100) / 100;
   const azimuthDeg = input.impactAzimuthDeg ?? 90;
+  // Rule 1200 (A12): the panel cannot know from the inputs alone whether
+  // this body will complete-airburst — that regime is a threshold the
+  // physics crosses, not a rule of thumb the form can guess — so it reads
+  // the same preview the harness and the store both trust, on the current
+  // inputs, cheap enough (single digits of ms) to run on every change of
+  // them. `couplesToGround` (simulate.ts) is exactly `regime !==
+  // 'COMPLETE_AIRBURST'`: every ring and the crater draw isotropic exactly
+  // there, so azimuth truly moves nothing on the globe for this body today.
+  const azimuthMovesNothing = useMemo(
+    () => simulateImpact(input).entry.regime === 'COMPLETE_AIRBURST',
+    [input]
+  );
 
   const updateDiameter = (text: string): void => {
     const metres = parseFloat(text);
@@ -226,7 +240,11 @@ export function ImpactCustomInputs(): JSX.Element {
         label={t('simulator.impact.azimuthLabel')}
         unit="°N"
         source="user"
-        note={t('simulator.impact.azimuthNote', { degrees: Math.round(azimuthDeg).toString() })}
+        note={
+          azimuthMovesNothing
+            ? t('simulator.impact.azimuthNoteAirburst')
+            : t('simulator.impact.azimuthNote', { degrees: Math.round(azimuthDeg).toString() })
+        }
         field="impactAzimuthDeg"
         issues={azimuthIssues}
       >

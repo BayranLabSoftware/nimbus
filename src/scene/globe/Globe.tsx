@@ -37,12 +37,16 @@ import { aftershockShakingFootprint } from '../../physics/events/earthquake/afte
 import { peakGroundAcceleration } from '../../physics/events/earthquake/attenuation.js';
 import { modifiedMercalliIntensity } from '../../physics/events/earthquake/intensity.js';
 import { m } from '../../physics/units.js';
-import type { ImpactDamageRadii } from '../../physics/events/impact/damageRings.js';
+import {
+  MMI_RING_COLORS,
+  PYROCLASTIC_RING_COLOR,
+  RING_COLORS,
+  pickFuzzyMetrics,
+} from './monteCarloHalos.js';
 import {
   seismicSourceCavityRadiusM,
   terrainSpanForState,
   useAppStore,
-  type ActiveMonteCarlo,
   type ActiveResult,
   type Coordinates,
 } from '../../store/index.js';
@@ -175,37 +179,25 @@ const BASE_TILE_URL =
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 const BASE_TILE_ATTRIBUTION = 'Esri, Maxar, Earthstar Geographics, and the GIS User Community';
 
-/**
- * Ring palette — every hex is chosen for two constraints:
- *   1. **Within-event distinguishability**. The four impact rings (or
- *      four explosion rings) coexist on the same scene; they must be
- *      separable both by hue AND by luminance, so red-green colourblind
- *      viewers still read them as a four-step damage gradient.
- *   2. **Legibility on dark backgrounds**. Every swatch must have
- *      enough lightness to register on the legend's `#0C0E14`-ish glass
- *      panel — colours like `#5B1010` looked great on the OSM tile but
- *      vanished into the legend background.
- *
- * Cross-event hex collisions (e.g. mmi9 = same wine red as the impact
- * crater rim) are accepted: the two rings never appear on the same
- * scene, and the felt-intensity gradient deliberately mirrors the
- * "violent → severe → strong" cratering palette.
- */
-const RING_COLORS: Record<keyof ImpactDamageRadii, Color> = {
-  craterRim: Color.fromCssColorString('#B91C1C'),
-  thirdDegreeBurn: Color.fromCssColorString('#F97316'),
-  /** 2nd-degree burn (5 cal/cm² Glasstone Table 7.41) — sits between
-   *  the strong-orange 3rd-degree contour and the gold overpressure
-   *  rings. The amber tone reads as "less severe burn" without
-   *  collapsing into either neighbouring contour. */
-  secondDegreeBurn: Color.fromCssColorString('#FB923C'),
-  overpressure5psi: Color.fromCssColorString('#FACC15'),
-  overpressure1psi: Color.fromCssColorString('#FDE047'),
-  /** Outermost overpressure ring (0.5 psi scattered window damage).
-   *  Pale-cream so it sits OUTSIDE the gold 1 psi contour without
-   *  fighting it for visual weight. */
-  lightDamage: Color.fromCssColorString('#FEF3C7'),
-};
+// Ring palette — every hex is chosen for two constraints:
+//   1. Within-event distinguishability. The four impact rings (or four
+//      explosion rings) coexist on the same scene; they must be separable
+//      both by hue AND by luminance, so red-green colourblind viewers still
+//      read them as a four-step damage gradient.
+//   2. Legibility on dark backgrounds. Every swatch must have enough
+//      lightness to register on the legend's `#0C0E14`-ish glass panel —
+//      colours like `#5B1010` looked great on the OSM tile but vanished
+//      into the legend background.
+// Cross-event hex collisions (e.g. mmi9 = same wine red as the impact
+// crater rim) are accepted: the two rings never appear on the same scene,
+// and the felt-intensity gradient deliberately mirrors the "violent →
+// severe → strong" cratering palette.
+//
+// RING_COLORS, MMI_RING_COLORS and PYROCLASTIC_RING_COLOR moved to
+// `monteCarloHalos.ts` (rule 1201) and are imported from there:
+// `pickFuzzyMetrics` needed them and lives there now, so this file reads
+// them from one shared table instead of declaring a second copy — every
+// other reference below (the nominal rings' own colours) is unchanged.
 
 /** Initial-radiation lethal-dose contour (Glasstone §8 — drawn only
  *  for nuclear scenarios, where the dose actually escapes the
@@ -261,20 +253,6 @@ const TSUNAMI_CAVITY_COLOR = Color.fromCssColorString('#38BDF8');
 // Wave-front tier colours (5 m / 1 m / 0.3 m red/cyan/azure) retired
 // in Phase 16; tsunami amplitude is now encoded by the discrete-band
 // heatmap palette (`WAVE_AMPLITUDE_BANDS` from heatmap.ts).
-
-/** Felt-intensity contour colours, ordered inside → outside. The
- *  ramp goes orange → red → wine so the eye reads VII–IX as an
- *  intensification rather than three flavours of the same red. */
-const MMI_RING_COLORS = {
-  mmi9: Color.fromCssColorString('#7F1D1D'),
-  mmi8: Color.fromCssColorString('#DC2626'),
-  mmi7: Color.fromCssColorString('#FB923C'),
-} as const;
-
-/** Pyroclastic-density-current reach. Rose-red rather than the
- *  previous orange-red so it reads as distinct from the magenta
- *  lateral-blast ring on the same scene. */
-const PYROCLASTIC_RING_COLOR = Color.fromCssColorString('#E11D48');
 
 /** Lateral-blast envelope (Mt St Helens-class flank decompression).
  *  Magenta-pink instead of the previous dark red — clearly different
@@ -4602,114 +4580,6 @@ export function Globe(): JSX.Element {
  *
  * Returns 0 when nothing can be framed (e.g. before evaluate).
  */
-/**
- * Choose up to two representative MC metrics whose P10/P90 percentiles
- * are worth painting as fuzzy uncertainty bands on the globe. Each
- * spec carries the radius pair (m) and the colour to use; the colour
- * matches the nominal-result ring of the same physical quantity so
- * the eye reads "halo around the deterministic ring" rather than
- * "extra rings to memorise".
- *
- * Why two and not all of them: rendering P10/P90 for every metric
- * blows past visual budget — four impact metrics × two percentiles
- * = eight extra rings on a busy globe. We pick the metric the user
- * most often asks "how confident are we about this?" about.
- */
-interface FuzzyMetric {
-  p10: number;
-  p90: number;
-  color: Color;
-  /** Sorted ascending raw samples behind this metric. Optional —
-   *  only populated when the MC engine returned them (Phase 8c).
-   *  Used to render the radial ECDF heatmap underneath the
-   *  deterministic ring. */
-  samples?: readonly number[];
-  /** True when the metric is a *radius* in metres, false when it is
-   *  a diameter (e.g. finalCraterDiameter). Drives the per-sample
-   *  ÷2 transform used for the ECDF bitmap. */
-  scale: 'radius' | 'diameter';
-}
-
-function pickFuzzyMetrics(mc: ActiveMonteCarlo): FuzzyMetric[] {
-  switch (mc.type) {
-    case 'impact':
-      return [
-        {
-          p10: mc.data.metrics.finalCraterDiameter.p10 / 2,
-          p90: mc.data.metrics.finalCraterDiameter.p90 / 2,
-          color: RING_COLORS.craterRim,
-          ...(mc.data.rawSamples.finalCraterDiameter !== undefined && {
-            samples: mc.data.rawSamples.finalCraterDiameter,
-          }),
-          scale: 'diameter',
-        },
-        {
-          p10: mc.data.metrics.firestormIgnition.p10,
-          p90: mc.data.metrics.firestormIgnition.p90,
-          color: RING_COLORS.thirdDegreeBurn,
-          ...(mc.data.rawSamples.firestormIgnition !== undefined && {
-            samples: mc.data.rawSamples.firestormIgnition,
-          }),
-          scale: 'radius',
-        },
-      ];
-    case 'explosion':
-      return [
-        {
-          p10: mc.data.metrics.fivePsiRadius.p10,
-          p90: mc.data.metrics.fivePsiRadius.p90,
-          color: RING_COLORS.overpressure5psi,
-          ...(mc.data.rawSamples.fivePsiRadius !== undefined && {
-            samples: mc.data.rawSamples.fivePsiRadius,
-          }),
-          scale: 'radius',
-        },
-        {
-          p10: mc.data.metrics.onePsiRadius.p10,
-          p90: mc.data.metrics.onePsiRadius.p90,
-          color: RING_COLORS.overpressure1psi,
-          ...(mc.data.rawSamples.onePsiRadius !== undefined && {
-            samples: mc.data.rawSamples.onePsiRadius,
-          }),
-          scale: 'radius',
-        },
-      ];
-    case 'earthquake':
-      return [
-        {
-          p10: mc.data.metrics.mmi8Radius.p10,
-          p90: mc.data.metrics.mmi8Radius.p90,
-          color: MMI_RING_COLORS.mmi8,
-          ...(mc.data.rawSamples.mmi8Radius !== undefined && {
-            samples: mc.data.rawSamples.mmi8Radius,
-          }),
-          scale: 'radius',
-        },
-        {
-          p10: mc.data.metrics.liquefactionRadius.p10,
-          p90: mc.data.metrics.liquefactionRadius.p90,
-          color: MMI_RING_COLORS.mmi7,
-          ...(mc.data.rawSamples.liquefactionRadius !== undefined && {
-            samples: mc.data.rawSamples.liquefactionRadius,
-          }),
-          scale: 'radius',
-        },
-      ];
-    case 'volcano':
-      return [
-        {
-          p10: mc.data.metrics.pyroclasticRunout.p10,
-          p90: mc.data.metrics.pyroclasticRunout.p90,
-          color: PYROCLASTIC_RING_COLOR,
-          ...(mc.data.rawSamples.pyroclasticRunout !== undefined && {
-            samples: mc.data.rawSamples.pyroclasticRunout,
-          }),
-          scale: 'radius',
-        },
-      ];
-  }
-}
-
 function computeFrameRadius(
   result: ActiveResult,
   ashfall: WindAdvectedAshfall | undefined,

@@ -8,6 +8,8 @@ import {
   NON_FINITE_PLACEHOLDER,
   type UnitTier,
 } from '../utils/numberFormat.js';
+import { pickFuzzyMetrics } from '../../scene/globe/monteCarloHalos.js';
+import type { FuzzyMetric } from '../../scene/globe/monteCarloHalos.js';
 import { INTENSITY_BANDS } from '../../scene/globe/shakingOverlay.js';
 import { entryCellSentence } from '../../scene/globe/measuredCellText.js';
 import { ImpactFieldLegend } from './ImpactFieldLegend.js';
@@ -252,6 +254,7 @@ export function RingLegend(): JSX.Element {
   const bathymetricTsunami = useAppStore((s) => s.bathymetricTsunami);
   const globalBathymetricGrid = useAppStore((s) => s.globalBathymetricGrid);
   const waveMap = useAppStore((s) => s.waveMapKey);
+  const monteCarlo = useAppStore((s) => s.monteCarlo);
   const [collapsed, setCollapsed] = useState(false);
 
   const rows = buildRingRows(result, t, shakingFieldBands !== null);
@@ -294,6 +297,16 @@ export function RingLegend(): JSX.Element {
     } else if (!globalAvailable) tsunamiStatusKey = 'globalLoading';
     else tsunamiStatusKey = 'localOnly';
   }
+
+  // Rule 1201: the same two metrics `Globe.tsx` drew P10/P90 halos and the
+  // radial probability heatmap for, read from the same function so the
+  // legend cannot name a metric the globe did not draw (or vice versa).
+  // Impacts only — the other four event types are this round's declared
+  // scope boundary (rule 1195), not a defect specific to them.
+  const impactFuzzyMetrics: FuzzyMetric[] =
+    monteCarlo !== null && monteCarlo.type === 'impact' && result?.type === 'impact'
+      ? pickFuzzyMetrics(monteCarlo)
+      : [];
 
   return (
     <aside
@@ -409,6 +422,35 @@ export function RingLegend(): JSX.Element {
             <p className={styles.tsunamiStatus} data-status={tsunamiStatusKey}>
               {t(`globe.legend.tsunamiStatus.${tsunamiStatusKey}`)}
             </p>
+          )}
+          {impactFuzzyMetrics.length > 0 && (
+            <section data-testid="legend-monte-carlo">
+              <p className={styles.uncertaintyNote}>{t('globe.legend.monteCarlo.intro')}</p>
+              <ul className={styles.list}>
+                {impactFuzzyMetrics.map((metric) => {
+                  const cssColor = metric.color.toCssColorString();
+                  return (
+                    <li
+                      key={metric.metricKey}
+                      className={styles.row}
+                      style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '6px 8px' }}
+                    >
+                      <span
+                        className={styles.swatch}
+                        style={{ backgroundColor: cssColor, color: cssColor }}
+                        aria-hidden="true"
+                      />
+                      <span className={styles.label}>
+                        {t(`globe.legend.monteCarlo.metric.${metric.metricKey}`)}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+              {impactFuzzyMetrics.some((metric) => metric.samples !== undefined) && (
+                <p className={styles.uncertaintyNote}>{t('globe.legend.monteCarlo.heatmap')}</p>
+              )}
+            </section>
           )}
           {result?.type === 'impact' && (
             <p className={styles.uncertaintyNote} data-testid="legend-entry-cell">

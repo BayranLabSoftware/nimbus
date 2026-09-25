@@ -277,6 +277,44 @@ describe("an impact's report, in the reader's language (IMP-7c)", () => {
     expect(crater?.value).toBe('—');
     expect(crater?.detail).toBe('report.impact.key.craterNone');
   });
+
+  it('rule 1202: prints the azimuth typed in, the breakup and burst altitudes, and the end-of-entry speed — on the panel already, not on this page before', () => {
+    const rowValue = (model: ImpactReportModel, id: string): string | undefined =>
+      model.groups.flatMap((g) => g.rows).find((r) => r.id === id)?.value;
+
+    // TUNGUSKA: a COMPLETE_AIRBURST with a real burst altitude and a
+    // non-zero breakup altitude — both read straight from the same
+    // simulation the model built its report from, not re-derived.
+    const tunguska = run('TUNGUSKA');
+    const tunguskaModel = buildImpactReport(tunguska, context(keyOnly, 'en'));
+    expect(rowValue(tunguskaModel, 'burstAltitude')).toBeDefined();
+    expect(rowValue(tunguskaModel, 'breakupAltitude')).toBeDefined();
+    expect(rowValue(tunguskaModel, 'endVelocity')).toBeDefined();
+    expect(rowValue(tunguskaModel, 'impactAzimuthDeg')).toBe('90°N');
+
+    // CHICXULUB: PARTIAL_AIRBURST, the swarm reaching the ground before it
+    // spreads wide — it breaks up (breakupAltitude > 0) but never truly
+    // bursts (burstAltitude legitimately 0, not absent), which is what
+    // the panel's own Esito tab already shows ("Si frammenta, colpisce il
+    // suolo").
+    const chicxulub = run('CHICXULUB');
+    const chicxulubModel = buildImpactReport(chicxulub, context(keyOnly, 'en'));
+    expect(chicxulub.entry.regime).toBe('PARTIAL_AIRBURST');
+    expect(chicxulub.entry.breakupAltitude as number).toBeGreaterThan(0);
+    expect(chicxulub.entry.burstAltitude as number).toBe(0);
+    // The exact point rule 1202's own draft got wrong at first: a zero
+    // burst altitude is a fact (no airburst happened), not an absent
+    // measurement, so it must read "0 m", never the report's NONE glyph
+    // (—) that a damage ring of zero radius would.
+    expect(rowValue(chicxulubModel, 'burstAltitude')).toBe('0 m');
+    expect(rowValue(chicxulubModel, 'breakupAltitude')).toBeDefined();
+    expect(rowValue(chicxulubModel, 'breakupAltitude')).not.toBe('—');
+
+    // CHICXULUB's own preset gives no impactAzimuthDeg at all, so
+    // chicxulubModel already reads the model's own default (90°),
+    // matching ImpactCustomInputs.tsx and simulate.ts.
+    expect(rowValue(chicxulubModel, 'impactAzimuthDeg')).toBe('90°N');
+  });
 });
 
 describe('rule 1031 (e): out of the crater’s domain the report gives no number', () => {

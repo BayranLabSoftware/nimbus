@@ -168,6 +168,7 @@
       "angleNote": "from the horizon: 90° is a vertical fall",
       "azimuthLabel": "Downrange direction",
       "azimuthNote": "{{degrees}}° — the way the impactor is flying, from north",
+      "azimuthNoteAirburst": "this body completely airbursts on today’s other inputs: the Earth Impact Effects Program’s burst source is azimuthally symmetric, so this direction moves nothing drawn on the globe",
       "diameterInKm": "{{value}} km",
       "taxonomyNote": "fills density and strength with that class’s values — giving a strength here takes the entry off the two-stage default law, onto this single class value (rule 1194, A11)"
     },
@@ -932,6 +933,14 @@
         "localOnly": "Tsunami map: local layer only (~150 km) — the planetary mosaic was not ready for this run; it completes as soon as it lands, otherwise press Launch simulation again.",
         "globalLoading": "Tsunami map: local layer only — global mosaic still loading; press Launch again in a moment."
       },
+      "monteCarlo": {
+        "intro": "The two faint extra rings around some contours are the Monte Carlo P10–P90 spread — not an additional damage threshold, but how far the sweep's 10th and 90th percentile fall from the single run drawn everywhere else:",
+        "metric": {
+          "finalCraterDiameter": "Crater diameter",
+          "firestormIgnition": "Firestorm ignition"
+        },
+        "heatmap": "The soft glow under those rings is the same spread as a gradient: denser where more of the sweep's draws land, fading toward the rare, more extreme ones."
+      },
       "field": {
         "title": "Shaking field",
         "note": "Predicted intensity on the ground that is actually there, read from the shipped Vs30 tiles — not a measurement. Published scatter is about one MMI degree, so a band could be one step lighter or heavier. The rings above are the same levels on reference rock."
@@ -1476,6 +1485,7 @@
         "impactorDensity": "Impactor density",
         "targetDensity": "Target density",
         "impactAngle": "Impact angle",
+        "impactAzimuthDeg": "Downrange direction",
         "nearestSea": "Nearest sea a wave could cross",
         "waterDepth": "Water depth at impact",
         "meanBasinDepth": "Mean basin depth",
@@ -1484,6 +1494,9 @@
         "kineticEnergy": "Kinetic energy",
         "entryRegime": "Entry regime",
         "energyToGround": "Energy fraction to ground",
+        "breakupAltitude": "Fragmentation onset",
+        "burstAltitude": "Burst altitude",
+        "endVelocity": "Speed at the end of entry",
         "transientCrater": "Transient crater diameter",
         "finalCrater": "Final crater diameter",
         "craterDepth": "Crater depth",

@@ -257,9 +257,16 @@ export const RULE_1194_ITEM_2_WRITTEN = '2026-09-25' as const;
  * fields (burst/breakup altitude, final speed, I2's band, the measured
  * cell's verdict, azimuth, the Monte Carlo table, active model variants);
  * silent field-validation failures; the terrain 8 s timeout that turns an
- * ocean site into land with no warning; the keyboard-navigation claim.
+ * ocean site into land with no warning.
  * Several need code most of the way through the render path this round has
  * not read carefully enough to touch safely -- left open and said so.
+ *
+ * [Correction, same round: "the keyboard-navigation claim" in that list was
+ * a slip, not a sixth open item -- README's flat "full keyboard navigation"
+ * is the SAME claim this rule's own third paragraph above already marked
+ * FIXED (reworded to name the panel and dialogs, not the canvas). Listing
+ * it again as open contradicted the paragraph a few lines above it; struck
+ * here rather than left to be re-discovered as a phantom item later.]
  */
 export const RULE_1195_WRITTEN = '2026-09-25' as const;
 
@@ -759,5 +766,187 @@ export const RULE_1198_WRITTEN = '2026-09-25' as const;
  * tolerance-on-Linux-x64, and whether to move re-sealing from every
  * number-moving round to every release. Both cost something this round
  * cannot weigh for him.
+ *
+ * Andrea's answer, the same day: leave it as it is. Rule 837's platform and
+ * bit-exact comparison, and rule 833's re-seal-at-the-round-that-moves-a-
+ * number practice, both stand, unchanged and not revisited. A7 closes here
+ * with its one contained fix (the image pin above) and its three other
+ * clauses read, weighed and declined by the one person who could decide
+ * them -- not silently dropped, and not taken on a guess.
  */
 export const RULE_1199_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1200. A12 -- THE AZIMUTH CURSOR, FOR A BODY THAT WILL COMPLETELY
+ * AIRBURST ON TODAY'S OTHER INPUTS, MOVES NOTHING DRAWN ON THE GLOBE, AND
+ * NOW SAYS SO.
+ *
+ * The defect, rule 1195's own words: "the azimuth cursor not saying it
+ * moves nothing for an airburst -- which the panel cannot know until the
+ * scenario is simulated, so a text fix alone is not enough". Traced to its
+ * exact mechanism in `simulate.ts`: `couplesToGround = entry.regime !==
+ * 'COMPLETE_AIRBURST'` (line 1133) is the one flag every ring's asymmetry
+ * (`obliqueImpactRingAsymmetry`) and centre offset
+ * (`obliqueImpactCentreOffset`) is drawn from, and passing it `false`
+ * returns the isotropic ring by construction (asymmetry.ts, rules 235-240 of
+ * `airburstShapeRules.ts`) -- an azimuthally symmetric source is the Earth
+ * Impact Effects Program's own model of a burst, not a simplification this
+ * project added. `craterAsymmetry` does not take the flag, but a
+ * `COMPLETE_AIRBURST` draws no crater at all, so its shape is moot. So the
+ * azimuth cursor is cosmetic, exactly and only, for a body whose OTHER five
+ * inputs (diameter, velocity, density, angle, strength) already cross it
+ * into that regime -- which the audit's own diagnosis is right that the
+ * panel cannot read off any single field; it is a threshold the physics
+ * crosses.
+ *
+ * The candidate, decided here before writing it: read the threshold the
+ * same way the panel already reads a live physical answer it does not
+ * store, `EarthquakeCustomInputs.tsx`'s own `strike` preview being the
+ * precedent -- call `simulateImpact` on the CURRENT six inputs (not a
+ * cached `result`, which may be null or stale against an edit not yet
+ * launched) and read `entry.regime` back. Measured before committing to
+ * it: ~5-7 ms a call on this machine (CHICXULUB and TUNGUSKA, 200-call
+ * average, headless) -- run through `useMemo` keyed on `input`, so it
+ * re-runs once per accepted edit, not once per keystroke or render, and
+ * never blocks typing. `ImpactCustomInputs.tsx`'s azimuth `QuantityRow`
+ * swaps its note for a stated one when the preview reads
+ * `COMPLETE_AIRBURST`, in both languages; the slider itself, and every
+ * other field, are unchanged -- rule 1195 asked for the panel to stop
+ * implying an effect that is not there, not to hide or disable the control.
+ *
+ * What is checked: TUNGUSKA (COMPLETE_AIRBURST on its own preset inputs)
+ * reads the airburst note; CHICXULUB (INTACT/ground-coupled) reads the
+ * ordinary degrees note; a diameter edited from Tunguska's own small body
+ * up past the airburst threshold flips the note without a relaunch, on the
+ * input alone.
+ */
+export const RULE_1200_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1201. A12 -- THE LAST ITEM RULE 1195 LEFT OPEN FOR IMPACTS: THE
+ * MONTE CARLO P10/P90 HALOS AND THEIR RADIAL PROBABILITY HEATMAP ARE DRAWN
+ * ON THE GLOBE WITH NO LEGEND ENTRY AT ALL.
+ *
+ * Traced to its mechanism: `Globe.tsx`'s `pickFuzzyMetrics` (line ~4633)
+ * chooses, for an impact, two MC metrics -- `finalCraterDiameter` and
+ * `firestormIgnition` -- and draws, per metric, a faint P10 and P90 ellipse
+ * (an "uncertainty halo" around the deterministic ring, the code's own
+ * words) plus, where the MC engine kept raw samples, a 256-step radial
+ * exceedance-probability bitmap underneath ("darker = very likely, fading
+ * = rare worst case", also the code's own words). `RingLegend.tsx` -- the
+ * one place a visitor reads what a colour or a shape on the globe means --
+ * names neither: grep for "monteCarlo" or "MonteCarlo" in that file
+ * returns nothing. A visitor who has run the MC sweep sees two extra faint
+ * rings and a soft glow around them with no key at all.
+ *
+ * This is NOT the four-state cartographic grammar of rules 1028-1074
+ * (`mapGrammarRules.ts`): that grammar answers "what does an edge of a
+ * deterministic physical field mean" (computed / below threshold / a
+ * model's own limit / not modelled) for one drawn quantity. A P10/P90 halo
+ * is a different kind of thing -- a statistical confidence spread around a
+ * central estimate, from repeated sampling, not a physical field's edge --
+ * and forcing it through the same four states would misname it, not fix
+ * it. What is missing here is simpler and does not want a new grammar: a
+ * legend entry saying what the halos and the heatmap already are, in the
+ * code's own words above.
+ *
+ * The candidate, decided here before writing it. `FuzzyMetric`
+ * (`Globe.tsx`) gains one field, `metricKey: string` -- the Monte Carlo
+ * metric's own field name (`'finalCraterDiameter'`, `'firestormIgnition'`)
+ * -- and `pickFuzzyMetrics` plus the `FuzzyMetric` type are exported. Both
+ * were private to `Globe.tsx` before; `RingLegend.tsx` is never loaded
+ * without it (only `GlobeView.tsx` imports either, and both are inside its
+ * lazy chunk), so this adds no weight to the bundle the budget gate
+ * checks. `RingLegend.tsx` calls the same function with the same
+ * `monteCarlo` state Globe.tsx draws from, for `monteCarlo?.type ===
+ * 'impact'` only (rule 1195's own scope: impacts, not the other four
+ * event types this round does not touch) -- so the legend can never say
+ * two metrics different from the two the globe actually drew; the two
+ * cannot drift apart because they are read from one function, not
+ * duplicated. Each metric's swatch is `metric.color.toCssColorString()`
+ * (Cesium's own conversion), the exact colour the ring already uses, not
+ * a second palette to keep in step by hand. The entry states, once, what
+ * P10/P90 mean (an uncertainty band from repeated Monte Carlo draws, not
+ * an additional damage threshold) and what the underlying glow is (denser
+ * where outcomes cluster); it is shown only while `monteCarlo !== null`,
+ * exactly the condition the globe already draws the halos under.
+ *
+ * What is checked: with no MC run, the legend is unchanged (nothing new
+ * to explain); after CHICXULUB's MC sweep, the new entry names exactly
+ * `finalCraterDiameter` and `firestormIgnition`, each swatch equal to the
+ * `Color` the globe drew that metric's halo in.
+ */
+export const RULE_1201_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1202. A12 -- THE PRINTED REPORT'S MISSING FIELDS, FIRST THREE OF
+ * SEVEN: BURST ALTITUDE, FRAGMENTATION ONSET AND THE SPEED AT THE END OF
+ * ENTRY ARE ON THE PANEL BUT NOT ON THE PAGE A READER TAKES AWAY; SO IS
+ * THE AZIMUTH THAT WAS TYPED IN.
+ *
+ * Traced against `impactReportModel.ts`: `scenarioRows()` prints diameter,
+ * velocity, both densities and the angle, never the azimuth; `groups()`'s
+ * `body` group tags `entryRegime` and `energyToGround` as `'entry'` and
+ * stops there -- `r.entry.burstAltitude`, `r.entry.breakupAltitude` and
+ * `r.entry.endVelocity` are computed (the panel's own Esito tab already
+ * shows all three, read directly in the browser: "Altezza detonazione",
+ * "Inizio frammentazione", the end-of-entry speed folds into "Energia al
+ * suolo") but never reach `buildImpactReport`. A reader with the PDF alone,
+ * offline, cannot see any of the four -- exactly the printed-report gap
+ * A12 named, and exactly the case rule 1037 was written against: "the
+ * globe and the PDF are one scientific product, and a reader offline must
+ * not get [a lesser] reading."
+ *
+ * The candidate, decided here before writing it, for these four only:
+ * `scenarioRows()` gains one row, `impactAzimuthDeg`, reading
+ * `r.inputs.impactAzimuthDeg ?? 90` -- the same fallback
+ * `ImpactCustomInputs.tsx` and `simulate.ts` line 1102 already apply, so
+ * the report never claims "no azimuth was used" for a scenario the model
+ * quietly defaulted to 90°. `groups()`'s `body` group gains three rows,
+ * each tagged `'entry'` like its two neighbours: `endVelocity` in km/s
+ * (the same unit and one-decimal precision `impactVelocity` already
+ * prints, for the same reason: reading the two side by side is the
+ * point); `burstAltitude` and `breakupAltitude` through a new local
+ * `altitude()`, NOT `length()` -- caught only by reading the rendered
+ * page, not by any test: `length()` (via `formatRange`) treats a radius
+ * of zero as "no effect drawn" and prints NONE, right for a damage ring,
+ * wrong for an altitude of exactly zero, which for a body that reaches
+ * the ground whole is a fact (no airburst happened), not an absence.
+ * `altitude()` also could not reuse `SimulatorPanel.tsx`'s own
+ * `TIERS_METERS`/`formatWithUnitTiers`: that helper resolves its decimal
+ * separator from the global i18next instance, not from the `language`
+ * this model is always given explicitly, and this file stays pure on
+ * that point (its own header says so) -- so `altitude()` is built on
+ * `fixed()`, the same primitive every other number in this file already
+ * goes through, scaling to km past 1000 m the same way the panel does.
+ * No new UI, no new concept -- four `row()` calls and four new
+ * `report.impact.field.*` keys in both languages, plus
+ * `report.impact.field.impactAzimuthDeg`'s unit ("°N", matching the
+ * panel's own `azimuthLabel`).
+ *
+ * What is checked: `buildImpactReport` on TUNGUSKA (COMPLETE_AIRBURST, a
+ * non-zero breakup altitude, a zero burst-relative crater) and on
+ * CHICXULUB (PARTIAL_AIRBURST -- it breaks up, `breakupAltitude` > 0, but
+ * the swarm reaches the ground before it spreads wide, so `burstAltitude`
+ * is legitimately 0, not INTACT as first assumed here and caught by the
+ * test itself) both print all four new rows, CHICXULUB's `burstAltitude`
+ * printing "0 m" and not NONE; TUNGUSKA's burst and breakup altitudes
+ * matching `simulateImpact` read directly; a scenario with no
+ * `impactAzimuthDeg` given prints 90°, matching the panel's own
+ * default.
+ *
+ * What this rule leaves for a following one, named so they are not lost
+ * to silence: I2's band and the measured cell's verdict (`measuredCells`,
+ * already rendered once for the panel by `entryCellSentence` --
+ * `RingLegend.tsx` calls it, the report does not yet); the Monte Carlo
+ * table (today `extras.monteCarlo` is a boolean that only selects which
+ * formula citations appear, not the P10/P50/P90 figures themselves); and
+ * which of the seven model-variant fields
+ * (`craterDomain`/`groundBlast`/`entryEquations`/`airFlash`/`lowBurstFlash`/
+ * `lowBurstCrater`/`craterField`/`airburstSeismic`) were set away from
+ * their defaults for this run. Each is a design decision this rule has
+ * not made (a table's layout, a sentence's wording, which variants are
+ * worth naming when none or all are non-default) rather than a four-line
+ * addition like this block's -- left open deliberately, not silently.
+ */
+export const RULE_1202_WRITTEN = '2026-09-25' as const;
