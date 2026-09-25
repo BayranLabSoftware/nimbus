@@ -361,3 +361,32 @@ export const RULE_1196_WRITTEN = '2026-09-25' as const;
  * nothing here is re-tuned to make the shift look smaller.
  */
 export const RULE_1197_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1197, THE MEASUREMENT COMMITTED TO ABOVE. Every development preset,
+ * old (scaled from 5 psi / 1 psi by a fixed Kinney-Graham ratio) against
+ * new (read from the law that actually drew the rings), ratio new/old:
+ *
+ *   CHICXULUB / CHICXULUB_OCEAN (PARTIAL_AIRBURST): 12 psi 1.000×, 2 psi 1.075×
+ *   TUNGUSKA (COMPLETE_AIRBURST): 12 psi 1.000×, 2 psi 1.000× (the fallback
+ *     this rule declared for a body that never leaves the air -- unchanged
+ *     by construction)
+ *   METEOR_CRATER (PARTIAL_AIRBURST): 12 psi 0.984×, 2 psi 1.000×
+ *   POPIGAI (PARTIAL_AIRBURST): 12 psi 0.967×, 2 psi 1.075×
+ *   BOLTYSH (PARTIAL_AIRBURST): 12 psi 0.967×, 2 psi 1.075×
+ *   CHELYABINSK, SIKHOTE_ALIN_1947: no plan either way (already below the
+ *     1 psi floor `blastCasualtyPlan` requires -- unrelated to this fix,
+ *     true before and after it)
+ *
+ * Every shift is under 8 %, none changes which OTA band a fixed distance
+ * falls in for any preset checked, and the airburst fallback is exactly
+ * unchanged as declared. Read as such, not tuned to read small: this is
+ * what the law that already draws the 5 psi and 1 psi rings gives at
+ * 12 psi and 2 psi, on the bodies this project already develops against.
+ * `src/physics/casualties.test.ts` and `casualtyTimeline.test.ts` (46
+ * tests) call `blastCasualtyPlan` with synthetic radii and no new field,
+ * so they exercise the unchanged fallback and stay green unmodified; nothing
+ * in the suite pins a band radius against a live preset, so nothing else
+ * needed a change.
+ */
+export const RULE_1197_MEASURED = '2026-09-25' as const;

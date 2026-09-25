@@ -456,6 +456,15 @@ export interface BlastCasualtyInput {
    *  that the 12 psi and 2 psi circles sit on the same curve as the rings
    *  they are measured from. Read only for a chemical charge. */
   chemicalBlast?: ChemicalBlastSource;
+  /** Rule 1197: the 12 psi and 2 psi radii an impact already computed on
+   *  the same law as its 5 psi and 1 psi rings
+   *  (`ImpactScenarioResult['casualtyBandEdges']`). Given, they replace
+   *  the scaled estimate `ratio()` below would otherwise make from a
+   *  fixed Kinney-Graham curve regardless of which law actually drew the
+   *  5 psi and 1 psi rings; omitted — as for a bare explosion, which
+   *  computes no such thing — the scaling is the only reading there is. */
+  overpressure12psiRadius?: Meters;
+  overpressure2psiRadius?: Meters;
 }
 
 /**
@@ -514,8 +523,12 @@ export function blastCasualtyPlan(input: BlastCasualtyInput): CasualtyPlan | nul
     }
     return overpressureRadiusRatio(input.blastEnergy, psi, refPsi);
   };
-  const r12 = r5 * ratio(12, 5);
-  const r2 = r1 * ratio(2, 1);
+  // Rule 1197: an impact-drawn radius, on the same law as r5/r1, replaces
+  // the scaled estimate where it is given.
+  const givenR12 = positiveRadius(input.overpressure12psiRadius);
+  const givenR2 = positiveRadius(input.overpressure2psiRadius);
+  const r12 = givenR12 > 0 ? givenR12 : r5 * ratio(12, 5);
+  const r2 = givenR2 > 0 ? givenR2 : r1 * ratio(2, 1);
   const psiEdges = [0, Math.min(r12, r5), r5, Math.max(r5, Math.min(r2, r1)), r1];
   // Line of sight first: a fluence radius says how much heat would
   // arrive with nothing in the way, and for an impact-scale fireball

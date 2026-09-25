@@ -1765,6 +1765,10 @@ export function casualtyPlanForResult(
         blastEnergy: result.data.impactor.kineticEnergy,
         overpressure5psiRadius: result.data.damage.overpressure5psi,
         overpressure1psiRadius: result.data.damage.overpressure1psi,
+        // Rule 1197: read on the same law as the two above, not scaled
+        // from them.
+        overpressure12psiRadius: result.data.casualtyBandEdges.overpressure12psi,
+        overpressure2psiRadius: result.data.casualtyBandEdges.overpressure2psi,
         thirdDegreeBurnRadius: result.data.damage.thirdDegreeBurn,
         secondDegreeBurnRadius: result.data.damage.secondDegreeBurn,
         firestormRadius: result.data.firestorm.sustainRadius,

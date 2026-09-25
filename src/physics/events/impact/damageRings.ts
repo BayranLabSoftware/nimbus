@@ -23,6 +23,25 @@ export const OVERPRESSURE_WINDOW_BREAK = Pa(6_895);
 export const OVERPRESSURE_BUILDING_COLLAPSE = Pa(34_474);
 
 /**
+ * Overpressure threshold: moderate injury, the OTA blast casualty model's
+ * own second band. Source: OTA 1979 ch. II fig. 1 — 2 psi ≈ 13.8 kPa
+ * (`casualties.ts`'s `OTA_BLAST_BANDS`, `blast2psi`). Rule 1197: this and
+ * {@link OVERPRESSURE_NEAR_LETHAL_BLAST} exist so the casualty count's
+ * own band edges can be drawn by the same law that draws 5 psi and 1 psi,
+ * instead of a Kinney-Graham scaling read from those two regardless of
+ * which law placed them.
+ */
+export const OVERPRESSURE_MODERATE_INJURY = Pa(13_790);
+
+/**
+ * Overpressure threshold: near-certain prompt death, the OTA blast
+ * casualty model's own top band. Source: OTA 1979 ch. II fig. 1 —
+ * 12 psi ≈ 82.7 kPa (`casualties.ts`'s `OTA_BLAST_BANDS`, `blast12psi`).
+ * See {@link OVERPRESSURE_MODERATE_INJURY}.
+ */
+export const OVERPRESSURE_NEAR_LETHAL_BLAST = Pa(82_737);
+
+/**
  * Ground-range damage radii (metres from the detonation point) for the
  * 2D damage-zone rings drawn on top of the Cesium globe. Every radius
  * lives at the same abstraction level: "how far out does phenomenon X
@@ -100,6 +119,21 @@ export interface ImpactDamageRadii {
 }
 
 /**
+ * Rule 1197: the OTA casualty bands' own two extra thresholds
+ * (`casualties.ts`'s `OTA_BLAST_BANDS`), on the project's Kinney-Graham
+ * curve here -- kept apart from {@link ImpactDamageRadii}, which also
+ * types every consumer that draws one ring per field (the globe's legend
+ * colours among them) and has no ring of its own for these two. Read
+ * against the law that actually drew a body's rings where that differs
+ * (a ground impact) by `blastRing` in simulate.ts, the same as the three
+ * fields above.
+ */
+export interface CasualtyBandEdges {
+  overpressure12psi: Meters;
+  overpressure2psi: Meters;
+}
+
+/**
  * Compute the canonical four-ring damage footprint from the pre-computed
  * scenario outputs. The impact kinetic energy feeds the Kinney–Graham
  * surface-burst overpressure curve and the Glasstone point-source
@@ -164,6 +198,20 @@ export function impactDamageRadii(
     overpressure5psi: reachOf(blastEnergy, OVERPRESSURE_BUILDING_COLLAPSE),
     overpressure1psi: reachOf(blastEnergy, OVERPRESSURE_WINDOW_BREAK),
     lightDamage: reachOf(blastEnergy, OVERPRESSURE_LIGHT_DAMAGE),
+  };
+}
+
+/**
+ * The project's Kinney-Graham reading of {@link CasualtyBandEdges},
+ * computed the same way as {@link impactDamageRadii}'s three rings (same
+ * blast-coupled energy, same inverter) but kept apart from it — see the
+ * type's own comment for why.
+ */
+export function casualtyBandEdgesProject(kineticEnergy: Joules): CasualtyBandEdges {
+  const blastEnergy = J((kineticEnergy as number) * IMPACT_BLAST_COUPLING);
+  return {
+    overpressure12psi: reachOf(blastEnergy, OVERPRESSURE_NEAR_LETHAL_BLAST),
+    overpressure2psi: reachOf(blastEnergy, OVERPRESSURE_MODERATE_INJURY),
   };
 }
 

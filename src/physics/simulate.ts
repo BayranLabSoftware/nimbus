@@ -86,12 +86,16 @@ import { thermalHorizonRadius } from './casualties.js';
 import { oceanCouplingPartition } from './effects/oceanCoupling.js';
 import { liquefactionRadius } from './events/earthquake/liquefaction.js';
 import {
+  casualtyBandEdgesProject,
   combineImpactFlashes,
   DEFAULT_IMPACT_THERMAL,
   impactDamageRadii,
   OVERPRESSURE_BUILDING_COLLAPSE,
   OVERPRESSURE_LIGHT_DAMAGE,
+  OVERPRESSURE_MODERATE_INJURY,
+  OVERPRESSURE_NEAR_LETHAL_BLAST,
   OVERPRESSURE_WINDOW_BREAK,
+  type CasualtyBandEdges,
   type ImpactDamageRadii,
 } from './events/impact/damageRings.js';
 import { impactFieldSamples } from './events/impact/impactField.js';
@@ -472,6 +476,10 @@ export interface ImpactScenarioResult {
     liquefactionRadius: Meters;
   };
   damage: ImpactDamageRadii;
+  /** Rule 1197: the OTA casualty bands' own two extra thresholds
+   *  (12 psi, 2 psi), read against the same law as `damage`'s rings --
+   *  kept apart from it since it has no ring of its own for either. */
+  casualtyBandEdges: CasualtyBandEdges;
   /** Per-ring rendering asymmetry (semi-major / semi-minor multipliers,
    *  azimuth, centre offset) so the renderer can draw a physically
    *  honest ellipse rather than a perfect concentric circle.
@@ -1056,6 +1064,27 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
       OVERPRESSURE_LIGHT_DAMAGE
     ),
   };
+  // Rule 1197: the casualty count's own two extra band edges, read
+  // against the same law as the three rings above -- groundImpactReach
+  // where a body reaches the ground, the project's Kinney-Graham curve
+  // otherwise (no separate "air" reading exists for these two
+  // thresholds, so the project's own value stands in for it, exactly the
+  // fallback the other three already use when a body never leaves the
+  // air). Kept apart from `damage` itself -- see CasualtyBandEdges's own
+  // comment for why.
+  const casualtyBandEdgesSurface = casualtyBandEdgesProject(groundCoupledKe);
+  const casualtyBandEdges: CasualtyBandEdges = {
+    overpressure12psi: blastRing(
+      casualtyBandEdgesSurface.overpressure12psi,
+      casualtyBandEdgesSurface.overpressure12psi,
+      OVERPRESSURE_NEAR_LETHAL_BLAST
+    ),
+    overpressure2psi: blastRing(
+      casualtyBandEdgesSurface.overpressure2psi,
+      casualtyBandEdgesSurface.overpressure2psi,
+      OVERPRESSURE_MODERATE_INJURY
+    ),
+  };
 
   const craterRimRadius = m((Dfr as number) / 2);
   const blanketEdge1mm = ejectaBlanketOuterEdge(Dtc, craterRimRadius, m(0.001));
@@ -1215,6 +1244,7 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
         }
       : { magnitude: null, magnitudeRange: null, magnitudeSource: null, liquefactionRadius: m(0) },
     damage,
+    casualtyBandEdges,
     damageAsymmetry,
     // Rule 947: out of the domain no ejecta blanket is given; the sea's
     // coupling below reads the model's own (rule 948).
