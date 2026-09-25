@@ -278,29 +278,42 @@ share between the tightest and loosest threshold — and the pooled max move is 
 Chelyabinsk/M1/capped, **on that case's one produced draw**. Splitting the max by how many draws actually
 produced it changes the picture from "capped is volatile" to something sharper:
 
-- **Among the 200-draw cases** (the reliable sample; single-draw presets set aside), the two **unlimited**
-  configurations' largest move is **0.0174 percentage points** — 2008 TC3/M1/unlimited, indistinguishable
-  from the tiny medians already reported. Sensitivity in the unlimited configurations is modest everywhere
-  checked, not merely at the median.
-- **Among those same 200-draw cases**, the two **capped** configurations move substantially and
-  repeatedly: 2008 TC3 29.2 % (M1) / 27.3 % (M2), Tagish Lake 15.6 % / 15.2 %, Carancas 7.9 % / 7.5 %,
-  Košice 2.2 % / 1.2 % — six of the eighteen 200-draw cases move by more than a percentage point in the
-  capped configurations, none do in the unlimited ones. This is not a single-draw artefact: it is a
-  reproducible pattern specific to capped clouds, present across many independent draws.
-- **The two single-draw presets** (Chelyabinsk, Tunguska) add the largest individual numbers — Chelyabinsk
-  /M1/capped's settled share goes 5.5 % (tightest threshold) → 42.9 % (baseline) → 76.0 % (loosest), ground
-  share the complementary 73.9 % → 36.5 % → 3.4 %, very nearly inverting which category holds most of that
-  one draw's mass; Tunguska/M1/unlimited moves 17.6 % on its own one draw, the only unlimited case to move
-  by more than a fraction of a percentage point anywhere in this sweep. **Both are n = 1: real observations
-  of what can happen on a single realisation, not a frequency estimate for that configuration** — kept
-  separate here from the 200-draw evidence above, not blended into one number, and not smoothed away either.
+**The denominator, exact**: 18 development cases total, of which THREE are single-draw presets
+(Chelyabinsk, Tunguska, 2022 EB5) and FIFTEEN have 200 draws each (2008 TC3, 2018 LA, 2022 WJ1, 2023 CX1,
+2024 BX1, Benešov, Carancas, Cavezzo, Golden, Hamburg, Košice, Madura Cave, Tagish Lake, Traspena,
+Winchcombe). The two families are reported apart below, never pooled into one "of 18."
 
-**Restated, correctly this time: sensitivity is typically modest in every configuration; the tail is very
-wide specifically in the capped configurations, and reproducibly so across many draws — not zero, but far
-smaller, in the unlimited ones.** This co-occurs with deviation D16's already-known capped-cloud pathology
-(a capped cloud's area, and so its ablation rate, stops growing once the cap is reached) — **a plausible
-link, not a demonstrated causal mechanism**; this audit does not trace why capped configurations move more,
-only that they do, reproducibly, and that no single pooled number describes both families honestly.
+- **Among the 15 confirmed 200-draw cases** (30 pairs per cloud family: M1 and M2 each), the two
+  **unlimited** configurations' largest move is **0.0174 percentage points** — 2008 TC3/M1/unlimited,
+  indistinguishable from the tiny medians already reported; no other unlimited pair among these 30 moves
+  further. Sensitivity in the unlimited configurations is modest everywhere checked in this reliable
+  sample, not merely at the median.
+- **Among those same 15 cases**, the two **capped** configurations move substantially and repeatedly:
+  2008 TC3 29.2 % (M1) / 27.3 % (M2), Tagish Lake 15.6 % / 15.2 %, Carancas 7.9 % / 7.5 %, Košice 2.2 % /
+  1.2 % — **4 of the 15 cases** (2008 TC3, Tagish Lake, Carancas, Košice) show a capped configuration
+  moving by more than one percentage point, accounting for 8 of their 30 capped pairs; none of the 15
+  cases' 30 unlimited pairs move by more than 0.02 percentage points. This is not a single-draw artefact:
+  it is a reproducible pattern specific to capped clouds, present across a genuine sample of many
+  independent draws.
+- **The three single-draw presets** (Chelyabinsk, Tunguska, 2022 EB5) are kept fully separate from the
+  15-case evidence above — never blended into its count, never smoothed away. Two of the three move
+  negligibly, matching the 15-case pattern: 2022 EB5 moves at most 0.046 percentage points across all four
+  configurations, unlimited or capped. The third does not: Chelyabinsk/M1/capped's settled share goes
+  5.5 % (tightest threshold) → 42.9 % (baseline) → 76.0 % (loosest), ground share the complementary
+  73.9 % → 36.5 % → 3.4 %, very nearly inverting which category holds most of that one draw's mass; and
+  **Tunguska/M1/unlimited moves 17.6 % on its own one draw — the sole exception to "unlimited stays
+  small," and it is n = 1.** Every single-draw number here is a real observation of what can happen on one
+  realisation, not a frequency estimate for that configuration.
+
+**Restated, correctly this time: sensitivity is typically modest in every configuration checked at n = 200;
+the tail is very wide specifically in the capped configurations, reproducibly so across many draws — not
+zero, but far smaller, in the unlimited ones. The unlimited configurations' stability is not universal:
+Tunguska's own single draw is the one exception on record, and is reported as such, not folded into or
+hidden by the 15-case pattern.** The capped configurations' sensitivity co-occurs with deviation D16's
+already-known capped-cloud pathology (a capped cloud's area, and so its ablation rate, stops growing once
+the cap is reached) — **a plausible link, not a demonstrated causal mechanism**; this audit does not trace
+why capped configurations move more, only that they do, reproducibly, in a real sample, and that no single
+pooled number describes both cloud families honestly.
 
 Ground mass (solid pieces plus cloud swarm reaching the ground) is tracked apart from the settled share and
 moves by nearly the same amount in the same pairs — in the capped configurations, a looser threshold does
@@ -312,12 +325,12 @@ own balance stays at machine precision throughout every threshold and every pair
 10⁻¹⁶, no case exceeding gate 1's tolerance).
 
 **Conclusion, restricted to what this numerical check actually shows**: for the two unlimited-cloud
-configurations, settling is a stable feature of the trajectory across both single draws and 200-draw
-ensembles, essentially independent of where `settleWithin` is set. For the two capped-cloud configurations,
-it is not — a reproducible subset of cases (not only the single-draw extremes) moves substantially with the
-threshold, alongside the already-known capped-cloud pathology, plausibly linked but not shown to share a
-mechanism. This does not answer what the settled mass physically becomes next (still open, per rule 1190),
-and it is not, on its own, grounds to retune `settleWithin` or to treat the capped configurations' figures
-above as settled.
+configurations, settling is a stable feature of the trajectory across the 15-case 200-draw sample — with
+one exception on record, Tunguska's own single draw, not papered over. For the two capped-cloud
+configurations, stability does not hold even in the reliable 200-draw sample — 4 of 15 cases move
+substantially with the threshold, alongside the already-known capped-cloud pathology, plausibly linked but
+not shown to share a mechanism. This does not answer what the settled mass physically becomes next (still
+open, per rule 1190), and it is not, on its own, grounds to retune `settleWithin` or to treat the capped
+configurations' figures above as settled.
 
 These findings inform the causal dossier the reviewer asked for next — not decided here.
