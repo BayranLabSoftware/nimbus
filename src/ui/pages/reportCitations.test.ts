@@ -34,7 +34,16 @@ describe('collectImpactCitations', () => {
     expect(ks).not.toContain('kajiura1963');
     expect(ks).toContain('toon1997');
     expect(ks).toContain('prinn1987');
-    // Chicxulub Mw → liquefaction ring → Youd-Idriss + Joyner-Boore
+    // Chicxulub's own magnitude (≈10.2) is past Mw 9.5 (rule 1194, item
+    // 5), out of Youd & Idriss 2001's domain, so liquefactionRadius reads
+    // 0 and neither citation is pulled in for it.
+    expect(ks).not.toContain('youdIdriss2001');
+    expect(ks).not.toContain('joynerBoore1981');
+  });
+
+  it('Boltysh (Mw 8.26, inside Youd-Idriss’s domain) cites the liquefaction chain', () => {
+    const r = simulateImpact(IMPACT_PRESETS.BOLTYSH.input);
+    const ks = keys(collectImpactCitations(r));
     expect(ks).toContain('youdIdriss2001');
     expect(ks).toContain('joynerBoore1981');
   });

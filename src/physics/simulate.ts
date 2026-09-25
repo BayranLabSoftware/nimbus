@@ -183,6 +183,12 @@ import { deg, degreesToRadians, J, joulesToMegatons, kg, kgPerM3, m, mps, sqm } 
  *  the caller doesn't override it. 4 km is the rough global-ocean mean. */
 const DEFAULT_MEAN_OCEAN_DEPTH = 4_000;
 
+/** Mw of Valdivia 1960, the largest instrumentally recorded earthquake --
+ *  the same bound `inputValidity.ts` reads as "pure extrapolation" for a
+ *  user-chosen earthquake magnitude, applied here (rule 1194, item 5) to
+ *  a seismic magnitude an impact's own physics calculates. */
+const LARGEST_RECORDED_EARTHQUAKE_MW = 9.5;
+
 /**
  * Full set of inputs for an atmospheric-entry-to-ground impact scenario.
  * Every value crosses the physics boundary as a branded unit.
@@ -1240,7 +1246,17 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
                 ? null
                 : { low: airburstM.low, high: airburstM.high },
           magnitudeSource: airburstM === undefined ? 'program' : (airburstM?.term ?? null),
-          liquefactionRadius: seismicM === null ? m(0) : liquefactionRadius(seismicM),
+          // Rule 1194, item 5: Youd & Idriss 2001's magnitude scaling
+          // factor takes any magnitude with no domain check, and a
+          // Chicxulub-class body's equivalent seismic magnitude reads
+          // near 9.9 -- past Mw 9.5 (Valdivia 1960, the largest
+          // instrumentally recorded earthquake), the same bound
+          // inputValidity.ts already reads as "pure extrapolation" for a
+          // user-chosen magnitude, applied here to a calculated one.
+          liquefactionRadius:
+            seismicM === null || seismicM > LARGEST_RECORDED_EARTHQUAKE_MW
+              ? m(0)
+              : liquefactionRadius(seismicM),
         }
       : { magnitude: null, magnitudeRange: null, magnitudeSource: null, liquefactionRadius: m(0) },
     damage,
@@ -1538,7 +1554,19 @@ export function simulateImpact(input: ImpactScenarioInput): ImpactScenarioResult
         localDepthM: 10,
       })
     );
-    const runupFrictionless = synolakisRunup(incidentAtBeach, beachSlopeRad, m(10));
+    // Rule 1194, item 6: synolakisRunup's own comment says its caller caps
+    // run-up at ~4x the incident amplitude (McCowan 1894's breaking
+    // ceiling) -- every OTHER caller in this codebase already does
+    // (tsunami/runupField.ts's RUNUP_CAP_FACTOR, events/earthquake/
+    // seismicTsunami.ts, events/explosion/underwaterBurst.ts), and the
+    // impacts path alone did not. Applied here, unchanged from theirs.
+    const MCCOWAN_RUNUP_CAP_FACTOR = 4;
+    const runupFrictionless = m(
+      Math.min(
+        synolakisRunup(incidentAtBeach, beachSlopeRad, m(10)),
+        MCCOWAN_RUNUP_CAP_FACTOR * (incidentAtBeach as number)
+      )
+    );
     // Manning correction on the run-up itself (Liu 2005 / Park 2013).
     // Default to sand beach n=0.030, typical of open coast. For DEM-
     // sampled slopes that look vegetated (slope 1:30 - 1:80) future

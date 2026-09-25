@@ -38,10 +38,19 @@ describe('cascade', () => {
     expect(stages.map((s) => s.key)).not.toContain('cascade.impact.climate');
   });
 
-  it('impact cascade for Chicxulub includes the liquefaction cross-bridge stage', () => {
-    const result = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+  it('impact cascade for Boltysh includes the liquefaction cross-bridge stage', () => {
+    // Not Chicxulub: past Mw 9.5 its own magnitude is out of Youd &
+    // Idriss 2001's domain and liquefaction reads zero (rule 1194, item
+    // 5) -- Boltysh (Mw 8.26) is the case inside the domain.
+    const result = simulateImpact(IMPACT_PRESETS.BOLTYSH.input);
     const stages = buildImpactCascade(result);
     expect(stages.map((s) => s.key)).toContain('cascade.impact.liquefaction');
+  });
+
+  it('impact cascade for Chicxulub omits the liquefaction stage (past Mw 9.5)', () => {
+    const result = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
+    const stages = buildImpactCascade(result);
+    expect(stages.map((s) => s.key)).not.toContain('cascade.impact.liquefaction');
   });
 
   it('impact cascade for Tunguska omits the liquefaction stage (Mw too low)', () => {

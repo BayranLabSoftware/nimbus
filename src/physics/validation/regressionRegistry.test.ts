@@ -2091,12 +2091,16 @@ describe('Historical bug regression registry — see docs/BUG_REGISTRY.md', () =
       'III',
       'V',
     ]);
-    const chicxulub = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
-    expect(chicxulub.seismic.liquefactionRadius).toBeGreaterThan(0);
+    // Not Chicxulub: past Mw 9.5 its magnitude is out of Youd & Idriss
+    // 2001's domain and liquefaction reads zero (rule 1194, item 5) --
+    // Boltysh (Mw 8.26) is the case inside the domain, which is what this
+    // check of B-107 (the globe draws what the model computes) needs.
+    const boltysh = simulateImpact(IMPACT_PRESETS.BOLTYSH.input);
+    expect(boltysh.seismic.liquefactionRadius).toBeGreaterThan(0);
     expect(
-      buildImpactLayer(chicxulub, 'shaking', ctx)?.isolines.find((l) => l.id === 'liquefaction')
+      buildImpactLayer(boltysh, 'shaking', ctx)?.isolines.find((l) => l.id === 'liquefaction')
         ?.radiusM
-    ).toBe(chicxulub.seismic.liquefactionRadius);
+    ).toBe(boltysh.seismic.liquefactionRadius);
     const legend = readFileSync(
       fileURLToPath(new URL('../../ui/components/ImpactFieldLegend.tsx', import.meta.url)),
       'utf8'

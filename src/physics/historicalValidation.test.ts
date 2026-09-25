@@ -91,16 +91,29 @@ describe('Historical validation — cosmic impacts', () => {
     expect(r.crater.finalDiameter as number).toBeLessThan(50);
   });
 
-  it('Impact→liquefaction cross-bridge: Chicxulub magnitude feeds Youd-Idriss into a wide ring', () => {
+  it('Impact→liquefaction cross-bridge: past Mw 9.5, Chicxulub reads zero, not an extrapolated floor', () => {
     const r = simulateImpact(IMPACT_PRESETS.CHICXULUB.input);
     // Collins et al. 2005 Eq. 40* for ≈ 10²⁴ J at the ground: M ≈ 10.2,
-    // far past the Joyner–Boore calibration, so the ≈ 200 km ring is an
-    // extrapolation and a floor, not a map of liquefied ground.
+    // far past Valdivia 1960 (Mw 9.5, the largest instrumentally recorded
+    // earthquake) and so past Youd & Idriss 2001's own domain (rule 1194,
+    // item 5) -- zero, not the extrapolated floor this test read before
+    // the fix, which the comment here already called "not a map of
+    // liquefied ground".
     const magnitude = r.seismic.magnitude ?? Number.NaN;
     expect(magnitude).toBeGreaterThan(10);
     expect(r.seismic.magnitudeRange?.low).toBeCloseTo(magnitude - 0.67, 6);
     expect(r.seismic.magnitudeRange?.high).toBeCloseTo(magnitude + 0.67, 6);
-    expect((r.seismic.liquefactionRadius as number) / 1_000).toBeGreaterThan(150);
+    expect(r.seismic.liquefactionRadius as number).toBe(0);
+  });
+
+  it('Impact→liquefaction cross-bridge: inside Youd-Idriss’s domain, the ring is real', () => {
+    // Boltysh: Mw 8.26, under the Valdivia 1960 bound -- the same
+    // cross-bridge the Chicxulub test above documents as cut off, shown
+    // working on a body it is not cut off for.
+    const r = simulateImpact(IMPACT_PRESETS.BOLTYSH.input);
+    const magnitude = r.seismic.magnitude ?? Number.NaN;
+    expect(magnitude).toBeLessThan(9.5);
+    expect((r.seismic.liquefactionRadius as number) / 1_000).toBeGreaterThan(50);
   });
 
   it('Impact→liquefaction cross-bridge: Tunguska delivers too little to the ground to liquefy', () => {

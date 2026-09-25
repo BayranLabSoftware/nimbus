@@ -30,11 +30,27 @@ describe('gateImpactByTerrain', () => {
 
   it('zeroes firestorm + liquefaction when the click is in open water', () => {
     expect(CHICXULUB_OCEAN.firestorm.ignitionRadius as number).toBeGreaterThan(0);
-    expect(CHICXULUB_OCEAN.seismic.liquefactionRadius as number).toBeGreaterThan(0);
+    // Chicxulub's own magnitude (≈10.2) is already past Mw 9.5 (rule
+    // 1194, item 5), so liquefactionRadius reads 0 before gating too --
+    // the gate's job here is only to leave it there, not to zero
+    // something positive.
+    expect(CHICXULUB_OCEAN.seismic.liquefactionRadius as number).toBe(0);
     const out = gateImpactByTerrain(CHICXULUB_OCEAN, true);
     expect(out.firestorm.ignitionRadius as number).toBe(0);
     expect(out.firestorm.sustainRadius as number).toBe(0);
     expect(out.firestorm.ignitionArea as number).toBe(0);
+    expect(out.seismic.liquefactionRadius as number).toBe(0);
+  });
+
+  it('zeroes a positive liquefaction radius when the click is in open water', () => {
+    // Boltysh (Mw 8.26, inside Youd & Idriss 2001's domain) with water
+    // depth added, so the gate has a genuinely positive radius to zero.
+    const boltyshOcean = simulateImpact({
+      ...IMPACT_PRESETS.BOLTYSH.input,
+      waterDepth: m(2_000),
+    });
+    expect(boltyshOcean.seismic.liquefactionRadius as number).toBeGreaterThan(0);
+    const out = gateImpactByTerrain(boltyshOcean, true);
     expect(out.seismic.liquefactionRadius as number).toBe(0);
   });
 

@@ -155,13 +155,10 @@ export const RULE_1193_WRITTEN = '2026-09-25' as const;
  *     place. NOT fixed: finding or ruling out a primary source for either.
  *
  * Left open, not started this round, said so rather than left silent: (2)
- * DONE as rule 1197, see below; (4) fixed nuclear-flash thermal thresholds
- * and the unused E^(1/6) scaling (`constants.ts`, `impactThermal.ts`,
- * `simulate.ts:936`) -- needs Coates et al. 2024, not yet read, and belongs
- * to Porta 1 of the plan, not this round's corrections; (5) read further
- * below (liquefaction's own domain); (6) Synolakis run-up with no breaking
- * branch or ceiling (`simulate.ts:1502-1543`) -- shared with the earthquake
- * and landslide wave code, out of an impacts-only round's reach; (9) read
+ * DONE as rule 1197, see below; (4) read further below (the audit's own
+ * citation checked and found not to say what the audit says it says);
+ * (5) read further
+ * below (liquefaction's own domain); (6) DONE, see below; (9) read
  * further below (the reference's own unsolved problem); (10, the rest)
  * measured cells that hold only at exactly 3 000 kg/m³ with no strength
  * given, so no taxonomy choice and no preset falls inside one
@@ -369,15 +366,104 @@ export const RULE_1194_ITEM_9_WRITTEN = '2026-09-25' as const;
  * `inputValidity.ts:212` already flags as "pure extrapolation" for a
  * user-CHOSEN earthquake magnitude. The same bound applies here to a
  * CALCULATED one; the pattern to reuse already exists, just not wired to
- * this path. NOT fixed this round: doing it honestly means deciding what
- * "out of domain" returns (zero, which reads as "no liquefaction" and is
- * not what is meant; or a domain flag threaded through
- * `SimulatorPanel.tsx`, `SimulationReportPage.tsx` and
- * `GlossaryDialog.tsx`, three UI surfaces this round has not mapped
- * carefully enough to touch safely in the time left) -- a real decision,
- * not a one-line reuse.
+ * this path.
+ *
+ * THE DECISION, taken here rather than left for a UI redesign: past
+ * Mw 9.5, `liquefactionRadius` returns 0 in the impacts path, the same
+ * choice this project already makes for every other quantity a domain
+ * check rules out (an iron's crater below the strewn-field cut, a crater
+ * under the hypervelocity floor) -- zero, not a distinguishable
+ * "unknown" state, because `Meters` carries no such state and every
+ * consumer already reads zero as "no ring drawn". This under-states the
+ * honest answer (zero reads as "no liquefaction" where the true answer
+ * is "not extrapolated"), which is why it is written here rather than
+ * left silent: the three UI surfaces that show a liquefaction ring
+ * (`SimulatorPanel.tsx`, `SimulationReportPage.tsx`,
+ * `GlossaryDialog.tsx`) inherit the same zero without a caveat of their
+ * own, and giving each one a domain-flag caveat properly is follow-up
+ * work, not blocked by this fix.
  */
 export const RULE_1194_ITEM_5_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1194, ITEM (4), READ FURTHER: the audit's own citation, checked
+ * directly against the primary source (the PDF read in full, not a
+ * summary), does not say what the audit's "come migliorare" says it
+ * says.
+ *
+ * The paper exists and is almost certainly the one meant: Coates, Stern,
+ * Johnston, Wheeler & Mathias (2024), "Sensitivity Study of Impact Risk
+ * Model Results to Thermal Radiation Damage Model for Large Objects",
+ * Acta Astronautica 218:356-366, DOI: 10.1016/j.actaastro.2024.02.022 --
+ * NASA ATAP authors, one of them (Johnston) already cited in this
+ * project's own thermal code. But it does not propose new thresholds and
+ * does not touch the E^(1/6) scaling at all: it takes Collins et al.
+ * 2005's φ_i(1 Mt)·E_Mt^(1/6) as a fixed input and never questions it.
+ * Its actual subject is the model's sensitivity to which of three
+ * competing thermal models is chosen (this project's Collins/Glasstone-
+ * Dolan; IDG RAS, Popova et al. 2021; NASA ATAP itself, Johnston & Stern
+ * 2019) and above all to the luminous efficiency parameter eta (accepted
+ * range 1e-4 to 1e-2) -- not pulse duration, which the paper never
+ * discusses.
+ *
+ * NOT fixed, and not fixable as the audit describes it: "thermal
+ * thresholds for long pulses" is not in this source. What IS there and
+ * worth a future round, named honestly as a different thing from what
+ * was asked: a structural-uncertainty comparison across the three
+ * thermal models the paper studies, on the same eta range -- Porta 1
+ * work, not a correction, and not started here.
+ */
+export const RULE_1194_ITEM_4_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1194, ITEM (6), DONE: the breaking criterion Synolakis's own
+ * source gives, read directly, declared before it is applied.
+ *
+ * `synolakisRunup` (`events/tsunami/extendedEffects.ts`) is valid only
+ * where the incident wave does not break before reaching the shore.
+ * Synolakis's 1986 Caltech thesis ("The Runup of Long Waves", the direct
+ * source of the 1987 JFM paper this project already cites -- the
+ * thesis's non-breaking run-up, Eq. 3.4.19, R/d = 2.831·√(cotβ)·(H/d)^
+ * (5/4), is algebraically the formula already in this file), read
+ * directly page by page (a scan, no embedded text), gives the breaking
+ * criterion at Eq. 3.6.4, p.89: the Carrier-Greenspan transform's
+ * Jacobian vanishes, and the non-breaking solution stops applying, at
+ *
+ *     H/d = 0.8183 · (cot beta)^(-10/9)
+ *
+ * Past it, no closed form exists in the same source for the breaking
+ * case: Chapter 4 uses an empirical "runup number" that depends on the
+ * generating wave's own characteristics, not H/d and beta alone, and
+ * does not translate into this project's inputs. So this is a
+ * declared-limit fix, not a replacement formula: `synolakisBreaks`
+ * reads the same criterion and is called ONLY from the impacts path
+ * (`simulate.ts`), leaving `synolakisRunup` itself untouched -- every
+ * other caller (earthquake and landslide waves) is unaffected, and the
+ * risk of breaking a paused module is avoided by construction. Zero was
+ * considered and rejected: Synolakis's own laboratory table (Ch. 5)
+ * shows breaking and bore run-up reading HIGHER than non-breaking, not
+ * lower, so returning zero past the limit would understate the hazard,
+ * the opposite of this round's direction everywhere else. The number is
+ * printed as it is computed; a caveat is added instead, saying the
+ * non-breaking formula is past its own stated validity there.
+ */
+export const RULE_1194_ITEM_6_WRITTEN = '2026-09-25' as const;
+
+/**
+ * RULE 1194, ITEM (6), THE MEASUREMENT: the only development preset with
+ * `waterDepth` set, CHICXULUB_OCEAN, read before and after (git stash,
+ * not a re-derivation): frictionless run-up at 1000 km falls from
+ * 252.9 m to 35.5 m -- a factor of 7.1x, not a small one, because the
+ * missing cap was not a fine correction, it was an entirely absent
+ * guard rail. 252.9 m of run-up from a beach-incident amplitude near
+ * 8.9 m (a 28x amplification) is the "unphysical Green upper bound" this
+ * file's own non-linear-shoaling comment already names as the thing to
+ * avoid, reached anyway because the shoaling correction alone was not
+ * the only missing piece. Read as it computes, not tuned toward a
+ * smaller number: this is what applying the same rule every other
+ * caller already applies does.
+ */
+export const RULE_1194_ITEM_6_MEASURED = '2026-09-25' as const;
 
 /**
  * RULE 1197. A11, ITEM (2), DONE -- THE CASUALTY BAND EDGES SIT ON THE LAW
