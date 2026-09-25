@@ -1634,6 +1634,14 @@ export const RULE_1212_WRITTEN = '2026-09-26' as const;
  * the entry, one of the scenario, a citation where the law applies), so the
  * seal's text digests move: re-sealed under rule 833 with this as the
  * reason. The drawing does not move.
+ *
+ * [Amended the same night, before the push: (b)'s row among the numbers
+ * pushed the numbers' sheet onto a second A4 page -- found by the end-to-end
+ * suite's own check, "prints to A4, a sheet a page", run locally before
+ * pushing (measured per sheet: the numbers 1 page before, 2 after). The
+ * configuration is printed instead as a paragraph of the method's sheet,
+ * with the formulas it chose, which kept its one page. Re-sealed again,
+ * text digests only.]
  */
 export const RULE_1213_WRITTEN = '2026-09-26' as const;
 

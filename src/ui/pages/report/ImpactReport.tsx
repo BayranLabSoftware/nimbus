@@ -715,7 +715,8 @@ export function ImpactReport({
                   key={o.id}
                   what={`${o.card.quantity} · ${o.card.unit}`}
                   card={o.card}
-                  layer={o.id}
+                  layer="fixed"
+                  mark={o.id}
                 />
               ))}
             </tbody>
@@ -771,6 +772,11 @@ export function ImpactReport({
 
         <Sheet foot={foot} testId="method">
           <h2 className={styles.sectionTitle}>{t('report.impact.method')}</h2>
+          {/* Rule 1213: the configuration that made this page. */}
+          <h3 className={styles.subheading}>{t('report.impact.field.modelSwitches')}</h3>
+          <p className={styles.note} data-testid="report-configuration">
+            {model.configuration}
+          </p>
           <h3 className={styles.subheading}>{t('report.impact.formulas')}</h3>
           <p className={styles.note}>{t('report.impact.formulasBody')}</p>
           {model.sources.map((s) => (

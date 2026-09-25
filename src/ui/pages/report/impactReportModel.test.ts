@@ -343,7 +343,7 @@ describe("an impact's report, in the reader's language (IMP-7c)", () => {
       expect(cell?.value).not.toContain('measuredCells.');
       // Every preset lies outside the measured cells (G4), so no band.
       expect(band?.value).toBe(t('measuredCells.entry.bandNone'));
-      const config = rowOf(model, 'modelSwitches')?.value ?? '';
+      const config = model.configuration;
       expect(config).toContain('strengthLaw twoStage');
       expect(config.split(' · ')).toHaveLength(14);
       expect(config).not.toContain(t('report.impact.notDefault'));

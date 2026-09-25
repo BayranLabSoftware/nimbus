@@ -135,11 +135,12 @@ test.describe('simulator flow', () => {
 
     const select = page.getByLabel('Preset');
     await expect(select).toBeVisible();
+    // Rule 1219: the two back-solved presets are labelled where they are chosen.
     await expect(select.locator('option')).toHaveText([
       'Chicxulub',
       'Chicxulub (ocean variant)',
-      'Popigai 35.7 Ma',
-      'Boltysh 65.4 Ma',
+      'Popigai 35.7 Ma · consistency (diameter back-solved from the crater)',
+      'Boltysh 65.4 Ma · consistency (diameter back-solved from the crater)',
       'Tunguska',
       'Meteor Crater (Barringer)',
       'Sikhote-Alin 1947',

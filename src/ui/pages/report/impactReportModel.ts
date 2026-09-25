@@ -153,6 +153,8 @@ export interface ImpactReportModel {
   /** What each family of numbers rests on, every family, in the table's order. */
   evidence: EvidenceText[];
   sources: ReportSource[];
+  /** Rule 1213: every switch of the model as this run used it. */
+  configuration: string;
 }
 
 const F = 'report.impact.field';
@@ -242,20 +244,19 @@ function scenarioRows(r: ImpactScenarioResult, ctx: ImpactReportContext): Report
       row(t, 'impactorStrength', `${fixed((input.impactorStrength as number) / 1e6, 2, l)} MPa`)
     );
   }
-  // Rule 1213: the configuration that made this page, every switch as the
-  // run used it, those set away from their default marked.
-  rows.push(
-    row(
-      t,
-      'modelSwitches',
-      impactModelSwitches(input)
-        .map(({ key, value, isDefault }) =>
-          isDefault ? `${key} ${value}` : `${key} ${value} (${t('report.impact.notDefault')})`
-        )
-        .join(' · ')
-    )
-  );
   return rows;
+}
+
+/** Rule 1213: the configuration that made this page, every switch as the run
+ *  used it, those set away from their default marked. Printed with the method
+ *  it belongs to, not among the numbers, where it would push a sheet onto a
+ *  second page. */
+function modelConfiguration(r: ImpactScenarioResult, t: TFunction): string {
+  return impactModelSwitches(r.inputs)
+    .map(({ key, value, isDefault }) =>
+      isDefault ? `${key} ${value}` : `${key} ${value} (${t('report.impact.notDefault')})`
+    )
+    .join(' · ');
 }
 
 function magnitudeLabelId(r: ImpactScenarioResult): string {
@@ -807,6 +808,7 @@ export function buildImpactReport(
     groups: groups(result, ctx, figures),
     evidence: EVIDENCE_QUANTITIES.map((q) => evidenceText(q, ctx.t, ctx.language)),
     sources: sources(result, ctx),
+    configuration: modelConfiguration(result, t),
   };
 }
 
