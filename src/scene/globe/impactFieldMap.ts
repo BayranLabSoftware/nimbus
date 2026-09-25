@@ -617,6 +617,11 @@ export function formatRange(radiusM: number, language: string): string {
   return `${formatNumber(km, km < 100 ? 1 : 0, language)} km`;
 }
 
+/** The unit `formatRange` writes a radius in, for a card's quantity. */
+export function rangeUnit(radiusM: number): 'm' | 'km' {
+  return (clampToGreatCircle(radiusM) as number) < 1_000 ? 'm' : 'km';
+}
+
 /** Two significant figures, the precision a threshold is known to. */
 function twoFigures(value: number, language: string): string {
   if (!(value > 0)) return '0';
@@ -2484,7 +2489,7 @@ export function fixedImpactObjects(
       label: t('globe.impactMap.fixed.crater.label'),
       card: {
         quantity: t('globe.impactMap.fixed.crater.quantity'),
-        unit: 'km',
+        unit: rangeUnit(rim),
         state,
         source: t('globe.tooltip.source.impactCrater'),
         extent: t('globe.impactMap.fixed.crater.extent', { radius: formatRange(rim, language) }),
@@ -2499,7 +2504,7 @@ export function fixedImpactObjects(
       label: t('globe.impactMap.fixed.cavity.label'),
       card: {
         quantity: t('globe.impactMap.fixed.cavity.quantity'),
-        unit: 'km',
+        unit: rangeUnit(cavity),
         state: 'exploratory',
         source: t('globe.tooltip.source.impactCavity'),
         extent: t('globe.impactMap.fixed.cavity.extent', { radius: formatRange(cavity, language) }),

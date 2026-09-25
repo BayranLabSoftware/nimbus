@@ -2541,7 +2541,7 @@
         "I6": "Per ogni airburst completo, la banda dell'onda d'urto risponde alle approssimazioni di Collins et al. 2017 e tiene tante loro corse shock-physics quante ne tiene la stessa banda disegnata attorno alla sorgente del programma.",
         "G3": "Ogni grandezza porta una banda che copre l'85–95 % di un insieme tenuto da parte, almeno l'80 % in ogni cella di venti righe o più, e non è più larga di quanto consente il suo limite su σ.",
         "G4": "Per ogni ingresso, il prodotto dice se lo scenario sta dentro le celle misurate da un insieme tenuto da parte, e il report dà le cifre cella per cella.",
-        "G5": "Cinquemila scenari casuali finiscono tutti, con numeri finiti, nessuna area più grande della Terra e monotoni dove lo è la fisica; l'applicazione stampa ciò che il modello calcola in Node.",
+        "G5": "Cinquemila scenari casuali finiscono tutti, con numeri finiti, nessuna area più grande della Terra, e monotoni dove la fisica lo è; l'applicazione stampa ciò che il modello calcola in Node.",
         "G6": "Ogni lacuna è dichiarata nel report.",
         "G7": "Ogni default cambia con regole scritte prima di eseguire il candidato, e ogni esito, adottato o no, è registrato."
       },

@@ -1733,6 +1733,14 @@ export const RULE_1215_WRITTEN = '2026-09-26' as const;
  * does not move. The report's text does, in every scenario with a crater or
  * a cavity: re-sealed under rule 833 with this rule and rule 1213 as the
  * reasons.
+ *
+ * [Amended the same night, on a re-reading of the night's work: both cards
+ * gave the unit as "km" while their extent, written by `formatRange`, reads
+ * metres below a kilometre -- a 20 m crater's card said "km" beside "10 m".
+ * The unit now follows the extent (`rangeUnit`, beside `formatRange`), and
+ * rule 1217's cards do the same. Re-sealed, the report's text of the
+ * scenarios with a crater or a cavity under a kilometre (50 of 1232
+ * digests).]
  */
 export const RULE_1216_WRITTEN = '2026-09-26' as const;
 

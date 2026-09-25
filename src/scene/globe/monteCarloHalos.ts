@@ -3,7 +3,7 @@ import type { TFunction } from 'i18next';
 import type { ImpactDamageRadii } from '../../physics/events/impact/damageRings.js';
 import { IMPACT_INPUT_SIGMA } from '../../physics/uq/conventions.js';
 import type { ActiveMonteCarlo } from '../../store/index.js';
-import { formatRange } from './impactFieldMap.js';
+import { formatRange, rangeUnit } from './impactFieldMap.js';
 import type { ProvenanceCard } from './mapGrammarRules.js';
 
 /**
@@ -224,7 +224,7 @@ export function monteCarloCards(
       label: name,
       card: {
         quantity: t('globe.legend.monteCarlo.card.haloQuantity', { metric: name }),
-        unit: 'km',
+        unit: rangeUnit(metric.p90),
         state: 'exploratory',
         source: t('globe.legend.monteCarlo.card.source', {
           runs: mc.data.iterations.toLocaleString(language),
@@ -245,7 +245,7 @@ export function monteCarloCards(
       label: t('globe.legend.monteCarlo.card.glowLabel', { metric: name }),
       card: {
         quantity: t('globe.legend.monteCarlo.card.glowQuantity', { metric: name }),
-        unit: 'km',
+        unit: rangeUnit(max),
         state: 'exploratory',
         source: t('globe.legend.monteCarlo.card.source', {
           runs: mc.data.iterations.toLocaleString(language),
