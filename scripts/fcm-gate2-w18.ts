@@ -16,12 +16,16 @@
 
 import { writeFileSync } from 'node:fs';
 import {
-  fcmEntry,
   fcmProfile,
   type FcmBody,
   type FcmOptions,
   type FcmResult,
 } from '../src/physics/effects/fcmBranch.js';
+import { engineFromArgs } from './porta1Engine.js';
+
+/** Rule 1229 (d): `--engine settle` flies rule 1227's corrected settle
+ *  condition, into its own outputs. */
+const { engine: ENGINE, suffix: SUFFIX } = engineFromArgs(process.argv);
 
 const rad = (deg: number): number => (deg * Math.PI) / 180;
 const diameterOf = (mass: number, density: number): number =>
@@ -422,7 +426,7 @@ interface Outcome {
 
 function outcome(c: Case, p: Record<string, number>): Outcome {
   const { body, options } = c.build(p);
-  const r = fcmEntry(body, { ...options, maxComponents: 1_000_000 });
+  const r = ENGINE(body, { ...options, maxComponents: 1_000_000 });
   const prof = fcmProfile(r);
   return {
     completed: r.completed,
@@ -560,8 +564,8 @@ const results = CASES.map((c) => {
 });
 
 writeFileSync(
-  'src/physics/validation/fcmGate2W18.json',
-  `${JSON.stringify({ rule: '1142 (c)', source: 'W18 (NTRS 20180002835)', status: 'development, before the dossier is read (rule 1147)', results }, null, 2)}\n`
+  `src/physics/validation/fcmGate2W18${SUFFIX}.json`,
+  `${JSON.stringify({ rule: '1142 (c)', source: 'W18 (NTRS 20180002835)', status: 'development, before the dossier is read (rule 1147)', ...(SUFFIX === '' ? {} : { engine: 'rule 1227, effects/fcmBranchSettle.ts' }), results }, null, 2)}\n`
 );
 
 const f3 = (x: number): string => String(Number(x.toPrecision(3)));
@@ -626,6 +630,12 @@ const pct = (x: number): string => `${String(Number((x * 100).toPrecision(2)))} 
 const lines = [
   '# FCM round, gate 2 (c) — W18’s structured bodies',
   '',
+  ...(SUFFIX === ''
+    ? []
+    : [
+        'Flown by rule 1227’s corrected settle condition (`effects/fcmBranchSettle.ts`), rule 1229 (d) — development only, beside the sealed engine’s run of `docs/FCM_GATE2_W18.md`.',
+        '',
+      ]),
   'Rule 1142 (c) (`src/physics/validation/fcmRoundRules.ts`), run by `scripts/fcm-gate2-w18.ts` —',
   'development, begun before the reviewer has read the round’s dossier (rule 1147). W18’s figures, which',
   'hold the groups’ exact shares and strengths, are images and are not read: each structure is rebuilt',
@@ -718,7 +728,7 @@ const lines = [
     '',
   ]),
 ];
-writeFileSync('docs/FCM_GATE2_W18.md', lines.join('\n'));
+writeFileSync(`docs/FCM_GATE2_W18${SUFFIX.replace('.', '_').toUpperCase()}.md`, lines.join('\n'));
 console.log(
   JSON.stringify(
     results.map(

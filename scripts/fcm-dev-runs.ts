@@ -38,14 +38,8 @@ import {
   THIRD_SET_RUN_SEED,
 } from '../src/physics/validation/thirdSetRunRules.js';
 import { drawnInputs, inputsOf, row, stream } from './fragmentationRun.js';
-import {
-  CONFIGURATIONS,
-  drawFcm,
-  quantities,
-  round,
-  run,
-  type Quantities,
-} from './fcmRound1Common.js';
+import { CONFIGURATIONS, drawFcm, quantities, round, type Quantities } from './fcmRound1Common.js';
+import { engineFromArgs, runOn } from './porta1Engine.js';
 
 /** Rule 1160: `--tuning T1` or `T2` runs a candidate, without the
  *  sensitivities, into its own outputs. */
@@ -57,7 +51,12 @@ const TUNED_WORDS = (['cloudShare', 'alpha'] as const).flatMap((k) => {
   const r = TUNED[k];
   return r === undefined ? [] : [`${k} uniform on ${String(r[0])}–${String(r[1])}`];
 });
-const SUFFIX = TUNING === null ? '' : `.${TUNING}`;
+/** Rule 1229 (e)(1): `--engine settle` flies rule 1227's corrected settle
+ *  condition, into its own outputs. */
+const { engine: ENGINE, suffix: ENGINE_SUFFIX } = engineFromArgs(process.argv);
+if (TUNING !== null && ENGINE_SUFFIX !== '') throw new Error('--tuning and --engine not combined');
+const SUFFIX = TUNING === null ? ENGINE_SUFFIX : `.${TUNING}`;
+const run = runOn(ENGINE);
 const SHARDS_DIR = join(tmpdir(), `nimbus-fcm-dev-runs${SUFFIX}`);
 const DRAWS = FCM_DEV_PRIORS.draws;
 
@@ -579,7 +578,7 @@ function merge(K: number): void {
   const out = { rule: '1156', tail: chosenTail(), draws: DRAWS, tally, contradicted, results };
   writeFileSync(
     `src/physics/validation/fcmDevRuns${SUFFIX}.json`,
-    `${JSON.stringify({ ...out, tuning: TUNING === null ? null : { name: TUNING, priors: TUNED } }, null, 1)}\n`
+    `${JSON.stringify({ ...out, tuning: TUNING === null ? null : { name: TUNING, priors: TUNED }, engine: ENGINE_SUFFIX === '' ? undefined : 'rule 1227, effects/fcmBranchSettle.ts' }, null, 1)}\n`
   );
 
   const V: Record<Verdict, string> = {
@@ -591,6 +590,12 @@ function merge(K: number): void {
   const lines = [
     '# FCM round 1 — the observational development',
     '',
+    ...(ENGINE_SUFFIX === ''
+      ? []
+      : [
+          'Flown by rule 1227’s corrected settle condition (`effects/fcmBranchSettle.ts`), rule 1229 (e)(1) — development only, beside the sealed engine’s run of `docs/FCM_DEV_RUNS.md`.',
+          '',
+        ]),
     'Rule 1156 (`src/physics/validation/fcmRound1Rules.ts`), run by `scripts/fcm-dev-runs.ts`. Every declared',
     `development case — rule 961’s nine, the third set’s six, W18’s three — ${String(DRAWS)} draws each (or one input with`,
     `${String(DRAWS)} parameter draws), under both structures and both clouds, paired with the baseline on the same`,
@@ -670,7 +675,7 @@ function merge(K: number): void {
     ]),
   ];
   writeFileSync(
-    `docs/FCM_DEV_RUNS${SUFFIX.replace('.', '_')}.md`,
+    `docs/FCM_DEV_RUNS${SUFFIX.replace('.', '_').toUpperCase()}.md`,
     (TUNING === null
       ? lines
       : [
@@ -701,6 +706,7 @@ async function all(): Promise<void> {
               String(k),
               String(K),
               ...(TUNING === null ? [] : ['--tuning', TUNING]),
+              ...(ENGINE_SUFFIX === '' ? [] : ['--engine', 'settle']),
             ],
             { stdio: 'inherit' }
           );

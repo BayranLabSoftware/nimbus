@@ -1,0 +1,3399 @@
+{
+  "rule": "1229 (e)(2)",
+  "draws": 200,
+  "pooled": {
+    "sealed": {
+      "landedSolid": 0.032533332672327775,
+      "landedCloud": 0.03537949085527794,
+      "settled": 0.9320869550654252,
+      "dust": 4.5876991942519595e-9
+    },
+    "corrected": {
+      "landedSolid": 0.03444008333518461,
+      "landedCloud": 0.46650360368594873,
+      "settled": 0.4990563717502289,
+      "dust": 4.587697908877625e-9
+    }
+  },
+  "worstCorrectedResidual": 6.731313532093955e-16,
+  "rows": [
+    {
+      "case": "Chelyabinsk",
+      "family": "rule 961",
+      "configuration": "M1/unlimited",
+      "draws": 1,
+      "identical": 1,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000234202444,
+          "corrected": 0.00000234202444
+        },
+        "settledShare": {
+          "sealed": 0.514691,
+          "corrected": 0.514691
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.1,
+          "corrected": 33.1
+        }
+      },
+      "worstCorrectedResidual": 3.444734484916026e-17,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 13412450.524816299,
+          "landedSolidKg": 24203.765583512843,
+          "landedCloudKg": 0,
+          "settledKg": 6903269.666538219,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 13412450.524816299,
+          "landedSolidKg": 24203.765583512843,
+          "landedCloudKg": 0,
+          "settledKg": 6903269.666538219,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Chelyabinsk",
+      "family": "rule 961",
+      "configuration": "M1/capped",
+      "draws": 1,
+      "identical": 1,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000490337697,
+          "corrected": 0.00000490337697
+        },
+        "settledShare": {
+          "sealed": 0.428794,
+          "corrected": 0.428794
+        },
+        "peakAltitudeKm": {
+          "sealed": 27.9,
+          "corrected": 27.9
+        }
+      },
+      "worstCorrectedResidual": 2.3192870159396906e-18,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 13412450.524816299,
+          "landedSolidKg": 452801.8419398377,
+          "landedCloudKg": 4446467.201781907,
+          "settledKg": 5751177.232602626,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 13412450.524816299,
+          "landedSolidKg": 452801.8419398377,
+          "landedCloudKg": 4446467.201781907,
+          "settledKg": 5751177.232602626,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Chelyabinsk",
+      "family": "rule 961",
+      "configuration": "M2/unlimited",
+      "draws": 1,
+      "identical": 1,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000301925103,
+          "corrected": 0.00000301925103
+        },
+        "settledShare": {
+          "sealed": 0.620468,
+          "corrected": 0.620468
+        },
+        "peakAltitudeKm": {
+          "sealed": 30.1,
+          "corrected": 30.1
+        }
+      },
+      "worstCorrectedResidual": 1.3303761471554018e-16,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 13412450.524816299,
+          "landedSolidKg": 425023.39842331404,
+          "landedCloudKg": 0,
+          "settledKg": 8321989.757397967,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 13412450.524816299,
+          "landedSolidKg": 425023.39842331404,
+          "landedCloudKg": 0,
+          "settledKg": 8321989.757397967,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Chelyabinsk",
+      "family": "rule 961",
+      "configuration": "M2/capped",
+      "draws": 1,
+      "identical": 1,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000432232989,
+          "corrected": 0.00000432232989
+        },
+        "settledShare": {
+          "sealed": 0.436186,
+          "corrected": 0.436186
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.2,
+          "corrected": 33.2
+        }
+      },
+      "worstCorrectedResidual": 2.535862893672024e-16,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 13412450.524816299,
+          "landedSolidKg": 382537.3844987297,
+          "landedCloudKg": 0,
+          "settledKg": 5850326.4595339745,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 13412450.524816299,
+          "landedSolidKg": 382537.3844987297,
+          "landedCloudKg": 0,
+          "settledKg": 5850326.4595339745,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Tunguska",
+      "family": "rule 961",
+      "configuration": "M1/unlimited",
+      "draws": 1,
+      "identical": 0,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.699109666,
+          "corrected": 0.00000163574902
+        },
+        "settledShare": {
+          "sealed": 0.907186,
+          "corrected": 0.211288
+        },
+        "peakAltitudeKm": {
+          "sealed": 40.4,
+          "corrected": 18.1
+        }
+      },
+      "worstCorrectedResidual": 1.5512832335344293e-16,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 339292006.5876976,
+          "landedSolidKg": 856994.7564830974,
+          "landedCloudKg": 0,
+          "settledKg": 307800936.49367,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 339292006.5876976,
+          "landedSolidKg": 856994.7564831078,
+          "landedCloudKg": 166047993.38428867,
+          "settledKg": 71688258.38904628,
+          "dustKg": 0
+        }
+      },
+      "changed": [
+        {
+          "draw": 0,
+          "sealed": {
+            "settledShare": 0.907186,
+            "stoppedShare": 0.699109666,
+            "groundShare": 0.00252583,
+            "peakKtKm": 6379,
+            "peakAltitudeKm": 40.4,
+            "massResidual": -5.729978416120764e-17,
+            "energyResidual": -1.4766954343396622e-16
+          },
+          "corrected": {
+            "settledShare": 0.211288,
+            "stoppedShare": 0.00000163574902,
+            "groundShare": 0.491921,
+            "peakKtKm": 911,
+            "peakAltitudeKm": 18.1,
+            "massResidual": 0,
+            "energyResidual": -1.5512832335344293e-16
+          }
+        }
+      ]
+    },
+    {
+      "case": "Tunguska",
+      "family": "rule 961",
+      "configuration": "M1/capped",
+      "draws": 1,
+      "identical": 0,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.84527728,
+          "corrected": 3.29974698e-7
+        },
+        "settledShare": {
+          "sealed": 0.861829,
+          "corrected": 0.0203352
+        },
+        "peakAltitudeKm": {
+          "sealed": 34.9,
+          "corrected": 13.7
+        }
+      },
+      "worstCorrectedResidual": 8.783679488185123e-17,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 339292006.5876976,
+          "landedSolidKg": 763.614523358643,
+          "landedCloudKg": 36683417.02412169,
+          "settledKg": 292411612.99753565,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 339292006.5876976,
+          "landedSolidKg": 763.6145233511925,
+          "landedCloudKg": 268398188.54780135,
+          "settledKg": 6899554.019444238,
+          "dustKg": 0
+        }
+      },
+      "changed": [
+        {
+          "draw": 0,
+          "sealed": {
+            "settledShare": 0.861829,
+            "stoppedShare": 0.84527728,
+            "groundShare": 0.10812,
+            "peakKtKm": 7713,
+            "peakAltitudeKm": 34.9,
+            "massResidual": 2.1959198720462807e-17,
+            "energyResidual": 3.14129936759622e-16
+          },
+          "corrected": {
+            "settledShare": 0.0203352,
+            "stoppedShare": 3.29974698e-7,
+            "groundShare": 0.791056,
+            "peakKtKm": 953.3,
+            "peakAltitudeKm": 13.7,
+            "massResidual": -8.783679488185123e-17,
+            "energyResidual": -4.551357551503973e-17
+          }
+        }
+      ]
+    },
+    {
+      "case": "Tunguska",
+      "family": "rule 961",
+      "configuration": "M2/unlimited",
+      "draws": 1,
+      "identical": 0,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.540389998,
+          "corrected": 0.00000197661731
+        },
+        "settledShare": {
+          "sealed": 0.657455,
+          "corrected": 0.26193
+        },
+        "peakAltitudeKm": {
+          "sealed": 37.9,
+          "corrected": 20.7
+        }
+      },
+      "worstCorrectedResidual": 7.580679894639336e-17,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 339292006.5876976,
+          "landedSolidKg": 911241.1259521064,
+          "landedCloudKg": 0,
+          "settledKg": 223069334.65832585,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 339292006.5876976,
+          "landedSolidKg": 911241.1259521064,
+          "landedCloudKg": 0,
+          "settledKg": 88870872.5263177,
+          "dustKg": 0
+        }
+      },
+      "changed": [
+        {
+          "draw": 0,
+          "sealed": {
+            "settledShare": 0.657455,
+            "stoppedShare": 0.540389998,
+            "groundShare": 0.00268571,
+            "peakKtKm": 4924,
+            "peakAltitudeKm": 37.9,
+            "massResidual": 5.352554688112809e-17,
+            "energyResidual": 7.588431473376868e-17
+          },
+          "corrected": {
+            "settledShare": 0.26193,
+            "stoppedShare": 0.00000197661731,
+            "groundShare": 0.00268571,
+            "peakKtKm": 1105,
+            "peakAltitudeKm": 20.7,
+            "massResidual": 9.607149440202478e-18,
+            "energyResidual": 7.580679894639336e-17
+          }
+        }
+      ]
+    },
+    {
+      "case": "Tunguska",
+      "family": "rule 961",
+      "configuration": "M2/capped",
+      "draws": 1,
+      "identical": 0,
+      "completed": {
+        "sealed": 0,
+        "corrected": 0,
+        "both": 0
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": null,
+          "corrected": null
+        },
+        "settledShare": {
+          "sealed": null,
+          "corrected": null
+        },
+        "peakAltitudeKm": {
+          "sealed": null,
+          "corrected": null
+        }
+      },
+      "worstCorrectedResidual": null,
+      "fates": {
+        "sealed": {
+          "produced": 0,
+          "entryMassKg": 0,
+          "landedSolidKg": 0,
+          "landedCloudKg": 0,
+          "settledKg": 0,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 0,
+          "entryMassKg": 0,
+          "landedSolidKg": 0,
+          "landedCloudKg": 0,
+          "settledKg": 0,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2008 TC3",
+      "family": "rule 961",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000554660932,
+          "corrected": 0.00000554660932
+        },
+        "settledShare": {
+          "sealed": 0.529103,
+          "corrected": 0.529103
+        },
+        "peakAltitudeKm": {
+          "sealed": 30.7,
+          "corrected": 30.7
+        }
+      },
+      "worstCorrectedResidual": 4.445498765699905e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 13945103.026070954,
+          "landedSolidKg": 2094514.4647330805,
+          "landedCloudKg": 0,
+          "settledKg": 7352041.8106833305,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 13945103.026070954,
+          "landedSolidKg": 2094514.4647330805,
+          "landedCloudKg": 0,
+          "settledKg": 7352041.8106833305,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2008 TC3",
+      "family": "rule 961",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.0000154047207,
+          "corrected": 0.0000154047207
+        },
+        "settledShare": {
+          "sealed": 0.553587,
+          "corrected": 0.553587
+        },
+        "peakAltitudeKm": {
+          "sealed": 30.4,
+          "corrected": 30.4
+        }
+      },
+      "worstCorrectedResidual": 4.2032058417873287e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 13945103.026070954,
+          "landedSolidKg": 1916206.4499632358,
+          "landedCloudKg": 0,
+          "settledKg": 7618670.377749935,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 13945103.026070954,
+          "landedSolidKg": 1916206.4499632358,
+          "landedCloudKg": 0,
+          "settledKg": 7618670.377749935,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2008 TC3",
+      "family": "rule 961",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000523430714,
+          "corrected": 0.00000523430714
+        },
+        "settledShare": {
+          "sealed": 0.523191,
+          "corrected": 0.523191
+        },
+        "peakAltitudeKm": {
+          "sealed": 30.1,
+          "corrected": 30.1
+        }
+      },
+      "worstCorrectedResidual": 4.840770727216509e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 13945103.026070954,
+          "landedSolidKg": 2722741.6265309206,
+          "landedCloudKg": 0,
+          "settledKg": 6992530.562794691,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 13945103.026070954,
+          "landedSolidKg": 2722741.6265309206,
+          "landedCloudKg": 0,
+          "settledKg": 6992530.562794691,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2008 TC3",
+      "family": "rule 961",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.0000153089362,
+          "corrected": 0.0000153089362
+        },
+        "settledShare": {
+          "sealed": 0.541548,
+          "corrected": 0.541548
+        },
+        "peakAltitudeKm": {
+          "sealed": 30.3,
+          "corrected": 30.3
+        }
+      },
+      "worstCorrectedResidual": 5.517670120670868e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 13945103.026070954,
+          "landedSolidKg": 2364479.7915829914,
+          "landedCloudKg": 0,
+          "settledKg": 7333110.582277847,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 13945103.026070954,
+          "landedSolidKg": 2364479.7915829914,
+          "landedCloudKg": 0,
+          "settledKg": 7333110.582277847,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2018 LA",
+      "family": "rule 961",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000165869622,
+          "corrected": 0.00000165869622
+        },
+        "settledShare": {
+          "sealed": 0.448749,
+          "corrected": 0.448749
+        },
+        "peakAltitudeKm": {
+          "sealed": 34.8,
+          "corrected": 34.8
+        }
+      },
+      "worstCorrectedResidual": 4.542706968064154e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 527029.619793867,
+          "landedSolidKg": 62156.36349623837,
+          "landedCloudKg": 0,
+          "settledKg": 240909.42622480355,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 527029.619793867,
+          "landedSolidKg": 62156.36349623837,
+          "landedCloudKg": 0,
+          "settledKg": 240909.42622480355,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2018 LA",
+      "family": "rule 961",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000546258483,
+          "corrected": 0.00000546258483
+        },
+        "settledShare": {
+          "sealed": 0.364972,
+          "corrected": 0.364972
+        },
+        "peakAltitudeKm": {
+          "sealed": 35.3,
+          "corrected": 35.3
+        }
+      },
+      "worstCorrectedResidual": 3.692493355465312e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 527029.619793867,
+          "landedSolidKg": 61425.55047588953,
+          "landedCloudKg": 0,
+          "settledKg": 212914.21241091134,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 527029.619793867,
+          "landedSolidKg": 61425.55047588953,
+          "landedCloudKg": 0,
+          "settledKg": 212914.21241091134,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2018 LA",
+      "family": "rule 961",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000115588554,
+          "corrected": 0.00000115588554
+        },
+        "settledShare": {
+          "sealed": 0.332834,
+          "corrected": 0.332834
+        },
+        "peakAltitudeKm": {
+          "sealed": 34.2,
+          "corrected": 34.2
+        }
+      },
+      "worstCorrectedResidual": 5.653948443239137e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 527029.619793867,
+          "landedSolidKg": 97307.44995028162,
+          "landedCloudKg": 0,
+          "settledKg": 189957.8613158858,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 527029.619793867,
+          "landedSolidKg": 97307.44995028162,
+          "landedCloudKg": 0,
+          "settledKg": 189957.8613158858,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2018 LA",
+      "family": "rule 961",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000503615663,
+          "corrected": 0.00000503615663
+        },
+        "settledShare": {
+          "sealed": 0.360024,
+          "corrected": 0.360024
+        },
+        "peakAltitudeKm": {
+          "sealed": 35,
+          "corrected": 35
+        }
+      },
+      "worstCorrectedResidual": 5.272815804336563e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 527029.619793867,
+          "landedSolidKg": 85696.61007696463,
+          "landedCloudKg": 0,
+          "settledKg": 191712.16250180634,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 527029.619793867,
+          "landedSolidKg": 85696.61007696463,
+          "landedCloudKg": 0,
+          "settledKg": 191712.16250180634,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2022 EB5",
+      "family": "rule 961",
+      "configuration": "M1/unlimited",
+      "draws": 1,
+      "identical": 1,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.0000010557878,
+          "corrected": 0.0000010557878
+        },
+        "settledShare": {
+          "sealed": 0.381826,
+          "corrected": 0.381826
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.5,
+          "corrected": 32.5
+        }
+      },
+      "worstCorrectedResidual": 2.1192150236046577e-16,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 107485.12709572741,
+          "landedSolidKg": 512.8453695235988,
+          "landedCloudKg": 0,
+          "settledKg": 41040.629017784195,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 107485.12709572741,
+          "landedSolidKg": 512.8453695235988,
+          "landedCloudKg": 0,
+          "settledKg": 41040.629017784195,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2022 EB5",
+      "family": "rule 961",
+      "configuration": "M1/capped",
+      "draws": 1,
+      "identical": 1,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000102482945,
+          "corrected": 0.00000102482945
+        },
+        "settledShare": {
+          "sealed": 0.145119,
+          "corrected": 0.145119
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.4,
+          "corrected": 32.4
+        }
+      },
+      "worstCorrectedResidual": 9.307745164214345e-17,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 107485.12709572741,
+          "landedSolidKg": 3243.5382763511107,
+          "landedCloudKg": 0,
+          "settledKg": 15598.137986296715,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 107485.12709572741,
+          "landedSolidKg": 3243.5382763511107,
+          "landedCloudKg": 0,
+          "settledKg": 15598.137986296715,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2022 EB5",
+      "family": "rule 961",
+      "configuration": "M2/unlimited",
+      "draws": 1,
+      "identical": 1,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000209870836,
+          "corrected": 0.00000209870836
+        },
+        "settledShare": {
+          "sealed": 0.708746,
+          "corrected": 0.708746
+        },
+        "peakAltitudeKm": {
+          "sealed": 30.6,
+          "corrected": 30.6
+        }
+      },
+      "worstCorrectedResidual": 1.3115459095029304e-16,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 107485.12709572741,
+          "landedSolidKg": 1414.162435083665,
+          "landedCloudKg": 0,
+          "settledKg": 76179.60202127937,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 107485.12709572741,
+          "landedSolidKg": 1414.162435083665,
+          "landedCloudKg": 0,
+          "settledKg": 76179.60202127937,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2022 EB5",
+      "family": "rule 961",
+      "configuration": "M2/capped",
+      "draws": 1,
+      "identical": 1,
+      "completed": {
+        "sealed": 1,
+        "corrected": 1,
+        "both": 1
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000194170051,
+          "corrected": 0.00000194170051
+        },
+        "settledShare": {
+          "sealed": 0.239016,
+          "corrected": 0.239016
+        },
+        "peakAltitudeKm": {
+          "sealed": 35,
+          "corrected": 35
+        }
+      },
+      "worstCorrectedResidual": 2.5387716378461784e-16,
+      "fates": {
+        "sealed": {
+          "produced": 1,
+          "entryMassKg": 107485.12709572741,
+          "landedSolidKg": 591.036347595226,
+          "landedCloudKg": 0,
+          "settledKg": 25690.631019281707,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 1,
+          "entryMassKg": 107485.12709572741,
+          "landedSolidKg": 591.036347595226,
+          "landedCloudKg": 0,
+          "settledKg": 25690.631019281707,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2023 CX1",
+      "family": "rule 961",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000102372752,
+          "corrected": 0.00000102372752
+        },
+        "settledShare": {
+          "sealed": 0.474668,
+          "corrected": 0.474668
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.2,
+          "corrected": 32.2
+        }
+      },
+      "worstCorrectedResidual": 4.2019843067116955e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 274430.2228486008,
+          "landedSolidKg": 37050.94239081999,
+          "landedCloudKg": 0,
+          "settledKg": 135324.3890357044,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 274430.2228486008,
+          "landedSolidKg": 37050.94239081999,
+          "landedCloudKg": 0,
+          "settledKg": 135324.3890357044,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2023 CX1",
+      "family": "rule 961",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000590740296,
+          "corrected": 0.00000590740296
+        },
+        "settledShare": {
+          "sealed": 0.500005,
+          "corrected": 0.500005
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.7,
+          "corrected": 32.7
+        }
+      },
+      "worstCorrectedResidual": 3.744287220602034e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 274430.2228486008,
+          "landedSolidKg": 36810.778515527956,
+          "landedCloudKg": 0,
+          "settledKg": 138050.74543599194,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 274430.2228486008,
+          "landedSolidKg": 36810.778515527956,
+          "landedCloudKg": 0,
+          "settledKg": 138050.74543599194,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2023 CX1",
+      "family": "rule 961",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.0000010210572,
+          "corrected": 0.0000010210572
+        },
+        "settledShare": {
+          "sealed": 0.47516,
+          "corrected": 0.47516
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.5,
+          "corrected": 32.5
+        }
+      },
+      "worstCorrectedResidual": 5.404834317254722e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 274430.2228486008,
+          "landedSolidKg": 44115.30583078246,
+          "landedCloudKg": 0,
+          "settledKg": 130160.36196527487,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 274430.2228486008,
+          "landedSolidKg": 44115.30583078246,
+          "landedCloudKg": 0,
+          "settledKg": 130160.36196527487,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2023 CX1",
+      "family": "rule 961",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000534209861,
+          "corrected": 0.00000534209861
+        },
+        "settledShare": {
+          "sealed": 0.457278,
+          "corrected": 0.457278
+        },
+        "peakAltitudeKm": {
+          "sealed": 32,
+          "corrected": 32
+        }
+      },
+      "worstCorrectedResidual": 6.666872796359664e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 274430.2228486008,
+          "landedSolidKg": 47003.772066859725,
+          "landedCloudKg": 0,
+          "settledKg": 133204.18443746254,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 274430.2228486008,
+          "landedSolidKg": 47003.772066859725,
+          "landedCloudKg": 0,
+          "settledKg": 133204.18443746254,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2024 BX1",
+      "family": "rule 961",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 5.32851679e-7,
+          "corrected": 5.32851679e-7
+        },
+        "settledShare": {
+          "sealed": 0.435139,
+          "corrected": 0.435139
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.6,
+          "corrected": 33.6
+        }
+      },
+      "worstCorrectedResidual": 3.7780762852618907e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 44706.561292813254,
+          "landedSolidKg": 6406.320677230596,
+          "landedCloudKg": 0,
+          "settledKg": 20158.545668156617,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 44706.561292813254,
+          "landedSolidKg": 6406.320677230596,
+          "landedCloudKg": 0,
+          "settledKg": 20158.545668156617,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2024 BX1",
+      "family": "rule 961",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000413218199,
+          "corrected": 0.00000413218199
+        },
+        "settledShare": {
+          "sealed": 0.434634,
+          "corrected": 0.434634
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.2,
+          "corrected": 33.2
+        }
+      },
+      "worstCorrectedResidual": 3.9380010126615123e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 44706.561292813254,
+          "landedSolidKg": 6342.519772644754,
+          "landedCloudKg": 0,
+          "settledKg": 19658.20964249584,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 44706.561292813254,
+          "landedSolidKg": 6342.519772644754,
+          "landedCloudKg": 0,
+          "settledKg": 19658.20964249584,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2024 BX1",
+      "family": "rule 961",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 4.73907699e-7,
+          "corrected": 4.73907699e-7
+        },
+        "settledShare": {
+          "sealed": 0.385017,
+          "corrected": 0.385017
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.1,
+          "corrected": 33.1
+        }
+      },
+      "worstCorrectedResidual": 4.2454118425301876e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 44706.561292813254,
+          "landedSolidKg": 8586.294962835993,
+          "landedCloudKg": 0,
+          "settledKg": 18251.16251162063,
+          "dustKg": 0.0009912317404004575
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 44706.561292813254,
+          "landedSolidKg": 8586.294962835993,
+          "landedCloudKg": 0,
+          "settledKg": 18251.16251162063,
+          "dustKg": 0.0009912317404004575
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2024 BX1",
+      "family": "rule 961",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000337146838,
+          "corrected": 0.00000337146838
+        },
+        "settledShare": {
+          "sealed": 0.359968,
+          "corrected": 0.359968
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.3,
+          "corrected": 33.3
+        }
+      },
+      "worstCorrectedResidual": 5.33297104093635e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 44706.561292813254,
+          "landedSolidKg": 8252.138280641297,
+          "landedCloudKg": 0,
+          "settledKg": 17381.585960097447,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 44706.561292813254,
+          "landedSolidKg": 8252.138280641297,
+          "landedCloudKg": 0,
+          "settledKg": 17381.585960097447,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2022 WJ1",
+      "family": "rule 961",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 7.92318527e-7,
+          "corrected": 7.92318527e-7
+        },
+        "settledShare": {
+          "sealed": 0.258862,
+          "corrected": 0.258862
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.1,
+          "corrected": 32.1
+        }
+      },
+      "worstCorrectedResidual": 4.879442370063093e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 38945.76048755808,
+          "landedSolidKg": 12597.805924413045,
+          "landedCloudKg": 0,
+          "settledKg": 10808.515712947286,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 38945.76048755808,
+          "landedSolidKg": 12597.805924413045,
+          "landedCloudKg": 0,
+          "settledKg": 10808.515712947286,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2022 WJ1",
+      "family": "rule 961",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000645891507,
+          "corrected": 0.00000645891507
+        },
+        "settledShare": {
+          "sealed": 0.290791,
+          "corrected": 0.290791
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.5,
+          "corrected": 32.5
+        }
+      },
+      "worstCorrectedResidual": 3.1983406967471673e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 38945.76048755808,
+          "landedSolidKg": 11010.453482545794,
+          "landedCloudKg": 0,
+          "settledKg": 12734.47956377122,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 38945.76048755808,
+          "landedSolidKg": 11010.453482545794,
+          "landedCloudKg": 0,
+          "settledKg": 12734.47956377122,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2022 WJ1",
+      "family": "rule 961",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 7.43841668e-7,
+          "corrected": 7.43841668e-7
+        },
+        "settledShare": {
+          "sealed": 0.256425,
+          "corrected": 0.256425
+        },
+        "peakAltitudeKm": {
+          "sealed": 30.7,
+          "corrected": 30.7
+        }
+      },
+      "worstCorrectedResidual": 5.614453673327676e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 38945.76048755808,
+          "landedSolidKg": 14273.741324838391,
+          "landedCloudKg": 0,
+          "settledKg": 10802.996067167902,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 38945.76048755808,
+          "landedSolidKg": 14273.741324838391,
+          "landedCloudKg": 0,
+          "settledKg": 10802.996067167902,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "2022 WJ1",
+      "family": "rule 961",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000606759161,
+          "corrected": 0.00000606759161
+        },
+        "settledShare": {
+          "sealed": 0.283113,
+          "corrected": 0.283113
+        },
+        "peakAltitudeKm": {
+          "sealed": 31.8,
+          "corrected": 31.8
+        }
+      },
+      "worstCorrectedResidual": 5.471235235319771e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 38945.76048755808,
+          "landedSolidKg": 13968.211232257332,
+          "landedCloudKg": 0,
+          "settledKg": 11480.17219805372,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 38945.76048755808,
+          "landedSolidKg": 13968.211232257332,
+          "landedCloudKg": 0,
+          "settledKg": 11480.17219805372,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Carancas",
+      "family": "rule 961",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.0000014955279,
+          "corrected": 0.0000014955279
+        },
+        "settledShare": {
+          "sealed": 0.549398,
+          "corrected": 0.549398
+        },
+        "peakAltitudeKm": {
+          "sealed": 31.6,
+          "corrected": 31.6
+        }
+      },
+      "worstCorrectedResidual": 4.940521864163521e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 1147749.9429661436,
+          "landedSolidKg": 102747.63829502856,
+          "landedCloudKg": 0,
+          "settledKg": 613889.4668149538,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 1147749.9429661436,
+          "landedSolidKg": 102747.63829502856,
+          "landedCloudKg": 0,
+          "settledKg": 613889.4668149538,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Carancas",
+      "family": "rule 961",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000628372692,
+          "corrected": 0.00000628372692
+        },
+        "settledShare": {
+          "sealed": 0.569534,
+          "corrected": 0.569534
+        },
+        "peakAltitudeKm": {
+          "sealed": 31.4,
+          "corrected": 31.4
+        }
+      },
+      "worstCorrectedResidual": 3.7559776595172064e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 1147749.9429661436,
+          "landedSolidKg": 92580.92549781076,
+          "landedCloudKg": 0,
+          "settledKg": 608363.9412569694,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 1147749.9429661436,
+          "landedSolidKg": 92580.92549781076,
+          "landedCloudKg": 0,
+          "settledKg": 608363.9412569694,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Carancas",
+      "family": "rule 961",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000135523879,
+          "corrected": 0.00000135523879
+        },
+        "settledShare": {
+          "sealed": 0.527491,
+          "corrected": 0.527491
+        },
+        "peakAltitudeKm": {
+          "sealed": 31.4,
+          "corrected": 31.4
+        }
+      },
+      "worstCorrectedResidual": 6.654091238834696e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 1147749.9429661436,
+          "landedSolidKg": 125870.19403096096,
+          "landedCloudKg": 0,
+          "settledKg": 591244.5291232448,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 1147749.9429661436,
+          "landedSolidKg": 125870.19403096096,
+          "landedCloudKg": 0,
+          "settledKg": 591244.5291232448,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Carancas",
+      "family": "rule 961",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000610132404,
+          "corrected": 0.00000610132404
+        },
+        "settledShare": {
+          "sealed": 0.542092,
+          "corrected": 0.542092
+        },
+        "peakAltitudeKm": {
+          "sealed": 31,
+          "corrected": 31
+        }
+      },
+      "worstCorrectedResidual": 4.66068146498212e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 1147749.9429661436,
+          "landedSolidKg": 136609.14524890325,
+          "landedCloudKg": 0,
+          "settledKg": 602757.024662267,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 1147749.9429661436,
+          "landedSolidKg": 136609.14524890325,
+          "landedCloudKg": 0,
+          "settledKg": 602757.024662267,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Winchcombe",
+      "family": "third set",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 4.03850617e-8,
+          "corrected": 4.03850617e-8
+        },
+        "settledShare": {
+          "sealed": 0.0938165,
+          "corrected": 0.0938165
+        },
+        "peakAltitudeKm": {
+          "sealed": 31.5,
+          "corrected": 31.5
+        }
+      },
+      "worstCorrectedResidual": 2.8978255292644847e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 2438.6077408556494,
+          "landedSolidKg": 1132.1061788414277,
+          "landedCloudKg": 0,
+          "settledKg": 475.170715312328,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 2438.6077408556494,
+          "landedSolidKg": 1132.1061788414277,
+          "landedCloudKg": 0,
+          "settledKg": 475.170715312328,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Winchcombe",
+      "family": "third set",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0,
+          "corrected": 0
+        },
+        "settledShare": {
+          "sealed": 0,
+          "corrected": 0
+        },
+        "peakAltitudeKm": {
+          "sealed": 30.1,
+          "corrected": 30.1
+        }
+      },
+      "worstCorrectedResidual": 3.5273245573904436e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 2438.6077408556494,
+          "landedSolidKg": 1245.1022617514016,
+          "landedCloudKg": 0,
+          "settledKg": 375.3587918842548,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 2438.6077408556494,
+          "landedSolidKg": 1245.1022617514016,
+          "landedCloudKg": 0,
+          "settledKg": 375.3587918842548,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Winchcombe",
+      "family": "third set",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 3.26998331e-8,
+          "corrected": 3.26998331e-8
+        },
+        "settledShare": {
+          "sealed": 0.0431562,
+          "corrected": 0.0431562
+        },
+        "peakAltitudeKm": {
+          "sealed": 32,
+          "corrected": 32
+        }
+      },
+      "worstCorrectedResidual": 4.466877085245507e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 2438.6077408556494,
+          "landedSolidKg": 1137.5835167168557,
+          "landedCloudKg": 0,
+          "settledKg": 373.21501615092615,
+          "dustKg": 0.009150513175063721
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 2438.6077408556494,
+          "landedSolidKg": 1137.5835167168557,
+          "landedCloudKg": 0,
+          "settledKg": 373.21501615092615,
+          "dustKg": 0.009150513175063721
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Winchcombe",
+      "family": "third set",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 2.39698614e-8,
+          "corrected": 2.39698614e-8
+        },
+        "settledShare": {
+          "sealed": 0.00161389,
+          "corrected": 0.00161389
+        },
+        "peakAltitudeKm": {
+          "sealed": 30.8,
+          "corrected": 30.8
+        }
+      },
+      "worstCorrectedResidual": 4.2021076339386844e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 2438.6077408556494,
+          "landedSolidKg": 1309.668588378002,
+          "landedCloudKg": 0,
+          "settledKg": 238.47195196759722,
+          "dustKg": 0.0024162362237845933
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 2438.6077408556494,
+          "landedSolidKg": 1309.668588378002,
+          "landedCloudKg": 0,
+          "settledKg": 238.47195196759722,
+          "dustKg": 0.0024162362237845933
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Golden",
+      "family": "third set",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 2.4896737e-7,
+          "corrected": 2.4896737e-7
+        },
+        "settledShare": {
+          "sealed": 0.311387,
+          "corrected": 0.311387
+        },
+        "peakAltitudeKm": {
+          "sealed": 35.6,
+          "corrected": 35.6
+        }
+      },
+      "worstCorrectedResidual": 4.865450701924216e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 24743.69170435024,
+          "landedSolidKg": 3135.0343983794205,
+          "landedCloudKg": 0,
+          "settledKg": 8748.550418870056,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 24743.69170435024,
+          "landedSolidKg": 3135.0343983794205,
+          "landedCloudKg": 0,
+          "settledKg": 8748.550418870056,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Golden",
+      "family": "third set",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000221687788,
+          "corrected": 0.00000221687788
+        },
+        "settledShare": {
+          "sealed": 0.316523,
+          "corrected": 0.316523
+        },
+        "peakAltitudeKm": {
+          "sealed": 34.4,
+          "corrected": 34.4
+        }
+      },
+      "worstCorrectedResidual": 4.969504685317107e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 24743.69170435024,
+          "landedSolidKg": 3290.914907364636,
+          "landedCloudKg": 0,
+          "settledKg": 8626.358112533659,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 24743.69170435024,
+          "landedSolidKg": 3290.914907364636,
+          "landedCloudKg": 0,
+          "settledKg": 8626.358112533659,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Golden",
+      "family": "third set",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 2.69887694e-7,
+          "corrected": 2.69887694e-7
+        },
+        "settledShare": {
+          "sealed": 0.306885,
+          "corrected": 0.306885
+        },
+        "peakAltitudeKm": {
+          "sealed": 36.5,
+          "corrected": 36.5
+        }
+      },
+      "worstCorrectedResidual": 5.704338279547173e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 24743.69170435024,
+          "landedSolidKg": 3605.1739820152616,
+          "landedCloudKg": 0,
+          "settledKg": 8373.614420019105,
+          "dustKg": 0.0009905262826901432
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 24743.69170435024,
+          "landedSolidKg": 3605.1739820152616,
+          "landedCloudKg": 0,
+          "settledKg": 8373.614420019105,
+          "dustKg": 0.0009905262826901432
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Golden",
+      "family": "third set",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000224163528,
+          "corrected": 0.00000224163528
+        },
+        "settledShare": {
+          "sealed": 0.320193,
+          "corrected": 0.320193
+        },
+        "peakAltitudeKm": {
+          "sealed": 35.3,
+          "corrected": 35.3
+        }
+      },
+      "worstCorrectedResidual": 6.576175615708933e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 24743.69170435024,
+          "landedSolidKg": 4064.0303018984077,
+          "landedCloudKg": 0,
+          "settledKg": 8425.860528391755,
+          "dustKg": 0.006456737713430317
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 24743.69170435024,
+          "landedSolidKg": 4064.0303018984077,
+          "landedCloudKg": 0,
+          "settledKg": 8425.860528391755,
+          "dustKg": 0.006456737713430317
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Madura Cave",
+      "family": "third set",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 3.88420663e-7,
+          "corrected": 3.88420663e-7
+        },
+        "settledShare": {
+          "sealed": 0.39031,
+          "corrected": 0.39031
+        },
+        "peakAltitudeKm": {
+          "sealed": 31.7,
+          "corrected": 31.7
+        }
+      },
+      "worstCorrectedResidual": 4.030809102664756e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 8990.537622631688,
+          "landedSolidKg": 2233.385211761982,
+          "landedCloudKg": 0,
+          "settledKg": 3594.5327903609923,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 8990.537622631688,
+          "landedSolidKg": 2233.385211761982,
+          "landedCloudKg": 0,
+          "settledKg": 3594.5327903609923,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Madura Cave",
+      "family": "third set",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000453769166,
+          "corrected": 0.00000453769166
+        },
+        "settledShare": {
+          "sealed": 0.425965,
+          "corrected": 0.425965
+        },
+        "peakAltitudeKm": {
+          "sealed": 31.8,
+          "corrected": 31.8
+        }
+      },
+      "worstCorrectedResidual": 4.0577723267770306e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 8990.537622631688,
+          "landedSolidKg": 2080.2668223570563,
+          "landedCloudKg": 0,
+          "settledKg": 3876.280195620637,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 8990.537622631688,
+          "landedSolidKg": 2080.2668223570563,
+          "landedCloudKg": 0,
+          "settledKg": 3876.280195620637,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Madura Cave",
+      "family": "third set",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 3.22018277e-7,
+          "corrected": 3.22018277e-7
+        },
+        "settledShare": {
+          "sealed": 0.327957,
+          "corrected": 0.327957
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.4,
+          "corrected": 32.4
+        }
+      },
+      "worstCorrectedResidual": 4.563275490267071e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 8990.537622631688,
+          "landedSolidKg": 2560.2643867744914,
+          "landedCloudKg": 0,
+          "settledKg": 3053.7398194420043,
+          "dustKg": 0.0012495354457202367
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 8990.537622631688,
+          "landedSolidKg": 2560.2643867744914,
+          "landedCloudKg": 0,
+          "settledKg": 3053.7398194420043,
+          "dustKg": 0.0012495354457202367
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Madura Cave",
+      "family": "third set",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.0000033855859,
+          "corrected": 0.0000033855859
+        },
+        "settledShare": {
+          "sealed": 0.326761,
+          "corrected": 0.326761
+        },
+        "peakAltitudeKm": {
+          "sealed": 31.6,
+          "corrected": 31.6
+        }
+      },
+      "worstCorrectedResidual": 4.517536707684489e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 8990.537622631688,
+          "landedSolidKg": 2677.0560048894467,
+          "landedCloudKg": 0,
+          "settledKg": 3078.332438800144,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 8990.537622631688,
+          "landedSolidKg": 2677.0560048894467,
+          "landedCloudKg": 0,
+          "settledKg": 3078.332438800144,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Hamburg",
+      "family": "third set",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 4.67765159e-7,
+          "corrected": 4.67765159e-7
+        },
+        "settledShare": {
+          "sealed": 0.436919,
+          "corrected": 0.436919
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.7,
+          "corrected": 33.7
+        }
+      },
+      "worstCorrectedResidual": 4.2242707890504763e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 24094.19855320521,
+          "landedSolidKg": 3585.1360308332264,
+          "landedCloudKg": 0,
+          "settledKg": 10542.26851569813,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 24094.19855320521,
+          "landedSolidKg": 3585.1360308332264,
+          "landedCloudKg": 0,
+          "settledKg": 10542.26851569813,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Hamburg",
+      "family": "third set",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000392827886,
+          "corrected": 0.00000392827886
+        },
+        "settledShare": {
+          "sealed": 0.442562,
+          "corrected": 0.442562
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.5,
+          "corrected": 33.5
+        }
+      },
+      "worstCorrectedResidual": 4.45398819007721e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 24094.19855320521,
+          "landedSolidKg": 3409.399986184484,
+          "landedCloudKg": 0,
+          "settledKg": 10920.002408228498,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 24094.19855320521,
+          "landedSolidKg": 3409.399986184484,
+          "landedCloudKg": 0,
+          "settledKg": 10920.002408228498,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Hamburg",
+      "family": "third set",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 3.16743798e-7,
+          "corrected": 3.16743798e-7
+        },
+        "settledShare": {
+          "sealed": 0.32641,
+          "corrected": 0.32641
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.6,
+          "corrected": 33.6
+        }
+      },
+      "worstCorrectedResidual": 5.6281973532076e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 24094.19855320521,
+          "landedSolidKg": 4836.84193267695,
+          "landedCloudKg": 0,
+          "settledKg": 8294.606060869432,
+          "dustKg": 0.0009866888118891196
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 24094.19855320521,
+          "landedSolidKg": 4836.84193267695,
+          "landedCloudKg": 0,
+          "settledKg": 8294.606060869432,
+          "dustKg": 0.0009866888118891196
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Hamburg",
+      "family": "third set",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.0000036113006,
+          "corrected": 0.0000036113006
+        },
+        "settledShare": {
+          "sealed": 0.393188,
+          "corrected": 0.393188
+        },
+        "peakAltitudeKm": {
+          "sealed": 34.2,
+          "corrected": 34.2
+        }
+      },
+      "worstCorrectedResidual": 4.666781340396415e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 24094.19855320521,
+          "landedSolidKg": 3775.4617355105356,
+          "landedCloudKg": 0,
+          "settledKg": 9636.156310329705,
+          "dustKg": 0.000988568802547156
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 24094.19855320521,
+          "landedSolidKg": 3775.4617355105356,
+          "landedCloudKg": 0,
+          "settledKg": 9636.156310329705,
+          "dustKg": 0.000988568802547156
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Traspena",
+      "family": "third set",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 8.02038772e-7,
+          "corrected": 8.02038772e-7
+        },
+        "settledShare": {
+          "sealed": 0.453442,
+          "corrected": 0.453442
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.5,
+          "corrected": 33.5
+        }
+      },
+      "worstCorrectedResidual": 3.8056079882788983e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 522794.6428709273,
+          "landedSolidKg": 42695.88084055898,
+          "landedCloudKg": 0,
+          "settledKg": 243606.4278206057,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 522794.6428709273,
+          "landedSolidKg": 42695.88084055898,
+          "landedCloudKg": 0,
+          "settledKg": 243606.4278206057,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Traspena",
+      "family": "third set",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000412589716,
+          "corrected": 0.00000412589716
+        },
+        "settledShare": {
+          "sealed": 0.47665,
+          "corrected": 0.47665
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.3,
+          "corrected": 33.3
+        }
+      },
+      "worstCorrectedResidual": 3.537054193688503e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 522794.6428709273,
+          "landedSolidKg": 41947.72640168049,
+          "landedCloudKg": 0,
+          "settledKg": 244756.50784464792,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 522794.6428709273,
+          "landedSolidKg": 41947.72640168049,
+          "landedCloudKg": 0,
+          "settledKg": 244756.50784464792,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Traspena",
+      "family": "third set",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 7.66816794e-7,
+          "corrected": 7.66816794e-7
+        },
+        "settledShare": {
+          "sealed": 0.465466,
+          "corrected": 0.465466
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.3,
+          "corrected": 33.3
+        }
+      },
+      "worstCorrectedResidual": 6.731313532093955e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 522794.6428709273,
+          "landedSolidKg": 55079.45735657827,
+          "landedCloudKg": 0,
+          "settledKg": 237257.78839523884,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 522794.6428709273,
+          "landedSolidKg": 55079.45735657827,
+          "landedCloudKg": 0,
+          "settledKg": 237257.78839523884,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Traspena",
+      "family": "third set",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000335756381,
+          "corrected": 0.00000335756381
+        },
+        "settledShare": {
+          "sealed": 0.409387,
+          "corrected": 0.409387
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.7,
+          "corrected": 32.7
+        }
+      },
+      "worstCorrectedResidual": 5.158332873450439e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 522794.6428709273,
+          "landedSolidKg": 59099.350853984615,
+          "landedCloudKg": 0,
+          "settledKg": 209089.10631383993,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 522794.6428709273,
+          "landedSolidKg": 59099.350853984615,
+          "landedCloudKg": 0,
+          "settledKg": 209089.10631383993,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Cavezzo",
+      "family": "third set",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 5.78164158e-8,
+          "corrected": 5.78164158e-8
+        },
+        "settledShare": {
+          "sealed": 0.159878,
+          "corrected": 0.159878
+        },
+        "peakAltitudeKm": {
+          "sealed": 29.6,
+          "corrected": 29.6
+        }
+      },
+      "worstCorrectedResidual": 4.032102546543056e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 771.8953612101957,
+          "landedSolidKg": 353.37873405933243,
+          "landedCloudKg": 0,
+          "settledKg": 174.77477778739086,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 771.8953612101957,
+          "landedSolidKg": 353.37873405933243,
+          "landedCloudKg": 0,
+          "settledKg": 174.77477778739086,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Cavezzo",
+      "family": "third set",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 8.92173331e-7,
+          "corrected": 8.92173331e-7
+        },
+        "settledShare": {
+          "sealed": 0.153021,
+          "corrected": 0.153021
+        },
+        "peakAltitudeKm": {
+          "sealed": 29.7,
+          "corrected": 29.7
+        }
+      },
+      "worstCorrectedResidual": 3.7906808689571205e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 771.8953612101957,
+          "landedSolidKg": 361.92984591054017,
+          "landedCloudKg": 0,
+          "settledKg": 159.89538572538706,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 771.8953612101957,
+          "landedSolidKg": 361.92984591054017,
+          "landedCloudKg": 0,
+          "settledKg": 159.89538572538706,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Cavezzo",
+      "family": "third set",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 1.07642647e-7,
+          "corrected": 1.07642647e-7
+        },
+        "settledShare": {
+          "sealed": 0.137121,
+          "corrected": 0.137121
+        },
+        "peakAltitudeKm": {
+          "sealed": 30.2,
+          "corrected": 30.2
+        }
+      },
+      "worstCorrectedResidual": 4.809722464157852e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 771.8953612101957,
+          "landedSolidKg": 383.7825901530922,
+          "landedCloudKg": 0,
+          "settledKg": 143.61623125366145,
+          "dustKg": 0.020460543365930898
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 771.8953612101957,
+          "landedSolidKg": 383.7825901530922,
+          "landedCloudKg": 0,
+          "settledKg": 143.61623125366145,
+          "dustKg": 0.020460543365930898
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Cavezzo",
+      "family": "third set",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000107400073,
+          "corrected": 0.00000107400073
+        },
+        "settledShare": {
+          "sealed": 0.0593175,
+          "corrected": 0.0593175
+        },
+        "peakAltitudeKm": {
+          "sealed": 29.2,
+          "corrected": 29.2
+        }
+      },
+      "worstCorrectedResidual": 4.759328275399881e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 771.8953612101957,
+          "landedSolidKg": 411.230467814612,
+          "landedCloudKg": 0,
+          "settledKg": 119.57468491034483,
+          "dustKg": 0.01857945439902859
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 771.8953612101957,
+          "landedSolidKg": 411.230467814612,
+          "landedCloudKg": 0,
+          "settledKg": 119.57468491034483,
+          "dustKg": 0.01857945439902859
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Košice",
+      "family": "W18",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 9.0552384e-7,
+          "corrected": 9.0552384e-7
+        },
+        "settledShare": {
+          "sealed": 0.455885,
+          "corrected": 0.455885
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.3,
+          "corrected": 32.3
+        }
+      },
+      "worstCorrectedResidual": 4.812553290371309e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 905505.9059199609,
+          "landedSolidKg": 101007.6333235325,
+          "landedCloudKg": 0,
+          "settledKg": 427149.3727726194,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 905505.9059199609,
+          "landedSolidKg": 101007.6333235325,
+          "landedCloudKg": 0,
+          "settledKg": 427149.3727726194,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Košice",
+      "family": "W18",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000476008833,
+          "corrected": 0.00000476008833
+        },
+        "settledShare": {
+          "sealed": 0.465355,
+          "corrected": 0.465355
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.4,
+          "corrected": 32.4
+        }
+      },
+      "worstCorrectedResidual": 4.150741099750825e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 905505.9059199609,
+          "landedSolidKg": 101959.93563157787,
+          "landedCloudKg": 0,
+          "settledKg": 451913.3386077506,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 905505.9059199609,
+          "landedSolidKg": 101959.93563157787,
+          "landedCloudKg": 0,
+          "settledKg": 451913.3386077506,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Košice",
+      "family": "W18",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 8.22423393e-7,
+          "corrected": 8.22423393e-7
+        },
+        "settledShare": {
+          "sealed": 0.429876,
+          "corrected": 0.429876
+        },
+        "peakAltitudeKm": {
+          "sealed": 31.7,
+          "corrected": 31.7
+        }
+      },
+      "worstCorrectedResidual": 4.975812777988404e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 905505.9059199609,
+          "landedSolidKg": 130994.60423279613,
+          "landedCloudKg": 0,
+          "settledKg": 392846.19744982687,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 905505.9059199609,
+          "landedSolidKg": 130994.60423279613,
+          "landedCloudKg": 0,
+          "settledKg": 392846.19744982687,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Košice",
+      "family": "W18",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000395134572,
+          "corrected": 0.00000395134572
+        },
+        "settledShare": {
+          "sealed": 0.398036,
+          "corrected": 0.398036
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.1,
+          "corrected": 32.1
+        }
+      },
+      "worstCorrectedResidual": 4.827778487440282e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 905505.9059199609,
+          "landedSolidKg": 126002.33322695026,
+          "landedCloudKg": 0,
+          "settledKg": 374831.1060007252,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 905505.9059199609,
+          "landedSolidKg": 126002.33322695026,
+          "landedCloudKg": 0,
+          "settledKg": 374831.1060007252,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Benešov",
+      "family": "W18",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 4.21709808e-7,
+          "corrected": 4.21709808e-7
+        },
+        "settledShare": {
+          "sealed": 0.337153,
+          "corrected": 0.337153
+        },
+        "peakAltitudeKm": {
+          "sealed": 35.7,
+          "corrected": 35.7
+        }
+      },
+      "worstCorrectedResidual": 5.217334746033294e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 876443.3859471567,
+          "landedSolidKg": 46729.696817529366,
+          "landedCloudKg": 0,
+          "settledKg": 321141.05692091474,
+          "dustKg": 0.5090700993176687
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 876443.3859471567,
+          "landedSolidKg": 46729.696817529366,
+          "landedCloudKg": 0,
+          "settledKg": 321141.05692091474,
+          "dustKg": 0.5090700993176687
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Benešov",
+      "family": "W18",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000208852464,
+          "corrected": 0.00000208852464
+        },
+        "settledShare": {
+          "sealed": 0.407445,
+          "corrected": 0.407445
+        },
+        "peakAltitudeKm": {
+          "sealed": 35.8,
+          "corrected": 35.8
+        }
+      },
+      "worstCorrectedResidual": 4.3717057654057505e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 876443.3859471567,
+          "landedSolidKg": 40218.1944922977,
+          "landedCloudKg": 0,
+          "settledKg": 332739.33891400264,
+          "dustKg": 0.001999325310082678
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 876443.3859471567,
+          "landedSolidKg": 40218.1944922977,
+          "landedCloudKg": 0,
+          "settledKg": 332739.33891400264,
+          "dustKg": 0.001999325310082678
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Benešov",
+      "family": "W18",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 3.93434291e-7,
+          "corrected": 3.93434291e-7
+        },
+        "settledShare": {
+          "sealed": 0.330079,
+          "corrected": 0.330079
+        },
+        "peakAltitudeKm": {
+          "sealed": 35.4,
+          "corrected": 35.4
+        }
+      },
+      "worstCorrectedResidual": 4.860868363507743e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 876443.3859471567,
+          "landedSolidKg": 54408.29427581408,
+          "landedCloudKg": 0,
+          "settledKg": 311524.12515679124,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 876443.3859471567,
+          "landedSolidKg": 54408.29427581408,
+          "landedCloudKg": 0,
+          "settledKg": 311524.12515679124,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Benešov",
+      "family": "W18",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000155772718,
+          "corrected": 0.00000155772718
+        },
+        "settledShare": {
+          "sealed": 0.307892,
+          "corrected": 0.307892
+        },
+        "peakAltitudeKm": {
+          "sealed": 35.8,
+          "corrected": 35.8
+        }
+      },
+      "worstCorrectedResidual": 4.3085041859885476e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 876443.3859471567,
+          "landedSolidKg": 59568.84393817154,
+          "landedCloudKg": 0,
+          "settledKg": 293488.9154729412,
+          "dustKg": 1.7382581279047997
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 876443.3859471567,
+          "landedSolidKg": 59568.84393817154,
+          "landedCloudKg": 0,
+          "settledKg": 293488.9154729412,
+          "dustKg": 1.7382581279047997
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Tagish Lake",
+      "family": "W18",
+      "configuration": "M1/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000461659697,
+          "corrected": 0.00000461659697
+        },
+        "settledShare": {
+          "sealed": 0.483698,
+          "corrected": 0.483698
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.1,
+          "corrected": 32.1
+        }
+      },
+      "worstCorrectedResidual": 4.63189112497597e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 20479461.102039777,
+          "landedSolidKg": 2385766.667911862,
+          "landedCloudKg": 0,
+          "settledKg": 9502097.93696314,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 20479461.102039777,
+          "landedSolidKg": 2385766.667911862,
+          "landedCloudKg": 0,
+          "settledKg": 9502097.93696314,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Tagish Lake",
+      "family": "W18",
+      "configuration": "M1/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000941720611,
+          "corrected": 0.00000941720611
+        },
+        "settledShare": {
+          "sealed": 0.394958,
+          "corrected": 0.394958
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.7,
+          "corrected": 32.7
+        }
+      },
+      "worstCorrectedResidual": 4.981057554290886e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 20479461.102039777,
+          "landedSolidKg": 2504100.0179705126,
+          "landedCloudKg": 0,
+          "settledKg": 8743387.264609596,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 20479461.102039777,
+          "landedSolidKg": 2504100.0179705126,
+          "landedCloudKg": 0,
+          "settledKg": 8743387.264609596,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Tagish Lake",
+      "family": "W18",
+      "configuration": "M2/unlimited",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000371772122,
+          "corrected": 0.00000371772122
+        },
+        "settledShare": {
+          "sealed": 0.396961,
+          "corrected": 0.396961
+        },
+        "peakAltitudeKm": {
+          "sealed": 33.5,
+          "corrected": 33.5
+        }
+      },
+      "worstCorrectedResidual": 4.48387075169475e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 20479461.102039777,
+          "landedSolidKg": 2866747.1581821013,
+          "landedCloudKg": 0,
+          "settledKg": 8836743.528856985,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 20479461.102039777,
+          "landedSolidKg": 2866747.1581821013,
+          "landedCloudKg": 0,
+          "settledKg": 8836743.528856985,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    },
+    {
+      "case": "Tagish Lake",
+      "family": "W18",
+      "configuration": "M2/capped",
+      "draws": 200,
+      "identical": 200,
+      "completed": {
+        "sealed": 200,
+        "corrected": 200,
+        "both": 200
+      },
+      "median": {
+        "stoppedShare": {
+          "sealed": 0.00000808871339,
+          "corrected": 0.00000808871339
+        },
+        "settledShare": {
+          "sealed": 0.408672,
+          "corrected": 0.408672
+        },
+        "peakAltitudeKm": {
+          "sealed": 32.7,
+          "corrected": 32.7
+        }
+      },
+      "worstCorrectedResidual": 5.627069022139392e-16,
+      "fates": {
+        "sealed": {
+          "produced": 200,
+          "entryMassKg": 20479461.102039777,
+          "landedSolidKg": 2930987.5666393535,
+          "landedCloudKg": 0,
+          "settledKg": 8649406.282276802,
+          "dustKg": 0
+        },
+        "corrected": {
+          "produced": 200,
+          "entryMassKg": 20479461.102039777,
+          "landedSolidKg": 2930987.5666393535,
+          "landedCloudKg": 0,
+          "settledKg": 8649406.282276802,
+          "dustKg": 0
+        }
+      },
+      "changed": []
+    }
+  ]
+}

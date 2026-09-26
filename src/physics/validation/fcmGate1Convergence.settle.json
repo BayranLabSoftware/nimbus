@@ -1,0 +1,4570 @@
+{
+  "engine": "rule 1227, effects/fcmBranchSettle.ts",
+  "rule": "1141 (c)",
+  "status": "development, before the dossier is read (rule 1147)",
+  "draws": 48,
+  "completedAtReference": 47,
+  "notCompleted": [
+    {
+      "id": 24,
+      "diameterM": 15.74,
+      "components": 100001,
+      "bound": {
+        "completedAtMillion": false,
+        "components": 1000001,
+        "completedWithoutCeiling": false,
+        "alpha": 0.109,
+        "larger": 0.548,
+        "cloud": 0.0682
+      }
+    }
+  ],
+  "boundIdenticalOnCompleted": 16,
+  "boundChecked": 16,
+  "floorBound": 0,
+  "r17Floor": [
+    {
+      "floorKg": 0.01,
+      "components": 1048575,
+      "dustShare": 0,
+      "peakKtKm": 90.094,
+      "smallestPieceKg": 4.04
+    },
+    {
+      "floorKg": 0.001,
+      "components": 1048575,
+      "dustShare": 0,
+      "peakKtKm": 90.094,
+      "smallestPieceKg": 4.04
+    },
+    {
+      "floorKg": 0.0001,
+      "components": 1048575,
+      "dustShare": 0,
+      "peakKtKm": 90.094,
+      "smallestPieceKg": 4.04
+    }
+  ],
+  "floorBody": {
+    "dustShare": [0.995, 0.995],
+    "ledger": 0,
+    "moved": {
+      "peakKtKm": 0,
+      "peakAltitudeKm": 0,
+      "depositedShare": 0,
+      "groundEnergyShare": 0,
+      "survivalShare": 0,
+      "largestShare": 0
+    },
+    "failed": []
+  },
+  "flight": {
+    "medianResidual": 3.34e-8,
+    "maxResidual": 0.00000754,
+    "medianOrder": 3.99,
+    "leastOrder": -0.381
+  },
+  "gridPhase": {
+    "medianRelative": 0.0374,
+    "maxRelative": 0.452
+  },
+  "summary": [
+    {
+      "variation": "step 5 m",
+      "byQuantity": [
+        {
+          "quantity": "peakKtKm",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0.00314,
+          "failing": []
+        },
+        {
+          "quantity": "peakAltitudeKm",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0.000386,
+          "failing": []
+        },
+        {
+          "quantity": "depositedShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0.00000253,
+          "failing": []
+        },
+        {
+          "quantity": "groundEnergyShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0.000278,
+          "failing": []
+        },
+        {
+          "quantity": "survivalShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 2.31e-10,
+          "failing": []
+        },
+        {
+          "quantity": "largestShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 5.48e-10,
+          "failing": []
+        }
+      ]
+    },
+    {
+      "variation": "step 20 m",
+      "byQuantity": [
+        {
+          "quantity": "peakKtKm",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0.00623,
+          "failing": []
+        },
+        {
+          "quantity": "peakAltitudeKm",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0.0094,
+          "failing": []
+        },
+        {
+          "quantity": "depositedShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0.00000671,
+          "failing": []
+        },
+        {
+          "quantity": "groundEnergyShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0.000765,
+          "failing": []
+        },
+        {
+          "quantity": "survivalShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 7.46e-10,
+          "failing": []
+        },
+        {
+          "quantity": "largestShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 1.44e-9,
+          "failing": []
+        }
+      ]
+    },
+    {
+      "variation": "bins 100 m",
+      "byQuantity": [
+        {
+          "quantity": "peakKtKm",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0.00339,
+          "failing": []
+        },
+        {
+          "quantity": "peakAltitudeKm",
+          "compared": 47,
+          "passed": 46,
+          "byNearZero": 0,
+          "worstRelative": 0.0819,
+          "failing": [26]
+        },
+        {
+          "quantity": "depositedShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0,
+          "failing": []
+        },
+        {
+          "quantity": "groundEnergyShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0,
+          "failing": []
+        },
+        {
+          "quantity": "survivalShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0,
+          "failing": []
+        },
+        {
+          "quantity": "largestShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0,
+          "failing": []
+        }
+      ]
+    },
+    {
+      "variation": "floor 0.1 g",
+      "byQuantity": [
+        {
+          "quantity": "peakKtKm",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0,
+          "failing": []
+        },
+        {
+          "quantity": "peakAltitudeKm",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0,
+          "failing": []
+        },
+        {
+          "quantity": "depositedShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0,
+          "failing": []
+        },
+        {
+          "quantity": "groundEnergyShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0,
+          "failing": []
+        },
+        {
+          "quantity": "survivalShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0,
+          "failing": []
+        },
+        {
+          "quantity": "largestShare",
+          "compared": 47,
+          "passed": 47,
+          "byNearZero": 0,
+          "worstRelative": 0,
+          "failing": []
+        }
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "id": 0,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 19.59,
+      "speedKmS": 20.24,
+      "angleDeg": 25.2,
+      "entryKt": 479.5,
+      "completed": true,
+      "components": 310,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 1.6283084843824904e-8,
+      "reference": {
+        "peakKtKm": 73.45,
+        "peakAltitudeKm": 27.84,
+        "depositedShare": 1.0037,
+        "groundEnergyShare": 0.000088372,
+        "survivalShare": 0.09692,
+        "largestShare": 0.0015197,
+        "gridPeakKtKm": 71.86,
+        "gridPeakShiftedKtKm": 73.113
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -6.87e-8,
+            "peakAltitudeKm": 0,
+            "depositedShare": -2.59e-8,
+            "groundEnergyShare": -3.31e-13,
+            "survivalShare": -1.32e-13,
+            "largestShare": -3.83e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.86412503042447e-10
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 1.36e-7,
+            "peakAltitudeKm": 0,
+            "depositedShare": 2.05e-7,
+            "groundEnergyShare": 9.1e-13,
+            "survivalShare": 3.39e-13,
+            "largestShare": 1.04e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.675168373881961e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0249,
+            "peakAltitudeKm": -0.04,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.6283084843824904e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.6283084843824904e-8
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 0.3825,
+      "speedKmS": 20.58,
+      "angleDeg": 88.5,
+      "entryKt": 0.004192,
+      "completed": true,
+      "components": 20,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 5.442808504132786e-8,
+      "reference": {
+        "peakKtKm": 0.0011163,
+        "peakAltitudeKm": 32.67,
+        "depositedShare": 1.003,
+        "groundEnergyShare": 0.0000013927,
+        "survivalShare": 0.17947,
+        "largestShare": 0.041137,
+        "gridPeakKtKm": 0.0010806,
+        "gridPeakShiftedKtKm": 0.0010098
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 1.68e-12,
+            "peakAltitudeKm": 0,
+            "depositedShare": -7.92e-8,
+            "groundEnergyShare": 2.15e-16,
+            "survivalShare": 3.72e-15,
+            "largestShare": 5.76e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.3033561151024536e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 5.29e-7,
+            "peakAltitudeKm": -0.04,
+            "depositedShare": 8.97e-7,
+            "groundEnergyShare": 6.59e-16,
+            "survivalShare": -6.75e-14,
+            "largestShare": -1.74e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000010628489908172765
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -1.2e-7,
+            "peakAltitudeKm": 0.03,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.442808504132786e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.442808504132786e-8
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 0.2273,
+      "speedKmS": 15.74,
+      "angleDeg": 53.8,
+      "entryKt": 0.000412,
+      "completed": true,
+      "components": 4,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 7.765676805329489e-8,
+      "reference": {
+        "peakKtKm": 0.00020008,
+        "peakAltitudeKm": 30.21,
+        "depositedShare": 1.0057,
+        "groundEnergyShare": 0.0000010595,
+        "survivalShare": 0.12015,
+        "largestShare": 0.06802,
+        "gridPeakKtKm": 0.00018198,
+        "gridPeakShiftedKtKm": 0.00019865
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -4.26e-8,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 4.31e-7,
+            "groundEnergyShare": 1.3e-16,
+            "survivalShare": 7.44e-15,
+            "largestShare": 3.87e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.85262268895965e-8
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 7.85e-8,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": -8.61e-7,
+            "groundEnergyShare": 1.04e-15,
+            "survivalShare": -9.6e-14,
+            "largestShare": -5.26e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000010051759874811724
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -1.45e-9,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 7.765676805329489e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 7.765676805329489e-8
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 24.78,
+      "speedKmS": 23.88,
+      "angleDeg": 72.5,
+      "entryKt": 2102,
+      "completed": true,
+      "components": 3350,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 3.35458068594727e-9,
+      "reference": {
+        "peakKtKm": 220.66,
+        "peakAltitudeKm": 25.32,
+        "depositedShare": 1.0027,
+        "groundEnergyShare": 0.00017416,
+        "survivalShare": 0.014123,
+        "largestShare": 0.00014181,
+        "gridPeakKtKm": 219.6,
+        "gridPeakShiftedKtKm": 217.44
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0224,
+            "peakAltitudeKm": 0,
+            "depositedShare": 5.07e-10,
+            "groundEnergyShare": -4.56e-13,
+            "survivalShare": -2.71e-13,
+            "largestShare": -1e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.0856445512297422e-10
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.015,
+            "peakAltitudeKm": 0,
+            "depositedShare": -8.55e-8,
+            "groundEnergyShare": 1.2e-12,
+            "survivalShare": 7.1e-13,
+            "largestShare": 2.64e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.349847797742759e-8
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0172,
+            "peakAltitudeKm": -0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.35458068594727e-9
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.35458068594727e-9
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 9.325,
+      "speedKmS": 16.38,
+      "angleDeg": 16.4,
+      "entryKt": 41.06,
+      "completed": true,
+      "components": 82,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 7.482837111338023e-8,
+      "reference": {
+        "peakKtKm": 5.7968,
+        "peakAltitudeKm": 28.96,
+        "depositedShare": 1.0057,
+        "groundEnergyShare": 0.000044195,
+        "survivalShare": 0.1576,
+        "largestShare": 0.0084803,
+        "gridPeakKtKm": 5.3397,
+        "gridPeakShiftedKtKm": 5.7919
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -9.07e-11,
+            "peakAltitudeKm": 0,
+            "depositedShare": -6.38e-8,
+            "groundEnergyShare": -2.26e-14,
+            "survivalShare": -9.8e-15,
+            "largestShare": -1.44e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 4.54069488612152e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -1.55e-10,
+            "peakAltitudeKm": 0,
+            "depositedShare": 1.06e-7,
+            "groundEnergyShare": 9.24e-14,
+            "survivalShare": -2.69e-14,
+            "largestShare": 1.73e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000001232173493733866
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00487,
+            "peakAltitudeKm": 0.04,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 7.482837111338023e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 7.482837111338023e-8
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 0.3332,
+      "speedKmS": 18.06,
+      "angleDeg": 79.7,
+      "entryKt": 0.001427,
+      "completed": true,
+      "components": 20,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 2.745163245297906e-8,
+      "reference": {
+        "peakKtKm": 0.0004561,
+        "peakAltitudeKm": 40.52,
+        "depositedShare": 1.0034,
+        "groundEnergyShare": 3.4947e-7,
+        "survivalShare": 0.082757,
+        "largestShare": 0.01876,
+        "gridPeakKtKm": 0.00045572,
+        "gridPeakShiftedKtKm": 0.00024959
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 3.06e-13,
+            "peakAltitudeKm": 0,
+            "depositedShare": -9.09e-9,
+            "groundEnergyShare": 7.41e-18,
+            "survivalShare": 6.56e-15,
+            "largestShare": 1.29e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.689593200030382e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -3.3e-12,
+            "peakAltitudeKm": 0,
+            "depositedShare": 1.19e-7,
+            "groundEnergyShare": 9.61e-16,
+            "survivalShare": -1.25e-13,
+            "largestShare": -2.69e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 4.5497347045756497e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -3.75e-7,
+            "peakAltitudeKm": -0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.745163245297906e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.745163245297906e-8
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 2.905,
+      "speedKmS": 24.2,
+      "angleDeg": 20.2,
+      "entryKt": 2.624,
+      "completed": true,
+      "components": 151,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 5.180820288975415e-7,
+      "reference": {
+        "peakKtKm": 0.32134,
+        "peakAltitudeKm": 41.12,
+        "depositedShare": 1.0021,
+        "groundEnergyShare": 3.8914e-7,
+        "survivalShare": 0.028459,
+        "largestShare": 0.0010143,
+        "gridPeakKtKm": 0.30703,
+        "gridPeakShiftedKtKm": 0.31994
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000183,
+            "peakAltitudeKm": 0,
+            "depositedShare": 1.4e-8,
+            "groundEnergyShare": 7.2e-17,
+            "survivalShare": 8.73e-15,
+            "largestShare": 2.55e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.251943132223657e-8
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.000362,
+            "peakAltitudeKm": 0,
+            "depositedShare": -3.82e-8,
+            "groundEnergyShare": 2.91e-17,
+            "survivalShare": -1.38e-13,
+            "largestShare": -4.39e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000074668853100946135
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000332,
+            "peakAltitudeKm": -0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.180820288975415e-7
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.180820288975415e-7
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 2.184,
+      "speedKmS": 13.44,
+      "angleDeg": 57.2,
+      "entryKt": 0.2011,
+      "completed": true,
+      "components": 107,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 1.5854096669464505e-7,
+      "reference": {
+        "peakKtKm": 0.013511,
+        "peakAltitudeKm": 26.32,
+        "depositedShare": 1.0085,
+        "groundEnergyShare": 0.000012738,
+        "survivalShare": 0.27907,
+        "largestShare": 0.02731,
+        "gridPeakKtKm": 0.012421,
+        "gridPeakShiftedKtKm": 0.011881
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000002,
+            "peakAltitudeKm": 0,
+            "depositedShare": -1.16e-7,
+            "groundEnergyShare": 2.34e-15,
+            "survivalShare": 2.41e-14,
+            "largestShare": 1.75e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.077135562526434e-8
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0000018,
+            "peakAltitudeKm": 0,
+            "depositedShare": 4.72e-8,
+            "groundEnergyShare": 1.15e-15,
+            "survivalShare": -3.11e-13,
+            "largestShare": -1.76e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000024016140192831755
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000256,
+            "peakAltitudeKm": -0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.5854096669464505e-7
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.5854096669464505e-7
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 232,
+      "speedKmS": 12.68,
+      "angleDeg": 37.8,
+      "entryKt": 260800,
+      "completed": true,
+      "components": 175,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 8.410970011800621e-12,
+      "reference": {
+        "peakKtKm": 22062,
+        "peakAltitudeKm": 6.83,
+        "depositedShare": 1.0067,
+        "groundEnergyShare": 0.0047942,
+        "survivalShare": 0.000099304,
+        "largestShare": 0.000004949,
+        "gridPeakKtKm": 22010,
+        "gridPeakShiftedKtKm": 22049
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000308,
+            "peakAltitudeKm": 0,
+            "depositedShare": -1.48e-8,
+            "groundEnergyShare": -2.75e-11,
+            "survivalShare": -5.37e-15,
+            "largestShare": -4.43e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.3826086532499245e-12
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0428,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 2.65e-8,
+            "groundEnergyShare": 8.11e-11,
+            "survivalShare": 1.4e-14,
+            "largestShare": 1.14e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.2253567641000826e-10
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.402,
+            "peakAltitudeKm": -0.03,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 8.410970011800621e-12
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 8.410970011800621e-12
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 0.9059,
+      "speedKmS": 24.53,
+      "angleDeg": 27.9,
+      "entryKt": 0.06372,
+      "completed": true,
+      "components": 17,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 2.9876423173101194e-7,
+      "reference": {
+        "peakKtKm": 0.028109,
+        "peakAltitudeKm": 34.91,
+        "depositedShare": 1.002,
+        "groundEnergyShare": 8.7281e-8,
+        "survivalShare": 0.016851,
+        "largestShare": 0.0065892,
+        "gridPeakKtKm": 0.027623,
+        "gridPeakShiftedKtKm": 0.027296
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 1.86e-10,
+            "peakAltitudeKm": 0,
+            "depositedShare": -6.18e-9,
+            "groundEnergyShare": 1.31e-17,
+            "survivalShare": 5.27e-15,
+            "largestShare": 2.17e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.859181143905295e-8
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -3.2e-7,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 1.1e-8,
+            "groundEnergyShare": 4.73e-17,
+            "survivalShare": -9.81e-14,
+            "largestShare": -4.02e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000004737733626638101
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -3.14e-7,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.9876423173101194e-7
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.9876423173101194e-7
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 1.196,
+      "speedKmS": 19.24,
+      "angleDeg": 40,
+      "entryKt": 0.07411,
+      "completed": true,
+      "components": 43,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 0.000002440369850460371,
+      "reference": {
+        "peakKtKm": 0.023148,
+        "peakAltitudeKm": 32.13,
+        "depositedShare": 1.0035,
+        "groundEnergyShare": 8.906e-8,
+        "survivalShare": 0.013731,
+        "largestShare": 0.0019705,
+        "gridPeakKtKm": 0.022422,
+        "gridPeakShiftedKtKm": 0.022671
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -5.46e-8,
+            "peakAltitudeKm": 0,
+            "depositedShare": 2.11e-8,
+            "groundEnergyShare": 1.18e-17,
+            "survivalShare": 3.95e-15,
+            "largestShare": 7.71e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.5587354171792402e-7
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0000242,
+            "peakAltitudeKm": 0,
+            "depositedShare": 3.44e-8,
+            "groundEnergyShare": 7.24e-17,
+            "survivalShare": -7.16e-14,
+            "largestShare": -1.29e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.00002645536806114434
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000118,
+            "peakAltitudeKm": 0.07,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000002440369850460371
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000002440369850460371
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 166.5,
+      "speedKmS": 24.45,
+      "angleDeg": 42,
+      "entryKt": 329200,
+      "completed": true,
+      "components": 1493,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 5.962826533480757e-11,
+      "reference": {
+        "peakKtKm": 22704,
+        "peakAltitudeKm": 15.83,
+        "depositedShare": 1.0025,
+        "groundEnergyShare": 0.00049377,
+        "survivalShare": 0.0043189,
+        "largestShare": 0.000089876,
+        "gridPeakKtKm": 22630,
+        "gridPeakShiftedKtKm": 22679
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.51,
+            "peakAltitudeKm": 0,
+            "depositedShare": 8.42e-9,
+            "groundEnergyShare": -3.71e-9,
+            "survivalShare": -3.09e-13,
+            "largestShare": -1.21e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.591748622566316e-12
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00713,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": -1.17e-8,
+            "groundEnergyShare": -5.22e-9,
+            "survivalShare": 8.39e-13,
+            "largestShare": 3.19e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.150524694979557e-10
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.561,
+            "peakAltitudeKm": -0.03,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.962826533480757e-11
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.962826533480757e-11
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 3.034,
+      "speedKmS": 27.89,
+      "angleDeg": 77.9,
+      "entryKt": 4.229,
+      "completed": true,
+      "components": 721,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 2.4871508142509516e-8,
+      "reference": {
+        "peakKtKm": 1.0472,
+        "peakAltitudeKm": 35.61,
+        "depositedShare": 1.0017,
+        "groundEnergyShare": 2.0084e-8,
+        "survivalShare": 0.0052307,
+        "largestShare": 0.000044564,
+        "gridPeakKtKm": 1.0431,
+        "gridPeakShiftedKtKm": 1.006
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 3.85e-11,
+            "peakAltitudeKm": 0,
+            "depositedShare": -3.44e-8,
+            "groundEnergyShare": 3.01e-18,
+            "survivalShare": 7.48e-16,
+            "largestShare": 5.6e-18
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.4669671529200895e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000663,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": 5.07e-8,
+            "groundEnergyShare": 1.07e-17,
+            "survivalShare": -1.19e-14,
+            "largestShare": -8.4e-17
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.3012759931312747e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000546,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.4871508142509516e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.4871508142509516e-8
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 2.551,
+      "speedKmS": 28.46,
+      "angleDeg": 53.9,
+      "entryKt": 2.067,
+      "completed": true,
+      "components": 1694,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 0.0000075433514405709,
+      "reference": {
+        "peakKtKm": 0.4317,
+        "peakAltitudeKm": 42.17,
+        "depositedShare": 1.0013,
+        "groundEnergyShare": 6.5184e-10,
+        "survivalShare": 0.0005656,
+        "largestShare": 0.000017101,
+        "gridPeakKtKm": 0.40313,
+        "gridPeakShiftedKtKm": 0.41878
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -8.78e-11,
+            "peakAltitudeKm": 0,
+            "depositedShare": -3.02e-9,
+            "groundEnergyShare": -1.56e-19,
+            "survivalShare": -4.37e-15,
+            "largestShare": -6.64e-17
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000010739946547874142
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000193,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": 8.15e-9,
+            "groundEnergyShare": 5.04e-18,
+            "survivalShare": 7.05e-14,
+            "largestShare": 1.06e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.00004336307555984937
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000314,
+            "peakAltitudeKm": 0.03,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000075433514405709
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000075433514405709
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 1.062,
+      "speedKmS": 14.31,
+      "angleDeg": 84.7,
+      "entryKt": 0.06009,
+      "completed": true,
+      "components": 76,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 3.344649177431329e-8,
+      "reference": {
+        "peakKtKm": 0.0065366,
+        "peakAltitudeKm": 32.79,
+        "depositedShare": 1.008,
+        "groundEnergyShare": 0.000016945,
+        "survivalShare": 0.30559,
+        "largestShare": 0.019005,
+        "gridPeakKtKm": 0.0064169,
+        "gridPeakShiftedKtKm": 0.0064535
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000381,
+            "peakAltitudeKm": 0,
+            "depositedShare": 6.23e-7,
+            "groundEnergyShare": 1.55e-15,
+            "survivalShare": 3.22e-15,
+            "largestShare": -2.78e-17
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.939434349460829e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.00000747,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": -0.00000176,
+            "groundEnergyShare": 8.24e-15,
+            "survivalShare": -3.86e-14,
+            "largestShare": -2.14e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.424118438893881e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -6.94e-8,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.344649177431329e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.344649177431329e-8
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 192,
+      "speedKmS": 29.8,
+      "angleDeg": 72.4,
+      "entryKt": 1064000,
+      "completed": true,
+      "components": 1049,
+      "bound": {
+        "identical": true
+      },
+      "dustShare": 0,
+      "flightAbsResidual": 1.604449203159275e-11,
+      "reference": {
+        "peakKtKm": 80132,
+        "peakAltitudeKm": 6.61,
+        "depositedShare": 0.98887,
+        "groundEnergyShare": 0.013132,
+        "survivalShare": 0.000013326,
+        "largestShare": 3.0358e-7,
+        "gridPeakKtKm": 80101,
+        "gridPeakShiftedKtKm": 79762
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000137,
+            "peakAltitudeKm": 0,
+            "depositedShare": -1.06e-9,
+            "groundEnergyShare": -8.47e-11,
+            "survivalShare": -1.04e-15,
+            "largestShare": -5.85e-17
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.826899353052003e-12
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0505,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": 7.51e-10,
+            "groundEnergyShare": 2.39e-10,
+            "survivalShare": 2.69e-15,
+            "largestShare": 1.53e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.4418746038664766e-10
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.433,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.604449203159275e-11
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.604449203159275e-11
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 71.76,
+      "speedKmS": 27.8,
+      "angleDeg": 32.3,
+      "entryKt": 45900,
+      "completed": true,
+      "components": 5332,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 1.6401729421880105e-8,
+      "reference": {
+        "peakKtKm": 5338,
+        "peakAltitudeKm": 26.52,
+        "depositedShare": 1.0019,
+        "groundEnergyShare": 5.4172e-9,
+        "survivalShare": 0.00033538,
+        "largestShare": 3.9932e-7,
+        "gridPeakKtKm": 5337.6,
+        "gridPeakShiftedKtKm": 5063.9
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.00000188,
+            "peakAltitudeKm": 0,
+            "depositedShare": -4.27e-9,
+            "groundEnergyShare": 1.16e-18,
+            "survivalShare": 9.76e-17,
+            "largestShare": 1.35e-19
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.0178072308134164e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000365,
+            "peakAltitudeKm": 0,
+            "depositedShare": 1.07e-8,
+            "groundEnergyShare": -9.35e-20,
+            "survivalShare": -1.61e-15,
+            "largestShare": -2.32e-18
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.9770692444608003e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.433,
+            "peakAltitudeKm": -0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.6401729421880105e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.6401729421880105e-8
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 0.174,
+      "speedKmS": 25.14,
+      "angleDeg": 45.6,
+      "entryKt": 0.0004169,
+      "completed": true,
+      "components": 23,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 0.000004308357355542536,
+      "reference": {
+        "peakKtKm": 0.000065697,
+        "peakAltitudeKm": 68.8,
+        "depositedShare": 1.0015,
+        "groundEnergyShare": 3.4694e-8,
+        "survivalShare": 0.03404,
+        "largestShare": 0.010016,
+        "gridPeakKtKm": 0.000059209,
+        "gridPeakShiftedKtKm": 0.000063446
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -5.33e-15,
+            "peakAltitudeKm": 0,
+            "depositedShare": -3.64e-8,
+            "groundEnergyShare": -2.3e-17,
+            "survivalShare": 1.25e-14,
+            "largestShare": 3.76e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.653504562996473e-7
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 1.94e-14,
+            "peakAltitudeKm": 0,
+            "depositedShare": 5.4e-8,
+            "groundEnergyShare": 5.73e-16,
+            "survivalShare": -1.94e-13,
+            "largestShare": -5.92e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.00005362557603577708
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 1.36e-20,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000004308357355542536
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000004308357355542536
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 21.58,
+      "speedKmS": 14.41,
+      "angleDeg": 54.4,
+      "entryKt": 248.3,
+      "completed": true,
+      "components": 4702,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 6.0296302543202515e-9,
+      "reference": {
+        "peakKtKm": 34.493,
+        "peakAltitudeKm": 29.13,
+        "depositedShare": 1.008,
+        "groundEnergyShare": 9.0515e-8,
+        "survivalShare": 0.0031726,
+        "largestShare": 0.000004595,
+        "gridPeakKtKm": 33.659,
+        "gridPeakShiftedKtKm": 34.442
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00708,
+            "peakAltitudeKm": 0,
+            "depositedShare": 2.43e-7,
+            "groundEnergyShare": 1.61e-17,
+            "survivalShare": 1.53e-16,
+            "largestShare": 2.04e-19
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.802002079679367e-10
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0184,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": -3.62e-8,
+            "groundEnergyShare": 1.27e-17,
+            "survivalShare": -2.49e-15,
+            "largestShare": -2.68e-18
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.803820294015712e-8
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00288,
+            "peakAltitudeKm": -0.03,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.0296302543202515e-9
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.0296302543202515e-9
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 68.59,
+      "speedKmS": 15.91,
+      "angleDeg": 68,
+      "entryKt": 8398,
+      "completed": true,
+      "components": 449,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 4.6311886754106136e-11,
+      "reference": {
+        "peakKtKm": 769.89,
+        "peakAltitudeKm": 17.44,
+        "depositedShare": 1.0071,
+        "groundEnergyShare": 0.000050146,
+        "survivalShare": 0.0012215,
+        "largestShare": 0.00019623,
+        "gridPeakKtKm": 769.84,
+        "gridPeakShiftedKtKm": 766.84
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0154,
+            "peakAltitudeKm": 0,
+            "depositedShare": 1.17e-8,
+            "groundEnergyShare": 5.92e-9,
+            "survivalShare": -1.75e-14,
+            "largestShare": -1.12e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 4.643375079048611e-12
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0306,
+            "peakAltitudeKm": 0,
+            "depositedShare": -2.99e-8,
+            "groundEnergyShare": 4.1e-9,
+            "survivalShare": 5.03e-14,
+            "largestShare": 2.95e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 7.067734362674502e-10
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0297,
+            "peakAltitudeKm": -0.04,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 4.6311886754106136e-11
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 4.6311886754106136e-11
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 0.4431,
+      "speedKmS": 13.77,
+      "angleDeg": 33.4,
+      "entryKt": 0.002811,
+      "completed": true,
+      "components": 43,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 0.0000014574179868829959,
+      "reference": {
+        "peakKtKm": 0.00057642,
+        "peakAltitudeKm": 34.52,
+        "depositedShare": 1.0082,
+        "groundEnergyShare": 0.0000092682,
+        "survivalShare": 0.42049,
+        "largestShare": 0.047468,
+        "gridPeakKtKm": 0.0005757,
+        "gridPeakShiftedKtKm": 0.00040243
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 9.46e-12,
+            "peakAltitudeKm": 0,
+            "depositedShare": -1.09e-7,
+            "groundEnergyShare": 1.55e-15,
+            "survivalShare": 1.02e-14,
+            "largestShare": 1.15e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 8.727059968292061e-8
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -1.59e-10,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0.00000156,
+            "groundEnergyShare": 2.55e-15,
+            "survivalShare": -1.36e-13,
+            "largestShare": -1.35e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000013873256998167014
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -7.18e-7,
+            "peakAltitudeKm": -0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000014574179868829959
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000014574179868829959
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 0.1459,
+      "speedKmS": 18.79,
+      "angleDeg": 56.1,
+      "entryKt": 0.0001327,
+      "completed": true,
+      "components": 17,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 7.580325853554185e-8,
+      "reference": {
+        "peakKtKm": 0.000066299,
+        "peakAltitudeKm": 40.74,
+        "depositedShare": 1.0036,
+        "groundEnergyShare": 4.7895e-7,
+        "survivalShare": 0.181,
+        "largestShare": 0.05406,
+        "gridPeakKtKm": 0.000065987,
+        "gridPeakShiftedKtKm": 0.000052913
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 6.08e-13,
+            "peakAltitudeKm": 0,
+            "depositedShare": -9.09e-8,
+            "groundEnergyShare": -9.62e-17,
+            "survivalShare": 6.41e-15,
+            "largestShare": 2.44e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 4.663689080971456e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -1.04e-11,
+            "peakAltitudeKm": 0,
+            "depositedShare": -2.12e-11,
+            "groundEnergyShare": 3.33e-15,
+            "survivalShare": -1.55e-13,
+            "largestShare": -5.09e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000001255210225150111
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -2.4e-8,
+            "peakAltitudeKm": -0.04,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 7.580325853554185e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 7.580325853554185e-8
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 0.3252,
+      "speedKmS": 15.56,
+      "angleDeg": 17.1,
+      "entryKt": 0.001406,
+      "completed": true,
+      "components": 4,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 8.882183788977872e-9,
+      "reference": {
+        "peakKtKm": 0.00062959,
+        "peakAltitudeKm": 38.51,
+        "depositedShare": 1.006,
+        "groundEnergyShare": 0.0000073403,
+        "survivalShare": 0.33499,
+        "largestShare": 0.18149,
+        "gridPeakKtKm": 0.00062923,
+        "gridPeakShiftedKtKm": 0.00055046
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -2.5e-7,
+            "peakAltitudeKm": 0,
+            "depositedShare": 5.25e-7,
+            "groundEnergyShare": 1.28e-15,
+            "survivalShare": 2.94e-15,
+            "largestShare": -2.5e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.1562945116872891e-8
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.00000139,
+            "peakAltitudeKm": 0,
+            "depositedShare": -0.00000139,
+            "groundEnergyShare": 1.25e-15,
+            "survivalShare": -5.95e-14,
+            "largestShare": -3.34e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000029906118209373956
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -3.58e-7,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 8.882183788977872e-9
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 8.882183788977872e-9
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 281.3,
+      "speedKmS": 13.08,
+      "angleDeg": 75.8,
+      "entryKt": 420500,
+      "completed": true,
+      "components": 1736,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 2.3097719892806603e-11,
+      "reference": {
+        "peakKtKm": 30304,
+        "peakAltitudeKm": 6.68,
+        "depositedShare": 0.93513,
+        "groundEnergyShare": 0.075936,
+        "survivalShare": 0.0080393,
+        "largestShare": 0.00026325,
+        "gridPeakKtKm": 30272,
+        "gridPeakShiftedKtKm": 30191
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.00442,
+            "peakAltitudeKm": 0,
+            "depositedShare": 6.77e-8,
+            "groundEnergyShare": -5.73e-8,
+            "survivalShare": -2.64e-13,
+            "largestShare": -1.14e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.381790849473041e-12
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0568,
+            "peakAltitudeKm": 0,
+            "depositedShare": 1.79e-7,
+            "groundEnergyShare": -1.93e-7,
+            "survivalShare": 8.41e-13,
+            "largestShare": 3.16e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.493448395697372e-10
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.263,
+            "peakAltitudeKm": 0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.3097719892806603e-11
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.3097719892806603e-11
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 15.74,
+      "speedKmS": 29.97,
+      "angleDeg": 32.8,
+      "entryKt": 635.2,
+      "completed": false,
+      "components": 100001,
+      "bound": {
+        "completedAtMillion": false,
+        "components": 1000001,
+        "completedWithoutCeiling": false,
+        "alpha": 0.109,
+        "larger": 0.548,
+        "cloud": 0.0682
+      },
+      "reference": null,
+      "variations": []
+    },
+    {
+      "id": 25,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 3.566,
+      "speedKmS": 25.8,
+      "angleDeg": 81,
+      "entryKt": 6.521,
+      "completed": true,
+      "components": 434,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 6.447380379258224e-7,
+      "reference": {
+        "peakKtKm": 1.3362,
+        "peakAltitudeKm": 38.21,
+        "depositedShare": 1.0017,
+        "groundEnergyShare": 1.7609e-11,
+        "survivalShare": 0.000015597,
+        "largestShare": 6.6387e-7,
+        "gridPeakKtKm": 1.3259,
+        "gridPeakShiftedKtKm": 1.3145
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -7.57e-10,
+            "peakAltitudeKm": 0,
+            "depositedShare": -1.21e-9,
+            "groundEnergyShare": -7.97e-21,
+            "survivalShare": -4.63e-16,
+            "largestShare": -2.97e-17
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 7.900132996701479e-8
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000483,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 3.97e-9,
+            "groundEnergyShare": 2.06e-19,
+            "survivalShare": 7.45e-15,
+            "largestShare": 4.78e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000003648474005582176
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000485,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.447380379258224e-7
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.447380379258224e-7
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 1.18,
+      "speedKmS": 25.49,
+      "angleDeg": 21.5,
+      "entryKt": 0.2303,
+      "completed": true,
+      "components": 91,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 0.000001251259323357951,
+      "reference": {
+        "peakKtKm": 0.024157,
+        "peakAltitudeKm": 39.54,
+        "depositedShare": 1.0022,
+        "groundEnergyShare": 0.0000025993,
+        "survivalShare": 0.19925,
+        "largestShare": 0.012806,
+        "gridPeakKtKm": 0.02408,
+        "gridPeakShiftedKtKm": 0.020417
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000334,
+            "peakAltitudeKm": 0,
+            "depositedShare": 1.28e-7,
+            "groundEnergyShare": 4.83e-16,
+            "survivalShare": 1.64e-14,
+            "largestShare": 9.96e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.8741134913519474e-8
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0000267,
+            "peakAltitudeKm": 0,
+            "depositedShare": -0.00000672,
+            "groundEnergyShare": 1.84e-16,
+            "survivalShare": -2.86e-13,
+            "largestShare": -1.47e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.00001336358541963249
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000644,
+            "peakAltitudeKm": -3.24,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": ["peakAltitudeKm"],
+          "nearZero": [],
+          "refAtMovedPeak": 0.9973,
+          "flightAbsResidual": 0.000001251259323357951
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000001251259323357951
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 106.7,
+      "speedKmS": 23.82,
+      "angleDeg": 39.6,
+      "entryKt": 114700,
+      "completed": true,
+      "components": 11585,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 1.5781263796681711e-10,
+      "reference": {
+        "peakKtKm": 10221,
+        "peakAltitudeKm": 16.01,
+        "depositedShare": 1.0029,
+        "groundEnergyShare": 0.0000017118,
+        "survivalShare": 0.0000084166,
+        "largestShare": 6.4732e-8,
+        "gridPeakKtKm": 10172,
+        "gridPeakShiftedKtKm": 10221
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0000697,
+            "peakAltitudeKm": 0,
+            "depositedShare": -7.53e-9,
+            "groundEnergyShare": 4.76e-10,
+            "survivalShare": 2.82e-18,
+            "largestShare": 1.57e-20
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.1775219381347362e-11
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0326,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": -6.23e-9,
+            "groundEnergyShare": -1.31e-9,
+            "survivalShare": -4.01e-17,
+            "largestShare": -2.52e-19
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.3980314096723096e-9
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0324,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.5781263796681711e-10
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.5781263796681711e-10
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 15.87,
+      "speedKmS": 22.72,
+      "angleDeg": 28.9,
+      "entryKt": 488.4,
+      "completed": true,
+      "components": 4723,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 5.1646600617421715e-8,
+      "reference": {
+        "peakKtKm": 122.02,
+        "peakAltitudeKm": 29.22,
+        "depositedShare": 1.0028,
+        "groundEnergyShare": 1.7e-7,
+        "survivalShare": 0.0074442,
+        "largestShare": 0.000010041,
+        "gridPeakKtKm": 118.38,
+        "gridPeakShiftedKtKm": 119.84
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -5.38e-8,
+            "peakAltitudeKm": 0,
+            "depositedShare": -5.14e-8,
+            "groundEnergyShare": 3.39e-17,
+            "survivalShare": 8.89e-16,
+            "largestShare": 8.54e-19
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.0911328181434188e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 1.06e-7,
+            "peakAltitudeKm": 0,
+            "depositedShare": 2.23e-7,
+            "groundEnergyShare": 3.62e-18,
+            "survivalShare": -1.27e-14,
+            "largestShare": -1.34e-17
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.766077875616667e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0184,
+            "peakAltitudeKm": -0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.1646600617421715e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.1646600617421715e-8
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 23.79,
+      "speedKmS": 24.23,
+      "angleDeg": 56.2,
+      "entryKt": 1213,
+      "completed": true,
+      "components": 338,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 3.090606733915301e-8,
+      "reference": {
+        "peakKtKm": 176.86,
+        "peakAltitudeKm": 28.66,
+        "depositedShare": 1.0023,
+        "groundEnergyShare": 5.4905e-10,
+        "survivalShare": 0.000061968,
+        "largestShare": 7.8527e-7,
+        "gridPeakKtKm": 175.75,
+        "gridPeakShiftedKtKm": 173.16
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -1.88e-7,
+            "peakAltitudeKm": 0,
+            "depositedShare": -5.4e-10,
+            "groundEnergyShare": 8.96e-20,
+            "survivalShare": -4.78e-16,
+            "largestShare": -8.85e-18
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.9394276806878116e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 8.8e-7,
+            "peakAltitudeKm": 0,
+            "depositedShare": 2.42e-9,
+            "groundEnergyShare": 1.95e-19,
+            "survivalShare": 7.68e-15,
+            "largestShare": 1.42e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.722416355312628e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.058,
+            "peakAltitudeKm": 0.04,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.090606733915301e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.090606733915301e-8
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 0.9846,
+      "speedKmS": 12.93,
+      "angleDeg": 19.7,
+      "entryKt": 0.03212,
+      "completed": true,
+      "components": 7,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 9.166017154355275e-8,
+      "reference": {
+        "peakKtKm": 0.018047,
+        "peakAltitudeKm": 34.66,
+        "depositedShare": 1.0088,
+        "groundEnergyShare": 0.0000055963,
+        "survivalShare": 0.078048,
+        "largestShare": 0.053338,
+        "gridPeakKtKm": 0.016911,
+        "gridPeakShiftedKtKm": 0.014908
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0000298,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": -0.00000255,
+            "groundEnergyShare": 1.11e-15,
+            "survivalShare": 1.65e-15,
+            "largestShare": 8.81e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.644494404582199e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0000298,
+            "peakAltitudeKm": 0,
+            "depositedShare": -0.00000246,
+            "groundEnergyShare": 1.82e-16,
+            "survivalShare": -3e-14,
+            "largestShare": -1.79e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.4056463289480513e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000451,
+            "peakAltitudeKm": 0.04,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.166017154355275e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.166017154355275e-8
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 34.28,
+      "speedKmS": 12.8,
+      "angleDeg": 48,
+      "entryKt": 673.8,
+      "completed": true,
+      "components": 491,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 3.622702156316532e-10,
+      "reference": {
+        "peakKtKm": 67.017,
+        "peakAltitudeKm": 25.88,
+        "depositedShare": 1.0109,
+        "groundEnergyShare": 0.0000049772,
+        "survivalShare": 0.0020602,
+        "largestShare": 0.00033567,
+        "gridPeakKtKm": 66.85,
+        "gridPeakShiftedKtKm": 67.003
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00689,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 3.99e-7,
+            "groundEnergyShare": -1.7e-14,
+            "survivalShare": -3.7e-15,
+            "largestShare": -1.71e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.2381349561870313e-11
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.007,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": -1.92e-7,
+            "groundEnergyShare": 4.45e-14,
+            "survivalShare": 9.34e-15,
+            "largestShare": 4.43e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.280566254270272e-9
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000525,
+            "peakAltitudeKm": 0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.622702156316532e-10
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.622702156316532e-10
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 0.4205,
+      "speedKmS": 16.43,
+      "angleDeg": 28.4,
+      "entryKt": 0.003408,
+      "completed": true,
+      "components": 4,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 0.0000032580492811860473,
+      "reference": {
+        "peakKtKm": 0.00055843,
+        "peakAltitudeKm": 28.82,
+        "depositedShare": 1.005,
+        "groundEnergyShare": 0.0000017107,
+        "survivalShare": 0.095789,
+        "largestShare": 0.073149,
+        "gridPeakKtKm": 0.00054848,
+        "gridPeakShiftedKtKm": 0.00052733
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 6.09e-10,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": -6.4e-7,
+            "groundEnergyShare": 2.94e-16,
+            "survivalShare": 2.36e-14,
+            "largestShare": 1.68e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.964166831270781e-7
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 8.73e-11,
+            "peakAltitudeKm": 0,
+            "depositedShare": 9.38e-7,
+            "groundEnergyShare": 3.52e-16,
+            "survivalShare": -3.82e-13,
+            "largestShare": -2.7e-13
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000024641539105787054
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -4.62e-7,
+            "peakAltitudeKm": -0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000032580492811860473
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000032580492811860473
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 295.3,
+      "speedKmS": 25.04,
+      "angleDeg": 33.4,
+      "entryKt": 3123000,
+      "completed": true,
+      "components": 3611,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 1.6135762811815401e-9,
+      "reference": {
+        "peakKtKm": 284200,
+        "peakAltitudeKm": 12.12,
+        "depositedShare": 1.0024,
+        "groundEnergyShare": 0.00041572,
+        "survivalShare": 0.0019303,
+        "largestShare": 0.0000054962,
+        "gridPeakKtKm": 282250,
+        "gridPeakShiftedKtKm": 283980
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000258,
+            "peakAltitudeKm": 0,
+            "depositedShare": -3.64e-9,
+            "groundEnergyShare": -6.7e-13,
+            "survivalShare": -4.46e-13,
+            "largestShare": -3.01e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.0185953479612974e-10
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0000726,
+            "peakAltitudeKm": 0,
+            "depositedShare": 7e-9,
+            "groundEnergyShare": 2.16e-12,
+            "survivalShare": 1.44e-12,
+            "largestShare": 7.94e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.627047440849864e-8
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -6.92,
+            "peakAltitudeKm": -0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.6135762811815401e-9
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.6135762811815401e-9
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 0.9063,
+      "speedKmS": 17.31,
+      "angleDeg": 88,
+      "entryKt": 0.04549,
+      "completed": true,
+      "components": 34,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 6.157722283482079e-8,
+      "reference": {
+        "peakKtKm": 0.0078317,
+        "peakAltitudeKm": 32.97,
+        "depositedShare": 1.0049,
+        "groundEnergyShare": 0.0000028604,
+        "survivalShare": 0.11577,
+        "largestShare": 0.017385,
+        "gridPeakKtKm": 0.0068729,
+        "gridPeakShiftedKtKm": 0.0078189
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000535,
+            "peakAltitudeKm": 0,
+            "depositedShare": 4.2e-7,
+            "groundEnergyShare": 5.21e-16,
+            "survivalShare": 6.51e-15,
+            "largestShare": 8.19e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.865865532624903e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0000177,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": -1.46e-7,
+            "groundEnergyShare": 2.95e-16,
+            "survivalShare": -8.95e-14,
+            "largestShare": -1.1e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000001379123764291351
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000128,
+            "peakAltitudeKm": 0.03,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.157722283482079e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.157722283482079e-8
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 4.638,
+      "speedKmS": 13.73,
+      "angleDeg": 15.6,
+      "entryKt": 4.207,
+      "completed": true,
+      "components": 77,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 9.015342207955251e-8,
+      "reference": {
+        "peakKtKm": 0.26117,
+        "peakAltitudeKm": 30.95,
+        "depositedShare": 1.0088,
+        "groundEnergyShare": 0.00006577,
+        "survivalShare": 0.27282,
+        "largestShare": 0.029137,
+        "gridPeakKtKm": 0.21927,
+        "gridPeakShiftedKtKm": 0.26023
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000135,
+            "peakAltitudeKm": 0,
+            "depositedShare": 7.14e-8,
+            "groundEnergyShare": 2.02e-14,
+            "survivalShare": 7.72e-15,
+            "largestShare": 1.91e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.474019256840915e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.000813,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": -5.34e-7,
+            "groundEnergyShare": -8.39e-15,
+            "survivalShare": -3.9e-14,
+            "largestShare": -5.69e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000016088533745965242
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000886,
+            "peakAltitudeKm": -0.05,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.015342207955251e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.015342207955251e-8
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 9.688,
+      "speedKmS": 22.35,
+      "angleDeg": 45.3,
+      "entryKt": 94.9,
+      "completed": true,
+      "components": 40,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 6.738061983363127e-10,
+      "reference": {
+        "peakKtKm": 16.252,
+        "peakAltitudeKm": 30.66,
+        "depositedShare": 1.0028,
+        "groundEnergyShare": 6.2237e-8,
+        "survivalShare": 0.0013355,
+        "largestShare": 0.00022213,
+        "gridPeakKtKm": 16.19,
+        "gridPeakShiftedKtKm": 16.003
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -3.12e-8,
+            "peakAltitudeKm": 0,
+            "depositedShare": -1.34e-8,
+            "groundEnergyShare": -7.56e-17,
+            "survivalShare": 5.44e-17,
+            "largestShare": -1.4e-17
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 4.28450432755516e-11
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 6.21e-8,
+            "peakAltitudeKm": 0,
+            "depositedShare": 6.95e-9,
+            "groundEnergyShare": 2.61e-16,
+            "survivalShare": -1.71e-15,
+            "largestShare": -1.45e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.0757705705037558e-8
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00319,
+            "peakAltitudeKm": 0.04,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.738061983363127e-10
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.738061983363127e-10
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 2.36,
+      "speedKmS": 12.48,
+      "angleDeg": 62.9,
+      "entryKt": 0.2103,
+      "completed": true,
+      "components": 26,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 6.007924271265277e-9,
+      "reference": {
+        "peakKtKm": 0.039704,
+        "peakAltitudeKm": 26.86,
+        "depositedShare": 1.0094,
+        "groundEnergyShare": 0.000012934,
+        "survivalShare": 0.17467,
+        "largestShare": 0.032267,
+        "gridPeakKtKm": 0.032317,
+        "gridPeakShiftedKtKm": 0.038382
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -1.79e-12,
+            "peakAltitudeKm": 0,
+            "depositedShare": -6.83e-8,
+            "groundEnergyShare": 1.72e-15,
+            "survivalShare": 9.1e-15,
+            "largestShare": 1.52e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.714835210036501e-10
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -1.2e-11,
+            "peakAltitudeKm": 0,
+            "depositedShare": 2.8e-7,
+            "groundEnergyShare": 4.09e-15,
+            "survivalShare": -1.27e-13,
+            "largestShare": -2.17e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.932582062748784e-8
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000121,
+            "peakAltitudeKm": 0.04,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.007924271265277e-9
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.007924271265277e-9
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 58.53,
+      "speedKmS": 16.21,
+      "angleDeg": 19.4,
+      "entryKt": 6563,
+      "completed": true,
+      "components": 766,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 5.612767311412752e-10,
+      "reference": {
+        "peakKtKm": 838.31,
+        "peakAltitudeKm": 24.75,
+        "depositedShare": 1.0058,
+        "groundEnergyShare": 1.2762e-9,
+        "survivalShare": 0.00004599,
+        "largestShare": 2.2927e-7,
+        "gridPeakKtKm": 834.78,
+        "gridPeakShiftedKtKm": 834.59
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.00476,
+            "peakAltitudeKm": 0,
+            "depositedShare": 5.25e-8,
+            "groundEnergyShare": 2.33e-19,
+            "survivalShare": 1.23e-17,
+            "largestShare": 6.23e-20
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.5325177175266444e-11
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00708,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": 9.16e-9,
+            "groundEnergyShare": 1.14e-19,
+            "survivalShare": -1.95e-16,
+            "largestShare": -9.24e-19
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 8.15218309752587e-9
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.14,
+            "peakAltitudeKm": 0.05,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.612767311412752e-10
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.612767311412752e-10
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 0.8588,
+      "speedKmS": 18.91,
+      "angleDeg": 24.2,
+      "entryKt": 0.04987,
+      "completed": true,
+      "components": 65,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 1.7204221055281827e-7,
+      "reference": {
+        "peakKtKm": 0.014283,
+        "peakAltitudeKm": 41.4,
+        "depositedShare": 1.0036,
+        "groundEnergyShare": 6.6254e-7,
+        "survivalShare": 0.035875,
+        "largestShare": 0.021163,
+        "gridPeakKtKm": 0.0141,
+        "gridPeakShiftedKtKm": 0.011742
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000448,
+            "peakAltitudeKm": 0,
+            "depositedShare": 8.2e-7,
+            "groundEnergyShare": 1.19e-16,
+            "survivalShare": 1.28e-15,
+            "largestShare": 6.28e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 4.7242373105341613e-8
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.000089,
+            "peakAltitudeKm": 0,
+            "depositedShare": -0.00000161,
+            "groundEnergyShare": 1.05e-16,
+            "survivalShare": -3.28e-14,
+            "largestShare": -1.43e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000010300767564954345
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 1.73e-18,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.7204221055281827e-7
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.7204221055281827e-7
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 100.4,
+      "speedKmS": 22.41,
+      "angleDeg": 89.4,
+      "entryKt": 122700,
+      "completed": true,
+      "components": 68293,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 7.500209955423267e-9,
+      "reference": {
+        "peakKtKm": 13497,
+        "peakAltitudeKm": 18.5,
+        "depositedShare": 0.99627,
+        "groundEnergyShare": 0.0071402,
+        "survivalShare": 0.064349,
+        "largestShare": 0.0000045196,
+        "gridPeakKtKm": 13497,
+        "gridPeakShiftedKtKm": 12992
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000632,
+            "peakAltitudeKm": 0,
+            "depositedShare": -3.25e-8,
+            "groundEnergyShare": -9.63e-12,
+            "survivalShare": -7.36e-12,
+            "largestShare": -5.25e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 4.6217455664956305e-10
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.0000632,
+            "peakAltitudeKm": 0,
+            "depositedShare": 9.61e-8,
+            "groundEnergyShare": 2.7e-11,
+            "survivalShare": 2.06e-11,
+            "largestShare": 1.52e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.4155267759469745e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 2.91e-11,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 7.500209955423267e-9
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 7.500209955423267e-9
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 0.3379,
+      "speedKmS": 13.84,
+      "angleDeg": 79.4,
+      "entryKt": 0.0012,
+      "completed": true,
+      "components": 32,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 0.0000011822049901491102,
+      "reference": {
+        "peakKtKm": 0.00011833,
+        "peakAltitudeKm": 33.5,
+        "depositedShare": 1.0085,
+        "groundEnergyShare": 0.000010626,
+        "survivalShare": 0.54965,
+        "largestShare": 0.11091,
+        "gridPeakKtKm": 0.00011833,
+        "gridPeakShiftedKtKm": 0.00011372
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 8.12e-15,
+            "peakAltitudeKm": 0,
+            "depositedShare": -5.1e-7,
+            "groundEnergyShare": 1.71e-15,
+            "survivalShare": 1.05e-14,
+            "largestShare": 1.54e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.610486194167457e-8
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 1.46e-7,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": 1.51e-7,
+            "groundEnergyShare": 3.93e-15,
+            "survivalShare": -1.69e-13,
+            "largestShare": -3.11e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000006980089407572231
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 2.3e-19,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000011822049901491102
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.0000011822049901491102
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 74.75,
+      "speedKmS": 17.1,
+      "angleDeg": 88,
+      "entryKt": 14030,
+      "completed": true,
+      "components": 142,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 6.125709280970219e-11,
+      "reference": {
+        "peakKtKm": 1315.2,
+        "peakAltitudeKm": 15.88,
+        "depositedShare": 1.0059,
+        "groundEnergyShare": 0.00010431,
+        "survivalShare": 0.0015853,
+        "largestShare": 0.000068257,
+        "gridPeakKtKm": 1311.3,
+        "gridPeakShiftedKtKm": 1314.6
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000883,
+            "peakAltitudeKm": 0,
+            "depositedShare": 1.1e-8,
+            "groundEnergyShare": 9.41e-10,
+            "survivalShare": -1.14e-13,
+            "largestShare": -7.73e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.077078742380655e-12
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.00639,
+            "peakAltitudeKm": 0,
+            "depositedShare": -4.96e-8,
+            "groundEnergyShare": -5.64e-9,
+            "survivalShare": 3.14e-13,
+            "largestShare": 2.05e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.205743081613294e-10
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0199,
+            "peakAltitudeKm": 0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.125709280970219e-11
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 6.125709280970219e-11
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 0.434,
+      "speedKmS": 16.84,
+      "angleDeg": 89.6,
+      "entryKt": 0.002492,
+      "completed": true,
+      "components": 20,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 1.5646900203129475e-7,
+      "reference": {
+        "peakKtKm": 0.0003941,
+        "peakAltitudeKm": 27.67,
+        "depositedShare": 1.0053,
+        "groundEnergyShare": 0.0000035018,
+        "survivalShare": 0.32142,
+        "largestShare": 0.11755,
+        "gridPeakKtKm": 0.00039388,
+        "gridPeakShiftedKtKm": 0.00038729
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 8.35e-9,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": -1.25e-7,
+            "groundEnergyShare": 5.21e-16,
+            "survivalShare": 1.53e-14,
+            "largestShare": 5.77e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.932021435137113e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 1.55e-7,
+            "peakAltitudeKm": -0.26,
+            "depositedShare": -7.64e-7,
+            "groundEnergyShare": 1.98e-15,
+            "survivalShare": -1.81e-13,
+            "largestShare": -6.35e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.00001512791884438384
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -9.82e-9,
+            "peakAltitudeKm": 0.03,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.5646900203129475e-7
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.5646900203129475e-7
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "structure": "M1",
+      "cloud": "unlimited",
+      "diameterM": 0.6325,
+      "speedKmS": 17.81,
+      "angleDeg": 35.5,
+      "entryKt": 0.01759,
+      "completed": true,
+      "components": 469,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 0.000002272303355205607,
+      "reference": {
+        "peakKtKm": 0.01194,
+        "peakAltitudeKm": 40.77,
+        "depositedShare": 1.0036,
+        "groundEnergyShare": 1.0994e-8,
+        "survivalShare": 0.0046297,
+        "largestShare": 0.0000454,
+        "gridPeakKtKm": 0.010626,
+        "gridPeakShiftedKtKm": 0.010866
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -4.78e-12,
+            "peakAltitudeKm": 0,
+            "depositedShare": -5.67e-8,
+            "groundEnergyShare": -3.8e-18,
+            "survivalShare": 1.49e-15,
+            "largestShare": 1.39e-17
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 2.0098257252252708e-7
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -2.38e-7,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": 1.57e-7,
+            "groundEnergyShare": 1.05e-16,
+            "survivalShare": -2.43e-14,
+            "largestShare": -2.23e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.00004596312609316622
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000106,
+            "peakAltitudeKm": 0.03,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000002272303355205607
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 0.000002272303355205607
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "structure": "M2",
+      "cloud": "unlimited",
+      "diameterM": 1.006,
+      "speedKmS": 17.91,
+      "angleDeg": 31,
+      "entryKt": 0.04063,
+      "completed": true,
+      "components": 50,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 9.012660378410802e-8,
+      "reference": {
+        "peakKtKm": 0.018351,
+        "peakAltitudeKm": 40.09,
+        "depositedShare": 1.0036,
+        "groundEnergyShare": 2.4822e-7,
+        "survivalShare": 0.027859,
+        "largestShare": 0.0068233,
+        "gridPeakKtKm": 0.015164,
+        "gridPeakShiftedKtKm": 0.01819
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 1.95e-12,
+            "peakAltitudeKm": 0,
+            "depositedShare": -1.76e-9,
+            "groundEnergyShare": 3.58e-17,
+            "survivalShare": 1.45e-15,
+            "largestShare": 2.97e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 5.3634893309379225e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.0000012,
+            "peakAltitudeKm": -0.01,
+            "depositedShare": 1.35e-7,
+            "groundEnergyShare": 1.57e-16,
+            "survivalShare": -1.99e-14,
+            "largestShare": -4.29e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.436728554380885e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000289,
+            "peakAltitudeKm": 0.01,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.012660378410802e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 9.012660378410802e-8
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "structure": "M1",
+      "cloud": "capped",
+      "diameterM": 0.5573,
+      "speedKmS": 17.97,
+      "angleDeg": 72.7,
+      "entryKt": 0.009747,
+      "completed": true,
+      "components": 10,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 1.7699302204661896e-8,
+      "reference": {
+        "peakKtKm": 0.0042486,
+        "peakAltitudeKm": 36.6,
+        "depositedShare": 1.0041,
+        "groundEnergyShare": 3.8024e-7,
+        "survivalShare": 0.033973,
+        "largestShare": 0.014915,
+        "gridPeakKtKm": 0.0041933,
+        "gridPeakShiftedKtKm": 0.0033165
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000259,
+            "peakAltitudeKm": 0,
+            "depositedShare": 2.22e-7,
+            "groundEnergyShare": 6.11e-17,
+            "survivalShare": 4.3e-15,
+            "largestShare": 1.69e-15
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.3206790434866206e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00000528,
+            "peakAltitudeKm": 0,
+            "depositedShare": 5.45e-7,
+            "groundEnergyShare": 1.38e-16,
+            "survivalShare": -8.27e-14,
+            "largestShare": -3.27e-14
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.481591206467448e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 3.47e-18,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.7699302204661896e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.7699302204661896e-8
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "structure": "M2",
+      "cloud": "capped",
+      "diameterM": 10.02,
+      "speedKmS": 22.17,
+      "angleDeg": 18.2,
+      "entryKt": 47.06,
+      "completed": true,
+      "components": 767,
+      "bound": null,
+      "dustShare": 0,
+      "flightAbsResidual": 1.7940932374230978e-8,
+      "reference": {
+        "peakKtKm": 6.7838,
+        "peakAltitudeKm": 38.48,
+        "depositedShare": 1.0027,
+        "groundEnergyShare": 2.1565e-7,
+        "survivalShare": 0.013517,
+        "largestShare": 0.00089334,
+        "gridPeakKtKm": 6.7835,
+        "gridPeakShiftedKtKm": 6.501
+      },
+      "variations": [
+        {
+          "name": "step 5 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.00233,
+            "peakAltitudeKm": 0,
+            "depositedShare": 3.43e-8,
+            "groundEnergyShare": 4.12e-17,
+            "survivalShare": 9.37e-16,
+            "largestShare": 5.38e-17
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.2499880818682822e-9
+        },
+        {
+          "name": "step 20 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0.00431,
+            "peakAltitudeKm": 0,
+            "depositedShare": -7.55e-8,
+            "groundEnergyShare": 1.71e-17,
+            "survivalShare": -1.75e-14,
+            "largestShare": -9.13e-16
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 3.171146995013039e-7
+        },
+        {
+          "name": "bins 100 m",
+          "completed": true,
+          "moved": {
+            "peakKtKm": -0.000243,
+            "peakAltitudeKm": 0.02,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.7940932374230978e-8
+        },
+        {
+          "name": "floor 0.1 g",
+          "completed": true,
+          "moved": {
+            "peakKtKm": 0,
+            "peakAltitudeKm": 0,
+            "depositedShare": 0,
+            "groundEnergyShare": 0,
+            "survivalShare": 0,
+            "largestShare": 0
+          },
+          "failed": [],
+          "nearZero": [],
+          "refAtMovedPeak": null,
+          "flightAbsResidual": 1.7940932374230978e-8
+        }
+      ]
+    }
+  ]
+}

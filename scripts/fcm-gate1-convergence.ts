@@ -34,12 +34,7 @@
  */
 
 import { writeFileSync } from 'node:fs';
-import {
-  fcmEntry,
-  type FcmBody,
-  type FcmOptions,
-  type FcmResult,
-} from '../src/physics/effects/fcmBranch.js';
+import { type FcmBody, type FcmOptions, type FcmResult } from '../src/physics/effects/fcmBranch.js';
 import { FCM_DOMAIN, FCM_GATE1, FCM_PRIORS } from '../src/physics/validation/fcmRoundRules.js';
 import {
   FIRST_STAGE_STRENGTH_RANGE,
@@ -47,6 +42,11 @@ import {
 } from '../src/physics/effects/atmosphericEntry.js';
 import { A_SIGMA_PRIOR_S2_M2 } from '../src/physics/validation/ablationStudyRules.js';
 import { FCM_FLOOR_BODY } from '../src/physics/validation/fcmRound1Rules.js';
+import { engineFromArgs } from './porta1Engine.js';
+
+/** Rule 1229 (f)(1): `--engine settle` flies rule 1227's corrected settle
+ *  condition, into its own outputs. */
+const { engine: ENGINE, suffix: SUFFIX } = engineFromArgs(process.argv);
 
 const KT = 4.184e12;
 const DRAWS = 48;
@@ -232,7 +232,7 @@ function passes(key: Key, ref: number, x: number, entryKt: number): boolean {
 }
 
 const run = (d: Draw, extra: Partial<FcmOptions>): FcmResult =>
-  fcmEntry(d.body, { ...d.options, ...REFERENCE, ...extra });
+  ENGINE(d.body, { ...d.options, ...REFERENCE, ...extra });
 
 const rows = draws.map((d) => {
   const ref = run(d, {});
@@ -377,7 +377,7 @@ const maxPhase = phaseSorted[phaseSorted.length - 1] ?? 0;
 /** The floor on R17's independent wakes, the published case with the most
  *  pieces (gate 2): whether it binds there. */
 const r17Floor = [1e-2, 1e-3, 1e-4].map((floorKg) => {
-  const r = fcmEntry(
+  const r = ENGINE(
     {
       diameter: 19.8,
       velocity: 19_160,
@@ -408,7 +408,7 @@ const r17Floor = [1e-2, 1e-3, 1e-4].map((floorKg) => {
 const floorBody = (() => {
   const f = FCM_FLOOR_BODY;
   const fly = (floorKg: number): FcmResult =>
-    fcmEntry(
+    ENGINE(
       {
         diameter: f.diameterM,
         velocity: f.speedMS,
@@ -503,8 +503,8 @@ const out = {
   rows,
 };
 writeFileSync(
-  'src/physics/validation/fcmGate1Convergence.json',
-  `${JSON.stringify(out, null, 2)}\n`
+  `src/physics/validation/fcmGate1Convergence${SUFFIX}.json`,
+  `${JSON.stringify(SUFFIX === '' ? out : { engine: 'rule 1227, effects/fcmBranchSettle.ts', ...out }, null, 2)}\n`
 );
 
 const NAMES: Record<Key, string> = {
@@ -519,6 +519,12 @@ const pct = (x: number): string => `${(x * 100).toPrecision(2)} %`;
 const lines = [
   '# FCM round, gate 1 (c) — convergence on the same draws',
   '',
+  ...(SUFFIX === ''
+    ? []
+    : [
+        'Flown by rule 1227’s corrected settle condition (`effects/fcmBranchSettle.ts`), rule 1229 (f)(1) — development only, beside the sealed engine’s run of `docs/FCM_GATE1_CONVERGENCE.md`.',
+        '',
+      ]),
   'Rule 1141 (c) (`src/physics/validation/fcmRoundRules.ts`), run by `scripts/fcm-gate1-convergence.ts` —',
   'development, begun before the reviewer has read the round’s dossier (rule 1147). The design of the',
   'draws, the reference and the variations is in the script’s header, fixed before any run.',
@@ -581,5 +587,8 @@ const lines = [
   `median and ${pct(maxPhase)} at most — the reason the peak is read on a sliding window.`,
   '',
 ];
-writeFileSync('docs/FCM_GATE1_CONVERGENCE.md', lines.join('\n'));
+writeFileSync(
+  `docs/FCM_GATE1_CONVERGENCE${SUFFIX.replace('.', '_').toUpperCase()}.md`,
+  lines.join('\n')
+);
 console.log(JSON.stringify({ ...out, rows: undefined }, null, 1));

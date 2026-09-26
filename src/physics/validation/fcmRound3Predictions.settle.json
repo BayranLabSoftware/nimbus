@@ -1,0 +1,853 @@
+{
+  "rule": "1168 (d)",
+  "draws": 200,
+  "engine": "rule 1227, effects/fcmBranchSettle.ts",
+  "results": [
+    {
+      "event": "Aguas Zarcas",
+      "kindFrozen": "proxy",
+      "inputs": {
+        "diameterM": {
+          "p5": 0.4933,
+          "median": 0.609,
+          "p95": 0.7377
+        },
+        "speedKmS": {
+          "p5": 13.57,
+          "median": 14.53,
+          "p95": 15.57
+        },
+        "angleDeg": {
+          "p5": 78.76,
+          "median": 81.1,
+          "p95": 83.57
+        },
+        "densityKgM3": {
+          "p5": 2200,
+          "median": 2200,
+          "p95": 2200
+        }
+      },
+      "inDomain": true,
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "producedShare": 1,
+          "notRobustShare": 0.035,
+          "releaseKm": {
+            "p5": 27.51,
+            "median": 32.52,
+            "p95": 37.27
+          },
+          "exponentialReleaseKm": {
+            "p5": 28.61,
+            "median": 34.98,
+            "p95": 41.13
+          },
+          "notRobustAltitudesKm": [
+            [23.1, 32.45],
+            [26.76, 33.62],
+            [24.33, 29.34],
+            [29.56, 24.71],
+            [28.92, 31.11],
+            [24.89, 27.05],
+            [28.33, 29.74]
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "producedShare": 1,
+          "notRobustShare": 0.025,
+          "releaseKm": {
+            "p5": 27.18,
+            "median": 32.88,
+            "p95": 37.78
+          },
+          "exponentialReleaseKm": {
+            "p5": 27.98,
+            "median": 35.67,
+            "p95": 41.6
+          },
+          "notRobustAltitudesKm": [
+            [36.29, 34.84],
+            [36.07, 34.44],
+            [24.21, 26.4],
+            [26.32, 29.68],
+            [36.95, 35.6]
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "producedShare": 1,
+          "notRobustShare": 0.015,
+          "releaseKm": {
+            "p5": 27.16,
+            "median": 33.14,
+            "p95": 37.77
+          },
+          "exponentialReleaseKm": {
+            "p5": 27.91,
+            "median": 36.03,
+            "p95": 41.7
+          },
+          "notRobustAltitudesKm": [
+            [32.53, 33.73],
+            [32.48, 33.95],
+            [34.95, 32.8]
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "producedShare": 1,
+          "notRobustShare": 0.03,
+          "releaseKm": {
+            "p5": 27.15,
+            "median": 33.38,
+            "p95": 37.58
+          },
+          "exponentialReleaseKm": {
+            "p5": 28.12,
+            "median": 36.3,
+            "p95": 41.47
+          },
+          "notRobustAltitudesKm": [
+            [36.83, 35.68],
+            [32.48, 27.94],
+            [34.15, 35.64],
+            [37.26, 29.99],
+            [30.58, 32.37],
+            [30.86, 34.46]
+          ]
+        }
+      ],
+      "mixture": {
+        "equal": {
+          "p5": 27.16,
+          "median": 32.97,
+          "p95": 37.63
+        },
+        "exponential": {
+          "p5": 28.05,
+          "median": 35.73,
+          "p95": 41.57
+        },
+        "rotated": [
+          {
+            "heavier": "M1/unlimited",
+            "p5": 27.17,
+            "median": 32.86,
+            "p95": 37.59
+          },
+          {
+            "heavier": "M1/capped",
+            "p5": 27.16,
+            "median": 32.93,
+            "p95": 37.76
+          },
+          {
+            "heavier": "M2/unlimited",
+            "p5": 27.16,
+            "median": 33.05,
+            "p95": 37.76
+          },
+          {
+            "heavier": "M2/capped",
+            "p5": 27.16,
+            "median": 33.09,
+            "p95": 37.59
+          }
+        ],
+        "monolithOnly": {
+          "p5": 27.19,
+          "median": 32.68,
+          "p95": 37.63
+        },
+        "structuredOnly": {
+          "p5": 27.14,
+          "median": 33.22,
+          "p95": 37.67
+        }
+      },
+      "baseline": {
+        "burstShare": 1,
+        "burstKm": {
+          "p5": 54.24,
+          "median": 55.34,
+          "p95": 56.55
+        }
+      }
+    },
+    {
+      "event": "Grimsby",
+      "kindFrozen": "proxy",
+      "inputs": {
+        "diameterM": {
+          "p5": 0.212,
+          "median": 0.2533,
+          "p95": 0.3186
+        },
+        "speedKmS": {
+          "p5": 20.9,
+          "median": 20.9,
+          "p95": 20.9
+        },
+        "angleDeg": {
+          "p5": 55.2,
+          "median": 55.2,
+          "p95": 55.2
+        },
+        "densityKgM3": {
+          "p5": 3370,
+          "median": 3370,
+          "p95": 3370
+        }
+      },
+      "inDomain": true,
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "producedShare": 1,
+          "notRobustShare": 0.015,
+          "releaseKm": {
+            "p5": 32.4,
+            "median": 37.4,
+            "p95": 42.87
+          },
+          "exponentialReleaseKm": {
+            "p5": 34.55,
+            "median": 41.11,
+            "p95": 47.53
+          },
+          "notRobustAltitudesKm": [
+            [29.85, 37.43],
+            [33.39, 34.86],
+            [38.7, 35.71]
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "producedShare": 1,
+          "notRobustShare": 0.025,
+          "releaseKm": {
+            "p5": 31.98,
+            "median": 37.29,
+            "p95": 42.74
+          },
+          "exponentialReleaseKm": {
+            "p5": 34.09,
+            "median": 40.98,
+            "p95": 47.51
+          },
+          "notRobustAltitudesKm": [
+            [42.24, 39.85],
+            [34.96, 37.93],
+            [33.25, 30.41],
+            [33.71, 35.6],
+            [38.35, 36.14]
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "producedShare": 1,
+          "notRobustShare": 0.015,
+          "releaseKm": {
+            "p5": 32.11,
+            "median": 36.22,
+            "p95": 42.75
+          },
+          "exponentialReleaseKm": {
+            "p5": 34.27,
+            "median": 39.87,
+            "p95": 47.46
+          },
+          "notRobustAltitudesKm": [
+            [42.54, 35.08],
+            [31.95, 36.04],
+            [41.12, 37.96]
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "producedShare": 1,
+          "notRobustShare": 0.03,
+          "releaseKm": {
+            "p5": 31.93,
+            "median": 36.99,
+            "p95": 42.9
+          },
+          "exponentialReleaseKm": {
+            "p5": 34.14,
+            "median": 40.74,
+            "p95": 47.85
+          },
+          "notRobustAltitudesKm": [
+            [43.14, 33.97],
+            [35.8, 41.28],
+            [43.22, 31.66],
+            [43.37, 42.25],
+            [37.04, 34.63],
+            [42.08, 40.72]
+          ]
+        }
+      ],
+      "mixture": {
+        "equal": {
+          "p5": 32.1,
+          "median": 37.01,
+          "p95": 42.84
+        },
+        "exponential": {
+          "p5": 34.23,
+          "median": 40.7,
+          "p95": 47.55
+        },
+        "rotated": [
+          {
+            "heavier": "M1/unlimited",
+            "p5": 32.25,
+            "median": 37.13,
+            "p95": 42.87
+          },
+          {
+            "heavier": "M1/capped",
+            "p5": 32.01,
+            "median": 37.12,
+            "p95": 42.82
+          },
+          {
+            "heavier": "M2/unlimited",
+            "p5": 32.04,
+            "median": 36.8,
+            "p95": 42.82
+          },
+          {
+            "heavier": "M2/capped",
+            "p5": 32.01,
+            "median": 37.01,
+            "p95": 42.87
+          }
+        ],
+        "monolithOnly": {
+          "p5": 32.14,
+          "median": 37.33,
+          "p95": 42.83
+        },
+        "structuredOnly": {
+          "p5": 32.03,
+          "median": 36.69,
+          "p95": 42.87
+        }
+      },
+      "baseline": {
+        "burstShare": 1,
+        "burstKm": {
+          "p5": 39.97,
+          "median": 40.26,
+          "p95": 40.44
+        }
+      }
+    },
+    {
+      "event": "Bunburra Rockhole",
+      "kindFrozen": "proxy",
+      "inputs": {
+        "diameterM": {
+          "p5": 0.202,
+          "median": 0.2526,
+          "p95": 0.3066
+        },
+        "speedKmS": {
+          "p5": 13.3,
+          "median": 13.3,
+          "p95": 13.3
+        },
+        "angleDeg": {
+          "p5": 31.2,
+          "median": 31.2,
+          "p95": 31.2
+        },
+        "densityKgM3": {
+          "p5": 2700,
+          "median": 2700,
+          "p95": 2700
+        }
+      },
+      "inDomain": true,
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "producedShare": 1,
+          "notRobustShare": 0.005,
+          "releaseKm": {
+            "p5": 26.01,
+            "median": 30.53,
+            "p95": 36.12
+          },
+          "exponentialReleaseKm": {
+            "p5": 28.76,
+            "median": 32.73,
+            "p95": 39.4
+          },
+          "notRobustAltitudesKm": [[36.59, 34.81]]
+        },
+        {
+          "configuration": "M1/capped",
+          "producedShare": 1,
+          "notRobustShare": 0.005,
+          "releaseKm": {
+            "p5": 25.87,
+            "median": 30.51,
+            "p95": 36.09
+          },
+          "exponentialReleaseKm": {
+            "p5": 28.31,
+            "median": 33.02,
+            "p95": 39.29
+          },
+          "notRobustAltitudesKm": [[35.49, 34.33]]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "producedShare": 1,
+          "notRobustShare": 0,
+          "releaseKm": {
+            "p5": 26.67,
+            "median": 30.63,
+            "p95": 36.28
+          },
+          "exponentialReleaseKm": {
+            "p5": 29.66,
+            "median": 33.7,
+            "p95": 39.55
+          },
+          "notRobustAltitudesKm": []
+        },
+        {
+          "configuration": "M2/capped",
+          "producedShare": 1,
+          "notRobustShare": 0.015,
+          "releaseKm": {
+            "p5": 26.95,
+            "median": 31.06,
+            "p95": 35.92
+          },
+          "exponentialReleaseKm": {
+            "p5": 29.57,
+            "median": 34.03,
+            "p95": 39.22
+          },
+          "notRobustAltitudesKm": [
+            [34.79, 33.1],
+            [36.62, 34.33],
+            [35.3, 30.75]
+          ]
+        }
+      ],
+      "mixture": {
+        "equal": {
+          "p5": 26.31,
+          "median": 30.64,
+          "p95": 36.12
+        },
+        "exponential": {
+          "p5": 28.96,
+          "median": 33.44,
+          "p95": 39.36
+        },
+        "rotated": [
+          {
+            "heavier": "M1/unlimited",
+            "p5": 26.15,
+            "median": 30.56,
+            "p95": 36.12
+          },
+          {
+            "heavier": "M1/capped",
+            "p5": 26.06,
+            "median": 30.62,
+            "p95": 36.12
+          },
+          {
+            "heavier": "M2/unlimited",
+            "p5": 26.56,
+            "median": 30.64,
+            "p95": 36.23
+          },
+          {
+            "heavier": "M2/capped",
+            "p5": 26.4,
+            "median": 30.85,
+            "p95": 36.07
+          }
+        ],
+        "monolithOnly": {
+          "p5": 25.99,
+          "median": 30.51,
+          "p95": 36.12
+        },
+        "structuredOnly": {
+          "p5": 26.71,
+          "median": 30.91,
+          "p95": 36.15
+        }
+      },
+      "baseline": {
+        "burstShare": 0,
+        "burstKm": {
+          "p5": null,
+          "median": null,
+          "p95": null
+        }
+      }
+    },
+    {
+      "event": "Mason Gully",
+      "kindFrozen": "proxy",
+      "inputs": {
+        "diameterM": {
+          "p5": 0.2332,
+          "median": 0.2839,
+          "p95": 0.3506
+        },
+        "speedKmS": {
+          "p5": 14.5,
+          "median": 14.5,
+          "p95": 14.5
+        },
+        "angleDeg": {
+          "p5": 53.9,
+          "median": 53.9,
+          "p95": 53.9
+        },
+        "densityKgM3": {
+          "p5": 3320,
+          "median": 3320,
+          "p95": 3320
+        }
+      },
+      "inDomain": true,
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "producedShare": 1,
+          "notRobustShare": 0,
+          "releaseKm": {
+            "p5": 25.85,
+            "median": 31.57,
+            "p95": 37.73
+          },
+          "exponentialReleaseKm": {
+            "p5": 25.9,
+            "median": 33.54,
+            "p95": 41.56
+          },
+          "notRobustAltitudesKm": []
+        },
+        {
+          "configuration": "M1/capped",
+          "producedShare": 1,
+          "notRobustShare": 0.015,
+          "releaseKm": {
+            "p5": 25.73,
+            "median": 31.91,
+            "p95": 37.94
+          },
+          "exponentialReleaseKm": {
+            "p5": 25.15,
+            "median": 33.99,
+            "p95": 41.82
+          },
+          "notRobustAltitudesKm": [
+            [28.76, 29.98],
+            [28.84, 30.98],
+            [32.16, 33.67]
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "producedShare": 1,
+          "notRobustShare": 0.005,
+          "releaseKm": {
+            "p5": 25.37,
+            "median": 32.83,
+            "p95": 37.95
+          },
+          "exponentialReleaseKm": {
+            "p5": 26.02,
+            "median": 35.35,
+            "p95": 41.82
+          },
+          "notRobustAltitudesKm": [[37.03, 35.56]]
+        },
+        {
+          "configuration": "M2/capped",
+          "producedShare": 1,
+          "notRobustShare": 0.01,
+          "releaseKm": {
+            "p5": 25.75,
+            "median": 32.62,
+            "p95": 37.86
+          },
+          "exponentialReleaseKm": {
+            "p5": 25.86,
+            "median": 35.08,
+            "p95": 41.74
+          },
+          "notRobustAltitudesKm": [
+            [30.5, 32.06],
+            [38.05, 32.22]
+          ]
+        }
+      ],
+      "mixture": {
+        "equal": {
+          "p5": 25.71,
+          "median": 32.24,
+          "p95": 37.85
+        },
+        "exponential": {
+          "p5": 25.82,
+          "median": 34.48,
+          "p95": 41.71
+        },
+        "rotated": [
+          {
+            "heavier": "M1/unlimited",
+            "p5": 25.81,
+            "median": 31.99,
+            "p95": 37.81
+          },
+          {
+            "heavier": "M1/capped",
+            "p5": 25.71,
+            "median": 32.06,
+            "p95": 37.94
+          },
+          {
+            "heavier": "M2/unlimited",
+            "p5": 25.56,
+            "median": 32.5,
+            "p95": 37.94
+          },
+          {
+            "heavier": "M2/capped",
+            "p5": 25.71,
+            "median": 32.4,
+            "p95": 37.85
+          }
+        ],
+        "monolithOnly": {
+          "p5": 25.8,
+          "median": 31.75,
+          "p95": 37.82
+        },
+        "structuredOnly": {
+          "p5": 25.56,
+          "median": 32.73,
+          "p95": 37.94
+        }
+      },
+      "baseline": {
+        "burstShare": 0.845,
+        "burstKm": {
+          "p5": 29.72,
+          "median": 32.09,
+          "p95": 33.15
+        }
+      }
+    },
+    {
+      "event": "Neuschwanstein",
+      "kindFrozen": "proxy",
+      "inputs": {
+        "diameterM": {
+          "p5": 0.444,
+          "median": 0.5568,
+          "p95": 0.6751
+        },
+        "speedKmS": {
+          "p5": 21,
+          "median": 21,
+          "p95": 21
+        },
+        "angleDeg": {
+          "p5": 49.7,
+          "median": 49.7,
+          "p95": 49.7
+        },
+        "densityKgM3": {
+          "p5": 3490,
+          "median": 3490,
+          "p95": 3490
+        }
+      },
+      "inDomain": true,
+      "configurations": [
+        {
+          "configuration": "M1/unlimited",
+          "producedShare": 1,
+          "notRobustShare": 0.025,
+          "releaseKm": {
+            "p5": 32.35,
+            "median": 36.99,
+            "p95": 42.3
+          },
+          "exponentialReleaseKm": {
+            "p5": 34.97,
+            "median": 40.7,
+            "p95": 46.97
+          },
+          "notRobustAltitudesKm": [
+            [37.47, 36.16],
+            [35.2, 30.97],
+            [27.5, 29.49],
+            [27.35, 33.37],
+            [28.19, 30.02]
+          ]
+        },
+        {
+          "configuration": "M1/capped",
+          "producedShare": 1,
+          "notRobustShare": 0.085,
+          "releaseKm": {
+            "p5": 32.36,
+            "median": 37.17,
+            "p95": 42.43
+          },
+          "exponentialReleaseKm": {
+            "p5": 34.96,
+            "median": 41.03,
+            "p95": 47.14
+          },
+          "notRobustAltitudesKm": [
+            [35.17, 31.97],
+            [40.62, 39.44],
+            [41.34, 39.45],
+            [38.55, 39.8],
+            [38.61, 36.29],
+            [40.84, 39.69],
+            [42.1, 40.65],
+            [41.42, 39.95],
+            [40.19, 41.85],
+            [32.94, 29.79],
+            [42.01, 39.99],
+            [38.26, 37.2],
+            [35.54, 32.12],
+            [36.27, 33.56],
+            [39.04, 42.83],
+            [29.43, 33.36],
+            [32.53, 33.9]
+          ]
+        },
+        {
+          "configuration": "M2/unlimited",
+          "producedShare": 1,
+          "notRobustShare": 0.035,
+          "releaseKm": {
+            "p5": 32.78,
+            "median": 37.71,
+            "p95": 42.25
+          },
+          "exponentialReleaseKm": {
+            "p5": 35.55,
+            "median": 41.72,
+            "p95": 47.22
+          },
+          "notRobustAltitudesKm": [
+            [42.58, 41.02],
+            [28.11, 30.23],
+            [39.07, 32.27],
+            [42.54, 33.73],
+            [42.63, 41.26],
+            [41.57, 40.16],
+            [39.52, 32.74]
+          ]
+        },
+        {
+          "configuration": "M2/capped",
+          "producedShare": 1,
+          "notRobustShare": 0.055,
+          "releaseKm": {
+            "p5": 32.54,
+            "median": 37.65,
+            "p95": 42.76
+          },
+          "exponentialReleaseKm": {
+            "p5": 35.15,
+            "median": 41.52,
+            "p95": 47.58
+          },
+          "notRobustAltitudesKm": [
+            [37.01, 39.58],
+            [36.12, 34.8],
+            [36.88, 39.85],
+            [26.12, 28.7],
+            [34.97, 40.96],
+            [40.89, 43.34],
+            [35.87, 32.89],
+            [28.56, 36.79],
+            [29.34, 30.87],
+            [29.45, 31.42],
+            [31.73, 34.19]
+          ]
+        }
+      ],
+      "mixture": {
+        "equal": {
+          "p5": 32.45,
+          "median": 37.28,
+          "p95": 42.57
+        },
+        "exponential": {
+          "p5": 35.09,
+          "median": 41.25,
+          "p95": 47.34
+        },
+        "rotated": [
+          {
+            "heavier": "M1/unlimited",
+            "p5": 32.38,
+            "median": 37.21,
+            "p95": 42.44
+          },
+          {
+            "heavier": "M1/capped",
+            "p5": 32.37,
+            "median": 37.2,
+            "p95": 42.53
+          },
+          {
+            "heavier": "M2/unlimited",
+            "p5": 32.57,
+            "median": 37.46,
+            "p95": 42.44
+          },
+          {
+            "heavier": "M2/capped",
+            "p5": 32.46,
+            "median": 37.46,
+            "p95": 42.66
+          }
+        ],
+        "monolithOnly": {
+          "p5": 32.34,
+          "median": 37.07,
+          "p95": 42.35
+        },
+        "structuredOnly": {
+          "p5": 32.71,
+          "median": 37.67,
+          "p95": 42.61
+        }
+      },
+      "baseline": {
+        "burstShare": 1,
+        "burstKm": {
+          "p5": 40.19,
+          "median": 40.41,
+          "p95": 40.55
+        }
+      }
+    }
+  ]
+}

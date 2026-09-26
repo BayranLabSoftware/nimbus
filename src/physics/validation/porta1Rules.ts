@@ -172,6 +172,12 @@ export const RULE_1227_WRITTEN = '2026-09-26' as const;
  *     (M1/unlimited, M1/capped, M2/unlimited; M2/capped completes under
  *     neither engine). The corrected engine's ledger, worst over every
  *     completed draw: 5.3·10⁻¹⁶ (rule 1141 (a) asks 10⁻¹²).
+ *     [Corrected on 26 September 2026, 03:10, rule 1229 (a): W18's events
+ *     are three, not four; and Chelyabinsk, Tunguska and 2022 EB5 carry one
+ *     input each, the other fifteen cases five draws — so what is identical
+ *     to the bit is 68 of 68 configurations, the fifteen cases' 60 and
+ *     Chelyabinsk's and 2022 EB5's 8. «60 of 60 … and Chelyabinsk» left
+ *     2022 EB5 out. Every other number of (b) stands.]
  * (c) WHAT THE CLOUD MASS DOES INSTEAD, on Tunguska's first draw: in the M1
  *     configurations part of it now reaches the ground as a swarm (48.9 %
  *     and 79.1 % of the mass) carrying 0.1 and 0.5 kt of the entry's 9 123
@@ -199,3 +205,226 @@ export const RULE_1227_WRITTEN = '2026-09-26' as const;
  *     wait for their sources (rule 1225).
  */
 export const RULE_1228_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1229. RULE 1228 (f)'S FIRST STEPS, FIXED BEFORE THEY RUN — and three
+ * records first (26 September 2026, 03:10).
+ *
+ * (a) A CORRECTION TO RULE 1228 (b)'S COUNT, bracketed there: W18's events
+ *     are three (Košice, Benešov, Tagish Lake); three of rule 961's cases
+ *     carry one input each (Chelyabinsk, Tunguska, 2022 EB5, as in the
+ *     development run of rule 1156); the configurations identical to the bit
+ *     are 68 of 68, not «60 of 60 … and Chelyabinsk».
+ * (b) GATE 2 ON W18, THE GATE SCRIPT'S OWN RE-RUN (rule 1228 (d)'s pending
+ *     line): `scripts/fcm-gate2-w18.ts` with the engine's import alone
+ *     changed (a copy in `scripts/tmp`, its outputs to the scratch folder),
+ *     ended 03:01. Košice and Benešov: identical to the bit. Tagish Lake: NOT
+ *     identical. W18's fit of it breaks its upper share at 1 to 90 kPa, 70 to
+ *     90 km up, where the clouds born are below their terminal speed —
+ *     exactly the case rule 1227 corrects: the deposit above 84 km moves down
+ *     (the top bin, 89–90 km, is no longer reached; the bins from 64 to 84 km
+ *     gain), the energy above 60 km is 5.30 % of the deposit under the sealed
+ *     engine and 5.31 % under the corrected one, and the ledger's residuals
+ *     move at 10⁻¹⁶. Nothing the gate judges moves: the flares, the peak (32.5
+ *     km, 0.2955 kt/km), the envelope, the landed mass (50.2 kg), the largest
+ *     piece and every verdict are identical. So rule 1227 (d)'s premise («no
+ *     cloud of those runs is born below its terminal speed») does not hold
+ *     for Tagish Lake, and gate 2 stands on the measurement, not on the
+ *     premise.
+ * (c) AN ORDER BROKEN, AND MENDED. At 03:01 the re-reading of round 1's map
+ *     above 10 m was started — its script written before any rule for it,
+ *     and before the steps rule 1228 (f) puts first. It was stopped at 03:06,
+ *     before any shard had finished: no result of it was produced or read.
+ *     It is written as its own rule after this one's outcome, and run then.
+ *
+ * The steps (development only, rule 1143; no adoption, no class B, no
+ * tuning; the priors, `settleWithin` and every constant as sealed):
+ *
+ * (d) THE ENGINE AS A SWITCH, NOT A COPY. Every committed script this rule
+ *     re-runs takes `--engine settle`, which puts `fcmEntrySettle` where the
+ *     script calls `fcmEntry` and changes nothing else, and writes its
+ *     outputs beside the sealed ones with the suffix `.settle` (`_SETTLE` in
+ *     `docs/`). Without the switch each script is the one committed, its
+ *     outputs untouched. Gate 2's two scripts are re-run through it, and
+ *     their outputs must equal the copies' of (b) and of rule 1228 (d).
+ *     The switch lives in `scripts/porta1Engine.ts`. A first version put it
+ *     in `scripts/fcmRound1Common.ts` — one of the four files of the sealed
+ *     candidate (rule 1162), whose SHA-256 test would have refused it. Found
+ *     at 03:16, before any commit and before any run had ended: the file was
+ *     restored to its sealed bytes (169b47a2…), the switch moved, and every
+ *     run started on the first version stopped and started again, so that
+ *     every output of this rule comes from the committed scripts.
+ * (e) THE FULL DEVELOPMENT RUN, in two parts.
+ *     (1) Rule 1156's run (`scripts/fcm-dev-runs.ts all --engine settle`):
+ *         every development case, every draw (200, or the one input), the
+ *         four configurations and the sensitivities, on the sealed run's
+ *         streams, margins and judgement. Reported beside `fcmDevRuns.json`:
+ *         the tally of verdicts per configuration, every case and observable
+ *         whose verdict changes, and the recorded-mass contradictions.
+ *     (2) Rule 1227 (c)'s quantities on every draw
+ *         (`scripts/porta1-settle-full.ts`, the sample's reading at every
+ *         draw, sealed beside corrected): the draws identical to the bit;
+ *         where they differ, the energy given to the air at stops, the
+ *         settled share, the deposit's peak and its altitude; the corrected
+ *         engine's ledger, worst over every completed draw; and rule 1190's
+ *         pooled overview — the fates' shares, weighted as rule 1190 weighs
+ *         them — from each engine's own ledger (landed solid: the ground mass
+ *         less the swarm's; landed cloud: the swarm; settled; dust). The
+ *         sealed column must give back rule 1190's figures from the audit
+ *         engine (93.21 % settled, 3.253 % landed solid, 3.538 % landed
+ *         cloud); where it does not, the difference is reported and nothing
+ *         is adjusted.
+ *     (3) Round 3's predictions (`scripts/fcm-round3-predict.ts --engine
+ *         settle`), beside the sealed engine's of `fcmRound3Predictions.json`
+ *         — identical or not, event by event and configuration by
+ *         configuration — and NEVER against round 3's targets: rule 1167's
+ *         verdict stays the sealed engine's, and a difference is reported as
+ *         what rule 1228 (e)'s «every draw measured here is identical» must
+ *         be read beside. Added at 03:16, before any result of this rule was
+ *         read, because (b) shows the defect acting on a body inside round
+ *         3's domain (W18's Tagish Lake is 4.5 m), which that sentence, true
+ *         of the sample it names, does not cover.
+ * (f) GATE 1'S CONVERGENCE ON THE BODIES IT CHANGES (rule 1141 (c)).
+ *     (1) Its own run (`scripts/fcm-gate1-convergence.ts --engine settle`):
+ *         the 48 seeded draws over the branch's domain, the reference and
+ *         every variation, compared row by row with
+ *         `fcmGate1Convergence.json`; for every draw that changes, each
+ *         variation's pass or fail under the same tolerances.
+ *     (2) Every development draw that (e)(2) finds changed, under rule 1149
+ *         (b)'s variations (the step halved and doubled, bins of 100 m),
+ *         each quantity against the corrected reference by rule 1141 (c)'s
+ *         tolerances (`failing` of `fcmRound1Common.ts`).
+ * (g) WHAT WOULD COUNT AGAINST THE CORRECTION, fixed now: the corrected
+ *     engine's ledger beyond 10⁻¹² on any completed draw; a draw it changes
+ *     failing a tolerance under a variation that the sealed engine passed
+ *     on the same draw; a judgement of gate 2 changed. Any of these is
+ *     reported as a defect of the correction and not tuned away. A change of
+ *     rule 1156's development verdicts, either way, is reported and never
+ *     counted for or against it: development is not a test (rule 1143).
+ * (h) NOT HERE: the branch above 10 m (its own rule, after this one's
+ *     outcome), any adoption, and items (a) and (c) of rule 1224, which wait
+ *     for their sources (rule 1225).
+ */
+export const RULE_1229_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1230. RULE 1229'S OUTCOME, as measured on 26 September 2026 (the runs
+ * from 03:17 to 03:40, every one from the committed scripts after the switch
+ * was moved).
+ *
+ * (a) GATE 2 THROUGH THE SWITCH (rule 1229 (d)): R17's four Chelyabinsk
+ *     settings — results identical to the copy's run and to the sealed
+ *     engine's (`fcmGate2.settle.json`); W18's three events — results
+ *     identical to the copy's run of rule 1229 (b)
+ *     (`fcmGate2W18.settle.json`): Tagish Lake's upper deposit moves, and
+ *     none of the gate's judgements.
+ * (b) EVERY DEVELOPMENT DRAW (rule 1229 (e)(2), `porta1SettleFull.json`,
+ *     `docs/PORTA1_SETTLE_FULL.md`): 12 012 draws flown; 12 008 identical to
+ *     the bit under the two engines; the four others are Tunguska's one
+ *     input in each configuration — three changed, and M2/capped completes
+ *     under neither engine (10⁶ components). Every other case, every draw,
+ *     every configuration: identical. The corrected engine's ledger, worst
+ *     over every completed draw: 6.7·10⁻¹⁶ (rule 1141 (a): 10⁻¹²).
+ *     Rule 1190's pooled overview, from the plain engines' ledgers: the
+ *     sealed column gives back the audit engine's figures to their printed
+ *     digits (landed solid 3.253 %, landed cloud 3.538 %, settled 93.21 %,
+ *     dust 4.588·10⁻⁷ %), which cross-checks the two instruments. The
+ *     corrected column: landed solid 3.444 %, landed cloud 46.65 %, settled
+ *     49.91 %, dust 4.588·10⁻⁷ %.
+ * (c) WHAT THE POOLED FIGURE WAS. Tunguska's one input, flown once per
+ *     configuration, weighs 3.4·10⁸ kg, against 2.0·10⁷ kg for the heaviest
+ *     other case summed over its 200 draws (Tagish Lake): its three
+ *     completing configurations carry 83 % of the pool's weight. Of the mass
+ *     each run still accounts for at its end, Tunguska's settled share goes
+ *     from 99.72 to 30.05 % (M1/unlimited), 88.85 to 2.51 % (M1/capped) and
+ *     99.59 to 98.99 % (M2/unlimited) — in M2/unlimited the clouds, flown
+ *     down, slow from above to their terminal speed and settle where rule
+ *     1138 (c) meant them to, while the energy the sealed engine gave to the
+ *     air at their birth, 54.04 % of the entry's, falls to 2·10⁻⁶. So the
+ *     audit's 93.21 % (A1) was, for 83 % of its weight, the defect of rule
+ *     1227. In the seventeen other cases nothing changes: their clouds do
+ *     come down from above to their terminal speed and are stopped there as
+ *     before — from 15 % (Winchcombe, M2/capped) to 99.65 % (Chelyabinsk,
+ *     M1/unlimited) of what is accounted, the rest landed solid — and their
+ *     later fate stays NOT IDENTIFIABLE from the sources read (rule 1227):
+ *     particulate debris, never meteorite mass. The correction removes an
+ *     artefact; it does not answer the fate.
+ * (d) ROUND 3 (rule 1229 (e)(3)): its predictions under the corrected engine
+ *     are identical to the bit to the sealed engine's — every event, every
+ *     configuration, both atmospheres, 200 draws each. Rule 1167's verdict
+ *     stands on the measurement.
+ * (e) GATE 1 (rule 1229 (f)). Its own run (48 seeded draws over the
+ *     branch's domain): 13 draws change, and every one of them still passes
+ *     every variation and every quantity — 47 of 47 compared pass, as under
+ *     the sealed engine; the worst relative movement rises to 7.65·10⁻⁴
+ *     (step 20 m, the energy at the ground), against 2·10⁻². Twelve of the
+ *     thirteen are structured bodies (M2), whose first stage releases its
+ *     debris at 40 to 120 kPa, high; three are at or near round 3's domain:
+ *     3.6 m (peak unchanged to five digits), 4.6 m (13.7 km/s, 15.6°: the
+ *     deposit's peak from 54.4 km and 1.58 kt/km to 31.0 km and 0.26 kt/km)
+ *     and 10.0 m (61.5 to 38.5 km). The largest reach the ground with more
+ *     energy (281 m, M2/capped: 0.8 % to 7.6 % of the entry's). Tunguska's
+ *     three changed draws under round 1's variations: every quantity passes
+ *     under both engines; nothing broken (`porta1SettleConvergence.json`).
+ * (f) RULE 1229 (g)'s CRITERIA: none met. No ledger beyond 10⁻¹²; no
+ *     tolerance the correction breaks; no judgement of gate 2 changed.
+ * (g) RULE 1156's DEVELOPMENT RUN (rule 1229 (e)(1),
+ *     `fcmDevRuns.settle.json`, `docs/FCM_DEV_RUNS_SETTLE.md`): the tally of
+ *     verdicts is identical in every configuration, and no recorded-mass
+ *     contradiction comes or goes. What moves carries no verdict. Tunguska's
+ *     deposit: the median peak's altitude from 40.4, 34.9 and 37.9 km to
+ *     18.1, 13.7 and 20.7 km (M1/unlimited, M1/capped, M2/unlimited), its
+ *     value from 6 379, 7 713 and 4 924 kt/km to 911, 953 and 1 105, and the
+ *     largest single 10 m bin over the kilometre window's peak from 99.9 —
+ *     the whole kilometre's energy in one bin, the dump — to 1.004; the
+ *     development table gives Tunguska no observed interval to judge it by
+ *     (not assessable, before and after). Five of Tunguska's sensitivities
+ *     and one of Chelyabinsk's (strength scaled with size: 58.3 to 34.8 km)
+ *     move too; their verdicts stay not assessable.
+ * (h) WHAT IT MEANS. The defect acts where a cloud is born high and slow for
+ *     its air. Among gate 1's draws: every structured body above 10 m (10 of
+ *     10), 2 of the 14 structured bodies below it, and 1 of the 24 monoliths
+ *     (232 m); among the development cases, Tunguska alone, in both
+ *     structures. So it reaches inside round 3's domain — gate 1's 4.6 m
+ *     structured draw — although no development draw there meets it. Rule
+ *     1228 (e)'s sentence («its domain is 0.1 to 10 m, where every draw
+ *     measured here is identical») is true of the sample it names and of
+ *     every development draw, but not of the domain: round 3's verdict stands
+ *     because its own predictions are identical, measured in (d), not because
+ *     the defect cannot act there.
+ *     No adoption, no class B: the sealed candidate stays the one round 3
+ *     judged; any later run of the branch uses the corrected version.
+ * (i) NEXT, in rule 1228 (f)'s order: the branch above 10 m — round 1's map
+ *     re-read, under its own rule — and items (a) and (c) of rule 1224 when
+ *     their sources are in `~/Desktop/Nimbus-fonti/`.
+ */
+export const RULE_1230_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1231. THE BRANCH ABOVE 10 M — ROUND 1'S MAP RE-READ (rule 1228 (f)'s
+ * last step), written after rule 1230's outcome and before any run of it.
+ *
+ * (a) WHAT IS FLOWN. Every point of round 1's map of the perimeter (rule
+ *     1149 (a): the sixteen corners, the centre, 240 Halton points in bases
+ *     2, 3, 5 and 7) whose diameter is 10 m or more — 109 points, four
+ *     configurations, 436 runs — on the map's own inputs and its own draws of
+ *     the priors (the streams `fcm-round1/map/<point>/<structure>/<cloud>`),
+ *     at the reference alone (rule 1149 (b): steps and bins of 10 m, a floor
+ *     of 1 g, a bound of 10⁵ components retried at 10⁶), by the sealed engine
+ *     and by the corrected one (`scripts/porta1-map-above-10m.ts`). The
+ *     points are shared among the processes by round 1's recorded cost, which
+ *     moves the wall time and nothing else.
+ * (b) WHAT IS REPORTED (`porta1MapAbove10m.json`,
+ *     `docs/PORTA1_MAP_ABOVE_10M.md`): the runs completed under both engines
+ *     and those identical to the bit; the runs whose flight gives more than
+ *     1 % of the entry's energy to the air at stops, under each engine; by
+ *     diameter (10–30, 30–100, 100–300 m) the medians of that energy and of
+ *     the deposit's peak altitude, sealed → corrected; the corrected
+ *     engine's ledger, worst over every completed run.
+ * (c) WHAT IT IS NOT. Not the perimeter's statuses again: no step or bin is
+ *     varied — the convergence of the bodies the correction changes was rule
+ *     1229 (f)'s, and it held (rule 1230 (e)). Not an observation: the map's
+ *     bodies are synthetic; no development case or target is read. No
+ *     adoption, no class B, nothing tuned.
+ */
+export const RULE_1231_WRITTEN = '2026-09-26' as const;

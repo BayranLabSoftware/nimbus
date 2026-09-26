@@ -1,0 +1,154 @@
+{
+  "rule": "1229 (f)(2)",
+  "variations": [
+    {
+      "stepM": 5
+    },
+    {
+      "stepM": 20
+    },
+    {
+      "binM": 100
+    }
+  ],
+  "rows": [
+    {
+      "case": "Tunguska",
+      "configuration": "M1/unlimited",
+      "draw": 0,
+      "sealed": {
+        "completed": true,
+        "variations": [
+          {
+            "name": "step 5 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "step 20 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "bins 100 m",
+            "completed": true,
+            "failing": []
+          }
+        ]
+      },
+      "corrected": {
+        "completed": true,
+        "variations": [
+          {
+            "name": "step 5 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "step 20 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "bins 100 m",
+            "completed": true,
+            "failing": []
+          }
+        ]
+      },
+      "broken": []
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M1/capped",
+      "draw": 0,
+      "sealed": {
+        "completed": true,
+        "variations": [
+          {
+            "name": "step 5 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "step 20 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "bins 100 m",
+            "completed": true,
+            "failing": []
+          }
+        ]
+      },
+      "corrected": {
+        "completed": true,
+        "variations": [
+          {
+            "name": "step 5 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "step 20 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "bins 100 m",
+            "completed": true,
+            "failing": []
+          }
+        ]
+      },
+      "broken": []
+    },
+    {
+      "case": "Tunguska",
+      "configuration": "M2/unlimited",
+      "draw": 0,
+      "sealed": {
+        "completed": true,
+        "variations": [
+          {
+            "name": "step 5 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "step 20 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "bins 100 m",
+            "completed": true,
+            "failing": []
+          }
+        ]
+      },
+      "corrected": {
+        "completed": true,
+        "variations": [
+          {
+            "name": "step 5 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "step 20 m",
+            "completed": true,
+            "failing": []
+          },
+          {
+            "name": "bins 100 m",
+            "completed": true,
+            "failing": []
+          }
+        ]
+      },
+      "broken": []
+    }
+  ]
+}

@@ -10,8 +10,13 @@
  */
 
 import { writeFileSync } from 'node:fs';
-import { fcmEntry, fcmProfile, type FcmOptions } from '../src/physics/effects/fcmBranch.js';
+import { fcmProfile, type FcmOptions } from '../src/physics/effects/fcmBranch.js';
 import { FCM_GATE2 } from '../src/physics/validation/fcmRoundRules.js';
+import { engineFromArgs } from './porta1Engine.js';
+
+/** Rule 1229 (d): `--engine settle` flies rule 1227's corrected settle
+ *  condition, into its own outputs. */
+const { engine: ENGINE, suffix: SUFFIX } = engineFromArgs(process.argv);
 
 const C = FCM_GATE2.chelyabinsk;
 const body = (strength: number) => ({
@@ -63,7 +68,7 @@ const CASES = [
 
 const results = CASES.map((c) =>
   (['rk4', 'euler'] as const).map((scheme) => {
-    const r = fcmEntry(body(c.strength), {
+    const r = ENGINE(body(c.strength), {
       ...base,
       alpha: c.alpha,
       split: c.split,
@@ -107,14 +112,20 @@ const results = CASES.map((c) =>
 );
 
 writeFileSync(
-  'src/physics/validation/fcmGate2.json',
-  `${JSON.stringify({ rule: '1142', source: 'R17 (NTRS 20180003387), Chelyabinsk', status: 'development, before the dossier is read (rule 1147)', results }, null, 2)}\n`
+  `src/physics/validation/fcmGate2${SUFFIX}.json`,
+  `${JSON.stringify({ rule: '1142', source: 'R17 (NTRS 20180003387), Chelyabinsk', status: 'development, before the dossier is read (rule 1147)', ...(SUFFIX === '' ? {} : { engine: 'rule 1227, effects/fcmBranchSettle.ts' }), results }, null, 2)}\n`
 );
 
 const yes = (b: boolean): string => (b ? 'yes' : '**no**');
 const lines = [
   '# FCM round, gate 2 — reproducing R17’s Chelyabinsk',
   '',
+  ...(SUFFIX === ''
+    ? []
+    : [
+        'Flown by rule 1227’s corrected settle condition (`effects/fcmBranchSettle.ts`), rule 1229 (d) — development only, beside the sealed engine’s run of `docs/FCM_GATE2.md`.',
+        '',
+      ]),
   'Rule 1159’s reading: **R17 reproduced within the quantities its text lets one read** — whether that, with',
   'W18 partial (docs/FCM_GATE2_W18.md), is enough for a test in a restricted domain is left to the final review.',
   '',
@@ -162,7 +173,7 @@ const lines = [
   'and not scored. The deposited energy exceeds the entry’s by gravity’s work on the falling mass.',
   '',
 ];
-writeFileSync('docs/FCM_GATE2.md', lines.join('\n'));
+writeFileSync(`docs/FCM_GATE2${SUFFIX.replace('.', '_').toUpperCase()}.md`, lines.join('\n'));
 console.log(
   JSON.stringify(
     results.flat().map(({ profileKtKm: _p, ...r }) => r),

@@ -22,7 +22,13 @@ import { FCM_ROUND3 } from '../src/physics/validation/fcmRound3Charter.js';
 import { FCM_ROUND3_INPUTS, type EventInputs } from '../src/physics/validation/fcmRound3Sources.js';
 import { FCM_DOMAIN } from '../src/physics/validation/fcmRoundRules.js';
 import { stream } from './fragmentationRun.js';
-import { CONFIGURATIONS, drawFcm, quantities, round, run } from './fcmRound1Common.js';
+import { CONFIGURATIONS, drawFcm, quantities, round } from './fcmRound1Common.js';
+import { engineFromArgs, runOn } from './porta1Engine.js';
+
+/** Rule 1229 (e)(3): `--engine settle` flies rule 1227's corrected settle
+ *  condition, into its own outputs; no target is read either way. */
+const { engine: ENGINE, suffix: SUFFIX } = engineFromArgs(process.argv);
+const run = runOn(ENGINE);
 
 const platform = `${process.platform}-${process.arch}`;
 if (process.version !== 'v22.20.0' || platform !== 'darwin-arm64') {
@@ -222,8 +228,8 @@ const results = FCM_ROUND3_INPUTS.map((e) => {
 });
 
 writeFileSync(
-  'src/physics/validation/fcmRound3Predictions.json',
-  `${JSON.stringify({ rule: '1168 (d)', draws: DRAWS, results }, null, 1)}\n`
+  `src/physics/validation/fcmRound3Predictions${SUFFIX}.json`,
+  `${JSON.stringify({ rule: '1168 (d)', draws: DRAWS, ...(SUFFIX === '' ? {} : { engine: 'rule 1227, effects/fcmBranchSettle.ts' }), results }, null, 1)}\n`
 );
 
 const km = (b: { p5: number | null; median: number | null; p95: number | null }): string =>
@@ -231,6 +237,12 @@ const km = (b: { p5: number | null; median: number | null; p95: number | null })
 const lines = [
   '# FCM round 3 — the predictions, before any target',
   '',
+  ...(SUFFIX === ''
+    ? []
+    : [
+        'Flown by rule 1227’s corrected settle condition (`effects/fcmBranchSettle.ts`), rule 1229 (e)(3) — beside the sealed engine’s predictions of `docs/FCM_ROUND3_PREDICTIONS.md`, never against round 3’s targets.',
+        '',
+      ]),
   'Rule 1168 (d) (`src/physics/validation/fcmRound3Charter.ts`), run by `scripts/fcm-round3-predict.ts` from the',
   'inputs of `fcmRound3Sources.ts` alone, pushed before any target is extracted. The sealed candidate (rule',
   '1162), 200 input draws per event; the release is the main peak on the 1 km window, robust draws only',
@@ -257,7 +269,10 @@ const lines = [
     '',
   ]),
 ];
-writeFileSync('docs/FCM_ROUND3_PREDICTIONS.md', lines.join('\n'));
+writeFileSync(
+  `docs/FCM_ROUND3_PREDICTIONS${SUFFIX.replace('.', '_').toUpperCase()}.md`,
+  lines.join('\n')
+);
 console.log(
   JSON.stringify(
     results.map((r) => ({
