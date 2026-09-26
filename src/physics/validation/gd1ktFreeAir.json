@@ -1,0 +1,80 @@
+{
+  "rule": "1267",
+  "source": "Glasstone & Dolan (1977), Fig. 3.72, peak overpressure from a 1-kiloton free air burst for sea-level ambient conditions (fourmilab's Chapter III, sha-256 d60de70a...)",
+  "procedure": "the page image (p. 109, 1744 x 2596 px) read where the curve crosses each horizontal grid line (2000 to 0.1 psi), a straight line fitted through the curve's centre on the 11 rows above and below each line; distances by the vertical grid lines (100 to 30 000 ft), log-linear between them. Checked against the book's own example (1 360 ft: 4.2 psi; read directly at that column, 4.37 psi).",
+  "uncertainty": "about 2 px in the curve, some 1 % in distance",
+  "points": [
+    {
+      "psi": 1000,
+      "ft": 122,
+      "m": 37.1,
+      "kPa": 6894.757
+    },
+    {
+      "psi": 500,
+      "ft": 157,
+      "m": 47.8,
+      "kPa": 3447.379
+    },
+    {
+      "psi": 200,
+      "ft": 221,
+      "m": 67.4,
+      "kPa": 1378.951
+    },
+    {
+      "psi": 100,
+      "ft": 292,
+      "m": 88.9,
+      "kPa": 689.476
+    },
+    {
+      "psi": 50,
+      "ft": 394,
+      "m": 120.1,
+      "kPa": 344.738
+    },
+    {
+      "psi": 20,
+      "ft": 600,
+      "m": 183.0,
+      "kPa": 137.895
+    },
+    {
+      "psi": 10,
+      "ft": 847,
+      "m": 258.2,
+      "kPa": 68.948
+    },
+    {
+      "psi": 5,
+      "ft": 1254,
+      "m": 382.2,
+      "kPa": 34.474
+    },
+    {
+      "psi": 2,
+      "ft": 2235,
+      "m": 681.4,
+      "kPa": 13.79
+    },
+    {
+      "psi": 1,
+      "ft": 3731,
+      "m": 1137.2,
+      "kPa": 6.895
+    },
+    {
+      "psi": 0.5,
+      "ft": 6551,
+      "m": 1996.7,
+      "kPa": 3.447
+    },
+    {
+      "psi": 0.2,
+      "ft": 14422,
+      "m": 4395.8,
+      "kPa": 1.379
+    }
+  ]
+}

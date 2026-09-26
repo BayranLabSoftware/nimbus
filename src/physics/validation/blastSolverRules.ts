@@ -430,3 +430,27 @@ export const RULE_1265_WRITTEN = '2026-09-26' as const;
  *     the errors now a fifth of what they were.
  */
 export const RULE_1266_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1267. A DIAGNOSTIC FOR THE ENERGY QUESTION OF RULE 1261 (d): WHAT
+ * GLASSTONE & DOLAN'S «1 kt» IS AS AIR-SHOCK ENERGY (26 September 2026, 18:55).
+ * A diagnostic, not a test.
+ *
+ * (a) THEIR CURVE. Fig. 3.72, the peak overpressure of a 1 kt free air burst
+ *     at sea level (fourmilab's Chapter III, sha-256 d60de70a…), digitised
+ *     into `gd1ktFreeAir.json` (procedure there; the book's own example,
+ *     4.2 psi at 1 360 ft, read back at 4.37): 5 psi at 382 m, 2 psi at 681 m,
+ *     1 psi at 1 137 m, 0.5 psi at 1 997 m.
+ * (b) OURS. The one-dimensional diagnostic (rule 1261 (c)), an ideal gas with
+ *     the whole kiloton in the air, on 0.625 m cells (converged to about half
+ *     a per cent: 8.44, 8.96, 9.08 kPa at 1 km on 2.5, 1.25, 0.625 m): 2 psi at
+ *     about 753 m, 1 psi at about 1 277 m, 0.5 psi at about 2 220 m — 1.11,
+ *     1.12 and 1.11 times theirs. By cube-root scaling, their «1 kt» is the
+ *     air shock of about 0.72 kt of our source — not the 0.5 that §1.25's
+ *     «about 50 percent» might suggest, nor the 1 that rule 1254 set.
+ * (c) WHAT IT BEARS ON. T2 compares with their map at 1 kt one for one: if the
+ *     solver converges there, it should stand about 11 % farther than their
+ *     curves wherever the reflection is as in free air. Nothing is changed:
+ *     the energy of T2 is Andrea's to decide once T2 has its outcome.
+ */
+export const RULE_1267_WRITTEN = '2026-09-26' as const;
