@@ -474,3 +474,13 @@ export const RULE_1267_WRITTEN = '2026-09-26' as const;
  *     touched.
  */
 export const RULE_1268_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1269. RULE 1265 (c)'S DIAGNOSTIC ON A GRID TWICE AS FINE (26
+ * September 2026, 20:03). With 40 cells per scale height instead of 20, the
+ * solver's shape against Kompaneets's is the same: the bottom 1.13 to 1.35
+ * times his, the widest radius 1.06 to 1.18 times, as the top climbs from
+ * 0.5 to 3 H. The departure does not come from the grid: it is the full
+ * equations' against his approximation. A diagnostic; nothing judged.
+ */
+export const RULE_1269_WRITTEN = '2026-09-26' as const;
