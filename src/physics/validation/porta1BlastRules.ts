@@ -359,3 +359,48 @@ export const RULE_1246_WRITTEN = '2026-09-26' as const;
  *     nomogram waits for Andrea's word (rule 1246 (e)).
  */
 export const RULE_1247_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1248. THE MOVING SOURCE, READ BEFORE ANY CHOICE (26 September 2026,
+ * 09:15). Collins et al. (2017), re-fetched from Imperial College's open copy
+ * after the machine's restart (sha-256 c1cb0fc6…, the same bytes as rule 1242
+ * (b)), read again for what the second step of rule 1246 needs: the moving
+ * source's bounds from their text.
+ *
+ * (a) WHAT THE MOVING SOURCE IS. An iSALE simulation, not a formula: the
+ *     static source's sphere of hot gas at the burst altitude, holding the
+ *     entry energy less the residual kinetic energy, given a downward speed
+ *     from that residue — a third of the initial kinetic energy, which their
+ *     pancake Monte Carlo puts at 0.33–0.34 over a wide range of airbursts;
+ *     2 450 m/s in every run. Vertical entries only (two-dimensional,
+ *     cylindrical). It matches Shuvalov et al.'s SOVA runs for 20 to 50 m
+ *     bodies except above about 40 kPa for the 50 m one.
+ * (b) WHAT THEY GIVE IN NUMBERS: Table 2, four burst energies at fixed burst
+ *     altitudes — 0.5 Mt at 21.5 km, 5 at 14, 15 at 10, 50 at 11 — the
+ *     overpressure at ground zero and at three burst altitudes, and the
+ *     ranges of 1, 10, 20 and 35 kPa, for the static (S), moving (M) and line
+ *     (C) sources. The moving over the static source: at ground zero 1.38,
+ *     1.63, 2.17, 2.81; at three burst altitudes 1.03 to 1.10; at 1 kPa's
+ *     range 1.05, 0.99, 0.92 (farther out the moving source reaches less);
+ *     at 20 kPa's range 2.63 (5 Mt), 1.15 (15), 1.03 (50). Their S is their
+ *     own iSALE sphere, not the program's scaling law the product draws.
+ * (c) WHAT THEY GIVE AS A FAST METHOD: no analytic moving source — they name
+ *     one as future work («it may be fruitful to explore an analytical
+ *     approach») — but the static-source method with a factor of two on the
+ *     overpressure inside three burst altitudes, «as a correction or measure
+ *     of uncertainty». That is the product's band already (rules 706 to 713):
+ *     its high edge is the static reach at half the threshold, capped at three
+ *     burst altitudes.
+ * (d) WHAT FOLLOWS. The moving source's bounds from the text are those of
+ *     (b) and (c) and no others: a ratio growing with energy at ground zero
+ *     (1.4 to 2.8 over 0.5 to 50 Mt, each at one burst altitude), about 1 at
+ *     three burst altitudes, below 1 far out. A product variant can be only
+ *     one of: (1) the band's high edge named for what it is, Collins et al.'s
+ *     own fast stand-in for the moving source, with Table 2's ratios in its
+ *     note — no new model; or (2) a correction of the static field by Table
+ *     2's ratios, interpolated in energy and in range over four simulations
+ *     whose static source is not the product's — a model this project would
+ *     build, exploratory by construction, with no airburst outside the
+ *     development list to hold it to. Which, if either, is Andrea's choice.
+ */
+export const RULE_1248_WRITTEN = '2026-09-26' as const;
