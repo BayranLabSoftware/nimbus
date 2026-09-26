@@ -1209,11 +1209,16 @@
           "tab": "Sovrappressione bassa",
           "title": "Sovrappressione bassa — danno a vetri (esplorativo)",
           "unit": "kPa, scala logaritmica",
-          "evidence": "Il campo dell'onda d'urto verificato al livello A, letto sotto le soglie di danno strutturale: le linee a 1 e 3 kPa non sono validate come previsione del danno.",
+          "evidence": "Il campo dell'onda d'urto verificato al livello A, letto sotto le soglie di danno strutturale: le linee a 0,2, 0,7, 1 e 3 kPa non sono validate come previsione del danno.",
           "planetary": "Attenzione: estrapolazione a scala planetaria. Oltre 2000 km la linea non è una previsione della rottura dei vetri: la legge della sovrappressione è tarata su esplosioni di scala molto minore e non vede la curvatura della Terra né la struttura dell'atmosfera, e non entra in nessun conteggio dei danni. I 2000 km segnano dove compare questo avviso, non che entro quella distanza il modello sia per ciò stesso validato."
         }
       },
       "markWithWind": "{{range}} · vento {{wind}} km/h",
+      "psi": {
+        "overpressure5psi": "5 psi · crollo edifici",
+        "overpressure1psi": "1 psi · vetri quasi tutti rotti",
+        "lightDamage": "0,5 psi · molti vetri rotti"
+      },
       "noteLabel": {
         "isolines": "Isolinee",
         "uncertainty": "Incertezza",
@@ -1279,11 +1284,12 @@
         "tsunamiLimitSea": "la risalita sulla costa è una stima su spiaggia piana (Synolakis 1987), non una mappa d'inondazione",
         "thermalNotModelled": "Rientro globale degli ejecta e riscaldamento atmosferico: non modellati in questo layer",
         "ejectaShown": "spessore ≥ 1 mm",
-        "lowThresholds": "Le soglie storiche di danno grave iniziano a 0,5 psi / 3,45 kPa",
+        "lowThresholds": "Le soglie strutturali disegnate iniziano a 0,5 psi / 3,45 kPa, dove Glasstone & Dolan danno i vetri di solito in frantumi; sotto, le linee di questo livello: 0,2 kPa, i primi vetri rotti (Gi et al. 2018); 0,7 kPa, circa uno su venti (Mannan & Lees); 3 kPa, da un quarto a più di metà (Gi et al. 2018)",
         "lowWhat": "Questo layer mostra pressioni inferiori per interpretare rottura vetri e danno leggero",
-        "lowValidation": "Il modello non è validato su Chelyabinsk come previsione del campo; confronto osservativo disponibile",
+        "lowValidation": "Non validato come previsione del campo. Su Čeljabinsk, un caso di sviluppo, la linea di 0,7 kPa arriva a 0,85 volte il raggio della regione in cui si ruppero i vetri (circa 10 000 km²): un confronto, non una validazione",
         "lowNot": "fuori dalla scala strutturale e dal conteggio delle vittime",
-        "lowLimit": "sotto 1 kPa non si colora; sopra 3,45 kPa la scala si ferma: lì comincia il livello Sovrappressione",
+        "lowLimit": "sotto 0,2 kPa non si colora; sopra 3,45 kPa la scala si ferma: lì comincia il livello Sovrappressione",
+        "airburstShape": "Un airburst è disegnato rotondo, da una sorgente ferma all’altezza dello scoppio. Un ingresso radente depone l’energia lungo decine di chilometri di traiettoria: l’area colpita si allunga lungo la traccia e sotto la traccia la sovrappressione può superare quella disegnata oltre il fattore 2 della vista Accordo del campo (Collins et al. 2017; Aftosmis et al. 2016). A Čeljabinsk la città, a 45 km dal punto sotto lo scoppio, ebbe una sovrappressione stimata da 2,2 a 3,5 volte quella che questa sorgente dà lì (Gi et al. 2018)",
         "thermalBelowMain": "il modello calcola la fluenza di un'ustione di I grado fino a {{reach}}, e nessuna ustione di II o III grado né accensione"
       },
       "source": {
@@ -1314,7 +1320,10 @@
         "agreementTitle": "{{threshold}} · la mediana",
         "agreement": "la linea della carta del campo; la forchetta attorno è quella del campo",
         "lowTitle": "Sovrappressione {{value}}",
-        "low": "soglia esplorativa per la rottura dei vetri e il danno leggero, non validata come previsione del campo"
+        "low": "la linea del livello a 1 kPa: nessuna fonte le dà un significato proprio (Gi et al. 2018 danno lo 0,4–7 % dei vetri rotti a 0,5 kPa e il 25–60 % a 3 kPa); esplorativa, non validata come previsione del campo",
+        "low02": "la soglia dei primi vetri rotti: dallo 0,01 allo 0,7 % dei vetri comuni (Gi et al. 2018); esplorativa, non validata come previsione del campo",
+        "low07": "circa un vetro comune su venti (≈ 5 %, la statistica delle onde d’urto di Mannan & Lees): il bordo di una regione di vetri rotti; esplorativa, non validata come previsione del campo",
+        "low3": "da un quarto a più di metà dei vetri comuni (25–60 %, Gi et al. 2018); esplorativa, non validata come previsione del campo"
       },
       "liquefactionLabel": "liquefazione",
       "ejectaEdge": "bordo della coltre",
@@ -1411,7 +1420,7 @@
           "notApplicable": "non applicabile: nessuna soglia disegnata"
         },
         "lowOverpressure": {
-          "belowThreshold": "sotto 1 kPa, la linea più bassa di questo livello: il massimo calcolato al suolo è {{value}}",
+          "belowThreshold": "sotto 0,2 kPa, la linea più bassa di questo livello: il massimo calcolato al suolo è {{value}}",
           "computedZero": "zero calcolato"
         }
       },
@@ -1565,7 +1574,7 @@
         "craterRim": "Raggio del bordo del cratere",
         "overpressure5psi": "Raggio della sovrappressione di 5 psi",
         "overpressure1psi": "Raggio della sovrappressione di 1 psi",
-        "lightDamage": "Raggio di 0,5 psi · danni lievi",
+        "lightDamage": "Raggio di 0,5 psi · molti vetri rotti",
         "ringSource": "Sorgente degli anelli",
         "windOutTo": "Vento di {{speed}} fino a",
         "thirdDegreeBurn": "Raggio delle ustioni di terzo grado",
@@ -2141,8 +2150,8 @@
     "firestorm": "tempesta di fuoco",
     "fireIgnition": "fuochi accesi",
     "blast5": "5 psi · crollo edifici",
-    "blast1": "1 psi · rottura vetri",
-    "blastLight": "0,5 psi · vetri sparsi",
+    "blast1": "1 psi · vetri quasi tutti rotti",
+    "blastLight": "0,5 psi · molti vetri rotti",
     "radiation": "radiazione LD50",
     "emp": "impronta EMP",
     "legendTitle": "Effetti",

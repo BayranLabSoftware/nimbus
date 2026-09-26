@@ -5,14 +5,18 @@ import type { Joules, Meters, Pascals } from '../../units.js';
 import { J, m, Pa } from '../../units.js';
 
 /**
- * Overpressure threshold: scattered window breakage and shop-front damage.
- * Source: Glasstone & Dolan (1977), Table 5.139 — 0.5 psi ≈ 3.45 kPa.
+ * Overpressure threshold: 0.5 psi ≈ 3.45 kPa, the lower edge of the range at
+ * which Glasstone & Dolan (1977), Table 5.145, give glass windows «shattering
+ * usually» (0.5–1.0 psi) — many windows broken, a quarter to more than half of
+ * ordinary panes (Gi et al. 2018), not scattered ones (rule 1246).
  */
 export const OVERPRESSURE_LIGHT_DAMAGE = Pa(3_447);
 
 /**
- * Overpressure threshold: window breakage and light injuries.
- * Source: Glasstone & Dolan (1977), §5.139 and Table 5.139 — 1 psi ≈ 6.9 kPa.
+ * Overpressure threshold: 1 psi ≈ 6.9 kPa — nearly all windows broken (the top
+ * of Table 5.145's range; about 90 % of panes at 6 kPa, Mannan & Lees) and
+ * light damage to all but blast-resistant structures (Glasstone & Dolan 1977,
+ * §5.143; rule 1246).
  */
 export const OVERPRESSURE_WINDOW_BREAK = Pa(6_895);
 
@@ -53,9 +57,10 @@ export const OVERPRESSURE_NEAR_LETHAL_BLAST = Pa(82_737);
  *                              dermal blistering, painful but typically
  *                              survivable). Always > thirdDegreeBurn.
  *   overpressure5psi         — 34.5 kPa, residential-building collapse.
- *   overpressure1psi         — 6.9 kPa, window breakage / light injury.
- *   lightDamage              — 3.45 kPa (0.5 psi), scattered windows /
- *                              shopfront damage. Always > overpressure1psi.
+ *   overpressure1psi         — 6.9 kPa, nearly all windows broken / light
+ *                              damage to structures.
+ *   lightDamage              — 3.45 kPa (0.5 psi), many windows broken.
+ *                              Always > overpressure1psi.
  *
  * All six are comparable (rings centred on the same lat/lon, ranked
  * outward by radius). Callers decide rendering — colours, labels,

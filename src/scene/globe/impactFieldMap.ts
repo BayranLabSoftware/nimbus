@@ -937,7 +937,9 @@ function overpressureLayer(result: ImpactScenarioResult, ctx: ImpactMapContext):
       family: 'blast' as const,
       radiusM: result.damage[p.key],
       label: psiLabel(p.psi),
-      title: t(`globe.ringLabel.${p.key}`),
+      // Rule 1246 (a)-(b): the impact's own words for its lines; the shared
+      // ring labels are the paused explosion module's.
+      title: t(`globe.impactMap.psi.${p.key}`),
       description: t('globe.impactMap.isoline.overpressure', {
         wind: formatNumber(programPeakWind(p.threshold) * 3.6, 0, language),
       }),
@@ -979,7 +981,7 @@ function overpressureLayer(result: ImpactScenarioResult, ctx: ImpactMapContext):
       })),
       marks: present.map((p) => ({
         value: p.threshold / 1_000,
-        label: t(`globe.ringLabel.${p.key}`),
+        label: t(`globe.impactMap.psi.${p.key}`),
         detail: t('globe.impactMap.markWithWind', {
           range: formatRange(result.damage[p.key] as number, language),
           wind: formatNumber(programPeakWind(p.threshold) * 3.6, 0, language),
@@ -1008,19 +1010,48 @@ function overpressureLayer(result: ImpactScenarioResult, ctx: ImpactMapContext):
         label: t('globe.impactMap.noteLabel.limit'),
         text: t('globe.impactMap.note.belowLowestBlast'),
       },
+      ...airburstShapeNotes(result, t),
     ],
   };
 }
 
-/** Rule 1031 (c): the low overpressure's lines (kPa). */
-export const LOW_OVERPRESSURE_LEVELS_KPA = [3, 1] as const;
+/**
+ * Rule 1031 (c): the low overpressure's lines (kPa), each with the key of what
+ * the sources give at it — rule 1246 (c) adds 0.7 kPa, about one pane in
+ * twenty (Mannan & Lees), and 0.2 kPa, Gi et al. (2018)'s light window damage.
+ */
+export const LOW_OVERPRESSURE_LINES = [
+  { kpa: 3, key: 'low3' },
+  { kpa: 1, key: 'low' },
+  { kpa: 0.7, key: 'low07' },
+  { kpa: 0.2, key: 'low02' },
+] as const;
+export const LOW_OVERPRESSURE_LEVELS_KPA = LOW_OVERPRESSURE_LINES.map((l) => l.kpa);
+/** Rule 1246 (c): where the low overpressure's scale starts (kPa). */
+const LOW_OVERPRESSURE_FLOOR_KPA = 0.2;
+
+/** Rule 1246 (d): a complete airburst's blast layers say it is drawn round. */
+function airburstShapeNotes(
+  result: ImpactScenarioResult,
+  t: ImpactMapContext['t']
+): { label: string; text: string }[] {
+  return isCompleteAirburst(result)
+    ? [
+        {
+          label: t('globe.impactMap.noteLabel.caveat'),
+          text: t('globe.impactMap.note.airburstShape'),
+        },
+      ]
+    : [];
+}
 
 /**
  * Rule 1031 (c): the overpressure below the structural thresholds, where glass
  * breaks and light damage begins — the same field as the overpressure's layer,
- * read from 1 kPa up to 0.5 psi (3.45 kPa), where that layer starts, with a
- * scale of its own. Exploratory: its lines are not validated as a prediction
- * of the field, and it enters neither the structural scale nor the toll.
+ * read from 0.2 kPa (rule 1246 (c)) up to 0.5 psi (3.45 kPa), where that layer
+ * starts, with a scale of its own. Exploratory: its lines are not validated as
+ * a prediction of the field, and it enters neither the structural scale nor
+ * the toll.
  */
 function lowOverpressureLayer(
   result: ImpactScenarioResult,
@@ -1030,19 +1061,21 @@ function lowOverpressureLayer(
   const source = fieldSourceOf(result);
   const kpaAt = (r: number): number => impactOverpressureAt(source, r) / 1_000;
   const halfEarth = Math.PI * (EARTH_RADIUS as number);
-  const levels = LOW_OVERPRESSURE_LEVELS_KPA.map((kpa) => ({
-    kpa,
-    r: impactFieldReach(kpaAt, kpa, 1, halfEarth),
+  const levels = LOW_OVERPRESSURE_LINES.map((line) => ({
+    kpa: line.kpa,
+    key: line.key,
+    r: impactFieldReach(kpaAt, line.kpa, 1, halfEarth),
   })).filter((x) => x.r > 0);
   if (levels.length === 0) return null;
-  const loKpa = 1;
+  const loKpa = LOW_OVERPRESSURE_FLOOR_KPA;
   const hiKpa = (OVERPRESSURE_LIGHT_DAMAGE as number) / 1_000;
   const blastSource = t(
     isCompleteAirburst(result)
       ? 'globe.impactMap.source.airBlast'
       : 'globe.impactMap.source.groundBlast'
   );
-  const kpaLabel = (kpa: number): string => `${formatNumber(kpa, 0, language)} kPa`;
+  const kpaNumber = (kpa: number): string => formatNumber(kpa, kpa < 1 ? 1 : 0, language);
+  const kpaLabel = (kpa: number): string => `${kpaNumber(kpa)} kPa`;
   return {
     id: 'lowOverpressure',
     tab: t('globe.impactMap.layer.lowOverpressure.tab'),
@@ -1066,7 +1099,7 @@ function lowOverpressureLayer(
         radiusM: x.r,
         label: kpaLabel(x.kpa),
         title: t('globe.impactMap.isoline.lowTitle', { value: kpaLabel(x.kpa) }),
-        description: t('globe.impactMap.isoline.low'),
+        description: t(`globe.impactMap.isoline.${x.key}`),
         source: blastSource,
       }))
     ),
@@ -1075,7 +1108,7 @@ function lowOverpressureLayer(
       lo: Math.log10(loKpa),
       hi: Math.log10(hiKpa),
       log: true,
-      ticks: [1, 2, 3].map((v) => ({ value: v, label: formatNumber(v, 0, language) })),
+      ticks: [0.2, 0.5, 1, 2, 3].map((v) => ({ value: v, label: kpaNumber(v) })),
       marks: levels.map((x) => ({
         value: x.kpa,
         label: kpaLabel(x.kpa),
@@ -1096,6 +1129,7 @@ function lowOverpressureLayer(
       { label: t('globe.impactMap.noteLabel.not'), text: t('globe.impactMap.note.lowNot') },
       { label: t('globe.impactMap.noteLabel.source'), text: blastSource },
       { label: t('globe.impactMap.noteLabel.limit'), text: t('globe.impactMap.note.lowLimit') },
+      ...airburstShapeNotes(result, t),
     ],
   };
 }
@@ -1189,6 +1223,7 @@ function windLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): RawLaye
         ),
       },
       { label: t('globe.impactMap.noteLabel.limit'), text: t('globe.impactMap.note.windLimit') },
+      ...airburstShapeNotes(result, t),
     ],
   };
 }

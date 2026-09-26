@@ -1209,11 +1209,16 @@
           "tab": "Low overpressure",
           "title": "Low overpressure — glass damage (exploratory)",
           "unit": "kPa, logarithmic scale",
-          "evidence": "The shock-wave field verified at level A, read below the thresholds of structural damage: the lines at 1 and 3 kPa are not validated as a prediction of the damage.",
+          "evidence": "The shock-wave field verified at level A, read below the thresholds of structural damage: the lines at 0.2, 0.7, 1 and 3 kPa are not validated as a prediction of the damage.",
           "planetary": "Warning: an extrapolation to a planetary scale. Beyond 2,000 km the line is no prediction of broken glass: the overpressure law is calibrated on explosions of far smaller scale and sees neither the Earth’s curvature nor the atmosphere’s structure, and it enters no count of damage. The 2,000 km mark where this warning appears, not that within that distance the model is validated by that alone."
         }
       },
       "markWithWind": "{{range}} · wind {{wind}} km/h",
+      "psi": {
+        "overpressure5psi": "5 psi · building collapse",
+        "overpressure1psi": "1 psi · nearly all windows broken",
+        "lightDamage": "0.5 psi · many windows broken"
+      },
       "noteLabel": {
         "isolines": "Isolines",
         "uncertainty": "Uncertainty",
@@ -1279,11 +1284,12 @@
         "tsunamiLimitSea": "the run-up on the coast is a plane-beach estimate (Synolakis 1987), not a map of the flooding",
         "thermalNotModelled": "Global re-entry of the ejecta and atmospheric heating: not modelled in this layer",
         "ejectaShown": "thickness ≥ 1 mm",
-        "lowThresholds": "The historical thresholds of serious damage begin at 0.5 psi / 3.45 kPa",
+        "lowThresholds": "The structural thresholds drawn begin at 0.5 psi / 3.45 kPa, where Glasstone & Dolan give windows usually shattered; below, this layer’s lines: 0.2 kPa, the first broken windows (Gi et al. 2018); 0.7 kPa, about one pane in twenty (Mannan & Lees); 3 kPa, a quarter to more than half (Gi et al. 2018)",
         "lowWhat": "This layer shows lower pressures, to read broken glass and light damage",
-        "lowValidation": "The model is not validated on Chelyabinsk as a prediction of the field; an observational comparison is available",
+        "lowValidation": "Not validated as a prediction of the field. On Chelyabinsk, a development case, the 0.7 kPa line reaches 0.85 of the radius of the region where windows broke (about 10,000 km²): a comparison, not a validation",
         "lowNot": "outside the structural scale and the toll",
-        "lowLimit": "below 1 kPa not coloured; above 3.45 kPa the scale stops: there the Overpressure layer begins",
+        "lowLimit": "below 0.2 kPa not coloured; above 3.45 kPa the scale stops: there the Overpressure layer begins",
+        "airburstShape": "An airburst is drawn round, from a source standing still at the burst altitude. A shallow entry lays its energy along tens of kilometres of trajectory: the region struck is drawn out along the track, and beneath the track the overpressure can exceed the drawn one beyond the factor of two of the Field agreement view (Collins et al. 2017; Aftosmis et al. 2016). At Chelyabinsk the city, 45 km from the point below the burst, had an estimated 2.2 to 3.5 times the overpressure this source gives there (Gi et al. 2018)",
         "thermalBelowMain": "the model computes the fluence of a first-degree burn out to {{reach}}, and no second- or third-degree burn nor ignition"
       },
       "source": {
@@ -1314,7 +1320,10 @@
         "agreementTitle": "{{threshold}} · the median",
         "agreement": "the line of the map of the field; the band about it is the field's",
         "lowTitle": "Overpressure {{value}}",
-        "low": "an exploratory threshold for broken glass and light damage, not validated as a prediction of the field"
+        "low": "the layer’s line at 1 kPa: no source gives it a meaning of its own (Gi et al. 2018 give 0.4–7 % of panes broken at 0.5 kPa and 25–60 % at 3 kPa); exploratory, not validated as a prediction of the field",
+        "low02": "the threshold of the first broken windows: 0.01 to 0.7 % of ordinary panes (Gi et al. 2018); exploratory, not validated as a prediction of the field",
+        "low07": "about one ordinary pane in twenty (≈ 5 %, Mannan & Lees’s blast-wave statistics): the edge of a region of broken windows; exploratory, not validated as a prediction of the field",
+        "low3": "a quarter to more than half of ordinary panes (25–60 %, Gi et al. 2018); exploratory, not validated as a prediction of the field"
       },
       "liquefactionLabel": "liquefaction",
       "ejectaEdge": "edge of the blanket",
@@ -1411,7 +1420,7 @@
           "notApplicable": "not applicable: no threshold drawn"
         },
         "lowOverpressure": {
-          "belowThreshold": "below 1 kPa, this layer’s lowest line: the largest computed at the ground is {{value}}",
+          "belowThreshold": "below 0.2 kPa, this layer’s lowest line: the largest computed at the ground is {{value}}",
           "computedZero": "computed zero"
         }
       },
@@ -1565,7 +1574,7 @@
         "craterRim": "Crater rim radius",
         "overpressure5psi": "5 psi overpressure radius",
         "overpressure1psi": "1 psi overpressure radius",
-        "lightDamage": "0.5 psi · light-damage radius",
+        "lightDamage": "0.5 psi radius · many windows broken",
         "ringSource": "Source of the rings",
         "windOutTo": "Wind of {{speed}} out to",
         "thirdDegreeBurn": "3rd-degree burn radius",
@@ -2045,8 +2054,8 @@
     "firestorm": "mass fire",
     "fireIgnition": "fires start",
     "blast5": "5 psi · buildings collapse",
-    "blast1": "1 psi · windows break",
-    "blastLight": "0.5 psi · scattered glass",
+    "blast1": "1 psi · nearly all windows broken",
+    "blastLight": "0.5 psi · many windows broken",
     "radiation": "radiation LD50",
     "emp": "EMP footprint",
     "legendTitle": "Effects",
