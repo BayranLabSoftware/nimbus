@@ -232,3 +232,32 @@ export const RULE_1258_WRITTEN = '2026-09-26' as const;
  *     fault found. T2 to T4 go on.
  */
 export const RULE_1259_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1260. T4'S SOURCE, READ AGAIN BEFORE ANY RUN OF IT (26 September
+ * 2026, 11:10).
+ *
+ * (a) THE CONTRADICTION. Rule 1254 (c) transcribed two of Collins et al.
+ *     (2017)'s numbers for T4: «a source of 45 m per kt^(1/3)» and, for the
+ *     moving source, «a third of the energy as motion, 2 450 m/s downward».
+ *     Their text: the radius was «set by yield scaling a nominal 1 kt
+ *     fireball radius of 45 m, implying a specific internal energy of 8.968
+ *     MJ kg⁻¹», and the downward speed is the square root of two-thirds of
+ *     that specific energy (2 450 m/s «in all scenarios»). In their own
+ *     atmosphere (1 kg/m³ at the base, far less at 10 to 21.5 km) a radius of
+ *     45 m·W^(1/3) gives neither 8.968 MJ/kg nor 2 450 m/s — only a density
+ *     of 1.22 kg/m³ would. The two numbers they state as results are
+ *     consistent with each other only if the specific energy is what is held
+ *     fixed.
+ * (b) THE SETUP JUDGED: the source's specific energy fixed at 8.968 MJ/kg —
+ *     its mass E/8.968 MJ/kg, its radius from the air's density at the burst
+ *     height — for the static source and for the moving one (a third of the
+ *     energy as motion, which gives 2 450 m/s). The literal 45 m·W^(1/3)
+ *     radius is run as a sensitivity for the static source, and reported.
+ * (c) THE REST as rule 1254 (c): their isothermal atmosphere (ρ₀ = 1 kg/m³,
+ *     p₀ = 10⁵ Pa, g = 9.80665 m/s², so H = 10.2 km), 0.5, 5, 15 and 50 Mt at
+ *     21.5, 14, 10 and 11 km; every number of their Table 2 that is a number
+ *     (not «n/a» nor «—») within 15 %; three grids whose cells are 20, 10
+ *     and 5 m scaled to 1 kt, the finest judged.
+ */
+export const RULE_1260_WRITTEN = '2026-09-26' as const;
