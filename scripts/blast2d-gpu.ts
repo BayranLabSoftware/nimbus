@@ -40,6 +40,15 @@ async function bundle(): Promise<string> {
 }
 
 export async function withGpuPage<T>(work: (page: Page) => Promise<T>): Promise<T> {
+  return withGpuPages(1, (pages) => {
+    const page = pages[0];
+    if (page === undefined) throw new Error('no page');
+    return work(page);
+  });
+}
+
+/** Several pages, each with its own GPU device, in one browser. */
+export async function withGpuPages<T>(n: number, work: (pages: Page[]) => Promise<T>): Promise<T> {
   const code = await bundle();
   const server = createServer((request, response) => {
     if (request.url === '/entry.js') {
@@ -57,14 +66,18 @@ export async function withGpuPage<T>(work: (page: Page) => Promise<T>): Promise<
   const port = typeof address === 'object' && address !== null ? address.port : 0;
   const browser = await chromium.launch({ args: ['--enable-unsafe-webgpu', '--use-angle=metal'] });
   try {
-    const page = await browser.newPage();
-    page.on('console', (m) => {
-      if (m.type() === 'error' || m.type() === 'warning')
-        console.error('[page]', m.type(), m.text());
-    });
-    await page.goto(`http://localhost:${String(port)}/`);
-    await page.waitForFunction(() => window.blast2dGpu !== undefined);
-    return await work(page);
+    const pages: Page[] = [];
+    for (let k = 0; k < n; k++) {
+      const page = await browser.newPage();
+      page.on('console', (m) => {
+        if (m.type() === 'error' || m.type() === 'warning')
+          console.error('[page]', m.type(), m.text());
+      });
+      await page.goto(`http://localhost:${String(port)}/`);
+      await page.waitForFunction(() => window.blast2dGpu !== undefined);
+      pages.push(page);
+    }
+    return await work(pages);
   } finally {
     await browser.close();
     server.close();

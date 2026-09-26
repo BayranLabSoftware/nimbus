@@ -8,6 +8,7 @@
  * 5 % (rule 1256 for what is judged).
  *
  *   pnpm exec tsx scripts/blast2d-t2-gd1kt.ts [parallel]
+ *   BLAST2D_ENGINE=gpu pnpm exec tsx scripts/blast2d-t2-gd1kt.ts [pages]   (rule 1282)
  *
  * Writes src/physics/validation/blast2dT2.json and docs/BLAST2D_T2.md.
  */
@@ -38,6 +39,9 @@ const caseAt = (hKm: number, dx: number): BlastCase => ({
   dx,
   rMax: 2_600,
   zMax: Math.max(1_500, hKm * 1_000 + 1_200),
+  // Rules 1274 and 1278 (e): the stop's floor and the continuous limiter.
+  soundFloor: 1.1,
+  limiter: 'has',
 });
 
 const cases = GRIDS.flatMap((dx) => heights.map((h) => caseAt(h, dx)));

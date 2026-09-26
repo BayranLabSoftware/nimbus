@@ -9,6 +9,7 @@
  * 1 kt).
  *
  *   pnpm exec tsx scripts/blast2d-t4-collins.ts [parallel]
+ *   BLAST2D_ENGINE=gpu pnpm exec tsx scripts/blast2d-t4-collins.ts [pages]   (rule 1282)
  *
  * Writes src/physics/validation/blast2dT4.json and docs/BLAST2D_T4.md.
  */
@@ -104,6 +105,9 @@ const caseOf = (row: Row, v: Variant, dx1kt: number): BlastCase => {
     dx: dx1kt * Math.cbrt(row.mt * 1e3),
     rMax: 1.2 * far,
     zMax: row.zb * 1_000 + 20_000,
+    // Rules 1274 and 1278 (e): the stop's floor and the continuous limiter.
+    soundFloor: 1.1,
+    limiter: 'has',
   };
 };
 

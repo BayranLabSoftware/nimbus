@@ -12,6 +12,7 @@
  * the median within 5 % (rule 1256 for what is judged).
  *
  *   pnpm exec tsx scripts/blast2d-t3-aftosmis.ts [parallel]
+ *   BLAST2D_ENGINE=gpu pnpm exec tsx scripts/blast2d-t3-aftosmis.ts [pages]   (rule 1282)
  *
  * Writes src/physics/validation/blast2dT3.json and docs/BLAST2D_T3.md.
  */
@@ -52,6 +53,8 @@ const caseAt = (hKm1kt: number, dx1kt: number, scaleHeight: number): BlastCase =
   // Rule 1274: a precursor from above reaches the far ground before the
   // incident wave; the run may not stop before the sound has crossed the range.
   soundFloor: 1.1,
+  // Rule 1278 (e): the continuous limiter.
+  limiter: 'has',
 });
 
 const cases = [

@@ -912,3 +912,21 @@ export const RULE_1280_WRITTEN = '2026-09-27' as const;
  *     per component meanwhile: the same numbers to the bit, twice as fast.
  */
 export const RULE_1281_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1282. THE TESTS ON RULE 1280'S SCHEME, T2 TO T4 ON THE GPU (27
+ * September 2026, 01:36). Written before the runs.
+ *
+ * (a) Every case of T2, T3 and T4 carries rule 1274's floor (1.1) and rule
+ *     1277's limiter; their grids, references, criteria and rule 1276's
+ *     reading of lower bounds are as fixed. They run on the GPU
+ *     (BLAST2D_ENGINE=gpu: the same cases, the GPU's code in the cache key),
+ *     several pages at once, each its own device; T1 on the CPU reference.
+ * (b) T2's old-scheme batch was stopped at 01:36 with 69 of its 78 runs
+ *     (rule 1277 (d) had let it finish for the record): the scheme it tested
+ *     is no longer the solver's, and its output files are the new batch's.
+ *     Its runs stay in the cache, under d09d6aa's code.
+ * (c) The outcomes are written as rules as they come, each test judged as
+ *     fixed; nothing is changed between a test's runs and its verdict.
+ */
+export const RULE_1282_WRITTEN = '2026-09-27' as const;
