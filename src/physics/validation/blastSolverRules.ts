@@ -188,3 +188,47 @@ export const RULE_1256_WRITTEN = '2026-09-26' as const;
  *     gate, go on meanwhile.
  */
 export const RULE_1257_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1258. T1 JUDGED AGAIN, ON THE EXTRAPOLATED RADIUS — A CRITERION
+ * WRITTEN AFTER THE OUTCOME (26 September 2026, 10:49; Andrea's answer to
+ * rule 1257 (c): «Rigiudicare sul raggio estrapolato»).
+ *
+ * (a) DECLARED: this criterion is written after T1's outcome and after its
+ *     raw radii were seen (rule 1257 (a)); it does not replace rule 1257's
+ *     verdict, which stays on record as T1 as first fixed.
+ * (b) THE CRITERION. For each time and each ray (the ground, the axis, the
+ *     diagonal), the three grids' radii give the extrapolated radius of rule
+ *     1256 (c); it must lie within 2 % of ξ(2Et²/ρ)^(1/5). Where the three do
+ *     not converge monotonically, no extrapolation is made and the finest
+ *     radius, with the three's spread, must lie within 2 %.
+ * (c) WHICH READINGS: those where every grid has the shock at least ten of
+ *     its own cells beyond the source — so that all three are in the range an
+ *     extrapolation needs — and within half the domain: on these grids, from
+ *     R = 0.156 to 0.6. That is narrower than rule 1257 judged (it began at
+ *     ten cells of the finest grid); the reason is the extrapolation's, and
+ *     it was chosen knowing the raw radii.
+ * (d) No new run: the three grids' readings of `blast2dT1Sedov.json`.
+ */
+export const RULE_1258_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1259. RULE 1258'S OUTCOME: T1 FAILS ON THE EXTRAPOLATED RADIUS TOO
+ * (26 September 2026, 10:49; `blast2dT1Extrapolated.json`).
+ *
+ * (a) Of the 18 readings judged (R = 0.18 to 0.6, three rays), 14 lie within
+ *     2 % and 4 do not: the axis at R = 0.18 (−8.4 %, observed order 0.43),
+ *     the diagonal at 0.18 (not monotone, the three spread over 2.4 %), the
+ *     diagonal at 0.45 (−3.2 %, order 0.22) and the axis at 0.55 (−3.2 %,
+ *     order 0.30). T1 FAILS rule 1258's criterion as it failed rule 1254's.
+ * (b) What the misses are: where the observed order is low, the three
+ *     differences nearly equal, the extrapolation divides by a small number
+ *     and carries the reading's own scatter (some tenths of a cell) far past
+ *     the finest grid; at those four readings the finest grid's raw radius is
+ *     within 1.4 to 1.9 %. That is a statement about the extrapolation, not a
+ *     pass: no third criterion is written.
+ * (c) T1 stands failed on both criteria, with the diagnosis of rule 1257 (b):
+ *     a captured shock read 1 to 2 cells ahead, converging at first order, no
+ *     fault found. T2 to T4 go on.
+ */
+export const RULE_1259_WRITTEN = '2026-09-26' as const;
