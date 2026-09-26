@@ -22,6 +22,8 @@ export interface GpuCase {
   readonly zMax: number;
   /** Rule 1274's floor, as `scripts/blast2d-run.ts` reads it. */
   readonly soundFloor?: number;
+  /** Rule 1277's limiter. */
+  readonly limiter?: 'has';
 }
 
 let device: GpuDevice | null = null;
@@ -58,6 +60,10 @@ function reference(c: GpuCase, withSource = true): BlastSolver2D {
   return solver;
 }
 
+function limiterOf(c: GpuCase): { limiter?: 'has' } {
+  return c.limiter === undefined ? {} : { limiter: c.limiter };
+}
+
 /** Rule 1272: a solver is used only once its GPU's error-free sum and
  *  product came back exact. */
 async function trusted(solver: BlastSolverGpu): Promise<BlastSolverGpu> {
@@ -73,7 +79,7 @@ async function trusted(solver: BlastSolverGpu): Promise<BlastSolverGpu> {
 export async function runCaseGpu(c: GpuCase, tEnd?: number): Promise<Record<string, unknown>> {
   const started = performance.now();
   const ref = reference(c);
-  const solver = await trusted(new BlastSolverGpu(await gpuDevice(), ref));
+  const solver = await trusted(new BlastSolverGpu(await gpuDevice(), ref, limiterOf(c)));
   const last = Math.min(ref.nr - 1, Math.floor(c.rMax / c.dx));
   const p0 = ref.backgroundPressure(0);
   // Rule 1274: not before the floor (0 without one).
@@ -104,6 +110,9 @@ export async function runCaseGpu(c: GpuCase, tEnd?: number): Promise<Record<stri
     seconds: (performance.now() - started) / 1000,
     time: solver.time,
     fallbacks: await solver.fallbacks(),
+    ...(solver.has
+      ? { limitedFaces: await solver.fallbacks(), scaledFaces: await solver.scaledFaces() }
+      : {}),
     redone: solver.redone,
     halvings: solver.halvings,
     ranges: Array.from({ length: last + 1 }, (_, i) => ref.radius(i)),
@@ -111,11 +120,79 @@ export async function runCaseGpu(c: GpuCase, tEnd?: number): Promise<Record<stri
   };
 }
 
+/** A diagnostic: run until the GPU fails, then list the unsound cells (ρ,
+ *  p, velocities, their background) and the time. */
+export async function probeFailure(c: GpuCase): Promise<Record<string, unknown>> {
+  const ref = reference(c);
+  const solver = await trusted(new BlastSolverGpu(await gpuDevice(), ref, limiterOf(c)));
+  let message = '';
+  let last: Float64Array | null = null;
+  try {
+    for (;;) {
+      last = await solver.state();
+      await solver.step();
+    }
+  } catch (error) {
+    message = String(error);
+  }
+  const after = await solver.state();
+  const cells = [];
+  for (let j = 0; j < ref.nz; j++)
+    for (let i = 0; i < ref.nr; i++) {
+      const k = ref.index(i, j);
+      const rhoBar = ref.backgroundDensity(j);
+      const pBar = ref.backgroundPressure(j);
+      const at = (s: Float64Array | null): Record<string, number> => {
+        if (s === null) return {};
+        const rho = rhoBar + (s[4 * k] ?? 0);
+        const mr = s[4 * k + 1] ?? 0;
+        const mz = s[4 * k + 2] ?? 0;
+        const p = pBar + 0.4 * ((s[4 * k + 3] ?? 0) - (0.5 * (mr * mr + mz * mz)) / rho);
+        return { rho, p, u: mr / rho, v: mz / rho };
+      };
+      const now = at(after);
+      if (!((now.rho ?? 0) > 0 && (now.p ?? 0) > 0))
+        cells.push({ i, j, rhoBar, pBar, before: at(last), after: now });
+    }
+  return { message, time: solver.time, steps: solver.steps, cells: cells.slice(0, 10) };
+}
+
+/** A diagnostic: the GPU stepped with imposed time steps (the reference's);
+ *  returns its state (both halves added) after each of the listed counts. */
+export async function stepsWithDt(
+  c: GpuCase,
+  dts: number[],
+  at: number[]
+): Promise<Record<number, number[]>> {
+  const ref = reference(c);
+  const solver = await trusted(new BlastSolverGpu(await gpuDevice(), ref, limiterOf(c)));
+  const out: Record<number, number[]> = {};
+  for (const [n, dt] of dts.entries()) {
+    await solver.step(dt, true);
+    if (at.includes(n + 1)) out[n + 1] = Array.from(await solver.state());
+  }
+  return out;
+}
+
+/** A diagnostic: n steps with imposed Δt, then the next step's first stage
+ *  up to its fluxes, before and after the limiter. */
+export async function fluxesAfter(
+  c: GpuCase,
+  dts: number[],
+  next: number
+): Promise<{ before: number[]; after: number[]; ar: number; az: number }> {
+  const ref = reference(c);
+  const solver = await trusted(new BlastSolverGpu(await gpuDevice(), ref, limiterOf(c)));
+  for (const dt of dts) await solver.step(dt, true);
+  const r = await solver.debugFirstStage(next);
+  return { before: Array.from(r.before), after: Array.from(r.after), ar: r.ar, az: r.az };
+}
+
 /** G0: the atmosphere at rest, no source, for a number of steps; the
  *  largest speed at the end (m/s). */
 export async function restCheck(c: GpuCase, steps: number): Promise<Record<string, number>> {
   const ref = reference(c, false);
-  const solver = await trusted(new BlastSolverGpu(await gpuDevice(), ref));
+  const solver = await trusted(new BlastSolverGpu(await gpuDevice(), ref, limiterOf(c)));
   for (let n = 0; n < steps; n++) await solver.step();
   const state = await solver.state();
   let top = 0;
@@ -138,7 +215,7 @@ export async function conservationCheck(
   steps: number
 ): Promise<Record<string, number>> {
   const ref = reference(c);
-  const solver = await trusted(new BlastSolverGpu(await gpuDevice(), ref));
+  const solver = await trusted(new BlastSolverGpu(await gpuDevice(), ref, limiterOf(c)));
   const g = c.atmosphere.kind === 'isothermal' ? c.atmosphere.g : 0;
   const totals = (state: Float64Array): { mass: number; energy: number } => {
     let mass = 0;
@@ -175,7 +252,17 @@ declare global {
       runCaseGpu: typeof runCaseGpu;
       restCheck: typeof restCheck;
       conservationCheck: typeof conservationCheck;
+      probeFailure: typeof probeFailure;
+      stepsWithDt: typeof stepsWithDt;
+      fluxesAfter: typeof fluxesAfter;
     };
   }
 }
-window.blast2dGpu = { runCaseGpu, restCheck, conservationCheck };
+window.blast2dGpu = {
+  runCaseGpu,
+  restCheck,
+  conservationCheck,
+  probeFailure,
+  stepsWithDt,
+  fluxesAfter,
+};

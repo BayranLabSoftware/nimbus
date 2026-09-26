@@ -7,7 +7,8 @@
  * source and until it reaches half the domain, and converging as the grid is
  * refined. Three grids; the radius read along the ground, the axis and the
  * diagonal, where the density crosses half-way from the ambient to its peak
- * on the shock's outer flank.
+ * on the shock's outer flank. On rule 1277's limiter (rule 1278 (e); the
+ * old scheme's results are in blast2dT1Sedov.mood.json).
  *
  *   pnpm exec tsx scripts/blast2d-t1-sedov.ts
  *
@@ -60,7 +61,9 @@ const results = [];
 const GRIDS = process.argv.slice(2).map(Number);
 for (const cells of GRIDS.length > 0 ? GRIDS : [100, 200, 400]) {
   const dx = L / cells;
-  const solver = new BlastSolver2D({ nr: cells, nz: cells, dx }, uniformAtmosphere(RHO, P));
+  const solver = new BlastSolver2D({ nr: cells, nz: cells, dx }, uniformAtmosphere(RHO, P), {
+    limiter: 'has',
+  });
   const r0 = 3 * dx;
   solver.deposit({ energy: E, height: 0, radius: r0 });
   const started = Date.now();

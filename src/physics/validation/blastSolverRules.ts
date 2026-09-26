@@ -815,3 +815,100 @@ export const RULE_1277_WRITTEN = '2026-09-26' as const;
  *     G1 against this reference, before it runs any of them.
  */
 export const RULE_1278_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1279. THE GPU ON RULE 1277'S LIMITER: THE FACE FLOOR IN SINGLE
+ * PRECISION (27 September 2026, 00:46).
+ *
+ * (a) THE PORT. The GPU carries rule 1277 as the reference does: the face
+ *     states scaled towards their cell (kernels scaleR, scaleZ), every face
+ *     at fifth order, each face's flux blended with the Lax–Friedrichs flux
+ *     on the full variables and the full sources (limitR, limitZ), the
+ *     speeds (|u| + c)ₘₐₓ and (|v| + c)ₘₐₓ of every stage read back for the
+ *     weights and Δt, and a cell left unsound failing the run. G0: at rest
+ *     exactly 0 after 200 steps. G2: mass to 1.7·10⁻¹¹ and 7.3·10⁻¹², energy
+ *     to 1.7·10⁻⁹ and 1.6·10⁻⁷ of the source's. Both PASS.
+ * (b) G1'S FIRST CASE FAILED (T2 at 0.048 km, 20 m, at 1.94 s): a benign
+ *     cell (ρ = 0.095, p = 101 kPa) turned NaN. THE CAUSE: the GPU carries
+ *     the density and pressure as deviations, w = ρ/ρ̄ − 1, in single
+ *     precision; the floor 10⁻¹³ on 1 + w cannot be written there — the
+ *     nearest number to −1 + 10⁻¹³ is −1 — so a face scaled to the floor
+ *     had zero density and the Riemann solver divided by it.
+ * (c) THE MEND. On the GPU the face floor is 2⁻²² (≈ 2.4·10⁻⁷, the smallest
+ *     1 + w single precision holds with a margin), and a scaled face is
+ *     kept at least there (a max, continuous). Tried first as a diagnostic:
+ *     the case then runs to its end in 4 884 steps, the reference's own
+ *     count, in 18 s against 161 s. Where no face is near vacuum the two
+ *     floors do the same; where one is, the difference is continuous and
+ *     G1 measures it. The reference keeps 10⁻¹³.
+ * (d) G1 runs again, its criteria as fixed.
+ */
+export const RULE_1279_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1280. RULE 1277 (c)(3) WAS WRONG: A FACE SCALED TO THE FLOOR IS A
+ * VACUUM WHERE THERE IS NONE; THE FACES ARE BLENDED TOWARDS THEIR CELL
+ * INSTEAD (27 September 2026, 01:00). Written before the code.
+ *
+ * (a) FOUND by G1's diagnosis (rule 1279 (d)): CPU and GPU, fed the same
+ *     time steps on rule 1273's case, agree to 10⁻⁷ for seven steps and part
+ *     by 44 % in density at the axis at the eighth. There the ground cell
+ *     under the axis holds 501 kPa below the fireball's core (~10⁹ Pa); every
+ *     fifth-order candidate at its ground face, (7p₀ − p₁)/6 among them, is
+ *     negative, and rule 1277 (c)(3) scaled the face to the floor: the wall's
+ *     momentum flux came out −0.011 Pa on the CPU instead of some 5·10⁵ Pa —
+ *     the ground stopped pushing on the cell. The flux there is the floor's,
+ *     not the flow's: the two engines' floors (10⁻¹³, 2⁻²²) part them, and
+ *     even with the same floor on both the eighth step parts them by 44 %.
+ *     A flaw of the construction, on both engines, that rule 1278's criteria
+ *     could not see: the answer was determinate, positive, and wrong there.
+ * (b) THE MEND, with no floor. Per cell and direction, y_c the cell's ratio
+ *     (ρ/ρ̄ or p/p̄) and m the smaller of its two reconstructed faces, both
+ *     faces are blended towards the cell's value, y = y_c + t(y_face − y_c):
+ *     t = 1 where m ≥ ½y_c, t = 0 where m ≤ 0, t = 2m/y_c between — linear
+ *     in m and continuous at both ends. A negative face becomes the cell's
+ *     own value (first order, as rule 1262 (a) made it, but reached
+ *     continuously); a face above half its cell's value is untouched; every
+ *     face lies between its cell's value and a positive one. The half is
+ *     chosen here, before any run, as «the reconstruction has lost half the
+ *     cell's value within half a cell»; it is not tuned to a result.
+ * (c) Rule 1277's other parts stand. Rule 1278's three criteria are met
+ *     again on the mended scheme, with a fourth: at the eighth step of rule
+ *     1273's case the wall pushes — the ground face's vertical momentum flux
+ *     under the axis at least half its cell's pressure. Then T1, and G1.
+ *     Rule 1279's GPU floor goes with the floor.
+ */
+export const RULE_1280_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1281. RULE 1280'S SCHEME MEETS ITS CRITERIA, AND THE GPU PASSES G0, G1
+ * AND G2 ON IT (27 September 2026, 01:33; `blast2dT3Spread.has.json`,
+ * `blast2dG1.json`).
+ *
+ * (a) THE CRITERIA OF RULES 1278 AND 1280 (c). At rest: the solver's tests,
+ *     no speed above 10⁻⁹ m/s and no face touched. Determinacy: the widest
+ *     spread 1.1·10⁻⁷ under the eleven moves of the source's energy, every
+ *     run 4 311 steps. Robustness: those eleven and T2 at the ground on 20 m
+ *     cells end without a failure. The wall pushes: at the eighth step the
+ *     ground face under the axis carries 1.07 times its cell's pressure
+ *     (the flawed scheme: 2·10⁻⁸). ALL MET.
+ * (b) WHAT MOVED. Against the old scheme, rule 1273's case: +4 to +10 %
+ *     within 3 km of the axis, within 2 % from 10 to 130 km, −18 to +9 %
+ *     from 160 to 196 km; T2 at the ground: ±5 % within 90 m, within 0.7 %
+ *     beyond 500 m.
+ * (c) THE GPU, fed the reference's steps on rule 1273's case: within 6·10⁻⁶
+ *     in density and 2.5·10⁻⁶ in pressure over 300 steps (19 s), where the
+ *     flawed scheme parted by 44 % at the eighth.
+ * (d) G0: exactly at rest. G2: mass to 1.7·10⁻¹¹ and 8.3·10⁻¹², energy to
+ *     1.7·10⁻⁹ and 1.8·10⁻⁷ of the source's. G1: all eight cases take the
+ *     reference's own number of steps; every reach within 0.009 %, every peak
+ *     within 0.11 % (the criteria: 0.5 % and 1 %); the GPU 9 to 29 times
+ *     faster. ALL PASS.
+ * (e) THEREFORE, under rules 1270 (e) and 1278 (e): the tests are made on
+ *     rule 1280's scheme with their criteria and grids as fixed — T2, T3 and
+ *     T4 on the GPU (their finest grids cost the CPU days), T1 on the CPU
+ *     reference (its grids are small); whether finer grids than those fixed
+ *     are wanted is Andrea's to say. The CPU's own hot loops were written out
+ *     per component meanwhile: the same numbers to the bit, twice as fast.
+ */
+export const RULE_1281_WRITTEN = '2026-09-27' as const;

@@ -22,7 +22,8 @@
  * - positivity kept either by rules 1262, 1264 and 1268's yes-or-no
  *   fall-backs ('mood', the default) or by rule 1277's continuous limiter
  *   ('has'): Hu, Adams & Shu (2013)'s blend of each face's flux with the
- *   Lax–Friedrichs flux, and the face states scaled towards their cell.
+ *   Lax–Friedrichs flux, and the face states blended towards their cell
+ *   (rule 1280).
  *
  * The reference implementation, float64 and SI throughout; its tests are the
  * six of rule 1254 (c).
@@ -749,12 +750,13 @@ export class BlastSolver2D {
 
   // ---- rule 1277: Hu, Adams & Shu's continuous positivity limiter ----
 
-  /** Rule 1277 (c)(3): each cell's two reconstructed faces of ρ/α and of p/β
-   *  (w, dimensionless) scaled towards the cell's own value by the largest
-   *  t ≤ 1 that keeps both at least 10⁻¹³; the velocities are not touched. */
+  /** Rule 1280 (b), in place of rule 1277 (c)(3): each cell's two
+   *  reconstructed faces of ρ/α and of p/β blended towards the cell's own
+   *  value, y_c + t(y − y_c), t = 1 where the smaller face m is at least
+   *  half the cell's value, 0 where m ≤ 0, 2m/y_c between; the velocities
+   *  are not touched. */
   private scaleFaces(step: number): void {
     const { nr, nz, stride } = this;
-    const eps = 1e-13;
     const iLo = step === 1 ? -1 : 0;
     const iHi = step === 1 ? nr : nr - 1;
     const jLo = step === 1 ? 0 : -1;
@@ -771,8 +773,8 @@ export class BlastSolver2D {
           const a = up[k] ?? 0;
           const b = down[k] ?? 0;
           const lo = Math.min(a, b);
-          if (lo >= eps) continue;
-          const t = c > eps ? (c - eps) / (c - lo) : 0;
+          if (lo >= 0.5 * c) continue;
+          const t = lo > 0 ? (2 * lo) / c : 0;
           up[k] = c + t * (a - c);
           down[k] = c + t * (b - c);
           this.scaledFaces++;
@@ -1042,8 +1044,15 @@ export class BlastSolver2D {
           dt
         );
       }
-    const d = [this.d0, this.d1, this.d2, this.d3];
-    for (const x of d) x.fill(0);
+    // The divergence of the limited fluxes, written out per component (no
+    // iterators in the loops: they cost more than the arithmetic).
+    const { d0, d1, d2, d3, rho, mr, mz, en, k0, k1, k2, k3 } = this;
+    const h = work.high;
+    const src = work.source;
+    d0.fill(0);
+    d1.fill(0);
+    d2.fill(0);
+    d3.fill(0);
     for (let j = 0; j < nz; j++) {
       const row = (j + G) * stride + G;
       for (let f = 1; f <= nr; f++) {
@@ -1052,11 +1061,20 @@ export class BlastSolver2D {
         const kl = row + f - 1;
         const kr = row + f;
         const left = area / ((this.rC[f - 1] ?? 0) * dx);
-        const right = f < nr ? area / ((this.rC[f] ?? 0) * dx) : 0;
-        for (const [q, dq] of d.entries()) {
-          const x = work.high[o + q] ?? 0;
-          dq[kl] = (dq[kl] ?? 0) - x * left;
-          if (f < nr) dq[kr] = (dq[kr] ?? 0) + x * right;
+        const x0 = h[o] ?? 0;
+        const x1 = h[o + 1] ?? 0;
+        const x2 = h[o + 2] ?? 0;
+        const x3 = h[o + 3] ?? 0;
+        d0[kl] = (d0[kl] ?? 0) - x0 * left;
+        d1[kl] = (d1[kl] ?? 0) - x1 * left;
+        d2[kl] = (d2[kl] ?? 0) - x2 * left;
+        d3[kl] = (d3[kl] ?? 0) - x3 * left;
+        if (f < nr) {
+          const right = area / ((this.rC[f] ?? 0) * dx);
+          d0[kr] = (d0[kr] ?? 0) + x0 * right;
+          d1[kr] = (d1[kr] ?? 0) + x1 * right;
+          d2[kr] = (d2[kr] ?? 0) + x2 * right;
+          d3[kr] = (d3[kr] ?? 0) + x3 * right;
         }
       }
     }
@@ -1065,25 +1083,34 @@ export class BlastSolver2D {
         const o = 4 * (off + g * nr + i);
         const kl = (g - 1 + G) * stride + (i + G);
         const kr = kl + stride;
-        for (const [q, dq] of d.entries()) {
-          const x = (work.high[o + q] ?? 0) / dx;
-          if (g > 0) dq[kl] = (dq[kl] ?? 0) - x;
-          if (g < nz) dq[kr] = (dq[kr] ?? 0) + x;
+        const x0 = (h[o] ?? 0) / dx;
+        const x1 = (h[o + 1] ?? 0) / dx;
+        const x2 = (h[o + 2] ?? 0) / dx;
+        const x3 = (h[o + 3] ?? 0) / dx;
+        if (g > 0) {
+          d0[kl] = (d0[kl] ?? 0) - x0;
+          d1[kl] = (d1[kl] ?? 0) - x1;
+          d2[kl] = (d2[kl] ?? 0) - x2;
+          d3[kl] = (d3[kl] ?? 0) - x3;
+        }
+        if (g < nz) {
+          d0[kr] = (d0[kr] ?? 0) + x0;
+          d1[kr] = (d1[kr] ?? 0) + x1;
+          d2[kr] = (d2[kr] ?? 0) + x2;
+          d3[kr] = (d3[kr] ?? 0) + x3;
         }
       }
-    const sets: [Float64Array, Float64Array, Float64Array][] = [
-      [this.rho, this.k0, this.d0],
-      [this.mr, this.k1, this.d1],
-      [this.mz, this.k2, this.d2],
-      [this.en, this.k3, this.d3],
-    ];
     for (let j = 0; j < nz; j++)
       for (let i = 0; i < nr; i++) {
         const k = (j + G) * stride + (i + G);
-        for (const [q, [uq, kq, dq]] of sets.entries()) {
-          const rate = (dq[k] ?? 0) + (work.source[4 * k + q] ?? 0);
-          uq[k] = keep * (kq[k] ?? 0) + add * ((uq[k] ?? 0) + dt * rate);
-        }
+        const s = 4 * k;
+        rho[k] = keep * (k0[k] ?? 0) + add * ((rho[k] ?? 0) + dt * ((d0[k] ?? 0) + (src[s] ?? 0)));
+        mr[k] =
+          keep * (k1[k] ?? 0) + add * ((mr[k] ?? 0) + dt * ((d1[k] ?? 0) + (src[s + 1] ?? 0)));
+        mz[k] =
+          keep * (k2[k] ?? 0) + add * ((mz[k] ?? 0) + dt * ((d2[k] ?? 0) + (src[s + 2] ?? 0)));
+        en[k] =
+          keep * (k3[k] ?? 0) + add * ((en[k] ?? 0) + dt * ((d3[k] ?? 0) + (src[s + 3] ?? 0)));
       }
     for (let j = 0; j < nz; j++)
       for (let i = 0; i < nr; i++)

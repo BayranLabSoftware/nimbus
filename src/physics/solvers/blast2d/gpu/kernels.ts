@@ -9,6 +9,12 @@
  * Every cell holds vec4(ρ − ρ̄, ρu, ρv, E − Ē); w holds vec4((ρ − ρ̄)/ρ̄,
  * u, v, (p − p̄)/p̄), ρ̄ = ρ₀α and p̄ = p₀β at the cell's height. The fluxes
  * are the full ones less the background's momentum flux at the face.
+ *
+ * With P.has = 1, rule 1277's limiter in place of the fall-backs: the face
+ * states scaled towards their cell (scaleR, scaleZ), every face at fifth
+ * order, and each face's flux blended with the Lax–Friedrichs flux by Hu,
+ * Adams & Shu's θ (limitR, limitZ), on the full variables, as the CPU
+ * reference does.
  */
 
 export const WORKGROUP = 128;
@@ -21,6 +27,8 @@ struct Params {
   nr: i32, nz: i32, stride: i32, zero: u32,
   dx: f32, gamma: f32, dt: f32, keepHi: f32,
   keepLo: f32, addHi: f32, addLo: f32, time: f32,
+  lamR: f32, lamZ: f32, epsRho: f32, epsP: f32,
+  ar: f32, az: f32, has: u32, pad: u32,
 };
 
 @group(0) @binding(0) var<uniform> P: Params;
@@ -42,6 +50,8 @@ struct Params {
 @group(0) @binding(15) var<storage, read_write> ULO: array<vec4<f32>>;
 @group(0) @binding(16) var<storage, read_write> K0LO: array<vec4<f32>>;
 @group(0) @binding(17) var<storage, read_write> PRELO: array<vec4<f32>>;
+// Rule 1277: each cell's |v| + c (SPEED then holds |u| + c), with the partial maxima.
+@group(0) @binding(18) var<storage, read_write> SPEEDV: array<f32>;
 
 fn cell(i: i32, j: i32) -> i32 { return (j + G) * P.stride + (i + G); }
 
@@ -149,7 +159,12 @@ fn hllc(rL: f32, unL: f32, utL: f32, pL: f32, rR: f32, unR: f32, utR: f32, pR: f
   let p = bg.y + pdev;
   W[k] = vec4<f32>(q.x / bg.x, u, v, pdev / bg.y);
   let c = sqrt(P.gamma * p / rho);
-  SPEED[id.x] = abs(u) + abs(v) + 2.0 * c;
+  if (P.has == 1u) {
+    SPEED[id.x] = abs(u) + c;
+    SPEEDV[id.x] = abs(v) + c;
+  } else {
+    SPEED[id.x] = abs(u) + abs(v) + 2.0 * c;
+  }
 }
 
 // ---- ghosts: the axis reflects, the outer boundary copies (per interior row) ----
@@ -218,7 +233,7 @@ fn high(kl: i32, kr: i32) -> bool {
   let kr = cell(f, j);
   var l = W[kl];
   var r = W[kr];
-  if (high(kl, kr)) { l = S[kl]; r = T[kr]; }
+  if (P.has == 1u || high(kl, kr)) { l = S[kl]; r = T[kr]; }
   let bg = ROW[j];
   let fl = hllc(bg.x * (1.0 + l.x), l.y, l.z, bg.y * (1.0 + l.w), bg.x * (1.0 + r.x), r.y, r.z, bg.y * (1.0 + r.w));
   // The background's pressure is the same at every face of the row.
@@ -236,7 +251,7 @@ fn high(kl: i32, kr: i32) -> bool {
   let kr = cell(i, g);
   var l = W[kl];
   var r = W[kr];
-  if (high(kl, kr)) { l = S[kl]; r = T[kr]; }
+  if (P.has == 1u || high(kl, kr)) { l = S[kl]; r = T[kr]; }
   let bg = FACE[g];
   // Normal v, tangential u: the flux's momenta swap back.
   let fl = hllc(bg.x * (1.0 + l.x), l.z, l.y, bg.y * (1.0 + l.w), bg.x * (1.0 + r.x), r.z, r.y, bg.y * (1.0 + r.w));
@@ -300,6 +315,173 @@ fn high(kl: i32, kr: i32) -> bool {
     if (LOW[k] == 0u) { LOW[k] = 1u; atomicAdd(&COUNT[0], 1u); }
     else { atomicAdd(&COUNT[1], 1u); }
   }
+}
+
+// ---- rule 1280 (b): each cell's two faces of ρ/ρ̄ and p/p̄ blended towards
+//      the cell's value: t = 1 where the smaller face m ≥ ½y_c, 0 where
+//      m ≤ 0, 2m/y_c between; no floor ----
+fn scalePair(k: i32) {
+  let c = W[k];
+  var s = S[k];
+  var t = T[k];
+  var hit = false;
+  let yc = 1.0 + c.x;
+  let m = min(1.0 + s.x, 1.0 + t.x);
+  if (m < 0.5 * yc) {
+    let f = select(0.0, 2.0 * m / yc, m > 0.0);
+    s.x = c.x + f * (s.x - c.x);
+    t.x = c.x + f * (t.x - c.x);
+    hit = true;
+  }
+  let zc = 1.0 + c.w;
+  let mp = min(1.0 + s.w, 1.0 + t.w);
+  if (mp < 0.5 * zc) {
+    let f = select(0.0, 2.0 * mp / zc, mp > 0.0);
+    s.w = c.w + f * (s.w - c.w);
+    t.w = c.w + f * (t.w - c.w);
+    hit = true;
+  }
+  if (hit) {
+    S[k] = s;
+    T[k] = t;
+    atomicAdd(&COUNT[3], 1u);
+  }
+}
+@compute @workgroup_size(WG) fn scaleR(@builtin(global_invocation_id) id: vec3<u32>) {
+  let width = P.nr + 2;
+  if (id.x >= u32(width * P.nz)) { return; }
+  scalePair(cell(i32(id.x) % width - 1, i32(id.x) / width));
+}
+@compute @workgroup_size(WG) fn scaleZ(@builtin(global_invocation_id) id: vec3<u32>) {
+  let height = P.nz + 2;
+  if (id.x >= u32(P.nr * height)) { return; }
+  scalePair(cell(i32(id.x) % P.nr, i32(id.x) / P.nr - 1));
+}
+
+// ---- rule 1277: Hu, Adams & Shu's limiter, on the full variables ----
+// A cell's full state (ρ, ρu, ρv, E) from its deviation and its row's background.
+fn full(k: i32, j: i32) -> vec4<f32> {
+  let q = U[k];
+  let bg = ROW[j];
+  return vec4<f32>(bg.x + q.x, q.y, q.z, bg.y / (P.gamma - 1.0) + q.w);
+}
+fn pressureOf(s: vec4<f32>) -> f32 {
+  return (P.gamma - 1.0) * (s.w - 0.5 * (s.y * s.y + s.z * s.z) / s.x);
+}
+// The Euler flux of a full state along r (dir 0) or z (dir 1).
+fn eulerFlux(s: vec4<f32>, dir: i32) -> vec4<f32> {
+  let p = pressureOf(s);
+  let un = select(s.z, s.y, dir == 0) / s.x;
+  return vec4<f32>(s.x * un, s.y * un + select(0.0, p, dir == 0), s.z * un + select(0.0, p, dir == 1), (s.w + p) * un);
+}
+// A cell's sources on the full variables: p/r on the radial momentum, the
+// well-balanced gravity ρ·lift on the vertical, v times it on the energy.
+fn sourceOf(s: vec4<f32>, i: i32, j: i32) -> vec4<f32> {
+  let force = s.x * ROW[j].z;
+  return vec4<f32>(0.0, pressureOf(s) / ((f32(i) + 0.5) * P.dx), force, s.z / s.x * force);
+}
+// A piece Uₖ + σF + ΔtSₖ, its pressure (−1 where its density is not positive).
+fn piecePressure(s: vec4<f32>, src: vec4<f32>, sigma: f32, f: vec4<f32>) -> f32 {
+  let x = s + sigma * f + P.dt * vec4<f32>(0.0, src.y, src.z, src.w);
+  return select(-1.0, pressureOf(x), x.x > 0.0);
+}
+// θ at one face from the cells on either side (has*: whether the side is a
+// cell of the domain); returns the limited flux.
+fn limitFace(high: vec4<f32>, low: vec4<f32>, sl: vec4<f32>, srcL: vec4<f32>, hasL: bool,
+    sr: vec4<f32>, srcR: vec4<f32>, hasR: bool, lambda: f32) -> vec4<f32> {
+  let two = 2.0 * lambda;
+  var thetaRho = 1.0;
+  if (hasL) {
+    let hi = sl.x - two * high.x;
+    if (hi < P.epsRho) {
+      let lo = sl.x - two * low.x;
+      thetaRho = min(thetaRho, clamp((lo - P.epsRho) / (lo - hi), 0.0, 1.0));
+    }
+  }
+  if (hasR) {
+    let hi = sr.x + two * high.x;
+    if (hi < P.epsRho) {
+      let lo = sr.x + two * low.x;
+      thetaRho = min(thetaRho, clamp((lo - P.epsRho) / (lo - hi), 0.0, 1.0));
+    }
+  }
+  let star = low + thetaRho * (high - low);
+  var thetaP = 1.0;
+  if (hasL) {
+    let pStar = piecePressure(sl, srcL, -two, star);
+    if (pStar < P.epsP) {
+      let pLow = piecePressure(sl, srcL, -two, low);
+      thetaP = min(thetaP, clamp((pLow - P.epsP) / (pLow - pStar), 0.0, 1.0));
+    }
+  }
+  if (hasR) {
+    let pStar = piecePressure(sr, srcR, two, star);
+    if (pStar < P.epsP) {
+      let pLow = piecePressure(sr, srcR, two, low);
+      thetaP = min(thetaP, clamp((pLow - P.epsP) / (pLow - pStar), 0.0, 1.0));
+    }
+  }
+  if (thetaRho * thetaP < 1.0) { atomicAdd(&COUNT[2], 1u); }
+  return low + thetaP * (star - low);
+}
+// Radial faces f in [1, nr] of rows j; the axis face (weight 0) is left.
+@compute @workgroup_size(WG) fn limitR(@builtin(global_invocation_id) id: vec3<u32>) {
+  if (id.x >= u32(P.nr * P.nz)) { return; }
+  let f = i32(id.x) % P.nr + 1;
+  let j = i32(id.x) / P.nr;
+  let o = j * (P.nr + 1) + f;
+  let pb = ROW[j].y;
+  let sl = full(cell(f - 1, j), j);
+  let inside = f < P.nr;
+  let sr = select(sl, full(cell(f, j), j), inside);
+  let low = 0.5 * (eulerFlux(sl, 0) + eulerFlux(sr, 0)) - 0.5 * P.ar * (sr - sl);
+  let high = F[o] + vec4<f32>(0.0, pb, 0.0, 0.0);
+  let lim = limitFace(high, low, sl, sourceOf(sl, f - 1, j), true, sr, sourceOf(sr, f, j), inside, P.lamR);
+  F[o] = lim - vec4<f32>(0.0, pb, 0.0, 0.0);
+}
+// Vertical faces g in [0, nz] of columns i; the ground's ghost mirrors the
+// first cell, the top's copies the last.
+@compute @workgroup_size(WG) fn limitZ(@builtin(global_invocation_id) id: vec3<u32>) {
+  if (id.x >= u32(P.nr * (P.nz + 1))) { return; }
+  let i = i32(id.x) % P.nr;
+  let g = i32(id.x) / P.nr;
+  let o = (P.nr + 1) * P.nz + g * P.nr + i;
+  let pb = FACE[g].y;
+  let below = g > 0;
+  let above = g < P.nz;
+  var sl: vec4<f32>;
+  var sr: vec4<f32>;
+  if (below) { sl = full(cell(i, g - 1), g - 1); }
+  if (above) { sr = full(cell(i, g), g); }
+  if (!below) { sl = vec4<f32>(sr.x, sr.y, -sr.z, sr.w); }
+  if (!above) { sr = sl; }
+  let low = 0.5 * (eulerFlux(sl, 1) + eulerFlux(sr, 1)) - 0.5 * P.az * (sr - sl);
+  let high = F[o] + vec4<f32>(0.0, 0.0, pb, 0.0);
+  var srcL = vec4<f32>(0.0);
+  var srcR = vec4<f32>(0.0);
+  if (below) { srcL = sourceOf(sl, i, g - 1); }
+  if (above) { srcR = sourceOf(sr, i, g); }
+  let lim = limitFace(high, low, sl, srcL, below, sr, srcR, above, P.lamZ);
+  F[o] = lim - vec4<f32>(0.0, 0.0, pb, 0.0);
+}
+
+// ---- rule 1277: the largest |v| + c, one partial maximum per workgroup ----
+var<workgroup> scratchV: array<f32, WG>;
+@compute @workgroup_size(WG) fn reduceMaxV(@builtin(global_invocation_id) id: vec3<u32>,
+    @builtin(local_invocation_id) lid: vec3<u32>, @builtin(workgroup_id) wid: vec3<u32>) {
+  let n = u32(P.nr * P.nz);
+  var v = 0.0;
+  if (id.x < n) { v = SPEEDV[id.x]; }
+  scratchV[lid.x] = v;
+  workgroupBarrier();
+  var step = WG / 2u;
+  loop {
+    if (step == 0u) { break; }
+    if (lid.x < step) { scratchV[lid.x] = max(scratchV[lid.x], scratchV[lid.x + step]); }
+    workgroupBarrier();
+    step = step / 2u;
+  }
+  if (lid.x == 0u) { SPEEDV[n + wid.x] = scratchV[0]; }
 }
 
 // ---- rule 1272's check of the error-free sum and product: pairs (a, b) in

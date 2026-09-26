@@ -28,6 +28,11 @@ const KERNELS = [
   'peaks',
   'reduceMax',
   'dfCheck',
+  'scaleR',
+  'scaleZ',
+  'limitR',
+  'limitZ',
+  'reduceMaxV',
 ] as const;
 type Kernel = (typeof KERNELS)[number];
 
@@ -68,7 +73,18 @@ export class BlastSolverGpu {
   private readonly partials: number;
   private readonly pBar0: number;
 
-  constructor(device: GpuDevice, reference: BlastSolver2D) {
+  /** Rule 1277's limiter in place of the fall-backs. */
+  readonly has: boolean;
+  private readonly speedV: GpuBuffer;
+  private readonly flux: GpuBuffer;
+  private readonly epsRho: number;
+  private readonly epsP: number;
+  private lamR = 0;
+  private lamZ = 0;
+  private ar = 0;
+  private az = 0;
+
+  constructor(device: GpuDevice, reference: BlastSolver2D, options: { limiter?: 'has' } = {}) {
     this.device = device;
     this.nr = reference.nr;
     this.nz = reference.nz;
@@ -124,12 +140,24 @@ export class BlastSolverGpu {
     const make = (bytes: number, usage: number = storage): GpuBuffer =>
       device.createBuffer({ size: Math.max(16, bytes), usage });
     const vec4s = 16 * this.cells;
-    this.params = make(48, BUFFER.UNIFORM | BUFFER.COPY_DST);
+    this.params = make(80, BUFFER.UNIFORM | BUFFER.COPY_DST);
+    this.has = options.limiter === 'has';
+    // Rule 1277's floors: min(10⁻¹³, the initial minimum), as the reference.
+    let rhoMin = Infinity;
+    let pMin = Infinity;
+    for (let j = 0; j < nz; j++)
+      for (let i = 0; i < nr; i++) {
+        rhoMin = Math.min(rhoMin, reference.rho[reference.index(i, j)] ?? 0);
+        pMin = Math.min(pMin, reference.pressure(i, j));
+      }
+    this.epsRho = Math.min(1e-13, rhoMin);
+    this.epsP = Math.min(1e-13, pMin);
     this.u = make(vec4s);
     const w = make(vec4s);
     this.s = make(vec4s);
     this.t = make(vec4s);
-    const flux = make(16 * ((nr + 1) * nz + nr * (nz + 1)));
+    this.flux = make(16 * ((nr + 1) * nz + nr * (nz + 1)));
+    const flux = this.flux;
     const d = make(vec4s);
     this.k0 = make(vec4s);
     this.pre = make(vec4s);
@@ -140,6 +168,7 @@ export class BlastSolverGpu {
     const faceBuffer = make(face.byteLength);
     this.low = make(4 * this.cells);
     this.speed = make(4 * (this.interior + this.partials));
+    this.speedV = make(4 * (this.interior + this.partials));
     this.count = make(16);
     this.peak = make(16 * nr);
     this.readback = make(
@@ -179,6 +208,7 @@ export class BlastSolverGpu {
       this.uLo,
       this.k0Lo,
       this.preLo,
+      this.speedV,
     ];
     const groups = {} as Record<Kernel, unknown>;
     for (const name of KERNELS) {
@@ -195,9 +225,10 @@ export class BlastSolverGpu {
   }
 
   private setParams(dt: number, keep: number, add: number): void {
-    const data = new ArrayBuffer(48);
+    const data = new ArrayBuffer(80);
     const ints = new Int32Array(data, 0, 4);
-    const floats = new Float32Array(data, 16, 8);
+    const floats = new Float32Array(data, 16, 14);
+    const flags = new Uint32Array(data, 72, 2);
     ints[0] = this.nr;
     ints[1] = this.nz;
     ints[2] = this.stride;
@@ -213,6 +244,13 @@ export class BlastSolverGpu {
     floats[5] = addHi;
     floats[6] = add - addHi;
     floats[7] = this.time;
+    floats[8] = this.lamR;
+    floats[9] = this.lamZ;
+    floats[10] = this.epsRho;
+    floats[11] = this.epsP;
+    floats[12] = this.ar;
+    floats[13] = this.az;
+    flags[0] = this.has ? 1 : 0;
     this.device.queue.writeBuffer(this.params, 0, data);
   }
 
@@ -357,7 +395,139 @@ export class BlastSolverGpu {
   }
 
   /** One step; returns Δt (s). */
-  async step(maxDt = Infinity): Promise<number> {
+  /** Rule 1277: the interior's largest |u| + c and |v| + c. */
+  private async fastestPair(): Promise<{ ar: number; az: number }> {
+    this.dispatch([
+      ['reduceMax', this.interior],
+      ['reduceMaxV', this.interior],
+    ]);
+    const bytes = 4 * this.partials;
+    const encoder = this.device.createCommandEncoder();
+    encoder.copyBufferToBuffer(this.speed, 4 * this.interior, this.readback, 0, bytes);
+    this.device.queue.submit([encoder.finish()]);
+    await this.readback.mapAsync(MAP_READ, 0, bytes);
+    const r = new Float32Array(this.readback.getMappedRange(0, bytes).slice(0));
+    this.readback.unmap();
+    const encoder2 = this.device.createCommandEncoder();
+    encoder2.copyBufferToBuffer(this.speedV, 4 * this.interior, this.readback, 0, bytes);
+    this.device.queue.submit([encoder2.finish()]);
+    await this.readback.mapAsync(MAP_READ, 0, bytes);
+    const z = new Float32Array(this.readback.getMappedRange(0, bytes).slice(0));
+    this.readback.unmap();
+    let ar = 0;
+    let az = 0;
+    for (const v of r) if (v > ar || Number.isNaN(v)) ar = v;
+    for (const v of z) if (v > az || Number.isNaN(v)) az = v;
+    return { ar, az };
+  }
+
+  /** One step with rule 1277's limiter: every stage's fluxes blended on its
+   *  own state and speeds; a cell left unsound fails the run. Returns Δt (s). */
+  private async stepHas(maxDt: number, force = false): Promise<number> {
+    const { nr, nz } = this;
+    this.clearLow();
+    this.setParams(0, 0, 0);
+    this.dispatch([['primitives', this.interior]]);
+    ({ ar: this.ar, az: this.az } = await this.fastestPair());
+    // A diagnostic may impose the step (the reference's), `force`.
+    const dt = Math.fround(
+      force ? maxDt : Math.min((this.cfl * this.dx) / (this.ar + this.az), maxDt)
+    );
+    if (!(dt > 0 && Number.isFinite(dt))) throw new Error(`blast2d gpu: time step ${String(dt)}`);
+    this.copy(this.uPair, this.k0Pair);
+    const stages: [number, number][] = [
+      [0, 1],
+      [0.75, 0.25],
+      [1 / 3, 2 / 3],
+    ];
+    for (const [n, [keep, add]] of stages.entries()) {
+      if (n > 0) {
+        this.dispatch([['primitives', this.interior]]);
+        ({ ar: this.ar, az: this.az } = await this.fastestPair());
+      }
+      this.lamR = (dt * (this.ar + this.az)) / (this.ar * this.dx);
+      this.lamZ = (dt * (this.ar + this.az)) / (this.az * this.dx);
+      this.setParams(dt, keep, add);
+      this.copy(this.uPair, this.prePair);
+      this.dispatch([
+        ['ghostsR', nz],
+        ['ghostsZ', nr + 2 * G],
+        ['reconR', (nr + 2) * nz],
+        ['scaleR', (nr + 2) * nz],
+        ['fluxR', (nr + 1) * nz],
+        ['reconZ', nr * (nz + 2)],
+        ['scaleZ', nr * (nz + 2)],
+        ['fluxZ', nr * (nz + 1)],
+        ['limitR', nr * nz],
+        ['limitZ', nr * (nz + 1)],
+        ['rhs', this.interior],
+        ['stage', this.interior],
+        ['check', this.interior],
+      ]);
+      const [marked, stillBad] = await this.counts();
+      if (marked > 0 || stillBad > 0)
+        throw new Error(
+          `blast2d gpu: rule 1277 -- ${String(marked + stillBad)} cells left without positive density or pressure at t = ${String(this.time)} s`
+        );
+    }
+    this.time += dt;
+    this.steps++;
+    this.setParams(dt, 0, 0);
+    this.dispatch([['peaks', this.nr]]);
+    return dt;
+  }
+
+  /** A diagnostic: the first stage of a step with an imposed Δt, up to the
+   *  fluxes; returns the fluxes before and after rule 1277's limiter
+   *  (deviation form) and the stage's speeds. */
+  async debugFirstStage(
+    dt: number
+  ): Promise<{ before: Float32Array; after: Float32Array; ar: number; az: number }> {
+    const { nr, nz } = this;
+    this.clearLow();
+    this.setParams(0, 0, 0);
+    this.dispatch([['primitives', this.interior]]);
+    ({ ar: this.ar, az: this.az } = await this.fastestPair());
+    this.lamR = (dt * (this.ar + this.az)) / (this.ar * this.dx);
+    this.lamZ = (dt * (this.ar + this.az)) / (this.az * this.dx);
+    this.setParams(Math.fround(dt), 0, 1);
+    this.dispatch([
+      ['ghostsR', nz],
+      ['ghostsZ', nr + 2 * G],
+      ['reconR', (nr + 2) * nz],
+      ['scaleR', (nr + 2) * nz],
+      ['fluxR', (nr + 1) * nz],
+      ['reconZ', nr * (nz + 2)],
+      ['scaleZ', nr * (nz + 2)],
+      ['fluxZ', nr * (nz + 1)],
+    ]);
+    const before = await this.readFluxes();
+    this.dispatch([
+      ['limitR', nr * nz],
+      ['limitZ', nr * (nz + 1)],
+    ]);
+    const after = await this.readFluxes();
+    return { before, after, ar: this.ar, az: this.az };
+  }
+
+  private async readFluxes(): Promise<Float32Array> {
+    const bytes = 16 * ((this.nr + 1) * this.nz + this.nr * (this.nz + 1));
+    const staging = this.device.createBuffer({
+      size: bytes,
+      usage: BUFFER.MAP_READ | BUFFER.COPY_DST,
+    });
+    const encoder = this.device.createCommandEncoder();
+    encoder.copyBufferToBuffer(this.flux, 0, staging, 0, bytes);
+    this.device.queue.submit([encoder.finish()]);
+    await staging.mapAsync(MAP_READ);
+    const out = new Float32Array(staging.getMappedRange().slice(0));
+    staging.unmap();
+    staging.destroy();
+    return out;
+  }
+
+  async step(maxDt = Infinity, force = false): Promise<number> {
+    if (this.has) return this.stepHas(maxDt, force);
     this.clearLow();
     this.rhs();
     // The step the stages take is the single-precision one, and so is the clock's.
@@ -462,13 +632,25 @@ export class BlastSolverGpu {
     this.readback.unmap();
     return v;
   }
+
+  /** Rule 1277: cells whose face states were scaled, over the stages (with
+   *  the limiter, `fallbacks` counts the faces blended). */
+  async scaledFaces(): Promise<number> {
+    const encoder = this.device.createCommandEncoder();
+    encoder.copyBufferToBuffer(this.count, 12, this.readback, 0, 4);
+    this.device.queue.submit([encoder.finish()]);
+    await this.readback.mapAsync(MAP_READ, 0, 4);
+    const v = new Uint32Array(this.readback.getMappedRange(0, 4).slice(0))[0] ?? 0;
+    this.readback.unmap();
+    return v;
+  }
 }
 
 /** The bindings each kernel uses ('auto' layouts keep only these). */
 function usedBindings(name: Kernel): number[] {
   switch (name) {
     case 'primitives':
-      return [0, 1, 2, 9, 12];
+      return [0, 1, 2, 9, 12, 18];
     case 'ghostsR':
     case 'ghostsZ':
       return [0, 2];
@@ -491,5 +673,14 @@ function usedBindings(name: Kernel): number[] {
       return [0, 12];
     case 'dfCheck':
       return [0, 3, 4];
+    case 'scaleR':
+    case 'scaleZ':
+      return [0, 2, 3, 4, 13];
+    case 'limitR':
+      return [0, 1, 5, 9, 13];
+    case 'limitZ':
+      return [0, 1, 5, 9, 10, 13];
+    case 'reduceMaxV':
+      return [0, 18];
   }
 }
