@@ -1,0 +1,88 @@
+{
+  "rule": "1243 (d)",
+  "results": [
+    {
+      "preset": "CHELYABINSK",
+      "regime": "COMPLETE_AIRBURST",
+      "burstAltitudeKm": 27.12,
+      "blastYieldMt": 0.298,
+      "observed": "windows broken over about 10 000 km² (a circle of 56 km)",
+      "observedKm": 56,
+      "readings": [
+        {
+          "criterion": "edge of broken windows, 0.7 kPa (about 5 % broken)",
+          "overpressureKpa": 0.7,
+          "staticKm": 47.7,
+          "bandLowKm": 14.52,
+          "bandHighKm": 81.37
+        },
+        {
+          "criterion": "most windows broken, 3.4 kPa (0.5 psi)",
+          "overpressureKpa": 3.447,
+          "staticKm": 0,
+          "bandLowKm": 0,
+          "bandHighKm": 0
+        },
+        {
+          "criterion": "most windows broken, 6.9 kPa (1.0 psi)",
+          "overpressureKpa": 6.895,
+          "staticKm": 0,
+          "bandLowKm": 0,
+          "bandHighKm": 0
+        }
+      ]
+    },
+    {
+      "preset": "TUNGUSKA",
+      "regime": "COMPLETE_AIRBURST",
+      "burstAltitudeKm": 8.16,
+      "blastYieldMt": 8.044,
+      "observed": "felled forest over about 2 200 km² (a circle of 26.5 km)",
+      "observedKm": 26.5,
+      "readings": [
+        {
+          "criterion": "27 m/s (light)",
+          "overpressureKpa": 11.804,
+          "staticKm": 28.5,
+          "bandLowKm": 28.5,
+          "bandHighKm": 28.5
+        },
+        {
+          "criterion": "36 m/s (light)",
+          "overpressureKpa": 15.99,
+          "staticKm": 15.23,
+          "bandLowKm": 8.79,
+          "bandHighKm": 24.47
+        },
+        {
+          "criterion": "40 m/s (moderate)",
+          "overpressureKpa": 17.892,
+          "staticKm": 14.04,
+          "bandLowKm": 7.88,
+          "bandHighKm": 24.47
+        },
+        {
+          "criterion": "45 m/s (moderate)",
+          "overpressureKpa": 20.306,
+          "staticKm": 12.79,
+          "bandLowKm": 6.87,
+          "bandHighKm": 24.47
+        },
+        {
+          "criterion": "58 m/s (severe)",
+          "overpressureKpa": 26.777,
+          "staticKm": 10.28,
+          "bandLowKm": 4.55,
+          "bandHighKm": 23.4
+        },
+        {
+          "criterion": "63 m/s (severe)",
+          "overpressureKpa": 29.341,
+          "staticKm": 9.51,
+          "bandLowKm": 3.68,
+          "bandHighKm": 19.27
+        }
+      ]
+    }
+  ]
+}

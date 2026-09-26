@@ -119,3 +119,72 @@ export const PORTA1_BLAST_OPENED = '2026-09-26' as const;
  *     for which no fast relation is yet in hand.
  */
 export const RULE_1242_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1243. THE DAMAGE CRITERION, fixed from sources independent of the
+ * two events and before the product is read at it (rule 1241 (b)(2);
+ * 26 September 2026, 08:10).
+ *
+ * (a) WINDOWS. Glasstone & Dolan (1977), Table 5.145 (fourmilab's copy of
+ *     Chapter V, sha-256 d1c87229…): large and small glass windows fail —
+ *     «shattering usually» — at 0.5 to 1.0 psi side-on, 3.4 to 6.9 kPa.
+ *     Blast-wave statistics (Mannan & Lees, as quoted by Aftosmis et al.
+ *     2016, rule 1242 (c)): about 700 Pa breaks about 5 % of ordinary
+ *     windows, about 6 kPa about 90 %. So the edge of a region where windows
+ *     broke lies at about 0.7 kPa; where most broke, at 3.4 to 6.9 kPa.
+ * (b) TREES. Glasstone & Dolan, Table 5.149, in the equivalent steady wind:
+ *     light damage (deciduous stands only) 60–80 mph, 27–36 m/s; moderate,
+ *     about 30 % of the trees blown down, 90–100 mph, 40–45 m/s; severe, up
+ *     to 90 % down, 130–140 mph, 58–63 m/s. The edge of a mapped felled
+ *     forest is read at the moderate criterion, 40–45 m/s, bounded by the
+ *     light one's 27 m/s and the severe one's 63 m/s; the wind is the
+ *     product's own (Glasstone & Dolan's shock relation, as the program
+ *     applies it).
+ * (c) THE TWO EVENTS, read at these criteria — fixed now: Chelyabinsk's
+ *     region of broken windows (about 10 000 km², a circle of 56 km) at the
+ *     0.7 kPa edge; Tunguska's felled forest (about 2 200 km², a circle of
+ *     26.5 km) at 40–45 m/s, 27–63 m/s its bounds. The city of Chelyabinsk's
+ *     «about 3.2 kPa» (Brown et al. 2013) is an inference from its glass,
+ *     not a measurement, and is not used. Both footprints are compared as
+ *     circles of the same area, as I3 does; their shapes are the source's
+ *     question, not the criterion's.
+ * (d) WHAT IS MEASURED: the product's reach at these criteria for its two
+ *     presets — the static source, and the band of Collins et al. (2017)
+ *     about it (rules 706 to 713) — to say how much of the audit's ×3.3–3.8
+ *     is the thresholds'. Development only (both are development cases);
+ *     nothing in the product changes.
+ */
+export const RULE_1243_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1244. RULE 1243'S OUTCOME (26 September 2026, 08:15;
+ * `porta1BlastCriteria.json`, `docs/PORTA1_BLAST_CRITERIA.md`).
+ *
+ * (a) CHELYABINSK. The preset bursts at 27.1 km with a blast yield of 0.298
+ *     Mt. At the edge of broken windows, 0.7 kPa, the static source reaches
+ *     47.7 km against the 56 km circle of the region where windows broke —
+ *     0.85×, where I3 read 0.54× at 1 kPa — and Collins et al.'s band,
+ *     14.5 to 81.4 km, holds it. The static source reaches 3.4 kPa nowhere
+ *     on the ground: under it, most windows broke nowhere.
+ * (b) TUNGUSKA. The preset bursts at 8.2 km with 8.04 Mt. At the moderate
+ *     criterion, 40–45 m/s, the static source reaches 12.8 to 14.0 km
+ *     against the 26.5 km circle of the felled forest — 0.48× to 0.53× —
+ *     and the band's high edge, the moving source, 24.5 km, 0.92×. Only the
+ *     light criterion's 27 m/s, which Glasstone & Dolan give for deciduous
+ *     stands alone, reaches beyond it (28.5 km); the taiga was coniferous.
+ * (c) WHAT IT MEANS. At Chelyabinsk most of the audit's shortfall was the
+ *     threshold: read at the independent edge, the static source falls short
+ *     by 15 %, and what remains is the footprint's shape under a shallow
+ *     entry. At Tunguska it is the source's: the static source is short by
+ *     half where trees fall, and the moving source — the approximation
+ *     Collins et al. found closest to detailed simulations of low airbursts
+ *     — comes within 8 % of the forest.
+ * (d) NEXT, each under its own rules before any code: the moving source as
+ *     the product's estimate where Collins et al.'s own text places it (its
+ *     bounds from their paper, never from Tunguska); the CFD maps above 5 Mt
+ *     when Aftosmis, Mathias & Tarano (2019) is read; the shallow entry's
+ *     footprint, for which no fast relation is in hand. Both events are
+ *     development cases: whatever is chosen is then held to events never
+ *     used to choose it.
+ */
+export const RULE_1244_WRITTEN = '2026-09-26' as const;
