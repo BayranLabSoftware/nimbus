@@ -33,6 +33,10 @@ export interface BlastCase {
   readonly rMax: number;
   /** Height of the domain (m). */
   readonly zMax: number;
+  /** Rule 1274: the run does not stop before this factor times the time a
+   *  sound wave at the ground's speed of sound takes to reach the farthest
+   *  range read (absent: rule 1263's stop alone). */
+  readonly soundFloor?: number;
 }
 
 export interface BlastRun {
@@ -54,6 +58,18 @@ export function atmosphereOf(c: BlastCase): Atmosphere {
     : isothermalAtmosphere(c.atmosphere.rho0, c.atmosphere.p0, c.atmosphere.g);
 }
 
+/** Rule 1274's floor (s): the case's factor times the time sound takes to
+ *  cross the farthest range read in the ground's air at rest; 0 without one. */
+export function soundFloorTime(
+  c: BlastCase,
+  range: number,
+  p0: number,
+  rho0: number,
+  gamma: number
+): number {
+  return c.soundFloor === undefined ? 0 : (c.soundFloor * range) / Math.sqrt((gamma * p0) / rho0);
+}
+
 export function runCase(c: BlastCase): BlastRun {
   const started = Date.now();
   // The domain reaches a little past the farthest range read, so the open
@@ -69,14 +85,22 @@ export function runCase(c: BlastCase): BlastRun {
   });
   const last = Math.min(nr - 1, Math.floor(c.rMax / c.dx));
   const p0 = solver.backgroundPressure(0);
+  const floor = soundFloorTime(
+    c,
+    solver.radius(last),
+    p0,
+    solver.backgroundDensity(0),
+    solver.gamma
+  );
   // Run until the incident wave has passed the farthest range read: its peak
   // set there, and the overpressure there fallen below a third of it.
   const guard = 1e6;
   while (solver.steps < guard) {
     solver.step();
     const peak = solver.groundPeak[last] ?? 0;
-    // Rule 1263: a peak above rounding, a ten-thousandth of the ground's pressure.
-    if (peak > 1e-4 * p0 && solver.pressure(last, 0) - p0 < peak / 3) break;
+    // Rule 1263: a peak above rounding, a ten-thousandth of the ground's
+    // pressure; rule 1274: not before the floor, so a precursor cannot stop it.
+    if (solver.time >= floor && peak > 1e-4 * p0 && solver.pressure(last, 0) - p0 < peak / 3) break;
   }
   return {
     case: c,

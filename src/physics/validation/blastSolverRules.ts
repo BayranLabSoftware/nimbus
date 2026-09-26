@@ -484,3 +484,193 @@ export const RULE_1268_WRITTEN = '2026-09-26' as const;
  * equations' against his approximation. A diagnostic; nothing judged.
  */
 export const RULE_1269_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1270. THE SOLVER ON THE GPU: ONE CODE FOR THE PRODUCT AND THE TESTS
+ * (26 September 2026, 21:16; Andrea's word: «Per ora va bene questa strada,
+ * rust lo useremo quando siamo al 100% sicuri di aver raggiunto
+ * l'obbiettivo»). Written before the code.
+ *
+ * (a) THE DECISION. The solver's work — reconstruction, fluxes, sources,
+ *     stages, the a posteriori fall-backs — is written as WebGPU compute
+ *     shaders (WGSL), the one code the product runs in the user's browser and
+ *     the tests run on this machine through headless Chrome driven by
+ *     Playwright (`--enable-unsafe-webgpu --use-angle=metal`, checked: the
+ *     Apple M5's GPU, «apple metal-3», 4 GB storage buffers). A native
+ *     program (Rust) comes later, once the goal is reached for certain.
+ * (b) WHAT STAYS THE TRUTH. The TypeScript solver in double precision
+ *     (`blast2d/solver.ts`) remains the reference the tests and the seal
+ *     read. The GPU works in single precision (WebGPU has no double; Metal's
+ *     square root is not correctly rounded — sqrt(10⁶) came back as
+ *     1000.0000610): it is adopted only where it reproduces the reference
+ *     within the tolerances of (d), fixed now.
+ * (c) THE SAME SCHEME, WRITTEN FOR SINGLE PRECISION. The GPU carries the
+ *     deviations from the atmosphere at rest — ρ − ρ̄, the momenta, E − Ē —
+ *     and reconstructs (ρ − ρ̄)/(ρ₀α), u, v, (p − p̄)/(p₀β): in exact
+ *     arithmetic the reference's scheme itself (the fifth-order weights are
+ *     blind to a constant added to all five values), but at rest every
+ *     deviation is an exact zero, so the atmosphere stays exactly at rest, and
+ *     the overpressure is carried as such rather than as a difference of two
+ *     large numbers. The fluxes are the full ones less the background's at the
+ *     face; gravity acts on ρ − ρ̄ through the reference's own lift.
+ *     Everything else as rules 1255, 1262, 1264 and 1268 set it.
+ * (d) THE CHECKS, before any GPU run is used for a test. G0 — the atmosphere
+ *     at rest: no speed above 0.01 m/s over the longest run (T0's criterion).
+ *     G1 — the same case on the CPU and on the GPU, same grid: the reach at
+ *     1, 2, 4 and 10 psi within 0.5 %, and the peak overpressure along the
+ *     ground within 1 % wherever it exceeds 1 kPa, on eight cases (T2 at four
+ *     heights on 20 m cells; T4's 5 Mt, static and moving, and T3 at two
+ *     heights, on their coarse grids). G2 — mass kept to 10⁻⁶ of the domain's,
+ *     and the source's energy to 10⁻⁴ while no wave has left the domain. A GPU
+ *     that fails a check is not used; the failure is diagnosed like any
+ *     other, under its own rule.
+ * (e) Then, and only then, the tests T1 to T5 run again on the GPU with their
+ *     criteria unchanged, and the grids finer than the CPU could afford; the
+ *     CPU runs under way go on and stay on record.
+ */
+export const RULE_1270_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1271. THE GPU'S CHECKS: G0 AND G2 PASS, G1 FAILS ON ONE CASE OF
+ * EIGHT, AND WHY (26 September 2026, 21:50; `blast2dG1.json`).
+ *
+ * (a) G0. The isothermal atmosphere at rest, T0's grid, 200 steps (59 s):
+ *     the largest speed is exactly 0 — once the HLLC star states were written
+ *     so that every difference carries (S* − u), Toro's own algebra (before,
+ *     1.9·10⁻⁴ m/s). PASSES.
+ * (b) G2. Mass kept to 1.5·10⁻¹² and 1.1·10⁻¹⁰ of the domain's, the energy to
+ *     1.9·10⁻⁶ and 4.6·10⁻⁶ of the source's, in a uniform and an isothermal
+ *     atmosphere. PASSES.
+ * (c) G1. Seven cases of eight agree: T2 at four heights, T4's 5 Mt static
+ *     and moving, T3 at 0.48 km scaled — every reach within 0.09 %, every peak
+ *     within 0.51 %, the GPU 4 to 18 times faster on these small grids. T3 at
+ *     0.048 km scaled on its coarse grid does not: reach 1.7 %, peaks from
+ *     1 % at 100 to 140 km to 7 % at 163 km. G1 FAILS; under rule 1270 (d) the
+ *     GPU is not used for the tests.
+ * (d) THE DIAGNOSIS, one hypothesis at a time, all on the CPU in double
+ *     precision to the same fixed end (700 s): (1) the run's stop — not it,
+ *     the 7 % stays with a fixed end; (2) the case's own sensitivity — the
+ *     source's energy times (1 + 10⁻⁷) moves the far field by 0.68 % at most,
+ *     far less; (3) single precision: rounding the deviations to float32 after
+ *     each step reproduces the GPU's far field to 0.2 % (11.31 against the
+ *     GPU's 11.33 kPa at 164 km) — found; rounding the full state instead
+ *     still leaves 3 %; computing the fluxes from a float32 state while the
+ *     state itself is kept in double brings it to 1.04 % at worst (0.4 % at
+ *     164 km). It is the state's accumulation — five thousand small increments
+ *     rounded away — not the fluxes' arithmetic.
+ */
+export const RULE_1271_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1272. THE GPU'S STATE IN EXTENDED PRECISION (26 September 2026, 21:50).
+ * Written before the code.
+ *
+ * (a) THE MEND. The state and its copies within a step (the step's start, the
+ *     stage's start) are held as pairs of single-precision numbers, high and
+ *     low (a «double-float»), and each stage's update is done in that
+ *     arithmetic (error-free sums and products, with fma); the fluxes and
+ *     everything else stay in single precision, read from the high part.
+ *     Before the kernels are trusted, a check on the GPU that its error-free
+ *     sum is exact (no reassociation by the shader compiler).
+ * (b) G0, G1 and G2 are run again with their criteria as fixed; the tests
+ *     wait for them.
+ */
+export const RULE_1272_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1273. G0, G1 AND G2 ON THE DOUBLE-FLOAT STATE: G0 AND G2 PASS, G1
+ * FAILS AGAIN ON THE SAME CASE, AND WHY (26 September 2026, 22:16;
+ * `blast2dG1.json`).
+ *
+ * (a) RULE 1272 (a)'S CHECK. Before every run the GPU's error-free sum and
+ *     product come back exact on every pair; the shader compiler's
+ *     reassociation is barred by an opaque zero read at run time (without it
+ *     3 809 sums of 4 096 had lost their error term).
+ * (b) G0: the largest speed after 200 steps is exactly 0. G2: mass kept to
+ *     2.1·10⁻¹¹ and 7.7·10⁻¹² of the domain's, the energy to 7.8·10⁻⁹ and
+ *     1.2·10⁻⁷ of the source's. Both PASS.
+ * (c) G1. T2 at four heights, T4's 5 Mt static and moving, and T3 at 0.48 km
+ *     scaled: every reach within 0.031 %, every peak within 0.41 % (T2 and T4
+ *     within 0.018 %), the GPU 4 to 18 times faster. T3 at 0.048 km scaled
+ *     on its coarse grid: every reach within 0.44 %, but the peaks 41.8 %
+ *     apart at 187 km. G1 FAILS as fixed; under rule 1270 (d) the GPU is not
+ *     used for the tests.
+ * (d) THE DIAGNOSIS, one hypothesis at a time.
+ *     (1) THE RUNS' STOP. In this case the ground at the farthest range read
+ *         (195.9 km) first sees a precursor of about 2 kPa, ahead of the
+ *         incident wave; rule 1263's stop takes it for the incident wave and
+ *         ends the run at 510.6 s with the incident wave (9 kPa) at 186 km.
+ *         The peaks read beyond are the precursor's, on both engines, and
+ *         the two stops, 2.5 s apart, set them 42 % apart. To a fixed end of
+ *         700 s both engines see the incident wave out to the last range
+ *         (8.55 and 8.48 kPa at 195.9 km). A DEFECT OF THE RUNS' STOP, not
+ *         of the GPU, and not only G1's: of the 32 runs T3 has made under the
+ *         present solver, 6 end this way — incident wave short of the last
+ *         range at 157 to 187 km, where it still carries 3.5 to 6.8 kPa, so
+ *         their peaks from a few cells behind the cut outward, where 1 psi
+ *         can fall, are not the incident wave's. None of
+ *         T2's 57 runs nor of T4's 12 so far shows the signature (a peak
+ *         falling more than 1.3 times from one cell to the next beyond the
+ *         tenth; `scripts/blast2d-cut-scan.ts`).
+ *     (2) WHAT REMAINS, to the fixed end (`blast2dT3Spread.json`,
+ *         `scripts/blast2d-t3-spread.ts`): the peaks within 0.05 % out to
+ *         155 km, then the GPU 1.0 to 1.8 % below the CPU from 158 to 183 km.
+ *         The reference against itself, the source's energy moved by
+ *         amounts from one unit in the last place (2.2·10⁻¹⁶) to 10⁻⁹,
+ *         either way (ten runs): at 163 km its peaks range from −3.95 to +2.59 %
+ *         of its own, the widest spread 6.5 %; the steps (5 246 to 5 529
+ *         against 5 165) and the first-order fall-backs (9 696 to 12 141
+ *         against 10 198) move with it. Rule 1264's fall-back is a yes or no
+ *         per face, taken where a stage just loses positivity; a rounding
+ *         difference turns some of them, and past 155 km the ground keeps
+ *         the trace. (The later fall-backs come in two bursts, at 270 to
+ *         315 s and 490 to 610 s, while the domain's thinnest cell is in its
+ *         upper rows, the wave that went up having reached the open top at
+ *         about 100 km; an observation, not a finding.) The GPU's peaks lie
+ *         inside the reference's own spread at every range but one, 4.4 km,
+ *         where they are 0.04 % outside it. At these ranges no computation can meet 1 %
+ *         against the reference: the reference does not meet it against
+ *         itself (3.9 % at worst).
+ *     (3) One variant tried as a diagnostic, not adopted: the density
+ *         carried as ρ/ρ̄ rather than as its deviation, from both halves of
+ *         the state (the fireball's core thins to 2.6·10⁻⁵ of the air around
+ *         it, where the deviation form keeps only some 10⁻³ of the density's
+ *         precision). It moves the far field to −6.3 %, outside the spread:
+ *         the core's precision is not what sets the GPU apart.
+ * (e) CONSEQUENCES. (1) T3's runs stopped at 22:06: under the defective stop
+ *     their readings at the far ranges are to be made again; the stop is
+ *     mended under rule 1274. (2) T3's judgment will state, beside every
+ *     reading, the reference's own spread where it has been measured (±4 %
+ *     from 155 to 196 km at 0.048 km scaled on the coarse grid). (3) The GPU
+ *     stays unused for the tests. Whether G1 may judge a reading against the
+ *     reference's own spread where the reference is ill-conditioned is a
+ *     change of its criterion after the fact: Andrea's decision, not taken
+ *     here.
+ */
+export const RULE_1273_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1274. THE RUNS' STOP, MENDED: NOT BEFORE THE SOUND HAS CROSSED THE
+ * RANGE (26 September 2026, 22:16). Written before the code.
+ *
+ * (a) THE MEND. A case may carry a floor, as a factor f: the run stops as
+ *     rule 1263 says, and not before f times the time a sound wave takes to
+ *     reach the farthest range read at the speed of sound of the ground's
+ *     air at rest, √(γp̄₀/ρ̄₀). The incident wave is a shock and travels
+ *     faster than sound, so by then it has reached that range; f = 1.1 leaves
+ *     a tenth for its rise across a few cells, and ends before the small
+ *     reflection from the open side boundary, at 1.15 times the range, can
+ *     come back (at least 1.3 times the range's travel). At 0.048 km scaled
+ *     on T3's coarse grid: 705 s, against the 510.6 s the precursor gave.
+ * (b) WHERE IT APPLIES. On every one of T3's cases and on the cases of every
+ *     batch started from now, the GPU's included, f = 1.1. T2's and T4's
+ *     batches, under way, keep their cases as they are: a case without the
+ *     floor computes, to the bit, what it computed before, so their runs are
+ *     not disturbed, and each of their runs is scanned for the signature of
+ *     rule 1273 (d)(1) before it is judged (`scripts/blast2d-cut-scan.ts`); one that shows it is made again
+ *     with the floor.
+ * (c) T3 runs again, all its cases, with the floor. G1's two T3 cases are
+ *     made again with the floor on both engines and G1 is judged again, its
+ *     criteria as fixed.
+ */
+export const RULE_1274_WRITTEN = '2026-09-26' as const;

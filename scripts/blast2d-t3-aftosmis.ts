@@ -49,6 +49,9 @@ const caseAt = (hKm1kt: number, dx1kt: number, scaleHeight: number): BlastCase =
   dx: dx1kt * SCALE,
   rMax: 3.1 * 1_000 * SCALE,
   zMax: Math.max(1.6, hKm1kt + 1.2) * 1_000 * SCALE,
+  // Rule 1274: a precursor from above reaches the far ground before the
+  // incident wave; the run may not stop before the sound has crossed the range.
+  soundFloor: 1.1,
 });
 
 const cases = [
