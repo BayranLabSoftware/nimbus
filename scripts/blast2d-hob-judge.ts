@@ -3,10 +3,20 @@
  * `src/physics/validation/blastSolverRules.ts`): the solver's reach against a
  * digitised height-of-burst curve, at each read height, with the readings
  * where the reference is ill-conditioned left out and listed, and the
- * convergence of T5 over three grids.
+ * convergence of T5 over three grids. A reach at the farthest range read is
+ * a lower bound (rule 1276).
  */
 
 import { reachOf, type BlastRun } from './blast2d-run.js';
+
+/** The tolerance on a single judged reach (rule 1254 (c), T2 and T3). */
+export const TOLERANCE = 0.1;
+
+/** Rule 1276: the ground's peak at the farthest range read still at or above
+ *  the threshold, so the run's reach is only a lower bound. */
+export function beyondDomain(run: BlastRun, threshold: number): boolean {
+  return (run.peaks.at(-1) ?? 0) >= threshold;
+}
 
 export interface Reading {
   h: number;
@@ -44,6 +54,8 @@ export interface Convergence {
   order: number | null;
   extrapolated: number | null;
   error: number;
+  /** Rule 1276: a grid's reach is a lower bound, so no order is drawn. */
+  lowerBound: boolean;
 }
 
 /** Rule 1256 (c): the observed order and the extrapolated reach. */
@@ -59,13 +71,35 @@ export function converge(coarseToFine: readonly number[]): Convergence {
   ) {
     const order = Math.log2(d12 / d23);
     const extrapolated = r3 + (r3 - r2) / (2 ** order - 1);
-    return { reaches: [...coarseToFine], order, extrapolated, error: Math.abs(r3 - extrapolated) };
+    return {
+      reaches: [...coarseToFine],
+      order,
+      extrapolated,
+      error: Math.abs(r3 - extrapolated),
+      lowerBound: false,
+    };
   }
   return {
     reaches: [...coarseToFine],
     order: null,
     extrapolated: null,
     error: Math.max(r1, r2, r3) - Math.min(r1, r2, r3),
+    lowerBound: false,
+  };
+}
+
+/** Rule 1276: T5 leaves out a grid series with a reach beyond the domain. */
+export function convergeBounded(
+  coarseToFine: readonly number[],
+  bounded: readonly boolean[]
+): Convergence {
+  if (!bounded.some(Boolean)) return converge(coarseToFine);
+  return {
+    reaches: [...coarseToFine],
+    order: null,
+    extrapolated: null,
+    error: NaN,
+    lowerBound: true,
   };
 }
 
@@ -75,7 +109,9 @@ export interface JudgedRow {
   reference: number;
   solver: number;
   ratio: number | null;
-  left: 'judged' | 'illConditioned' | 'zero';
+  /** Rule 1276: the finest grid's reach is a lower bound («≥»). */
+  lowerBound: boolean;
+  left: 'judged' | 'illConditioned' | 'zero' | 'beyondDomain';
   convergence: Convergence;
 }
 
@@ -93,27 +129,34 @@ export function judge(
 ): JudgedRow[] {
   const pa = psi * 6_894.757;
   return heights.map((h, k) => {
-    const reaches = runs.map((grid) => {
+    const gridRuns = runs.map((grid) => {
       const run = grid[k];
       if (run === undefined) throw new Error('missing run');
-      return reachOf(run, pa) / 1_000 / scaleKm;
+      return run;
     });
+    const reaches = gridRuns.map((run) => reachOf(run, pa) / 1_000 / scaleKm);
+    const bounded = gridRuns.map((run) => beyondDomain(run, pa));
+    const lowerBound = bounded[bounded.length - 1] ?? false;
     const solver = reaches[reaches.length - 1] ?? 0;
     const ref = referenceReach(reference, h);
+    // Rule 1276: a lower bound counts only where the bound itself fails.
     const left: JudgedRow['left'] =
       !(ref > 0) || !(solver > 0)
         ? 'zero'
         : illConditioned(reference, h)
           ? 'illConditioned'
-          : 'judged';
+          : lowerBound && !(solver / ref - 1 > TOLERANCE)
+            ? 'beyondDomain'
+            : 'judged';
     return {
       psi,
       h,
       reference: ref,
       solver,
       ratio: ref > 0 ? solver / ref : null,
+      lowerBound,
       left,
-      convergence: converge(reaches),
+      convergence: convergeBounded(reaches, bounded),
     };
   });
 }
@@ -121,23 +164,28 @@ export function judge(
 export function verdict(rows: readonly JudgedRow[]): {
   judged: number;
   left: number;
+  /** Rule 1276: readings left out as beyond the domain, to be run again. */
+  beyond: number;
+  /** Judged readings whose deviation is only a lower bound. */
+  bounds: number;
   worst: number;
   median: number;
   passes: boolean;
 } {
-  const dev = rows
-    .filter((x) => x.left === 'judged' && x.ratio !== null)
-    .map((x) => Math.abs((x.ratio ?? NaN) - 1))
-    .sort((a, b) => a - b);
+  const judged = rows.filter((x) => x.left === 'judged' && x.ratio !== null);
+  const dev = judged.map((x) => Math.abs((x.ratio ?? NaN) - 1)).sort((a, b) => a - b);
   const mid = (dev.length - 1) / 2;
   const median =
     dev.length === 0 ? NaN : ((dev[Math.floor(mid)] ?? NaN) + (dev[Math.ceil(mid)] ?? NaN)) / 2;
   const worst = dev.length === 0 ? NaN : (dev[dev.length - 1] ?? NaN);
+  const beyond = rows.filter((x) => x.left === 'beyondDomain').length;
   return {
     judged: dev.length,
     left: rows.length - dev.length,
+    beyond,
+    bounds: judged.filter((x) => x.lowerBound).length,
     worst,
     median,
-    passes: dev.length > 0 && worst <= 0.1 && median <= 0.05,
+    passes: dev.length > 0 && beyond === 0 && worst <= TOLERANCE && median <= 0.05,
   };
 }

@@ -4,11 +4,15 @@
  * a cache directory so an interrupted batch resumes where it stopped.
  */
 
-import { spawn } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { BlastCase, BlastRun } from './blast2d-run.js';
+
+/** Read the runs made under a commit's code, making none (a test judged
+ *  again from its runs, rule 1276 (c)); unset, the code on disk. */
+const CODE_AT = process.env.BLAST2D_CODE_AT;
 
 /** A run's key: the case and the solver's code, so a mended solver never
  *  reuses a run of the old one. */
@@ -17,7 +21,11 @@ const CODE = [
   'src/physics/solvers/blast2d/atmosphere.ts',
   'scripts/blast2d-run.ts',
 ]
-  .map((f) => readFileSync(f, 'utf8'))
+  .map((f) =>
+    CODE_AT === undefined
+      ? readFileSync(f, 'utf8')
+      : execFileSync('git', ['show', `${CODE_AT}:${f}`], { encoding: 'utf8' })
+  )
   .join('\n');
 
 export function caseKey(c: BlastCase): string {
@@ -41,6 +49,8 @@ export async function runPool(
       if (c === undefined) return;
       const file = join(cacheDir, `${caseKey(c)}.json`);
       if (!existsSync(file)) {
+        if (CODE_AT !== undefined)
+          throw new Error(`no run of ${CODE_AT}'s code for case ${String(i)}; none is made`);
         await new Promise<void>((resolve, reject) => {
           const child = spawn(
             'pnpm',

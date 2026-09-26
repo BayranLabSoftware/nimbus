@@ -674,3 +674,54 @@ export const RULE_1273_WRITTEN = '2026-09-26' as const;
  *     criteria as fixed.
  */
 export const RULE_1274_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1275. G1 JUDGED AGAIN WITH RULE 1274'S FLOOR: STILL FAILS, AS RULE
+ * 1273 (d)(2) SAID IT WOULD; THE DOMAIN'S TOP IS NOT THE CAUSE (26 September
+ * 2026, 22:53; `blast2dG1.json`).
+ *
+ * (a) T3's two cases made again with the floor on both engines, the other
+ *     six unchanged. T3 at 0.048 km scaled: every reach within 0.32 % (the
+ *     edge's 42 % is gone: both engines now read the incident wave out to
+ *     the last range), the peaks within 1.80 % — the far field of rule 1273
+ *     (d)(2), inside the reference's own spread. T3 at 0.48 km scaled: 0.031
+ *     and 0.41 %. G1 FAILS as fixed; the GPU stays unused for the tests
+ *     pending Andrea's decision (rule 1273 (e)(3)).
+ * (b) THE DOMAIN'S TOP, a diagnostic: the same case to 700 s with the top at
+ *     2.4 and 3.2 km scaled (151 and 202 km) instead of 1.6 (101 km). The
+ *     ground's peaks move by at most 1.1 %, and at every range from 50 to
+ *     195 km they stay inside the reference's own spread; the fall-backs grow
+ *     with the cells up high (13 253 and 15 801 against 10 198). The open top
+ *     neither sets the far field nor its indeterminacy: T3's domain stands.
+ * (c) No run made so far under rule 1274's code (14 of T3's), nor any of
+ *     T2's 58 and T4's 15, shows rule 1273 (d)(1)'s signature.
+ */
+export const RULE_1275_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1276. A REACH BEYOND THE DOMAIN IS A LOWER BOUND (26 September 2026,
+ * 22:53). Written before the code.
+ *
+ * (a) THE FAULT. Where the ground's peak at the farthest range read is still
+ *     above a threshold, rule 1256 (b)'s reach returns that range, and T2's,
+ *     T3's and T4's judgments and T5's convergence take it as the reach. It
+ *     is only a lower bound: nineteen runs of the cache, under the present
+ *     code and older, carry one (T3's 1 psi at the lower heights, where the
+ *     solver still has 7 to 10 kPa at 196 km; T4's 1 kPa at 50 Mt, and in
+ *     two runs its 10 kPa, with 9 to 10 kPa at 68 km).
+ * (b) WHY NO VERDICT WAS WRONG. Every test's domain reaches past its
+ *     reference's farthest reach by at least its tolerance — T2 2.6 km
+ *     against G&D's 2.14 (+21 %), T3 3.11 km scaled against Cart3D's 2.81
+ *     (+11 %), T4 1.2 times the farthest distance of Collins's row (+20 %):
+ *     a lower bound there already lies outside the tolerance, so a reading
+ *     that bound fails, fails in truth. What was wrong is the size of the
+ *     deviation printed, and T5's order and extrapolation drawn through it.
+ * (c) THE MEND. The judgment marks such a reading as a lower bound («≥»),
+ *     states its deviation as «at least», counts it against the criterion
+ *     as failed only if the bound itself fails, and otherwise leaves it out
+ *     as «beyond the domain», listed, with the case to be run again on a
+ *     wider domain; T5 leaves out every grid series with such a reading.
+ *     T2's and T4's drivers, under way with the old judgment in memory, are
+ *     judged again from their runs once they end.
+ */
+export const RULE_1276_WRITTEN = '2026-09-26' as const;

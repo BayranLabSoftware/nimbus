@@ -5,7 +5,7 @@
     {
       "label": "T2 1 kt at 0.0476 km, 20 m",
       "cpuSeconds": 61.74,
-      "gpuSeconds": 10.653299999997019,
+      "gpuSeconds": 10.72329999999702,
       "cpuSteps": 7807,
       "gpuSteps": 5093,
       "adapter": "apple metal-3",
@@ -42,7 +42,7 @@
     {
       "label": "T2 1 kt at 0.1587 km, 20 m",
       "cpuSeconds": 24.882,
-      "gpuSeconds": 5.86289999999851,
+      "gpuSeconds": 5.87859999999404,
       "cpuSteps": 2803,
       "gpuSteps": 2803,
       "adapter": "apple metal-3",
@@ -79,7 +79,7 @@
     {
       "label": "T2 1 kt at 0.4762 km, 20 m",
       "cpuSeconds": 27.077,
-      "gpuSeconds": 5.92390000000596,
+      "gpuSeconds": 5.94689999999851,
       "cpuSteps": 2806,
       "gpuSteps": 2806,
       "adapter": "apple metal-3",
@@ -116,7 +116,7 @@
     {
       "label": "T2 1 kt at 0.9524 km, 20 m",
       "cpuSeconds": 206.964,
-      "gpuSeconds": 35.51389999999851,
+      "gpuSeconds": 35.56339999999851,
       "cpuSteps": 16214,
       "gpuSteps": 16255,
       "adapter": "apple metal-3",
@@ -153,7 +153,7 @@
     {
       "label": "T4 5 Mt static, coarse",
       "cpuSeconds": 291.058,
-      "gpuSeconds": 16.636700000002982,
+      "gpuSeconds": 16.74629999999702,
       "cpuSteps": 5530,
       "gpuSteps": 5530,
       "adapter": "apple metal-3",
@@ -190,7 +190,7 @@
     {
       "label": "T4 5 Mt moving, coarse",
       "cpuSeconds": 248.637,
-      "gpuSeconds": 14.31160000000149,
+      "gpuSeconds": 14.33589999999851,
       "cpuSteps": 4736,
       "gpuSteps": 4736,
       "adapter": "apple metal-3",
@@ -226,17 +226,17 @@
     },
     {
       "label": "T3 250 Mt at 0.0476 km scaled, coarse",
-      "cpuSeconds": 118.833,
-      "gpuSeconds": 8.231799999997019,
-      "cpuSteps": 4085,
-      "gpuSteps": 3815,
+      "cpuSeconds": 147.774,
+      "gpuSeconds": 10.716,
+      "cpuSteps": 5192,
+      "gpuSteps": 4953,
       "adapter": "apple metal-3",
       "reaches": [
         {
           "psi": 1,
-          "cpu": 186402.73234118448,
-          "gpu": 185580.06358409085,
-          "rel": -0.0044133943036192
+          "cpu": 195917.72325865278,
+          "gpu": 195917.72325865278,
+          "rel": 0
         },
         {
           "psi": 2,
@@ -257,16 +257,16 @@
           "rel": -0.0002477088447025988
         }
       ],
-      "worstReach": 0.0044133943036192,
-      "worstPeak": 0.41783146225501655,
+      "worstReach": 0.0032362796649936243,
+      "worstPeak": 0.017990557780426353,
       "passes": false
     },
     {
       "label": "T3 250 Mt at 0.4762 km scaled, coarse",
-      "cpuSeconds": 241.399,
-      "gpuSeconds": 29.30979999999702,
-      "cpuSteps": 9517,
-      "gpuSteps": 12360,
+      "cpuSeconds": 246.226,
+      "gpuSeconds": 33.38340000000596,
+      "cpuSteps": 11374,
+      "gpuSteps": 14215,
       "adapter": "apple metal-3",
       "reaches": [
         {

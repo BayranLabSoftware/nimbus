@@ -14,7 +14,7 @@
  */
 
 import { writeFileSync } from 'node:fs';
-import { converge } from './blast2d-hob-judge.js';
+import { beyondDomain, convergeBounded } from './blast2d-hob-judge.js';
 import { runPool } from './blast2d-pool.js';
 import { reachOf, type BlastCase, type BlastRun } from './blast2d-run.js';
 
@@ -144,6 +144,10 @@ interface Check {
   solver: number;
   ratio: number;
   within: boolean;
+  /** Rule 1276: the finest grid's reach is a lower bound («≥»). */
+  lowerBound: boolean;
+  /** Rule 1276: a lower bound that does not itself fail, to be run again on a wider domain. */
+  beyondDomain: boolean;
   grids: number[];
   order: number | null;
   extrapolated: number | null;
@@ -152,21 +156,26 @@ const checks: Check[] = [];
 const sensitivity: { mt: number; quantity: string; s: number; s45: number }[] = [];
 for (const row of TABLE)
   for (const [k, v] of (['S', 'M'] as const).entries()) {
-    const measures: [string, Cell, (run: BlastRun) => number][] = [
-      ['peak at ground zero (kPa)', row.gz[k] ?? null, (run) => peakAt(run, 0)],
-      ['peak at 3 z_b (kPa)', row.at3zb[k] ?? null, (run) => peakAt(run, 3 * row.zb * 1_000)],
-      ['1 kPa range (km)', row.r1[k] ?? null, (run) => reachOf(run, 1_000) / 1_000],
-      ['10 kPa range (km)', row.r10[k] ?? null, (run) => reachOf(run, 10_000) / 1_000],
-      ['20 kPa range (km)', row.r20[k] ?? null, (run) => reachOf(run, 20_000) / 1_000],
-      ['35 kPa range (km)', row.r35[k] ?? null, (run) => reachOf(run, 35_000) / 1_000],
+    // The threshold (Pa) of a range, whose reach may be a lower bound (rule 1276).
+    const measures: [string, Cell, (run: BlastRun) => number, number | null][] = [
+      ['peak at ground zero (kPa)', row.gz[k] ?? null, (run) => peakAt(run, 0), null],
+      ['peak at 3 z_b (kPa)', row.at3zb[k] ?? null, (run) => peakAt(run, 3 * row.zb * 1_000), null],
+      ['1 kPa range (km)', row.r1[k] ?? null, (run) => reachOf(run, 1_000) / 1_000, 1_000],
+      ['10 kPa range (km)', row.r10[k] ?? null, (run) => reachOf(run, 10_000) / 1_000, 10_000],
+      ['20 kPa range (km)', row.r20[k] ?? null, (run) => reachOf(run, 20_000) / 1_000, 20_000],
+      ['35 kPa range (km)', row.r35[k] ?? null, (run) => reachOf(run, 35_000) / 1_000, 35_000],
     ];
-    for (const [quantity, collins, read] of measures) {
+    for (const [quantity, collins, read, threshold] of measures) {
       const grids = GRIDS_1KT.map((dx) => read(runOf(row, v, dx)));
+      const bounded = GRIDS_1KT.map(
+        (dx) => threshold !== null && beyondDomain(runOf(row, v, dx), threshold)
+      );
+      const lowerBound = bounded[bounded.length - 1] ?? false;
       const solver = grids[grids.length - 1] ?? NaN;
       if (v === 'S')
         sensitivity.push({ mt: row.mt, quantity, s: solver, s45: read(runOf(row, 'S45', 5)) });
       if (collins === null) continue;
-      const c = converge(grids);
+      const c = convergeBounded(grids, bounded);
       checks.push({
         mt: row.mt,
         source: v,
@@ -174,7 +183,9 @@ for (const row of TABLE)
         collins,
         solver,
         ratio: solver / collins,
-        within: Math.abs(solver / collins - 1) <= 0.15,
+        within: !lowerBound && Math.abs(solver / collins - 1) <= 0.15,
+        lowerBound,
+        beyondDomain: lowerBound && !(solver / collins - 1 > 0.15),
         grids,
         order: c.order,
         extrapolated: c.extrapolated,
@@ -192,13 +203,13 @@ const f = (x: number | null, d = 3): string =>
 const lines = [
   "# Blast solver — T4: Collins et al. (2017)'s Table 2 (rules 1254, 1260)",
   '',
-  `${String(checks.filter((c) => c.within).length)} of ${String(checks.length)} numbers within 15 % — **${passes ? 'PASSES' : 'FAILS'}**. First-order fall-backs: ${String(fallbacks)}.`,
+  `${String(checks.filter((c) => c.within).length)} of ${String(checks.length)} numbers within 15 % (${String(checks.filter((c) => c.lowerBound).length)} solver readings are lower bounds «≥», ${String(checks.filter((c) => c.beyondDomain).length)} of them beyond the domain and to be run again, rule 1276) — **${passes ? 'PASSES' : 'FAILS'}**. First-order fall-backs: ${String(fallbacks)}.`,
   '',
   '| Mt | Source | Quantity | Collins | Solver (5 m) | Ratio | Within | Grids 20/10/5 m | Order | Extrapolated |',
   '| --: | --- | --- | --: | --: | --: | --- | --- | --: | --: |',
   ...checks.map(
     (c) =>
-      `| ${String(c.mt)} | ${c.source} | ${c.quantity} | ${String(c.collins)} | ${f(c.solver)} | ${f(c.ratio, 2)} | ${c.within ? 'yes' : 'no'} | ${c.grids.map((g) => f(g)).join(' / ')} | ${f(c.order, 2)} | ${f(c.extrapolated)} |`
+      `| ${String(c.mt)} | ${c.source} | ${c.quantity} | ${String(c.collins)} | ${c.lowerBound ? '≥ ' : ''}${f(c.solver)} | ${c.lowerBound ? '≥ ' : ''}${f(c.ratio, 2)} | ${c.within ? 'yes' : c.beyondDomain ? 'beyond the domain' : 'no'} | ${c.grids.map((g) => f(g)).join(' / ')} | ${f(c.order, 2)} | ${f(c.extrapolated)} |`
   ),
   '',
   '## Sensitivity: the literal 45 m·W^(1/3) radius (static source, finest grid)',
