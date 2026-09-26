@@ -725,3 +725,93 @@ export const RULE_1275_WRITTEN = '2026-09-26' as const;
  *     judged again from their runs once they end.
  */
 export const RULE_1276_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1277. A CONTINUOUS POSITIVITY LIMITER IN PLACE OF THE YES-OR-NO
+ * FALL-BACKS (26 September 2026, 23:50; Andrea's word: «Voglio la massima
+ * precisione, terza scelta»). Written before the code.
+ *
+ * (a) WHY. Rule 1273 (d)(2): the reference's far field is fixed only to
+ *     ±4 %, because rules 1262 (a), 1264 and 1268 take yes-or-no decisions —
+ *     a face at first order or not, a cell redone or not, a step halved or
+ *     not — that rounding turns. A scheme whose answer moves continuously
+ *     with its data removes the cause; then CPU and GPU can be held to each
+ *     other tightly, and grid convergence reads cleanly.
+ * (b) THE SOURCE, read: Hu, Adams & Shu, «Positivity-preserving method for
+ *     high-order conservative schemes solving compressible Euler equations»
+ *     (J. Comput. Phys. 242, 169–180, 2013; the preprint of 4 December 2012,
+ *     §2.1–2.5). Each cell's update is a convex combination of one-sided
+ *     pieces Uᵢ ∓ 2λF̂ (their Eq. 11; in two dimensions Eq. 28, the
+ *     directions weighted αₓ = τₓ/(τₓ + τᵧ), τ = (|u| + c)ₘₐₓ/Δ, Eq. 29, and
+ *     Δt = CFL/(τₓ + τᵧ), Eq. 30). The first-order Lax–Friedrichs flux with
+ *     the direction's largest (|u| + c) (Eq. 12) keeps every piece positive
+ *     for CFL ≤ ½ (Eq. 13). At every face the high-order flux is blended with
+ *     it, F = (1 − θ)F_LF + θF̂: θ from density first, from the two cells
+ *     sharing the face, solving (1 − θ)g(U_LF) + θg(U) = ε and taking the
+ *     smaller; then from pressure on the flux so limited, the same way (their
+ *     two limiters of §2.2); ε = min(10⁻¹³, the initial minimum), in SI. At
+ *     every Runge–Kutta stage (end of §2.2). θ is a continuous function of
+ *     the data.
+ * (c) OUR ADDITIONS, derived here, not from the paper. (1) THE AXISYMMETRIC
+ *     WEIGHTS: with rᵢ the midpoint of the cell's radial faces, the radial
+ *     update splits into pieces weighted r_{i±½}/(2rᵢ), which sum to one, and
+ *     each piece is still Uᵢ ∓ 2λF̂ — the paper's condition unchanged; the
+ *     axis face, of weight 0, is not limited. (2) THE SOURCES — the
+ *     axisymmetric p/r and the well-balanced gravity — are added whole to
+ *     every piece (the weights sum to one); density has none, so its limiter
+ *     is exact as the paper's, and the pressure limiter sees the pieces with
+ *     their source. Nothing guarantees a piece at θ = 0 with its source is
+ *     positive: if one is not, or any cell is left without positive density
+ *     and pressure, the run fails loudly — no fall-back. (3) THE FACE STATES:
+ *     the high-order flux needs positive reconstructed states; since ρ/α and
+ *     p/β are reconstructed themselves, positivity at a face is linear in the
+ *     reconstruction, and each cell's two faces in a direction are scaled
+ *     towards the cell's own value by the largest t ≤ 1 that keeps both at
+ *     least ε (the velocities unscaled) — continuous where rule 1262 (a)'s
+ *     face check was yes or no. (4) THE TIME STEP: Δt = 0.4Δ/((|u| + c)ₘₐₓ +
+ *     (|v| + c)ₘₐₓ), their Eq. 30 with CFL 0.4 (≤ ½); the Lax–Friedrichs
+ *     speeds and the weights αᵣ, α_z are taken from each stage's own state.
+ * (d) HOW IT ENTERS. A solver option and a case field, `limiter: 'has'`; a
+ *     case without it computes, to the bit, what it did (rules 1262, 1264,
+ *     1268), so T2's batch under way is untouched and finishes for the record.
+ *     T3's and T4's batches, on the old scheme and far from their end, are
+ *     stopped at 23:50: their tests will be made on the scheme adopted here.
+ * (e) THE CRITERIA, fixed now, on the CPU reference. (1) At rest: T0's
+ *     criterion, no speed above 0.01 m/s. (2) Determinacy: rule 1273's case
+ *     (T3 at 0.048 km scaled, coarse, to 700 s) under the eleven moves of the
+ *     source's energy (`scripts/blast2d-t3-spread.ts`): the widest spread of
+ *     the ground's peak within 0.1 % wherever it exceeds 1 kPa — ten times
+ *     inside G1's tolerance. (3) Robustness: those eleven runs, and T2 at its
+ *     lowest height on 20 m cells, end without a positivity failure. The
+ *     limiter is adopted if all three hold; then every test, T1 to T5, is made
+ *     again on it, and the GPU is written to it and checked (G0 to G2)
+ *     before it runs any. If one fails, it is diagnosed under its own rule;
+ *     nothing is tuned to pass.
+ */
+export const RULE_1277_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1278. RULE 1277'S LIMITER: ALL THREE CRITERIA MET, ADOPTED (27
+ * September 2026, 00:10; `blast2dT3Spread.has.json`).
+ *
+ * (a) AT REST: 200 steps of T0's isothermal atmosphere, the largest speed
+ *     1.7·10⁻¹² m/s, no face blended, no face pair scaled. MET.
+ * (b) DETERMINACY: rule 1273's case under the eleven moves of the source's
+ *     energy, from one unit in the last place to 10⁻⁹: the widest spread of
+ *     the ground's peak 2.2·10⁻⁸ wherever it exceeds 1 kPa (the old scheme's
+ *     6.5 %), every run the same 4 923 steps. MET, three million times over.
+ * (c) ROBUSTNESS: those eleven runs (16 515 faces blended in each) and T2 at
+ *     the ground on 20 m cells (none blended) end without a positivity
+ *     failure. MET.
+ * (d) WHAT MOVED. T2 at the ground: every peak within 0.06 % of the old
+ *     scheme's. Rule 1273's case: within 1 % from 10 to 150 km, 11.5 %
+ *     higher at 1.9 km (the fireball's edge, where the old scheme redid cells
+ *     at first order), and 3 to 11 % lower from 158 to 196 km — outside the
+ *     old scheme's own spread there. Which is nearer the truth, the grids
+ *     will say (T5); the new answer at least is one answer.
+ * (e) THEREFORE, as rule 1277 (e) fixed: the limiter is the solver's; every
+ *     test, T1 to T5, is made again on it (the old scheme's results kept as
+ *     *.mood.json), and the GPU is written to it and checked, G0 to G2 with
+ *     G1 against this reference, before it runs any of them.
+ */
+export const RULE_1278_WRITTEN = '2026-09-27' as const;

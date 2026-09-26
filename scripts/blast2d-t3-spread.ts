@@ -3,12 +3,16 @@
  * the reference determines itself. T3's case at 0.048 km scaled on its coarse
  * grid, to a fixed end of 700 s, the source's energy moved by amounts from
  * one unit in the last place to 10⁻⁹, either way; the GPU's run of the same
- * case beside them.
+ * case beside them. With BLAST2D_LIMITER=has, the same on rule 1277's
+ * limiter (its criterion (e)(2)), and no GPU run: the GPU is not written to it
+ * yet.
  *
  *   pnpm exec tsx scripts/blast2d-t3-spread.ts
+ *   BLAST2D_LIMITER=has pnpm exec tsx scripts/blast2d-t3-spread.ts
  *
- * Writes src/physics/validation/blast2dT3Spread.json (each CPU run is kept in
- * scripts/tmp/blast2d-spread, keyed to the solver's code).
+ * Writes src/physics/validation/blast2dT3Spread.json (.has.json with the
+ * limiter; each CPU run is kept in scripts/tmp/blast2d-spread, keyed to the
+ * solver's code and the limiter).
  */
 
 import { spawn } from 'node:child_process';
@@ -35,6 +39,7 @@ const CASE: BlastCase = {
 };
 const ULP = 2 ** -52;
 const MOVES = [0, ULP, -ULP, 1e-15, 1e-14, 1e-13, 1e-12, -1e-12, 1e-11, 1e-10, 1e-9];
+const LIMITER = process.env.BLAST2D_LIMITER === 'has' ? 'has' : undefined;
 
 interface Member {
   move: number;
@@ -46,10 +51,19 @@ interface Member {
 function runOne(move: number): Member {
   const nr = Math.ceil((1.15 * CASE.rMax) / CASE.dx);
   const nz = Math.ceil(CASE.zMax / CASE.dx);
-  const s = new BlastSolver2D({ nr, nz, dx: CASE.dx }, atmosphereOf(CASE));
+  const s = new BlastSolver2D(
+    { nr, nz, dx: CASE.dx },
+    atmosphereOf(CASE),
+    LIMITER === undefined ? {} : { limiter: LIMITER }
+  );
   s.deposit({ energy: CASE.energy * (1 + move), height: CASE.height, radius: CASE.radius });
   while (s.time < T_END) s.step(T_END - s.time);
-  return { move, steps: s.steps, fallbacks: s.fallbacks, peaks: Array.from(s.groundPeak) };
+  return {
+    move,
+    steps: s.steps,
+    fallbacks: LIMITER === undefined ? s.fallbacks : s.limitedFaces,
+    peaks: Array.from(s.groundPeak),
+  };
 }
 
 if (process.argv[2] === 'one') {
@@ -61,7 +75,7 @@ if (process.argv[2] === 'one') {
   ]
     .map((f) => readFileSync(f, 'utf8'))
     .join('\n');
-  const tag = createHash('sha256').update(code).digest('hex').slice(0, 12);
+  const tag = `${createHash('sha256').update(code).digest('hex').slice(0, 12)}${LIMITER === undefined ? '' : `-${LIMITER}`}`;
   const dir = 'scripts/tmp/blast2d-spread';
   mkdirSync(dir, { recursive: true });
   const fileOf = (move: number): string => join(dir, `${tag}-${String(move)}.json`);
@@ -85,13 +99,16 @@ if (process.argv[2] === 'one') {
   };
   await Promise.all([worker(), worker(), worker(), worker()]);
   const members = MOVES.map((m) => JSON.parse(readFileSync(fileOf(m), 'utf8')) as Member);
-  const { withGpuPage } = await import('./blast2d-gpu.js');
-  const gpu = (await withGpuPage((page) =>
-    page.evaluate(async ([c, t]) => window.blast2dGpu?.runCaseGpu(c as never, t), [
-      CASE as unknown,
-      T_END,
-    ] as const)
-  )) as unknown as BlastRun & { fallbacks: number };
+  let gpu: (BlastRun & { fallbacks: number }) | undefined;
+  if (LIMITER === undefined) {
+    const { withGpuPage } = await import('./blast2d-gpu.js');
+    gpu = (await withGpuPage((page) =>
+      page.evaluate(async ([c, t]) => window.blast2dGpu?.runCaseGpu(c as never, t), [
+        CASE as unknown,
+        T_END,
+      ] as const)
+    )) as unknown as BlastRun & { fallbacks: number };
+  }
 
   const base = members[0];
   if (base === undefined) throw new Error('no base run');
@@ -106,22 +123,25 @@ if (process.argv[2] === 'one') {
     const values = members.map((m) => m.peaks[i] ?? 0);
     const lo = Math.min(...values);
     const hi = Math.max(...values);
-    const g = gpu.peaks[i] ?? 0;
+    const g = gpu === undefined ? null : (gpu.peaks[i] ?? 0);
     const km = ((i + 0.5) * CASE.dx) / 1_000;
     rows.push({ km, base: a, min: lo, max: hi, gpu: g });
     if (a <= 1_000) continue;
     worstMember = Math.max(worstMember, ...values.map((v) => Math.abs(v / a - 1)));
     widest = Math.max(widest, (hi - lo) / a);
+    if (g === null) continue;
     gpuWorst = Math.max(gpuWorst, Math.abs(g / a - 1));
     const out = Math.max(lo - g, g - hi, 0) / a;
     if (out > gpuOutside.by) gpuOutside = { by: out, km };
   }
   const summary = {
-    rule: '1273 (d)(2)',
+    rule: LIMITER === undefined ? '1273 (d)(2)' : '1277 (e)(2)',
+    limiter: LIMITER ?? 'mood',
     case: CASE,
     tEnd: T_END,
+    // With the limiter, «fallbacks» counts the faces blended (θ < 1).
     members: members.map((m) => ({ move: m.move, steps: m.steps, fallbacks: m.fallbacks })),
-    gpu: { steps: gpu.steps, fallbacks: gpu.fallbacks },
+    gpu: gpu === undefined ? null : { steps: gpu.steps, fallbacks: gpu.fallbacks },
     worstMemberAgainstBase: worstMember,
     widestSpread: widest,
     gpuWorstAgainstBase: gpuWorst,
@@ -129,11 +149,13 @@ if (process.argv[2] === 'one') {
     rows,
   };
   writeFileSync(
-    'src/physics/validation/blast2dT3Spread.json',
+    `src/physics/validation/blast2dT3Spread${LIMITER === undefined ? '' : `.${LIMITER}`}.json`,
     `${JSON.stringify(summary, null, 1)}\n`
   );
   console.log(
     `worst member ${(100 * worstMember).toFixed(2)} %, widest spread ${(100 * widest).toFixed(2)} %, ` +
-      `GPU ${(100 * gpuWorst).toFixed(2)} % against the base, outside the spread by ${(100 * gpuOutside.by).toFixed(3)} % at ${gpuOutside.km.toFixed(1)} km`
+      (gpu === undefined
+        ? 'no GPU run'
+        : `GPU ${(100 * gpuWorst).toFixed(2)} % against the base, outside the spread by ${(100 * gpuOutside.by).toFixed(3)} % at ${gpuOutside.km.toFixed(1)} km`)
   );
 }

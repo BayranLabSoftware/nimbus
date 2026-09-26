@@ -58,3 +58,56 @@ describe('conservation, with no gravity and walls on two sides', () => {
     expect(pz).toBeLessThan(0);
   });
 });
+
+describe("rule 1277's continuous limiter (Hu, Adams & Shu 2013)", () => {
+  it('keeps the atmosphere at rest, blending no face', () => {
+    const air = isothermalAtmosphere(SEA.rho0, SEA.p0, 9.80665);
+    const solver = new BlastSolver2D({ nr: 20, nz: 80, dx: 500 }, air, { limiter: 'has' });
+    for (let n = 0; n < 200; n++) solver.step();
+    expect(solver.time).toBeGreaterThan(50);
+    expect(solver.maxSpeed()).toBeLessThan(1e-9);
+    expect(solver.limitedFaces).toBe(0);
+    expect(solver.scaledFaces).toBe(0);
+  });
+
+  it('keeps the mass and the energy put in, with no fall-back of any kind', () => {
+    const air = uniformAtmosphere(SEA.rho0, SEA.p0);
+    const solver = new BlastSolver2D({ nr: 60, nz: 60, dx: 2 }, air, { limiter: 'has' });
+    const mass = (): number => {
+      let m = 0;
+      for (let j = 0; j < solver.nz; j++)
+        for (let i = 0; i < solver.nr; i++)
+          m += (solver.rho[solver.index(i, j)] ?? 0) * solver.cellVolume(i);
+      return m;
+    };
+    const m0 = mass();
+    const e0 = solver.totalEnergy();
+    const put = solver.deposit({ energy: 4.184e9, height: 40, radius: 10 });
+    for (let n = 0; n < 60; n++) solver.step();
+    expect(Math.abs(solver.totalEnergy() - e0 - put) / put).toBeLessThan(1e-9);
+    expect(Math.abs(mass() - m0) / m0).toBeLessThan(1e-12);
+    expect(solver.maxSpeed()).toBeGreaterThan(10);
+    expect(solver.fallbacks).toBe(0);
+    expect(solver.redone).toBe(0);
+    expect(solver.halvings).toBe(0);
+  });
+
+  it('answers a tiny change of the source with a tiny change of the ground', () => {
+    // Rule 1277 (a): no yes-or-no decision for rounding to turn.
+    const air = uniformAtmosphere(SEA.rho0, SEA.p0);
+    const peaks = (energy: number): Float64Array => {
+      const solver = new BlastSolver2D({ nr: 40, nz: 40, dx: 2 }, air, { limiter: 'has' });
+      solver.deposit({ energy, height: 20, radius: 6 });
+      for (let n = 0; n < 80; n++) solver.step();
+      return solver.groundPeak;
+    };
+    const a = peaks(4.184e9);
+    const b = peaks(4.184e9 * (1 + 1e-9));
+    let worst = 0;
+    for (let i = 0; i < a.length; i++) {
+      const x = a[i] ?? 0;
+      if (x > 1_000) worst = Math.max(worst, Math.abs((b[i] ?? 0) / x - 1));
+    }
+    expect(worst).toBeLessThan(1e-6);
+  });
+});

@@ -18,7 +18,11 @@
  * - the HLLC Riemann solver (Toro), with Davis's wave-speed estimates;
  * - the axisymmetric term p/r on the radial momentum, rᵢ the midpoint of the
  *   cell's radial faces;
- * - the third-order strong-stability-preserving Runge–Kutta of Shu & Osher.
+ * - the third-order strong-stability-preserving Runge–Kutta of Shu & Osher;
+ * - positivity kept either by rules 1262, 1264 and 1268's yes-or-no
+ *   fall-backs ('mood', the default) or by rule 1277's continuous limiter
+ *   ('has'): Hu, Adams & Shu (2013)'s blend of each face's flux with the
+ *   Lax–Friedrichs flux, and the face states scaled towards their cell.
  *
  * The reference implementation, float64 and SI throughout; its tests are the
  * six of rule 1254 (c).
@@ -49,6 +53,11 @@ function weno5z(a: number, b: number, c: number, d: number, e: number): number {
   return (w0 * q0 + w1 * q1 + w2 * q2) / (w0 + w1 + w2);
 }
 
+/** x clamped to [0, 1] (NaN to 0). */
+function clamp01(x: number): number {
+  return x > 1 ? 1 : x > 0 ? x : 0;
+}
+
 export interface BlastGrid {
   /** Cells along the ground. */
   readonly nr: number;
@@ -73,6 +82,20 @@ export interface BlastSource {
 export interface BlastOptions {
   readonly gamma?: number;
   readonly cfl?: number;
+  /** How positivity is kept (rule 1277); 'mood' by default. */
+  readonly limiter?: 'mood' | 'has';
+}
+
+/** Rule 1277's work arrays: each face's high-order and Lax–Friedrichs flux
+ *  (mass, radial and vertical momentum, energy; radial faces first, face f
+ *  of row j at j(nr + 1) + f, then vertical faces, face g of column i at
+ *  (nr + 1)nz + g·nr + i), each cell's sources, and the floors ε. */
+interface HasWork {
+  readonly high: Float64Array;
+  readonly lf: Float64Array;
+  readonly source: Float64Array;
+  epsRho: number;
+  epsP: number;
 }
 
 /** A stage that could not restore positivity (rules 1264, 1268). */
@@ -85,6 +108,7 @@ export class BlastSolver2D {
   readonly gamma: number;
   readonly cfl: number;
   readonly atmosphere: Atmosphere;
+  readonly limiter: 'mood' | 'has';
 
   /** Conserved variables per cell, ghosts included: ρ, ρu, ρv, E (no potential). */
   readonly rho: Float64Array;
@@ -106,6 +130,10 @@ export class BlastSolver2D {
   redone = 0;
   /** Steps done again with half the time step (rule 1268). */
   halvings = 0;
+  /** Rule 1277: faces whose flux was blended (θ < 1), and reconstructed
+   *  face pairs scaled towards their cell, summed over the stages. */
+  limitedFaces = 0;
+  scaledFaces = 0;
 
   private readonly stride: number;
   private readonly rC: Float64Array;
@@ -145,6 +173,13 @@ export class BlastSolver2D {
   private readonly pre1: Float64Array;
   private readonly pre2: Float64Array;
   private readonly pre3: Float64Array;
+  private readonly work: HasWork | undefined;
+  // Rule 1277's scratch: two cells' states and fluxes, and a limited flux.
+  private readonly stL = new Float64Array(4);
+  private readonly stR = new Float64Array(4);
+  private readonly fxL = new Float64Array(4);
+  private readonly fxR = new Float64Array(4);
+  private readonly star = new Float64Array(4);
 
   constructor(grid: BlastGrid, atmosphere: Atmosphere, options: BlastOptions = {}) {
     const { nr, nz, dx } = grid;
@@ -154,6 +189,7 @@ export class BlastSolver2D {
     this.dx = dx;
     this.gamma = options.gamma ?? 1.4;
     this.cfl = options.cfl ?? 0.4;
+    this.limiter = options.limiter ?? 'mood';
     this.atmosphere = atmosphere;
     this.stride = nr + 2 * G;
     const n = this.stride * (nz + 2 * G);
@@ -195,6 +231,17 @@ export class BlastSolver2D {
     this.betaF = Float64Array.from({ length: nz + 1 }, (_, j) => atmosphere.beta(j * dx));
     this.groundPeak = new Float64Array(nr);
     this.groundPeakTime = new Float64Array(nr);
+    const faces = (nr + 1) * nz + nr * (nz + 1);
+    this.work =
+      this.limiter === 'has'
+        ? {
+            high: new Float64Array(4 * faces),
+            lf: new Float64Array(4 * faces),
+            source: new Float64Array(4 * n),
+            epsRho: NaN,
+            epsP: NaN,
+          }
+        : undefined;
     this.fillAtRest();
   }
 
@@ -614,6 +661,7 @@ export class BlastSolver2D {
   /** One step of the Shu–Osher third-order Runge–Kutta, with rule 1264's a
    *  posteriori fall-back; returns Δt (s). */
   step(maxDt = Infinity): number {
+    if (this.work !== undefined) return this.stepHas(this.work, maxDt);
     const { nr, nz, stride } = this;
     const sets: [Float64Array, Float64Array, Float64Array, Float64Array][] = [
       [this.rho, this.k0, this.d0, this.pre0],
@@ -686,6 +734,394 @@ export class BlastSolver2D {
         this.halvings++;
       }
     }
+    this.time += dt;
+    this.steps++;
+    const p0 = this.backgroundPressure(0);
+    for (let i = 0; i < nr; i++) {
+      const over = this.pressure(i, 0) - p0;
+      if (over > (this.groundPeak[i] ?? 0)) {
+        this.groundPeak[i] = over;
+        this.groundPeakTime[i] = this.time;
+      }
+    }
+    return dt;
+  }
+
+  // ---- rule 1277: Hu, Adams & Shu's continuous positivity limiter ----
+
+  /** Rule 1277 (c)(3): each cell's two reconstructed faces of ρ/α and of p/β
+   *  (w, dimensionless) scaled towards the cell's own value by the largest
+   *  t ≤ 1 that keeps both at least 10⁻¹³; the velocities are not touched. */
+  private scaleFaces(step: number): void {
+    const { nr, nz, stride } = this;
+    const eps = 1e-13;
+    const iLo = step === 1 ? -1 : 0;
+    const iHi = step === 1 ? nr : nr - 1;
+    const jLo = step === 1 ? 0 : -1;
+    const jHi = step === 1 ? nz - 1 : nz;
+    const pairs: [Float64Array, Float64Array, Float64Array][] = [
+      [this.q1, this.s1, this.t1],
+      [this.q4, this.s4, this.t4],
+    ];
+    for (let j = jLo; j <= jHi; j++)
+      for (let i = iLo; i <= iHi; i++) {
+        const k = (j + G) * stride + (i + G);
+        for (const [w, up, down] of pairs) {
+          const c = w[k] ?? 0;
+          const a = up[k] ?? 0;
+          const b = down[k] ?? 0;
+          const lo = Math.min(a, b);
+          if (lo >= eps) continue;
+          const t = c > eps ? (c - eps) / (c - lo) : 0;
+          up[k] = c + t * (a - c);
+          down[k] = c + t * (b - c);
+          this.scaledFaces++;
+        }
+      }
+  }
+
+  /** The flux of the Euler equations of a cell's state, along r (dir 0) or
+   *  z (dir 1), into out[o..o+3]; returns the state's |normal velocity| + c. */
+  private cellFlux(
+    rho: number,
+    mr: number,
+    mz: number,
+    en: number,
+    dir: 0 | 1,
+    out: Float64Array,
+    o: number
+  ): number {
+    const u = mr / rho;
+    const v = mz / rho;
+    const p = (this.gamma - 1) * (en - 0.5 * rho * (u * u + v * v));
+    const un = dir === 0 ? u : v;
+    out[o] = rho * un;
+    out[o + 1] = mr * un + (dir === 0 ? p : 0);
+    out[o + 2] = mz * un + (dir === 1 ? p : 0);
+    out[o + 3] = (en + p) * un;
+    return Math.abs(un) + Math.sqrt((this.gamma * p) / rho);
+  }
+
+  /**
+   * Rule 1277: the high-order flux (HLLC on the face states, scaled where
+   * needed) and the Lax–Friedrichs flux (Hu, Adams & Shu's Eq. 12, with the
+   * direction's largest |u| + c) at every face, and every cell's sources,
+   * from the current state. Returns the interior's largest |u| + c and
+   * |v| + c.
+   */
+  private fluxesHas(work: HasWork): { ar: number; az: number } {
+    const { nr, nz, stride, dx, gamma } = this;
+    const { rho0, p0 } = this.atmosphere;
+    this.primitives();
+    let ar = 0;
+    let az = 0;
+    for (let j = 0; j < nz; j++)
+      for (let i = 0; i < nr; i++) {
+        const k = (j + G) * stride + (i + G);
+        const r = this.rho[k] ?? 0;
+        const u = (this.mr[k] ?? 0) / r;
+        const v = (this.mz[k] ?? 0) / r;
+        const p = (gamma - 1) * ((this.en[k] ?? 0) - 0.5 * r * (u * u + v * v));
+        const c = Math.sqrt((gamma * p) / r);
+        if (Math.abs(u) + c > ar) ar = Math.abs(u) + c;
+        if (Math.abs(v) + c > az) az = Math.abs(v) + c;
+      }
+    const out = this.flux;
+    const { stL, stR } = this;
+
+    // Radial faces: face f of row j between cells f − 1 and f; the axis face
+    // (weight 0) is not needed, the outer ghost copies the last cell.
+    this.reconstruct(1);
+    this.scaleFaces(1);
+    for (let j = 0; j < nz; j++) {
+      const a = rho0 * (this.alphaC[j] ?? 0);
+      const b = p0 * (this.betaC[j] ?? 0);
+      const row = (j + G) * stride + G;
+      for (let f = 1; f <= nr; f++) {
+        const kl = row + f - 1;
+        const kr = row + f;
+        this.hllc(
+          a * (this.s1[kl] ?? 0),
+          this.su[kl] ?? 0,
+          this.sv[kl] ?? 0,
+          b * (this.s4[kl] ?? 0),
+          a * (this.t1[kr] ?? 0),
+          this.tu[kr] ?? 0,
+          this.tv[kr] ?? 0,
+          b * (this.t4[kr] ?? 0)
+        );
+        const o = 4 * (j * (nr + 1) + f);
+        work.high[o] = out[0] ?? 0;
+        work.high[o + 1] = out[1] ?? 0;
+        work.high[o + 2] = out[2] ?? 0;
+        work.high[o + 3] = out[3] ?? 0;
+        this.loadState(kl, stL, false);
+        this.loadState(f < nr ? kr : kl, stR, false);
+        this.laxFriedrichs(work, o, ar, 0);
+      }
+    }
+
+    // Vertical faces: face g of column i between cells g − 1 and g; the
+    // ground's ghost mirrors the first cell, the top's copies the last.
+    this.reconstruct(stride);
+    this.scaleFaces(stride);
+    const off = (nr + 1) * nz;
+    for (let g = 0; g <= nz; g++) {
+      const a = rho0 * (this.alphaF[g] ?? 0);
+      const b = p0 * (this.betaF[g] ?? 0);
+      for (let i = 0; i < nr; i++) {
+        const kl = (g - 1 + G) * stride + (i + G);
+        const kr = kl + stride;
+        this.hllc(
+          a * (this.s1[kl] ?? 0),
+          this.sv[kl] ?? 0,
+          this.su[kl] ?? 0,
+          b * (this.s4[kl] ?? 0),
+          a * (this.t1[kr] ?? 0),
+          this.tv[kr] ?? 0,
+          this.tu[kr] ?? 0,
+          b * (this.t4[kr] ?? 0)
+        );
+        const o = 4 * (off + g * nr + i);
+        work.high[o] = out[0] ?? 0;
+        work.high[o + 1] = out[2] ?? 0;
+        work.high[o + 2] = out[1] ?? 0;
+        work.high[o + 3] = out[3] ?? 0;
+        if (g === 0) {
+          this.loadState(kr, stR, false);
+          this.loadState(kr, stL, true);
+        } else {
+          this.loadState(kl, stL, false);
+          this.loadState(g < nz ? kr : kl, stR, false);
+        }
+        this.laxFriedrichs(work, o, az, 1);
+      }
+    }
+
+    // Sources: the axisymmetric term, and gravity in the well-balanced form.
+    const pr = p0 / rho0;
+    for (let j = 0; j < nz; j++) {
+      const lift =
+        (pr * ((this.betaF[j + 1] ?? 0) - (this.betaF[j] ?? 0))) / (dx * (this.alphaC[j] ?? 0));
+      const b = p0 * (this.betaC[j] ?? 0);
+      for (let i = 0; i < nr; i++) {
+        const k = (j + G) * stride + (i + G);
+        const force = (this.rho[k] ?? 0) * lift;
+        work.source[4 * k] = 0;
+        work.source[4 * k + 1] = (b * (this.q4[k] ?? 0)) / (this.rC[i] ?? 0);
+        work.source[4 * k + 2] = force;
+        work.source[4 * k + 3] = (this.vv[k] ?? 0) * force;
+      }
+    }
+    return { ar, az };
+  }
+
+  /** A cell's conserved state into out, its vertical momentum mirrored for
+   *  the ground's ghost. */
+  private loadState(k: number, out: Float64Array, mirror: boolean): void {
+    out[0] = this.rho[k] ?? 0;
+    out[1] = this.mr[k] ?? 0;
+    out[2] = (mirror ? -1 : 1) * (this.mz[k] ?? 0);
+    out[3] = this.en[k] ?? 0;
+  }
+
+  /** Hu, Adams & Shu's Eq. 12 between the states in stL and stR, with the
+   *  direction's largest |u| + c, into work.lf[o..o+3]. */
+  private laxFriedrichs(work: HasWork, o: number, a: number, dir: 0 | 1): void {
+    const { stL, stR, fxL, fxR } = this;
+    this.cellFlux(stL[0] ?? 0, stL[1] ?? 0, stL[2] ?? 0, stL[3] ?? 0, dir, fxL, 0);
+    this.cellFlux(stR[0] ?? 0, stR[1] ?? 0, stR[2] ?? 0, stR[3] ?? 0, dir, fxR, 0);
+    for (let q = 0; q < 4; q++)
+      work.lf[o + q] =
+        0.5 * ((fxL[q] ?? 0) + (fxR[q] ?? 0)) - 0.5 * a * ((stR[q] ?? 0) - (stL[q] ?? 0));
+  }
+
+  /** A piece's pressure: Uₖ + σF + ΔtSₖ, F read at flux[at..at+3]. */
+  private piecePressure(
+    work: HasWork,
+    k: number,
+    sigma: number,
+    flux: Float64Array,
+    at: number,
+    dt: number
+  ): number {
+    const s = 4 * k;
+    const r = (this.rho[k] ?? 0) + sigma * (flux[at] ?? 0);
+    const a = (this.mr[k] ?? 0) + sigma * (flux[at + 1] ?? 0) + dt * (work.source[s + 1] ?? 0);
+    const b = (this.mz[k] ?? 0) + sigma * (flux[at + 2] ?? 0) + dt * (work.source[s + 2] ?? 0);
+    const e = (this.en[k] ?? 0) + sigma * (flux[at + 3] ?? 0) + dt * (work.source[s + 3] ?? 0);
+    return r > 0 ? (this.gamma - 1) * (e - (0.5 * (a * a + b * b)) / r) : -Infinity;
+  }
+
+  /**
+   * Rule 1277: Hu, Adams & Shu's two limiters at one face, in place: θ from
+   * density, then from pressure (with the sources), from the cells on either
+   * side (−1 for a ghost), the pieces Uₖ ∓ 2λF; the face's flux becomes
+   * (1 − θ)F_LF + θF̂.
+   */
+  private limitFace(
+    work: HasWork,
+    o: number,
+    lambda: number,
+    kl: number,
+    kr: number,
+    dt: number
+  ): void {
+    const { high, lf } = work;
+    const star = this.star;
+    const two = 2 * lambda;
+    // Density: the left cell's piece is Uₖ − 2λF, the right's Uₖ + 2λF.
+    let thetaRho = 1;
+    for (let side = 0; side < 2; side++) {
+      const k = side === 0 ? kl : kr;
+      if (k < 0) continue;
+      const sigma = side === 0 ? -two : two;
+      const rho = this.rho[k] ?? 0;
+      const hi = rho + sigma * (high[o] ?? 0);
+      if (hi >= work.epsRho) continue;
+      const low = rho + sigma * (lf[o] ?? 0);
+      thetaRho = Math.min(thetaRho, clamp01((low - work.epsRho) / (low - hi)));
+    }
+    for (let q = 0; q < 4; q++) {
+      const l = lf[o + q] ?? 0;
+      star[q] = l + thetaRho * ((high[o + q] ?? 0) - l);
+    }
+    // Pressure, on the flux so limited, each piece with its cell's source.
+    let thetaP = 1;
+    for (let side = 0; side < 2; side++) {
+      const k = side === 0 ? kl : kr;
+      if (k < 0) continue;
+      const sigma = side === 0 ? -two : two;
+      const pStar = this.piecePressure(work, k, sigma, star, 0, dt);
+      if (pStar >= work.epsP) continue;
+      const pLow = this.piecePressure(work, k, sigma, lf, o, dt);
+      thetaP = Math.min(thetaP, clamp01((pLow - work.epsP) / (pLow - pStar)));
+    }
+    if (thetaRho * thetaP < 1) this.limitedFaces++;
+    for (let q = 0; q < 4; q++) {
+      const l = lf[o + q] ?? 0;
+      high[o + q] = l + thetaP * ((star[q] ?? 0) - l);
+    }
+  }
+
+  /** Rule 1277: limit every face, gather the right-hand side and take the
+   *  stage U = keep·K0 + add·(PRE + ΔtL); a cell left unsound fails the run. */
+  private stageHas(
+    work: HasWork,
+    dt: number,
+    keep: number,
+    add: number,
+    ar: number,
+    az: number
+  ): void {
+    const { nr, nz, stride, dx } = this;
+    const lambdaR = (dt * (ar + az)) / (ar * dx);
+    const lambdaZ = (dt * (ar + az)) / (az * dx);
+    for (let j = 0; j < nz; j++)
+      for (let f = 1; f <= nr; f++) {
+        const row = (j + G) * stride + G;
+        this.limitFace(
+          work,
+          4 * (j * (nr + 1) + f),
+          lambdaR,
+          row + f - 1,
+          f < nr ? row + f : -1,
+          dt
+        );
+      }
+    const off = (nr + 1) * nz;
+    for (let g = 0; g <= nz; g++)
+      for (let i = 0; i < nr; i++) {
+        const kl = (g - 1 + G) * stride + (i + G);
+        this.limitFace(
+          work,
+          4 * (off + g * nr + i),
+          lambdaZ,
+          g > 0 ? kl : -1,
+          g < nz ? kl + stride : -1,
+          dt
+        );
+      }
+    const d = [this.d0, this.d1, this.d2, this.d3];
+    for (const x of d) x.fill(0);
+    for (let j = 0; j < nz; j++) {
+      const row = (j + G) * stride + G;
+      for (let f = 1; f <= nr; f++) {
+        const o = 4 * (j * (nr + 1) + f);
+        const area = this.rF[f] ?? 0;
+        const kl = row + f - 1;
+        const kr = row + f;
+        const left = area / ((this.rC[f - 1] ?? 0) * dx);
+        const right = f < nr ? area / ((this.rC[f] ?? 0) * dx) : 0;
+        for (const [q, dq] of d.entries()) {
+          const x = work.high[o + q] ?? 0;
+          dq[kl] = (dq[kl] ?? 0) - x * left;
+          if (f < nr) dq[kr] = (dq[kr] ?? 0) + x * right;
+        }
+      }
+    }
+    for (let g = 0; g <= nz; g++)
+      for (let i = 0; i < nr; i++) {
+        const o = 4 * (off + g * nr + i);
+        const kl = (g - 1 + G) * stride + (i + G);
+        const kr = kl + stride;
+        for (const [q, dq] of d.entries()) {
+          const x = (work.high[o + q] ?? 0) / dx;
+          if (g > 0) dq[kl] = (dq[kl] ?? 0) - x;
+          if (g < nz) dq[kr] = (dq[kr] ?? 0) + x;
+        }
+      }
+    const sets: [Float64Array, Float64Array, Float64Array][] = [
+      [this.rho, this.k0, this.d0],
+      [this.mr, this.k1, this.d1],
+      [this.mz, this.k2, this.d2],
+      [this.en, this.k3, this.d3],
+    ];
+    for (let j = 0; j < nz; j++)
+      for (let i = 0; i < nr; i++) {
+        const k = (j + G) * stride + (i + G);
+        for (const [q, [uq, kq, dq]] of sets.entries()) {
+          const rate = (dq[k] ?? 0) + (work.source[4 * k + q] ?? 0);
+          uq[k] = keep * (kq[k] ?? 0) + add * ((uq[k] ?? 0) + dt * rate);
+        }
+      }
+    for (let j = 0; j < nz; j++)
+      for (let i = 0; i < nr; i++)
+        if (!this.sound((j + G) * stride + (i + G)))
+          throw new Error(
+            `blast2d: rule 1277 -- cell (${String(i)}, ${String(j)}) left without positive density or pressure at t = ${String(this.time)} s`
+          );
+  }
+
+  /** One step with rule 1277's limiter; returns Δt (s). */
+  private stepHas(work: HasWork, maxDt: number): number {
+    const { nr, nz, stride } = this;
+    if (Number.isNaN(work.epsRho)) {
+      // ε = min(10⁻¹³, the initial minimum), density and pressure (SI).
+      let rhoMin = Infinity;
+      let pMin = Infinity;
+      for (let j = 0; j < nz; j++)
+        for (let i = 0; i < nr; i++) {
+          rhoMin = Math.min(rhoMin, this.rho[(j + G) * stride + (i + G)] ?? 0);
+          pMin = Math.min(pMin, this.pressure(i, j));
+        }
+      work.epsRho = Math.min(1e-13, rhoMin);
+      work.epsP = Math.min(1e-13, pMin);
+    }
+    let { ar, az } = this.fluxesHas(work);
+    const dt = Math.min((this.cfl * this.dx) / (ar + az), maxDt);
+    if (!(dt > 0 && Number.isFinite(dt))) throw new Error(`blast2d: time step ${String(dt)}`);
+    this.k0.set(this.rho);
+    this.k1.set(this.mr);
+    this.k2.set(this.mz);
+    this.k3.set(this.en);
+    // U¹ = Uⁿ + ΔtL(Uⁿ); U² = ¾Uⁿ + ¼(U¹ + ΔtL(U¹)); Uⁿ⁺¹ = ⅓Uⁿ + ⅔(U² + ΔtL(U²)),
+    // each stage's fluxes limited on its own state and speeds.
+    this.stageHas(work, dt, 0, 1, ar, az);
+    ({ ar, az } = this.fluxesHas(work));
+    this.stageHas(work, dt, 0.75, 0.25, ar, az);
+    ({ ar, az } = this.fluxesHas(work));
+    this.stageHas(work, dt, 1 / 3, 2 / 3, ar, az);
     this.time += dt;
     this.steps++;
     const p0 = this.backgroundPressure(0);

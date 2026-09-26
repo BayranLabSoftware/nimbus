@@ -37,6 +37,9 @@ export interface BlastCase {
    *  sound wave at the ground's speed of sound takes to reach the farthest
    *  range read (absent: rule 1263's stop alone). */
   readonly soundFloor?: number;
+  /** Rule 1277: Hu, Adams & Shu's continuous limiter (absent: rules 1262,
+   *  1264 and 1268's fall-backs). */
+  readonly limiter?: 'has';
 }
 
 export interface BlastRun {
@@ -47,6 +50,9 @@ export interface BlastRun {
   readonly seconds: number;
   readonly time: number;
   readonly fallbacks: number;
+  /** Rule 1277's runs: faces blended and face pairs scaled. */
+  readonly limitedFaces?: number;
+  readonly scaledFaces?: number;
   /** Ground ranges (m) of the first row's cells and their peak overpressure (Pa). */
   readonly ranges: number[];
   readonly peaks: number[];
@@ -76,7 +82,11 @@ export function runCase(c: BlastCase): BlastRun {
   // boundary's small reflection comes back after the reading is made.
   const nr = Math.ceil((1.15 * c.rMax) / c.dx);
   const nz = Math.ceil(c.zMax / c.dx);
-  const solver = new BlastSolver2D({ nr, nz, dx: c.dx }, atmosphereOf(c));
+  const solver = new BlastSolver2D(
+    { nr, nz, dx: c.dx },
+    atmosphereOf(c),
+    c.limiter === undefined ? {} : { limiter: c.limiter }
+  );
   solver.deposit({
     energy: c.energy,
     height: c.height,
@@ -110,6 +120,9 @@ export function runCase(c: BlastCase): BlastRun {
     seconds: (Date.now() - started) / 1000,
     time: solver.time,
     fallbacks: solver.fallbacks,
+    ...(c.limiter === undefined
+      ? {}
+      : { limitedFaces: solver.limitedFaces, scaledFaces: solver.scaledFaces }),
     ranges: Array.from({ length: last + 1 }, (_, i) => solver.radius(i)),
     peaks: Array.from(solver.groundPeak.subarray(0, last + 1)),
   };
