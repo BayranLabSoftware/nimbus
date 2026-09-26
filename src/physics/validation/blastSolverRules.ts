@@ -131,3 +131,60 @@ export const BLAST_SOLVER_OPENED = '2026-09-26' as const;
  *     first row of cells, the peak over the run of p − p̄ at each range.
  */
 export const RULE_1255_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1256. TWO WORDS OF RULE 1254 (c) MADE OPERATIONAL, BEFORE ANY RUN OF
+ * T2 TO T4 (26 September 2026, 10:25).
+ *
+ * (a) «WITHIN 0.02 km SCALED OF A CURVE'S TURNING POINT, WHERE A REACH IS
+ *     ILL-CONDITIONED». A reference reading at height h is left out when the
+ *     reference's own farthest reach, interpolated linearly between its read
+ *     heights, changes by more than 10 % — the criterion's whole width —
+ *     between h − 0.02 and h + 0.02 km scaled (half the difference, over the
+ *     reach at h). This catches what the words meant: the stretches where a
+ *     curve runs nearly flat in height (a bulge's return, a Mach stem's
+ *     shelf, a curve's top at the axis), where an error of a few pixels in
+ *     height moves the reach far. Every reading left out is listed.
+ * (b) «THE REACH». The farthest ground range at which the run's peak
+ *     overpressure in the first row of cells reaches the threshold,
+ *     interpolated between cell centres — the same definition as the
+ *     digitised curves' farthest crossing, and as the product's.
+ * (c) T5 on T2 to T4: the three grids' reaches give the observed order
+ *     p = log₂((r₁ − r₂)/(r₂ − r₃)) (coarse to fine) and the extrapolated
+ *     reach r₃ + (r₃ − r₂)/(2^p − 1); where the three do not converge
+ *     monotonically, no extrapolation is made and the spread of the three is
+ *     stated as the error. The finest grid is the one judged.
+ */
+export const RULE_1256_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1257. T1'S OUTCOME: FAILED AS FIXED, AND WHY (26 September 2026,
+ * 10:36).
+ *
+ * (a) THE NUMBERS (`blast2dT1Sedov.json`). Three grids of 100, 200 and 400
+ *     cells over 1.2 (Δx = 0.012, 0.006, 0.003), the source on the ground
+ *     over three cells, no first-order fall-back in any: 1 998, 8 312 and
+ *     34 849 steps, 4, 62 and 1 121 s. The worst judged deviation of the
+ *     shock radius from ξ(2Et²/ρ)^(1/5): 10.4, 11.9 and 9.5 % — T1 FAILS its
+ *     2 % criterion on every grid. On the finest, every reading from 60
+ *     cells out is within 2.1 % (from 83 cells, 1.9 %); the misses are the
+ *     readings at 17 to 40 cells (9.5 to 3.8 %).
+ * (b) THE DIAGNOSIS, one hypothesis at a time. The shock is read 1 to 2
+ *     cells ahead of the exact radius, on the ground, the axis and the
+ *     diagonal alike (the axis some tenths of a per cent more); halving the
+ *     source to 1.5 cells changes nothing; the density's peak sits within
+ *     half a cell behind the exact radius; reading the front's steepest
+ *     point instead of its half height gives the same lead. At a fixed
+ *     radius the error halves with the cell — R = 0.25: 6.2, 3.0, 1.6 %;
+ *     R = 0.6: 2.3, 1.4, 0.9 % along the ground — first-order convergence,
+ *     the order a captured shock's position has; the mass and the energy are
+ *     kept to rounding. No fault was found in the code. The criterion asked
+ *     for a fifth of a cell at ten cells, which a shock-capturing scheme does
+ *     not give.
+ * (c) WHAT IS NOT DONE: the criterion is not changed after its outcome, and
+ *     nothing in the scheme is tuned to it. T1 stands failed as fixed. Whether
+ *     it is judged again under a criterion written now — in cells, or on the
+ *     converged radius — is Andrea's to say; T2 to T4, which T1 does not
+ *     gate, go on meanwhile.
+ */
+export const RULE_1257_WRITTEN = '2026-09-26' as const;
