@@ -252,11 +252,16 @@ function scenarioRows(r: ImpactScenarioResult, ctx: ImpactReportContext): Report
  *  it belongs to, not among the numbers, where it would push a sheet onto a
  *  second page. */
 function modelConfiguration(r: ImpactScenarioResult, t: TFunction): string {
-  return impactModelSwitches(r.inputs)
-    .map(({ key, value, isDefault }) =>
-      isDefault ? `${key} ${value}` : `${key} ${value} (${t('report.impact.notDefault')})`
-    )
-    .join(' · ');
+  const switches = impactModelSwitches(r.inputs);
+  const moved = switches.filter((s) => !s.isDefault);
+  // Amended: all at their defaults is one line, the switches set away from
+  // them named one by one — the full list pushed a sheet onto a second page.
+  return moved.length === 0
+    ? t('report.impact.configurationDefault', { count: switches.length })
+    : t('report.impact.configurationMoved', {
+        moved: moved.map((s) => `${s.key} ${s.value}`).join(' · '),
+        rest: switches.length - moved.length,
+      });
 }
 
 function magnitudeLabelId(r: ImpactScenarioResult): string {
@@ -373,24 +378,20 @@ function groups(
       row(t, 'endVelocity', `${fixed((r.entry.endVelocity as number) / 1_000, 1, l)} km/s`),
       'entry'
     ),
-    // Rule 1213: G4's verdict and I2's band, as the panel prints them.
+    // Rule 1213: G4's verdict, as the panel prints it, and I2's band where
+    // the scenario lies inside the cells it was measured on (amended: one
+    // row, not two — outside the cells the verdict already says there is
+    // no band).
     tagged(
       row(
         t,
         'entryMeasuredCell',
         entryCellSentenceWith(r.measuredCells.entry, l, (key, vars = {}) =>
           t(`measuredCells.entry.${key}`, vars)
-        )
-      ),
-      'entry'
-    ),
-    tagged(
-      row(
-        t,
-        'entryAltitudeBand',
-        r.entryAltitudeBand === null
-          ? t('measuredCells.entry.bandNone')
-          : `${altitude(r.entryAltitudeBand.low, l)} – ${altitude(r.entryAltitudeBand.high, l)}`
+        ) +
+          (r.entryAltitudeBand === null
+            ? ''
+            : ` · ${t('measuredCells.entry.bandLabel')}: ${altitude(r.entryAltitudeBand.low, l)} – ${altitude(r.entryAltitudeBand.high, l)}`)
       ),
       'entry'
     ),

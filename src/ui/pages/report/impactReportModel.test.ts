@@ -336,17 +336,14 @@ describe("an impact's report, in the reader's language (IMP-7c)", () => {
       const t = await translator(lng);
       const model = buildImpactReport(run('TUNGUSKA'), context(t, lng));
       const cell = rowOf(model, 'entryMeasuredCell');
-      const band = rowOf(model, 'entryAltitudeBand');
-      // Both the entry's, and both translated: no key reaches the page.
+      // The entry's, and translated: no key reaches the page.
       expect(cell?.evidence).toBe('entry');
-      expect(band?.evidence).toBe('entry');
       expect(cell?.value).not.toContain('measuredCells.');
-      // Every preset lies outside the measured cells (G4), so no band.
-      expect(band?.value).toBe(t('measuredCells.entry.bandNone'));
-      const config = model.configuration;
-      expect(config).toContain('strengthLaw twoStage');
-      expect(config.split(' · ')).toHaveLength(14);
-      expect(config).not.toContain(t('report.impact.notDefault'));
+      // Every preset lies outside the measured cells (G4), so no band follows.
+      expect(cell?.value).not.toContain(t('measuredCells.entry.bandLabel'));
+      expect(rowOf(model, 'entryAltitudeBand')).toBeUndefined();
+      // Every switch at its default: one line that says so.
+      expect(model.configuration).toBe(t('report.impact.configurationDefault', { count: 14 }));
     }
   });
 });

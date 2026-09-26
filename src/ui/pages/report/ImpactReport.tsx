@@ -27,6 +27,7 @@ import {
   buildImpactReport,
   nearestPlace,
   thresholdRows,
+  type ImpactReportModel,
   type ReportFigure,
   type ReportGroup,
 } from './impactReportModel.js';
@@ -131,6 +132,42 @@ function CardRow({
       <td data-card="extent">{card.extent}</td>
       <td data-card="beyond">{t(`globe.impactMap.beyond.${card.beyond}`)}</td>
     </tr>
+  );
+}
+
+/** Rule 1216: the cards of what every map draws — the crater, the cavity —
+ *  after the maps themselves, where the cards sheet has no room left. */
+function FixedCards({ objects }: { objects: ImpactReportModel['fixed'] }): JSX.Element | null {
+  const { t } = useTranslation();
+  if (objects.length === 0) return null;
+  return (
+    <table className={[styles.table, styles.cardTable].join(' ')} data-testid="report-fixed-cards">
+      <thead>
+        <tr>
+          <th>{t('report.impact.cardWhat')}</th>
+          <th>{t('globe.impactMap.card.state')}</th>
+          <th>{t('globe.impactMap.card.source')}</th>
+          <th>{t('globe.impactMap.card.extent')}</th>
+          <th>{t('globe.impactMap.card.beyond')}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr className={styles.cardGroup} data-report-card="fixed">
+          <td colSpan={5} data-card="quantity">
+            <b>{t('globe.impactMap.fixed.heading')}</b>
+          </td>
+        </tr>
+        {objects.map((o) => (
+          <CardRow
+            key={o.id}
+            what={`${o.card.quantity} · ${o.card.unit}`}
+            card={o.card}
+            layer="fixed"
+            mark={o.id}
+          />
+        ))}
+      </tbody>
+    </table>
   );
 }
 
@@ -657,6 +694,7 @@ export function ImpactReport({
           >
             {i === 0 && <p className={styles.atlasKicker}>{t('report.impact.atlas')}</p>}
             {figures.map(card)}
+            {i === atlas.length - 1 && <FixedCards objects={model.fixed} />}
           </Sheet>
         ))}
 
@@ -702,25 +740,9 @@ export function ImpactReport({
                   ))}
                 </Fragment>
               ))}
-              {/* Rule 1216: what the globe draws on every layer. */}
-              {model.fixed.length > 0 && (
-                <tr className={styles.cardGroup} data-report-card="fixed">
-                  <td colSpan={5} data-card="quantity">
-                    <b>{t('globe.impactMap.fixed.heading')}</b>
-                  </td>
-                </tr>
-              )}
-              {model.fixed.map((o) => (
-                <CardRow
-                  key={o.id}
-                  what={`${o.card.quantity} · ${o.card.unit}`}
-                  card={o.card}
-                  layer="fixed"
-                  mark={o.id}
-                />
-              ))}
             </tbody>
           </table>
+          {atlas.length === 0 && <FixedCards objects={model.fixed} />}
           {model.absent.length > 0 && (
             <>
               <h3 className={styles.subheading}>{t('globe.impactMap.absentHeading')}</h3>

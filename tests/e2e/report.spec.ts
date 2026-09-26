@@ -167,10 +167,32 @@ test.describe('the impact report', () => {
   test('prints to A4, a sheet a page', async ({ page, browserName }) => {
     test.skip(browserName !== 'chromium', 'Only Chromium prints to PDF.');
     await openReport(page, 'it');
-    const pdf = await page.pdf({ format: 'A4', printBackground: true, preferCSSPageSize: true });
-    const pages = (pdf.toString('latin1').match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+    const count = async (): Promise<number> => {
+      const pdf = await page.pdf({ format: 'A4', printBackground: true, preferCSSPageSize: true });
+      return (pdf.toString('latin1').match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+    };
+    const pages = await count();
+    // When the report runs long, say which sheet spills (rule 1213's amendment
+    // found one only on CI's fonts): each sheet printed alone, less the break
+    // after it.
+    const perSheet: Record<string, number> = {};
+    if (pages > 12) {
+      const ids = await page
+        .locator('[data-report-sheet]')
+        .evaluateAll((els) => els.map((e) => e.getAttribute('data-report-sheet') ?? ''));
+      for (const id of ids) {
+        await page.evaluate((keep) => {
+          document.getElementById('one-sheet')?.remove();
+          const style = document.createElement('style');
+          style.id = 'one-sheet';
+          style.textContent = `[data-report-sheet]:not([data-report-sheet="${keep}"]) { display: none !important; }`;
+          document.head.appendChild(style);
+        }, id);
+        perSheet[id] = (await count()) - 1;
+      }
+    }
     expect(pages).toBeGreaterThanOrEqual(7);
     // Rule 1037 (b): the maps' provenance cards take a sheet of their own.
-    expect(pages).toBeLessThanOrEqual(12);
+    expect(pages, `pages per sheet: ${JSON.stringify(perSheet)}`).toBeLessThanOrEqual(12);
   });
 });

@@ -1642,6 +1642,22 @@ export const RULE_1212_WRITTEN = '2026-09-26' as const;
  * configuration is printed instead as a paragraph of the method's sheet,
  * with the formulas it chose, which kept its one page. Re-sealed again,
  * text digests only.]
+ *
+ * [Amended a second time, after the push: CI's own run of the same check
+ * (Linux fonts) still counted 13 pages against 12, one sheet more than at
+ * 7b82b32 -- locally the count is 13 at both commits, so the local run could
+ * not see it. Read page by page from the local PDF, the sheet nearest the
+ * edge is the cards' (its list of the layers not drawn spills one line), and
+ * rule 1216 had put the crater's and the cavity's cards in it. Three
+ * changes, each giving back height: the fixed objects' cards move to the
+ * foot of the last atlas sheet, after the maps they are drawn on (rule
+ * 1216's own text is amended with it); the configuration is one line when
+ * every switch is at its default, the switches set away from it named one
+ * by one otherwise; and I2's band joins G4's row, printed where the
+ * scenario lies inside the measured cells -- outside them the verdict
+ * already says there is none. The end-to-end check now reports each
+ * sheet's pages when the total runs over, so a spill on CI's fonts names
+ * its sheet.]
  */
 export const RULE_1213_WRITTEN = '2026-09-26' as const;
 
@@ -1729,7 +1745,9 @@ export const RULE_1215_WRITTEN = '2026-09-26' as const;
  *     tooltip's source (`globe.tooltip.source.impactCavity`, Ward & Asphaug
  *     2000); the extent, a ring at that radius; beyond it, not applicable.
  * The legend lists them under a heading of their own, each with its card;
- * the report's table of cards prints them after the layers'. The drawing
+ * the report prints them after the layers' cards [amended: at the foot of
+ * the last atlas sheet, after the maps they are drawn on -- see rule 1213's
+ * second amendment]. The drawing
  * does not move. The report's text does, in every scenario with a crater or
  * a cavity: re-sealed under rule 833 with this rule and rule 1213 as the
  * reasons.
