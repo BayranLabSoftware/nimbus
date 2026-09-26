@@ -86,3 +86,48 @@
  *     in `src/physics/validation/` and as pages in `docs/`.
  */
 export const BLAST_SOLVER_OPENED = '2026-09-26' as const;
+
+/**
+ * RULE 1255. THE SCHEME, CHOSEN AFTER READING (26 September 2026, 10:09).
+ * Written before any code.
+ *
+ * (a) WHAT WAS READ, whole (mathematical papers; they name no event):
+ *     Berberich, Chandrashekar, Klingenberg & Röpke (2019), «Second order
+ *     finite volume scheme for Euler equations with gravity which is
+ *     well-balanced for general equations of state and grid systems»,
+ *     Commun. Comput. Phys. 26, 599–630 (arXiv 1807.11825, sha-256
+ *     598acb40…); Berberich, Käppeli, Chandrashekar & Klingenberg,
+ *     arXiv 2005.01811 (ed14f43e…), for the kinds of well-balanced schemes.
+ *     Käppeli & Mishra (2016, A&A) was not read: its host answered with a
+ *     CAPTCHA, which is not bypassed.
+ * (b) THE KIND. Ours is their «type 1»: the atmosphere at rest is known
+ *     beforehand — in closed form for an isothermal atmosphere, as a table
+ *     for a standard one later. With the background's density and pressure
+ *     written ρ̄ = ρ₀α(z), p̄ = p₀β(z), the scheme reconstructs
+ *     w = (ρ/α, u, v, p/β) — constant at rest — and turns face values back
+ *     with α and β at the face; gravity on the vertical momentum is
+ *     (p₀ρᵢ/(ρ₀αᵢ))·(β(z_{j+½}) − β(z_{j−½}))/Δz, and on the energy (kept
+ *     without the potential) the vertical velocity times it. Their Theorem
+ *     4.1 proves the atmosphere at rest exact for any consistent numerical
+ *     flux and any reconstruction of w. About the axis the background does
+ *     not vary with r; the geometric term p/r, with rᵢ the midpoint of the
+ *     cell's radial faces, balances the radial fluxes exactly.
+ * (c) A CHANGE TO RULE 1254 (b), declared: time is advanced by the method of
+ *     lines with the second-order strong-stability-preserving Runge–Kutta
+ *     scheme of Shu & Osher, not by the Hancock half step — the theorem is
+ *     proven for the semi-discrete scheme, and a Hancock predictor would need
+ *     a proof of its own. The rest stands: second-order MUSCL reconstruction
+ *     of w with the van Leer limiter, the HLLC flux (Toro), float64, SI units.
+ * (d) THE DETAILS, fixed now. A uniform grid, Δr = Δz, in phase 1 (a
+ *     stretched one only under a later rule). Time step: CFL 0.4 on the sum
+ *     of both directions' signal speeds. The axis and the ground reflect;
+ *     the outer and upper boundaries copy w outward (the background stays
+ *     exact there). Where a reconstructed face has no positive density or
+ *     pressure, that cell falls back to first order for that step, and every
+ *     fallback is counted and reported. The source: its energy added as
+ *     internal energy to the cells inside the sphere, weighted by the share
+ *     of each cell's volume inside it (sampled), then scaled so that the
+ *     energy put in is exactly the source's. The ground reading: in the
+ *     first row of cells, the peak over the run of p − p̄ at each range.
+ */
+export const RULE_1255_WRITTEN = '2026-09-26' as const;
