@@ -454,3 +454,23 @@ export const RULE_1266_WRITTEN = '2026-09-26' as const;
  *     the energy of T2 is Andrea's to decide once T2 has its outcome.
  */
 export const RULE_1267_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1268. A STEP THAT CANNOT KEEP POSITIVITY IS DONE AGAIN WITH HALF THE
+ * TIME STEP (26 September 2026, 19:02). Written before the code.
+ *
+ * (a) WHAT HAPPENED. T3's run at 13 km on its coarse grid (1 260 m cells, a
+ *     source of 500 m inside one cell) threw at its ninth step (rule 1264
+ *     (c)): the source's cell on the axis, emptying at 7 km/s, kept a negative
+ *     pressure even at first order — at that time step the axisymmetric term
+ *     p/r, strongest next to the axis, outruns the first-order update. The
+ *     T3 batch stopped; T2 and T4 ran on.
+ * (b) THE MEND, numerical, under rule 1254 (d). When a stage cannot restore
+ *     positivity (rule 1264 (b)), the whole step is started again from its
+ *     own beginning with half the time step, up to eight times; a step still
+ *     unsound after eight halvings throws, as before. The halvings are
+ *     counted and reported. A run that never meets the fault computes, to the
+ *     bit, what it computed before: T2's and T4's runs, under way, are not
+ *     touched.
+ */
+export const RULE_1268_WRITTEN = '2026-09-26' as const;

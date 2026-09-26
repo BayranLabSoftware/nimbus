@@ -75,6 +75,9 @@ export interface BlastOptions {
   readonly cfl?: number;
 }
 
+/** A stage that could not restore positivity (rules 1264, 1268). */
+class PositivityError extends Error {}
+
 export class BlastSolver2D {
   readonly nr: number;
   readonly nz: number;
@@ -101,6 +104,8 @@ export class BlastSolver2D {
   /** Cells redone at first order after a stage left them without a positive
    *  density or pressure (rule 1264 (b)). */
   redone = 0;
+  /** Steps done again with half the time step (rule 1268). */
+  halvings = 0;
 
   private readonly stride: number;
   private readonly rC: Float64Array;
@@ -618,7 +623,7 @@ export class BlastSolver2D {
     ];
     this.low.fill(0);
     const speed = this.rhs();
-    const dt = Math.min(this.cfl / speed, maxDt);
+    let dt = Math.min(this.cfl / speed, maxDt);
     if (!(dt > 0 && Number.isFinite(dt))) throw new Error(`blast2d: time step ${String(dt)}`);
     // U¹ = Uⁿ + Δt L(Uⁿ); U² = ¾Uⁿ + ¼(U¹ + Δt L(U¹)); Uⁿ⁺¹ = ⅓Uⁿ + ⅔(U² + Δt L(U²)).
     // Each stage starts from its own state (`pre`) with L already in d; a
@@ -650,20 +655,37 @@ export class BlastSolver2D {
                 break;
               }
           if (!bad) return;
-          throw new Error('blast2d: a cell stays without positive density or pressure');
+          throw new PositivityError('blast2d: a cell stays without positive density or pressure');
         }
-        if (attempt >= 4) throw new Error('blast2d: positivity not restored after five tries');
+        if (attempt >= 4)
+          throw new PositivityError('blast2d: positivity not restored after five tries');
         this.redone += marked;
         for (const [u, , , pre] of sets) u.set(pre);
         this.rhs();
       }
     };
     for (const [u, k0] of sets) k0.set(u);
-    stage(0, 1);
-    this.rhs();
-    stage(0.75, 0.25);
-    this.rhs();
-    stage(1 / 3, 2 / 3);
+    // Rule 1268: a step whose stage cannot restore positivity starts again
+    // from Uⁿ with half the time step, up to eight times.
+    for (let halving = 0; ; halving++) {
+      try {
+        if (halving > 0) {
+          for (const [u, k0] of sets) u.set(k0);
+          this.low.fill(0);
+          this.rhs();
+        }
+        stage(0, 1);
+        this.rhs();
+        stage(0.75, 0.25);
+        this.rhs();
+        stage(1 / 3, 2 / 3);
+        break;
+      } catch (error) {
+        if (!(error instanceof PositivityError) || halving >= 8) throw error;
+        dt /= 2;
+        this.halvings++;
+      }
+    }
     this.time += dt;
     this.steps++;
     const p0 = this.backgroundPressure(0);
