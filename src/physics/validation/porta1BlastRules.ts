@@ -454,3 +454,83 @@ export const RULE_1249_WRITTEN = '2026-09-26' as const;
  *     would be shown without claiming a validation it cannot have.
  */
 export const RULE_1250_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1251. THE THIRD STEP: THE 250 Mt MAP READ OFF ITS FIGURE, AND THE
+ * PRODUCT MEASURED AGAINST IT — BEFORE ANY DISPLAY (26 September 2026,
+ * 09:50). Written before the figure is digitised.
+ *
+ * (a) THE SOURCE. Aftosmis, Mathias & Tarano (2019), Acta Astronautica 156,
+ *     278–283, open (CC BY), Andrea's copy in the sources folder (sha-256
+ *     5697fb52…, rule 1245 (c)). Its Fig. 5 is the only form of the 250 Mt
+ *     map: ground range against burst height, both scaled to 1 kt by the
+ *     cube root of the yield, with Glasstone & Dolan's 1 kt map (solid) and
+ *     the 26 Cart3D bursts of 250 Mt (dashed) at 1, 2, 4 and 10 psi. The PDF
+ *     carries it as seven raster tiles (about 4.2 pixels per point),
+ *     recomposed by their placement matrices; no table of it exists.
+ * (b) HOW IT IS READ. Axes calibrated on the frame and the grid (0 to 3 km of
+ *     range, 0 to 1.6 km of height, 1 kt scaled). Each threshold's curve is
+ *     isolated by its colour; the dashed curve is read at the 26 simulated
+ *     heights the footnote lists (the map's own data points, 0 to 1.270 km
+ *     scaled), the solid one at the same heights. Where a height meets a curve
+ *     twice (the bulge), both crossings are kept. A reading's uncertainty is
+ *     the line's half-width plus a pixel, stated in km scaled and at 250 Mt.
+ *     The digitised values, with the figure's fingerprint and the procedure,
+ *     enter the repository; the figure does not.
+ * (c) WHAT IS MEASURED, development only, nothing in the product changing:
+ *     (1) the product's static source at 1 kt against Glasstone & Dolan's
+ *     solid curves — whether the product's blast is the map the figure
+ *     starts from; (2) the product at 250 Mt against the dashed curves, at
+ *     the same scaled heights — the ratio of reaches at 1, 2, 4 and 10 psi;
+ *     (3) which bodies the product sends to complete airbursts above 5 Mt,
+ *     where the map could matter. No observed event is involved: the map can
+ *     move only yields no airburst on record has reached.
+ * (d) WHAT DOES NOT FOLLOW YET. How the map would be shown — a layer, a
+ *     note, a variant — and what would be done between 5 and 250 Mt, where
+ *     PAIR interpolates by a variable its papers do not state, are decided
+ *     after (c) is measured, by Andrea.
+ */
+export const RULE_1251_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1252. THE PRINTED REPORT SPILLED, AND HOW IT IS MENDED (26 September
+ * 2026, 10:25). Written before the fix.
+ *
+ * (a) WHAT FAILED. The CI of 5189a8f failed «prints to A4, a sheet a page»
+ *     on Chromium and mobile Chrome: 13 pages where 12 is the budget, the
+ *     first atlas sheet printing on two. Rule 1246 (c) gave each low
+ *     overpressure line its own sentence; the report prints a line's sentence
+ *     wherever the sentences tell the lines apart (a block under the title),
+ *     so Meteor Crater's table went from two rows of one line to four rows of
+ *     two — 52 to 131 px — and its notes 11 px longer: the sheet grew from
+ *     907 to 997 px (measured locally against the base 4cff07f served beside
+ *     it). The lesson recorded on 26 September at 01:45 — run the Chromium
+ *     end-to-end tests on the pages touched before pushing — was not
+ *     followed; it is followed now.
+ * (b) A TRIAL THAT DID NOT COUNT. A first fix was tried in the page — the
+ *     sentence on the title's line, the closing «exploratory, not validated»
+ *     dropped from each — and read as fitting; the reading was wrong: after
+ *     the first measurement the page had been put back to screen media, and
+ *     the later PDFs were printed with the screen's styles. Measured again
+ *     with the print styles, that fix leaves the sheet at 954 px and on two
+ *     pages; the local limit lies between 927 and 937 px, and the two added
+ *     rows alone cost 36 px the sheet does not have. It was undone.
+ * (c) THE FIX, keeping everything rule 1246 put there. (1) The low
+ *     overpressure's figure takes a sheet of its own in the atlas, the other
+ *     figures paired after it in their order. Tried in the page with the
+ *     print styles before any code: Meteor Crater prints on 14 pages locally,
+ *     as the base does, every atlas sheet on one page. With an odd number of
+ *     figures, as there, no sheet is added; with an even number, one is —
+ *     each sheet still one page. (2) The new pair (wind and heat) is left
+ *     with 0 to 10 px to spare locally, too little to trust the CI's fonts:
+ *     a line's sentence follows its title on the same line, after a « · »,
+ *     in every table of the impacts' report — measured with the print
+ *     styles, that pair's sheet then has at least 50 px to spare, and the
+ *     summary sheet shrinks from 917 to 884 px. The dropped «exploratory»
+ *     of (b) is not taken up: the sentences stay as rule 1246 wrote them.
+ * (d) HOW IT IS CHECKED. The report's end-to-end tests run locally on
+ *     Chromium, each sheet counted against the base served beside it; the
+ *     unit suite; the seal (the report's text is unchanged, so it must not
+ *     move).
+ */
+export const RULE_1252_WRITTEN = '2026-09-26' as const;

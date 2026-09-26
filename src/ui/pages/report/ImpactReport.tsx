@@ -542,8 +542,23 @@ export function ImpactReport({
   const [first, ...rest] = model.figures;
   const others = rest.filter((f) => f.layer.id !== 'uncertainty');
   const uncertainty = rest.find((f) => f.layer.id === 'uncertainty');
+  // Rule 1252: the low overpressure's table carries a sentence per line
+  // (rule 1246 (c)), and its figure takes a sheet of its own; the others are
+  // paired after it as before.
+  const alone = (f: ReportFigure): boolean => f.layer.id === 'lowOverpressure';
   const atlas: ReportFigure[][] = [];
-  for (let i = 0; i < others.length; i += 2) atlas.push(others.slice(i, i + 2));
+  for (let i = 0; i < others.length; ) {
+    const f = others[i];
+    const g = others[i + 1];
+    if (f === undefined) break;
+    if (alone(f) || g === undefined || alone(g)) {
+      atlas.push([f]);
+      i += 1;
+    } else {
+      atlas.push([f, g]);
+      i += 2;
+    }
+  }
   if (uncertainty !== undefined) atlas.push([uncertainty]);
 
   return (

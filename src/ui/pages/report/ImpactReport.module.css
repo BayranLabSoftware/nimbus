@@ -444,10 +444,15 @@
   font-weight: 600;
 }
 
+/* Rule 1252: a line's sentence follows its title on the same line. */
 .table .small {
-  display: block;
+  display: inline;
   font-size: 8.4px;
   color: #6b675f;
+}
+
+.table .small::before {
+  content: ' · ';
 }
 
 .table tr.selected td {
