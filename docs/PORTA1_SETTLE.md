@@ -1,4 +1,4 @@
-# Porta 1 — the fragment-cloud branch's settle condition (rules 1222 to 1230)
+# Porta 1 — the fragment-cloud branch's settle condition (rules 1222 to 1234)
 
 Porta 1 of the plan (the physics of the near field) opened on 26 September 2026, as the direct
 continuation of the fragment-cloud branch (FCM). Its first item was the audit's own: 93 % of the
@@ -118,6 +118,25 @@ rule; and the switch was first put in `scripts/fcmRound1Common.ts`, one of the s
 files — restored to its sealed bytes before any commit, and every run started again from the
 committed scripts.
 
+## The branch above 10 m (rules 1231 and 1234)
+
+Round 1's map of the perimeter re-read at every point of 10 m or more — 109 points, 436 runs, the
+map's own inputs and draws, sealed beside corrected (`docs/PORTA1_MAP_ABOVE_10M.md`). 412 runs
+complete under both engines, the same 24 under neither; 176 are identical to the bit, 236 change.
+
+| Diameter  | Changed    | Runs giving > 1 % of the entry's energy to the air at stops, sealed → corrected | Median peak altitude, sealed → corrected |
+| --------- | ---------- | ------------------------------------------------------------------------------- | ---------------------------------------- |
+| 10–30 m   | 29 of 130  | 1 → 0                                                                           | 28.48 → 28.39 km                         |
+| 30–100 m  | 70 of 134  | 27 → 0                                                                          | 22.04 → 20.37 km                         |
+| 100–300 m | 137 of 148 | 124 → 0                                                                         | 37.26 → 11.48 km                         |
+
+Between 100 and 300 m the median energy given to the air at stops falls from 50.02 % of the entry's
+to nothing. At the top of the range the change is of kind: under the sealed engine no run of the map
+peaks in its lowest 1.5 km or brings a tenth of its energy to the ground; under the corrected one ten
+runs (bodies of 234 to 300 m, whose sealed peaks stood at 26.5 to 47.1 km) peak at the ground with
+30 to 65 % of the entry's energy, and 24 runs bring a tenth or more. The corrected ledger closes to
+5.0·10⁻¹⁶.
+
 ## What it means
 
 - Round 3's candidate and verdict stand, because its own predictions are identical under the two
@@ -125,12 +144,15 @@ committed scripts.
   structured body); no development draw there meets it.
 - Rule 1190's pooled 93.21 % was, for 83 % of its weight, the defect. The rest of the settled mass is
   real slowing to terminal speed, and its fate is the open question of item (b).
-- Where a cloud is born high and slow for its air — structured bodies above 10 m, the largest
-  monoliths, the bodies the audit says dominate the risk — the sealed branch's deposit was its
-  stopping rule, not its physics. Any later run of the branch uses the corrected version.
+- Where a cloud is born high and slow for its air — structured bodies above 10 m, most bodies above
+  100 m, the bodies the audit says dominate the risk — the sealed branch's deposit was its stopping
+  rule, not its physics, and at the top of the range it turned bodies that reach the ground into high
+  airbursts. Any later run of the branch uses the corrected version; the product, which does not read
+  the branch, is not touched.
 
 ## Next
 
-The branch above 10 m: round 1's map re-read, under its own rule. The breakup criterion (Rulko et
-al. 2025) and the interaction between fragments (Register et al. 2020) wait for their sources, which
-the publisher refuses to a script (rule 1225).
+Porta 1 now waits for sources, not for work: the breakup criterion (Rulko et al. 2025), the
+interaction between fragments (Register et al. 2020) and the share of the settled mass (Klekociuk et
+al. 2005, `docs/PORTA1_SETTLED_FATE.md`) are behind paywalls the project does not fetch around (rule
+1225). The blast and the heat open after the entry's three items (rule 1226).

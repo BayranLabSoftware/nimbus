@@ -513,3 +513,47 @@ export const RULE_1232_WRITTEN = '2026-09-26' as const;
  *     to later, never a constant to tune it on.
  */
 export const RULE_1233_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1234. RULE 1231'S OUTCOME — the branch above 10 m, round 1's map
+ * re-read (26 September 2026, 03:40 to 04:33; `porta1MapAbove10m.json`,
+ * `docs/PORTA1_MAP_ABOVE_10M.md`).
+ *
+ * (a) WHAT RAN. 436 runs; 412 complete under both engines and the same 24
+ *     under neither — no run completes under one engine only. Identical to
+ *     the bit: 176; changed: 236 — 35 of 102 (M1/unlimited), 39 of 104
+ *     (M1/capped), 84 of 105 (M2/unlimited), 78 of 101 (M2/capped). The
+ *     corrected engine's ledger, worst over every completed run: 5.0·10⁻¹⁶.
+ * (b) THE STOPS. Runs whose flight gives more than 1 % of the entry's energy
+ *     to the air at stops: 152 under the sealed engine — 1 of 130 between
+ *     10 and 30 m, 27 of 134 between 30 and 100 m, 124 of 148 between 100
+ *     and 300 m, the worst a whole entry's worth — and none under the
+ *     corrected one (its worst: 2.8·10⁻⁵).
+ * (c) THE DEPOSIT, by diameter (medians over the runs completed by both).
+ *     10–30 m: 29 runs changed, the peak's altitude 28.48 → 28.39 km.
+ *     30–100 m: 70 changed, 22.04 → 20.37 km. 100–300 m: 137 changed; the
+ *     energy given to the air at stops 50.02 % → 0.00 %, the peak 37.26 →
+ *     11.48 km, the energy at the ground 0.016 % → 0.37 % of the entry's.
+ *     At the top of the perimeter the change is of kind, not of degree:
+ *     under the sealed engine no run of the map peaks in its lowest 1.5 km
+ *     or brings 10 % of the entry's energy to the ground; under the
+ *     corrected one 10 runs peak at the ground (bodies of 234 to 300 m,
+ *     whose sealed peaks stood at 26.5 to 47.1 km), carrying 30 to 65 % of
+ *     the entry's energy down with them where the sealed engine let 4.4 % at
+ *     most, and 24 runs bring 10 % or more.
+ * (d) WHAT IT MEANS. For a fifth of the bodies between 30 and 100 m and
+ *     for most above 100 m (124 of 148), the sealed branch's deposit was its
+ *     stopping rule, and at the top of the range it turned bodies that reach
+ *     the ground into high airbursts. The audit named the large bodies as
+ *     the ones that dominate the risk; for them the sealed branch was wrong
+ *     in kind. The product is not touched — its entry is Collins et al.'s
+ *     pancake, and the branch is read by no product number (rule 1222) —
+ *     and nothing is adopted: the corrected engine is the version every
+ *     later round of the branch starts from, under gates 1 to 3 as any
+ *     change is.
+ * (e) PORTA 1 NOW WAITS for sources, not for work: item (a), Rulko et al.
+ *     (2025); item (c), Register et al. (2020); item (b)'s share, Klekociuk
+ *     et al. (2005) — each asked of Andrea (rules 1225, 1233). The blast and
+ *     the heat open after the entry's three items (rule 1226).
+ */
+export const RULE_1234_WRITTEN = '2026-09-26' as const;
