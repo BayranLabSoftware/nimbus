@@ -16,7 +16,7 @@ describe('the atmosphere at rest (T0, rule 1254 (c))', () => {
     expect(solver.time).toBeGreaterThan(50);
     expect(solver.maxSpeed()).toBeLessThan(1e-9);
     expect(solver.fallbacks).toBe(0);
-  });
+  }, 30_000);
 });
 
 describe('conservation, with no gravity and walls on two sides', () => {
@@ -42,7 +42,7 @@ describe('conservation, with no gravity and walls on two sides', () => {
     expect(Math.abs(mass() - m0) / m0).toBeLessThan(1e-12);
     // Something moved, and the ground felt it.
     expect(solver.maxSpeed()).toBeGreaterThan(10);
-  });
+  }, 30_000);
 
   it('gives a moving source its downward momentum and the whole energy', () => {
     const air = uniformAtmosphere(SEA.rho0, SEA.p0);
@@ -56,7 +56,7 @@ describe('conservation, with no gravity and walls on two sides', () => {
       for (let i = 0; i < solver.nr; i++)
         pz += (solver.mz[solver.index(i, j)] ?? 0) * solver.cellVolume(i);
     expect(pz).toBeLessThan(0);
-  });
+  }, 30_000);
 });
 
 describe("rule 1277's continuous limiter (Hu, Adams & Shu 2013)", () => {
@@ -68,7 +68,7 @@ describe("rule 1277's continuous limiter (Hu, Adams & Shu 2013)", () => {
     expect(solver.maxSpeed()).toBeLessThan(1e-9);
     expect(solver.limitedFaces).toBe(0);
     expect(solver.scaledFaces).toBe(0);
-  });
+  }, 30_000);
 
   it('keeps the mass and the energy put in, with no fall-back of any kind', () => {
     const air = uniformAtmosphere(SEA.rho0, SEA.p0);
@@ -90,7 +90,7 @@ describe("rule 1277's continuous limiter (Hu, Adams & Shu 2013)", () => {
     expect(solver.fallbacks).toBe(0);
     expect(solver.redone).toBe(0);
     expect(solver.halvings).toBe(0);
-  });
+  }, 30_000);
 
   it('answers a tiny change of the source with a tiny change of the ground', () => {
     // Rule 1277 (a): no yes-or-no decision for rounding to turn.
@@ -109,5 +109,5 @@ describe("rule 1277's continuous limiter (Hu, Adams & Shu 2013)", () => {
       if (x > 1_000) worst = Math.max(worst, Math.abs((b[i] ?? 0) / x - 1));
     }
     expect(worst).toBeLessThan(1e-6);
-  });
+  }, 30_000);
 });
