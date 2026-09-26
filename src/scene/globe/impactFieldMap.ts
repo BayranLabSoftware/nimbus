@@ -1884,6 +1884,11 @@ function uncertaintyLayer(result: ImpactScenarioResult, ctx: ImpactMapContext): 
             : t('globe.impactMap.note.agreementNowhere', { high: formatRange(high, language) }),
       },
       { label: t('globe.impactMap.noteLabel.not'), text: t('globe.impactMap.note.agreementNot') },
+      // Rule 1249: the edges named for what Collins et al. (2017) make them.
+      {
+        label: t('globe.impactMap.noteLabel.edges'),
+        text: t('globe.impactMap.note.agreementEdges'),
+      },
     ],
   };
 }

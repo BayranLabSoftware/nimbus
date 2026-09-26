@@ -346,6 +346,19 @@ describe('rule 1246: the windows’ criterion and the airburst’s declared limi
   });
 });
 
+describe('rule 1249: the band named for what it is', () => {
+  it('names both edges of the Field agreement view and carries Table 2’s note', () => {
+    const r = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
+    const agreement = availableImpactLayers(r, ctx).find((l) => l.id === 'uncertainty');
+    expect(agreement?.uncertainty?.selected?.kind).toBe('agreement');
+    expect(agreement?.categories.map((c) => c.label.split('{')[0])).toEqual([
+      'globe.impactMap.agreementAll',
+      'globe.impactMap.agreementSome',
+    ]);
+    expect(agreement?.notes.map((n) => n.text)).toContain('globe.impactMap.note.agreementEdges');
+  });
+});
+
 describe('rule 1031 (d): below the main threshold', () => {
   const tunguska = simulateImpact(IMPACT_PRESETS.TUNGUSKA.input);
 

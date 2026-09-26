@@ -381,7 +381,9 @@ export const RULE_1247_WRITTEN = '2026-09-26' as const;
  *     ranges of 1, 10, 20 and 35 kPa, for the static (S), moving (M) and line
  *     (C) sources. The moving over the static source: at ground zero 1.38,
  *     1.63, 2.17, 2.81; at three burst altitudes 1.03 to 1.10; at 1 kPa's
- *     range 1.05, 0.99, 0.92 (farther out the moving source reaches less);
+ *     range 1.05, 0.99, 0.92 (farther out the moving source reaches less
+ *     [at 5 and 15 Mt only; at 0.5 Mt a little farther — corrected under rule
+ *     1249]);
  *     at 20 kPa's range 2.63 (5 Mt), 1.15 (15), 1.03 (50). Their S is their
  *     own iSALE sphere, not the program's scaling law the product draws.
  * (c) WHAT THEY GIVE AS A FAST METHOD: no analytic moving source — they name
@@ -404,3 +406,51 @@ export const RULE_1247_WRITTEN = '2026-09-26' as const;
  *     development list to hold it to. Which, if either, is Andrea's choice.
  */
 export const RULE_1248_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1249. THE SECOND STEP, CHOSEN: THE BAND NAMED FOR WHAT IT IS (26
+ * September 2026, 09:20; Andrea's answer to rule 1248 (d): «Nominare la
+ * banda»). Written before any code.
+ *
+ * (a) WHAT DOES NOT MOVE. No model is added and no number moves: the band of
+ *     rules 706 to 713 stays as it is — within three burst altitudes, the
+ *     static reach at half the threshold for its upper edge and at twice it
+ *     for its lower edge; beyond, the static reach. The numbers digest of every
+ *     scenario of the seal must stay the same.
+ * (b) WHAT MOVES, the words of the Field agreement view (complete airbursts
+ *     only) and of the overpressure layer's band note, in Italian and in
+ *     English. The upper edge is named what Collins et al. make it: their fast
+ *     stand-in for the moving source (a fireball still falling); the lower
+ *     edge, the line source along a vertical trajectory. A note of its own
+ *     gives Table 2's ratios — the moving over the static source 1.4 times at
+ *     ground zero for 0.5 Mt at 21.5 km, 2.8 times for 50 Mt at 11 km, about
+ *     1 at three burst altitudes, and at 1 kPa's range a little less at 5
+ *     and 15 Mt, a little more at 0.5 Mt; the line source 2 to 4
+ *     times lower beneath the burst — and says the factor two is their fast
+ *     correction, not one of their results, for vertical entries only.
+ * (c) HOW IT IS CHECKED. A test that the Field agreement view names both
+ *     edges and carries the note, on a complete airburst; the seal re-taken
+ *     with the moved scenarios listed, numbers digest unmoved; `tsc
+ *     --noEmit`, eslint, the unit suite; the validation report, unchanged.
+ */
+export const RULE_1249_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1250. RULE 1249'S OUTCOME, AND THE SECOND STEP CLOSED (26 September
+ * 2026, 09:40).
+ *
+ * (a) The seal re-taken with its reason: numbers digest moved in none of the
+ *     308 scenarios; drawing and text in the 57 complete airbursts, the only
+ *     ones that draw the Field agreement view. The validation report,
+ *     regenerated once, is unchanged to the byte (Gate: PASS). `tsc --noEmit`
+ *     and eslint clean; the unit suite green, 3 271 tests with rule 1249's.
+ * (b) The second step of rule 1246 is closed with no model added: the moving
+ *     source stays the band's upper edge, now named so, with Collins et al.'s
+ *     numbers beside it. Rule 1244 (b)'s 24.5 km at Tunguska (0.92 of the
+ *     felled forest) is that edge; it is a development reading and stays one.
+ * (c) NEXT, the third step: Aftosmis, Mathias & Tarano (2019)'s 250 Mt map as
+ *     exploratory, under its own rules before any code — what its figure
+ *     gives, how it would be read off, which bodies it would move, and how it
+ *     would be shown without claiming a validation it cannot have.
+ */
+export const RULE_1250_WRITTEN = '2026-09-26' as const;
