@@ -342,3 +342,37 @@ export const RULE_1262_WRITTEN = '2026-09-26' as const;
  * 7.1 s, the wave's passage, with a peak of at least 1 979 Pa at the far end.
  */
 export const RULE_1263_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1264. THE FIFTH-ORDER SCHEME LOST POSITIVITY IN THE FIREBALL: AN A
+ * POSTERIORI FALL-BACK, AND RUNS THAT FAIL LOUDLY (26 September 2026, 17:14).
+ * Written before the code.
+ *
+ * (a) WHAT HAPPENED. With rule 1262's scheme, T2 at 16, 48, 187 and 293 m
+ *     and T3's low bursts ran on for twenty minutes and more where their
+ *     predecessors took seconds. Reproduced at 16 m on 20 m cells: in the
+ *     fireball's hot, thin core by the axis and the ground the density falls
+ *     to 10⁻³ kg/m³, first-order fall-backs at the faces multiply, and a stage
+ *     of the Runge–Kutta leaves a cell with no positive density or pressure;
+ *     from there the state is not a number, the time step infinite, and the
+ *     run never meets its stop. Rule 1262's check guards the reconstruction
+ *     at the faces, not the cell's update. The runs were stopped; T1's grids
+ *     of 100 and 200 cells had finished (worst 3.7 and 6.1 %), its finest had
+ *     not.
+ * (b) THE MEND, a numerical one under rule 1254 (d). After each stage, every
+ *     interior cell whose density or pressure is not a positive finite number
+ *     is marked; the stage is done again from its own starting state with the
+ *     faces of the marked cells at first order (the HLLC flux of the cells'
+ *     own values), and so on until no cell is marked; the marks hold for the
+ *     rest of the step. This is the a posteriori idea known as MOOD (Clain,
+ *     Diot & Loubère 2011, not read here), in its plainest form; the
+ *     first-order HLLC update is what the unmarked scheme falls back to. The
+ *     cells so redone are counted and reported with the face fall-backs.
+ * (c) RUNS THAT FAIL LOUDLY. If a stage still leaves a marked cell after five
+ *     tries, or a time step is not a positive finite number, the solver
+ *     throws; a run that throws is reported as failed by the pool, never
+ *     waited on.
+ * (d) Checked on the cases that failed (16 m on 20 m cells, a low T3 burst)
+ *     before the tests run again; the unit tests stay green.
+ */
+export const RULE_1264_WRITTEN = '2026-09-26' as const;

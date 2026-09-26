@@ -98,6 +98,9 @@ export class BlastSolver2D {
   steps = 0;
   /** Faces that fell back to first order (rules 1255 (d), 1262 (a)). */
   fallbacks = 0;
+  /** Cells redone at first order after a stage left them without a positive
+   *  density or pressure (rule 1264 (b)). */
+  redone = 0;
 
   private readonly stride: number;
   private readonly rC: Float64Array;
@@ -130,6 +133,13 @@ export class BlastSolver2D {
   private readonly k2: Float64Array;
   private readonly k3: Float64Array;
   private readonly flux = new Float64Array(4);
+  /** Cells whose faces are held at first order for the rest of the step
+   *  (rule 1264 (b)), and the state at the start of the current stage. */
+  private readonly low: Uint8Array;
+  private readonly pre0: Float64Array;
+  private readonly pre1: Float64Array;
+  private readonly pre2: Float64Array;
+  private readonly pre3: Float64Array;
 
   constructor(grid: BlastGrid, atmosphere: Atmosphere, options: BlastOptions = {}) {
     const { nr, nz, dx } = grid;
@@ -167,6 +177,11 @@ export class BlastSolver2D {
     this.k1 = f();
     this.k2 = f();
     this.k3 = f();
+    this.pre0 = f();
+    this.pre1 = f();
+    this.pre2 = f();
+    this.pre3 = f();
+    this.low = new Uint8Array(n);
     this.rC = Float64Array.from({ length: nr }, (_, i) => (i + 0.5) * dx);
     this.rF = Float64Array.from({ length: nr + 1 }, (_, i) => i * dx);
     this.alphaC = Float64Array.from({ length: nz }, (_, j) => atmosphere.alpha((j + 0.5) * dx));
@@ -460,6 +475,7 @@ export class BlastSolver2D {
   /** Whether a face's reconstructed ρ/α and p/β are positive on both sides;
    *  where not, the face falls back to first order, counted (rule 1262 (a)). */
   private faceIsPositive(kl: number, kr: number): boolean {
+    if ((this.low[kl] ?? 0) !== 0 || (this.low[kr] ?? 0) !== 0) return false;
     if (
       (this.s1[kl] ?? 0) > 0 &&
       (this.s4[kl] ?? 0) > 0 &&
@@ -581,25 +597,66 @@ export class BlastSolver2D {
     return fastest;
   }
 
-  /** One step of the Shu–Osher third-order Runge–Kutta; returns Δt (s). */
+  /** Whether a cell's density and pressure are positive finite numbers. */
+  private sound(k: number): boolean {
+    const r = this.rho[k] ?? NaN;
+    const a = this.mr[k] ?? NaN;
+    const b = this.mz[k] ?? NaN;
+    const p = (this.gamma - 1) * ((this.en[k] ?? NaN) - (0.5 * (a * a + b * b)) / r);
+    return r > 0 && p > 0 && Number.isFinite(r) && Number.isFinite(p);
+  }
+
+  /** One step of the Shu–Osher third-order Runge–Kutta, with rule 1264's a
+   *  posteriori fall-back; returns Δt (s). */
   step(maxDt = Infinity): number {
     const { nr, nz, stride } = this;
-    const sets: [Float64Array, Float64Array, Float64Array][] = [
-      [this.rho, this.k0, this.d0],
-      [this.mr, this.k1, this.d1],
-      [this.mz, this.k2, this.d2],
-      [this.en, this.k3, this.d3],
+    const sets: [Float64Array, Float64Array, Float64Array, Float64Array][] = [
+      [this.rho, this.k0, this.d0, this.pre0],
+      [this.mr, this.k1, this.d1, this.pre1],
+      [this.mz, this.k2, this.d2, this.pre2],
+      [this.en, this.k3, this.d3, this.pre3],
     ];
+    this.low.fill(0);
     const speed = this.rhs();
     const dt = Math.min(this.cfl / speed, maxDt);
+    if (!(dt > 0 && Number.isFinite(dt))) throw new Error(`blast2d: time step ${String(dt)}`);
     // U¹ = Uⁿ + Δt L(Uⁿ); U² = ¾Uⁿ + ¼(U¹ + Δt L(U¹)); Uⁿ⁺¹ = ⅓Uⁿ + ⅔(U² + Δt L(U²)).
+    // Each stage starts from its own state (`pre`) with L already in d; a
+    // stage that leaves a cell unsound marks it, and is done again.
     const stage = (keep: number, add: number): void => {
-      for (const [u, k0, d] of sets)
+      for (const [u, , , pre] of sets) pre.set(u);
+      for (let attempt = 0; ; attempt++) {
+        for (const [u, k0, d, pre] of sets)
+          for (let j = 0; j < nz; j++)
+            for (let i = 0; i < nr; i++) {
+              const k = (j + G) * stride + (i + G);
+              u[k] = keep * (k0[k] ?? 0) + add * ((pre[k] ?? 0) + dt * (d[k] ?? 0));
+            }
+        let marked = 0;
         for (let j = 0; j < nz; j++)
           for (let i = 0; i < nr; i++) {
             const k = (j + G) * stride + (i + G);
-            u[k] = keep * (k0[k] ?? 0) + add * ((u[k] ?? 0) + dt * (d[k] ?? 0));
+            if (!this.sound(k) && (this.low[k] ?? 0) === 0) {
+              this.low[k] = 1;
+              marked++;
+            }
           }
+        if (marked === 0) {
+          let bad = false;
+          for (let j = 0; j < nz && !bad; j++)
+            for (let i = 0; i < nr; i++)
+              if (!this.sound((j + G) * stride + (i + G))) {
+                bad = true;
+                break;
+              }
+          if (!bad) return;
+          throw new Error('blast2d: a cell stays without positive density or pressure');
+        }
+        if (attempt >= 4) throw new Error('blast2d: positivity not restored after five tries');
+        this.redone += marked;
+        for (const [u, , , pre] of sets) u.set(pre);
+        this.rhs();
+      }
     };
     for (const [u, k0] of sets) k0.set(u);
     stage(0, 1);
