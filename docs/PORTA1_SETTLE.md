@@ -152,7 +152,8 @@ runs (bodies of 234 to 300 m, whose sealed peaks stood at 26.5 to 47.1 km) peak 
 
 ## Next
 
-Porta 1 now waits for sources, not for work: the breakup criterion (Rulko et al. 2025), the
-interaction between fragments (Register et al. 2020) and the share of the settled mass (Klekociuk et
-al. 2005, `docs/PORTA1_SETTLED_FATE.md`) are behind paywalls the project does not fetch around (rule
-1225). The blast and the heat open after the entry's three items (rule 1226).
+The entry's three items are written up (rules 1236 to 1240, `docs/PORTA1_SOURCES.md`): the breakup
+criterion (Rulko et al. 2025) and the interaction between fragments (Register et al. 2020) are not
+identifiable from their sources; the settled mass's kind is (dust aloft for months), its share is not
+(Klekociuk et al. 2005 state none). Rule 1226's condition for the blast and the heat is met; each
+opens by its own rules, the blast first, when Andrea gives the word.

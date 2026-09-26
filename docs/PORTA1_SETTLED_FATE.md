@@ -48,3 +48,20 @@ its entry mass. _Refuted by:_ large bolides whose dust clouds carry little of th
   on the share will be written again when it is read.
 - Nothing is coded, fitted or adopted. A known bolide's dust fraction is an observable the branch
   could later be held to, never a constant to tune it on.
+
+## The primary, read (rule 1239 (a), 26 September 2026)
+
+Klekociuk et al. (2005, Nature 436, 1132; sha-256 3ea14a48…) state **no fraction**. They measure a
+dust cloud of (1.1 ± 0.3)·10⁶ kg — which they call a lower limit, since the lidar sampled the debris
+of the upper fragmentation only — against three masses of the meteoroid: 0.6–1.9·10⁶ kg from entry
+modelling, (0.65 ± 0.05)·10⁶ kg from its light, (1.4 ± 0.3)·10⁶ kg from infrasound. The review's «79
+%, at least 47 %» is the infrasound ratio alone; over the other two masses the ratio runs from 0.42 to
+2.33, and a ratio above 1 is impossible.
+
+- **Kind: confirmed** on a primary measurement of an event outside every set of this project —
+  micrometre silicate dust (effective radii near 0.4 and 1 µm), not nanometre smoke, suspended or
+  settling slowly and carried by the stratospheric wind.
+- **Share: not identifiable.** The most that can be defended is about 0.4 of the initial mass or more,
+  from the upper event alone and conditional on the optical retrieval — too weak to tell fate laws
+  apart. Any constant drawn from it would be a one-event fit, and would spend the event as a held-out
+  test.

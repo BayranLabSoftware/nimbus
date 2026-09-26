@@ -92,7 +92,11 @@ export const PORTA1_OPENED = '2026-09-26' as const;
  * 20170000320, sha-256 ca8261c1…) calls a debris cloud one aggregate mass of
  * particulates that drives the deposition. So the branch's stop is R17's own
  * kind, and cloud mass is never meteorite mass — the published model sets no
- * later fate for it.
+ * later fate for it. [Corrected on 26 September 2026, rule 1239 (b): R17's
+ * «limiting velocity» belongs to its stand-alone pancake (its Sect. 2.3); its
+ * fragment-cloud model (Sect. 2.7) and W18 fly every cloud until it reaches
+ * the ground or ablates away, with no speed cutoff. The branch's stop is the
+ * pancake's, carried over as deviation D9, not the fragment-cloud model's.]
  *
  * But the stop as coded is not the stop as written. Rule 1138 (c): «a cloud
  * settles where its speed is within this share ABOVE its terminal speed»,
@@ -557,3 +561,250 @@ export const RULE_1233_WRITTEN = '2026-09-26' as const;
  *     the heat open after the entry's three items (rule 1226).
  */
 export const RULE_1234_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1235. THE SOURCES ANDREA PUT IN `~/Desktop/Nimbus-fonti/` ON 26
+ * SEPTEMBER 2026 (07:08 to 07:17), catalogued at 07:20 from their file
+ * names and metadata alone, before any is read (rule 1225). The reviewer is
+ * set aside for now, on Andrea's word of the same morning: what follows is
+ * written for the record, and nothing is sent.
+ *
+ * (a) THE CATALOGUE, with each file's SHA-256 recorded as it is read.
+ *     - For rule 1224's items: (a) Rulko et al. (2025), the accepted
+ *       manuscript (26 pp.), and Rulko's MIT thesis (2024, «On stress,
+ *       strength, and failure in asteroids during planetary entry», 102
+ *       pp.); (c) Register et al. (2020), «Interactions between asteroid
+ *       fragments during atmospheric entry»; (b)'s share, Klekociuk et al.
+ *       (2005), Nature 436, the bolide of 3 September 2004.
+ *     - The branch's own sources in their journal form, R17 (Icarus 2017)
+ *       and W18 (Icarus 2018), read in round 1 from their NTRS copies:
+ *       compared only where they bear on rules 1138 and 1227.
+ *     - From the same programme, not asked for: Tárano et al. (2019),
+ *       meteoroid characteristics inferred by a genetic algorithm; Mathias
+ *       et al. (2019), a probabilistic assessment of Tunguska-scale impacts;
+ *       Robertson & Mathias (2019), hydrocode simulations of airbursts and
+ *       constraints for Tunguska; a model of the Tunguska airburst's thermal
+ *       radiation (2019); the reprint on asteroid property distributions and
+ *       expected impact rates (2019). [Corrected on reading, rule 1236 (a):
+ *       the assessment and the reprint are both Wheeler & Mathias (2019);
+ *       the thermal model is Johnston & Stern (2019).]
+ *     - Not about this project, come in the same bundles: the Icarus
+ *       issues' other articles (Europa's plumes, volatile transport, the
+ *       lunar neon exosphere, hydrogen cyanide in exoplanet atmospheres, two
+ *       corrigenda, editorial boards) — catalogued, not read.
+ *     - The audit's own PDF, a copy — already known. A scan with no text
+ *       layer (`Seismo_1314.pdf`, 11 pp.), identified from its first page
+ *       before it is classed. Missing from the request: Rietmeijer et al.
+ *       (2016).
+ * (b) HOW THEY ARE READ. Extracted into the session's scratch folder, never
+ *     into the repository — only fact sheets, fingerprints and quotes under
+ *     fifteen words enter it. Each read whole through the altitude mask,
+ *     every altitude masked, the development cases' included (rule 1225);
+ *     each fact sheet in rule 1192's form; for each form, what it would need
+ *     to enter the branch — its free parameters, its domain — and never
+ *     code (rule 1224 (d)).
+ * (c) WHO READS. The batch is read in parallel by reading agents working
+ *     only on the masked texts, with this rule and rule 1192's form; every
+ *     fact sheet they return is checked against the masked text before a
+ *     rule records it.
+ * (d) WHAT COMES OUT. For each item of rule 1224, a verdict: a form that is
+ *     identifiable and measurable on its own — which a later rule may then
+ *     preregister as a candidate — or NOT IDENTIFIABLE. For rule 1226's
+ *     blast and heat, a note of what the sources offer, nothing opened:
+ *     they come after the entry's three items. No code, no adoption, no
+ *     class B.
+ */
+export const RULE_1235_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1236. RULE 1235'S BATCH, READ (26 September 2026, 07:30 to 07:50) —
+ * the catalogue corrected, and what the mask let through.
+ *
+ * (a) THE SOURCES, as their texts name them, with their fingerprints:
+ *     Rulko, Rau, Chomette, Wheeler, Mathias, Dotson & Radovitzky (2025),
+ *     Icarus 434, 116526, accepted manuscript (sha-256 1d7e2e9f…); Rulko
+ *     (2024), MIT SM thesis (f7657228…); Register, Aftosmis, Stern, Brock,
+ *     Seltner, Willems, Guelhan & Mathias (2020), Icarus 337, 113468
+ *     (5e245a32…); Klekociuk, Brown, Pack, ReVelle, Edwards et al. (2005),
+ *     Nature 436, 1132 (3ea14a48…); R17, Icarus 2017 (4a5fe381…); W18,
+ *     Icarus 315 (2018) (ea241bff…); Tárano, Wheeler, Close & Mathias
+ *     (2019), Icarus 329 (9c418f2a…); Wheeler & Mathias (2019), Icarus 327,
+ *     83–96 (1f267784…) and their property-distributions paper, reprinted in
+ *     Icarus 327, 72–82 (0811b866…); Robertson & Mathias (2019), Icarus 327,
+ *     36–47 (7689870f…); Johnston & Stern (2019), Icarus 327, 48–59
+ *     (1be1f881…). The scan `Seismo_1314.pdf` is O'Keefe & Ahrens (1985),
+ *     read already (rule 1192 (b)). Every text was read whole through the
+ *     altitude mask, by five readers, and every finding recorded below was
+ *     checked against the masked text before it was written.
+ * (b) WHAT THE MASK LET THROUGH — nothing used, nothing copied: the
+ *     coordinates in Klekociuk et al.'s Fig. 1 caption, from which an entry
+ *     angle would give the masked altitudes of the 2004 bolide; two Monte
+ *     Carlo burst altitudes in Wheeler & Mathias (p. 6), statistics of
+ *     simulated bodies; an altitude split across a line break in Register
+ *     et al. (p. 18), a generic example; W18's integration step; figure
+ *     ticks and a code listing in Rulko's texts (Chelyabinsk, or a generic
+ *     atmosphere); the constants of Johnston & Stern's Eq. 8, which fix the
+ *     reference altitude the prose masks. None is a blind target's altitude.
+ *     The mask is hardened — coordinates, numbers split across lines — before
+ *     any further source on an event outside the development list is read.
+ * (c) BLIND EVENTS NAMED: Rulko's thesis lists Neuschwanstein, Bunburra
+ *     Rockhole and Grimsby (round 3) among the thirteen fireballs of Popova
+ *     et al. (2011) that one of its figures plots; the text gives no number
+ *     of theirs, and the figure was not read. Tárano et al. cite
+ *     Neuschwanstein in a reference's title only. No other round-3, level-B
+ *     or fourth-set name occurs.
+ */
+export const RULE_1236_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1237. ITEM (a), THE BREAKUP CRITERION — Rulko et al. (2025) and
+ * Rulko (2024), the fact sheet and the verdict.
+ *
+ * (a) THE FORM. Linear elastostatics of a monolith under the entry's loads
+ *     (modified-Newtonian pressure, deceleration, optionally spin): the
+ *     largest equivalent stress inside is the stagnation pressure divided
+ *     by a strength factor F that mechanics fixes — no event is fitted.
+ *     F = 10.3 for a circle in two dimensions; for a sphere 35, 17.5 and
+ *     10.3 at Poisson ratios 0, 0.2 and 0.4; for six real shape models 3.2
+ *     to 65.6, by orientation; lower with spin, as ρ_b ω² R² / q* grows. The
+ *     equivalent stress is Mohr–Coulomb with k = 0.14 ± 0.02 from
+ *     laboratory meteorite strengths (as printed, σ_I + k σ_II does not give
+ *     the paper's own numbers; only the classical σ_I − k σ_II, with σ_II
+ *     compressive, does). The thesis uses the largest principal stress
+ *     instead, F ≈ 20, with a Weibull size law for strength.
+ * (b) WHAT IT LEAVES FREE: the strength the stress is compared with, at the
+ *     body's size — not given. The one number, a laboratory tensile
+ *     strength of 30 MPa, unscaled, sets the first break at 17.5 × 30 = 525
+ *     MPa for Chelyabinsk's Poisson ratio, above the paper's own peak
+ *     stagnation pressure for it (about 0.4 GPa): no break at all. The
+ *     thesis's Weibull moduli are compressive (1.73 to 6.49), which applies
+ *     to a body is left open, and the one it favours was judged by eye on
+ *     fireballs that include three of round 3's blind events and several
+ *     development cases.
+ * (c) THE VERDICT: NOT IDENTIFIABLE as a replacement for «break when ρv² ≥
+ *     S». Without the strength at scale, «ρv² ≥ F σ» relabels S; its only
+ *     new content — spin and shape — needs per-body inputs almost never
+ *     known. What would make it identifiable, from sources that are not
+ *     events: a tensile size law measured in the laboratory (its modulus,
+ *     reference strength and volume) and a Poisson ratio from meteorites;
+ *     F σ_t(L) would then be a prediction to test on events never used to
+ *     choose it. The observable that would discriminate it: first-break
+ *     pressures at about F times an independently known body-scale tensile
+ *     strength, and lower for fast rotators and necked bodies.
+ */
+export const RULE_1237_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1238. ITEM (c), THE INTERACTION BETWEEN FRAGMENTS — Register et al.
+ * (2020), the fact sheet and the verdict.
+ *
+ * (a) THE FORM: a pair law (AFFIx) with constants from CFD and two wind-
+ *     tunnel runs, not from fireballs. A child released from its parent at
+ *     size ratio r and angle θ ends in one of five zones — the near wake,
+ *     the far wake, the parent's shock, independent flight, ahead — after a
+ *     time D₁ (ρ/q)^½ τ(r, θ); the zone boundaries are fitted angles of r.
+ *     The branch's independent wakes are one of the five outcomes, reached
+ *     only after that time; small children are mostly caught in the wake.
+ *     For an equal pair side by side the lateral speed is 0.34 of Passey &
+ *     Melosh's, with their √(ρ_a/ρ) v form kept.
+ * (b) WHAT IT LEAVES FREE: the distributions of fragment sizes and release
+ *     angles at a break — which the paper itself names as the primary
+ *     missing elements; the drag inside each zone; the mapping from a pair
+ *     to a cloud's spreading (C_disp). Validated in the tunnel only for
+ *     equal spheres in two configurations; N-body effects untested.
+ * (c) THE VERDICT: NOT IDENTIFIABLE. The outcome is set by the release
+ *     angle, which no source constrains; in an energy-deposition curve its
+ *     effect is degenerate with strength, strength scaling, cloud fraction
+ *     and C_disp; no fireball tests it. It would become identifiable with an
+ *     independent source of release angles (hydrocode or fall statistics)
+ *     and an observable that isolates capture or delay: a strewn field with
+ *     masses and positions and an independently known breakup geometry, or
+ *     the lag of a child's flare after a well-timed break.
+ */
+export const RULE_1238_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1239. ITEM (b), THE SHARE AND THE STOP — Klekociuk et al. (2005),
+ * the journal texts of R17 and W18, and Tárano et al. (2019).
+ *
+ * (a) KLEKOCIUK ET AL. STATE NO FRACTION. They measure a dust cloud of (1.1
+ *     ± 0.3)·10⁶ kg, which they call a lower limit (the lidar sampled the
+ *     debris of the upper fragmentation only), against three masses of the
+ *     meteoroid: 0.6–1.9·10⁶ kg from entry modelling, (0.65 ± 0.05)·10⁶
+ *     from its light, (1.4 ± 0.3)·10⁶ from infrasound. The review's «79 %,
+ *     at least 47 %» (rule 1233 (c)) is the infrasound ratio alone; over the
+ *     other two masses the ratio runs from 0.42 to 2.33, and above 1 is
+ *     impossible. The KIND is confirmed on a primary measurement of an event
+ *     outside every set of this project: micrometre silicate dust (effective
+ *     radii near 0.4 and 1 µm), not nanometre smoke, suspended or settling
+ *     slowly, carried by the stratospheric wind. The SHARE is NOT
+ *     IDENTIFIABLE: the defensible bound (about 0.4 or more of the initial
+ *     mass, from the upper event alone, conditional on the retrieval) is too
+ *     weak to tell fate laws apart, and any constant drawn from it would be
+ *     a one-event fit that spends the event as a held-out test.
+ * (b) THE STOP. R17's «limiting velocity» belongs to its stand-alone
+ *     pancake (its Sect. 2.3); its fragment-cloud model (Sect. 2.7) flies
+ *     each cloud until it reaches the ground or ablates to negligible mass,
+ *     and W18 (p. 2) models every component until it ablates or reaches the
+ *     ground — no speed cutoff in either. The branch's settle stop (rule
+ *     1138 (c), deviation D9) is the pancake's, carried over; rule 1227's
+ *     sentence is corrected (bracketed there). It changes no energy — a
+ *     cloud stopped at its terminal speed carries a few per cent of a
+ *     terminal speed's energy (D9) — but it names the mass: in the published
+ *     model's terms the settled mass is cloud debris flown on at its
+ *     terminal speed, never counted as meteorites (W18 counts fragments),
+ *     and, read with (a), dust that stays aloft for months. The stop is kept
+ *     as D9 declared it, now described as what it is.
+ * (c) TÁRANO ET AL. fit the fragment-cloud model to three light curves
+ *     (Chelyabinsk, Lost City, Benešov) with C_disp fixed at 3.5 (Hills &
+ *     Goda); the cloud fraction, strength scaling and fragment count are
+ *     searched in boxes and never reported, and the fits are not unique. No
+ *     prior for the branch comes from it that was not chosen on its
+ *     development cases.
+ */
+export const RULE_1239_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1240. THE ENTRY'S THREE ITEMS WRITTEN UP — and what the batch offers
+ * the blast and the heat (rule 1226), noted, nothing opened.
+ *
+ * (a) THE ENTRY: (a) the breakup criterion, NOT IDENTIFIABLE (rule 1237;
+ *     the stress factor is, the strength at scale is missing); (b) the
+ *     settled mass, its KIND identifiable and its SHARE not (rules 1233,
+ *     1239); (c) the interaction, NOT IDENTIFIABLE (rule 1238). No
+ *     candidate is preregistered from them (rule 1224 (d)). Rule 1226's
+ *     condition for the blast and the heat — the entry's three items written
+ *     up or declared not identifiable — is met; each opens by its own rules,
+ *     the blast first, when Andrea gives the word.
+ * (b) FOR THE BLAST. Wheeler & Mathias (2019) set out PAIR's practice: a
+ *     static source at the altitude of peak energy deposition, with the
+ *     entry's whole energy; damage radii read from height-of-burst maps —
+ *     Glasstone & Dolan's below 5 Mt, Aftosmis, Mathias & Tarano's CFD maps
+ *     above 250 Mt, interpolated linearly between (in which variable, not
+ *     said); 4 psi (27.6 kPa) as the damage radius; winds of 45–50 m/s at 4
+ *     psi and 24–28 m/s at 2 psi from 15 Mt simulations. The maps are not in
+ *     the batch (Acta Astronautica, doi:10.1016/j.actaastro.2017.12.021 —
+ *     the «Aftosmis et al. 2019» of rule 1226). Robertson & Mathias (2019)
+ *     compute no moving-source blast: a hydrocode-calibrated half-energy
+ *     burst altitude (their Eq. 3, two constants fitted to their own runs,
+ *     not to Tunguska) and a canopy-top wind criterion for trees, with a
+ *     warning the audit's blast finding must meet: at Tunguska the trees'
+ *     strength alone spans 3 to 30 Mt, so the damage criterion must be fixed
+ *     independently before the propagation is blamed.
+ * (c) FOR THE HEAT. Johnston & Stern (2019): the ground flux from the shock
+ *     layer and wake of the moving body or debris cloud, a closed form fitted
+ *     to coupled CFD–radiation simulations (not to Tunguska; ±30 %), with an
+ *     atmospheric absorption fit (±15–25 %), for 6 to 18 km/s — a moving
+ *     source by construction, and the flux history at each ground point that
+ *     a long-pulse threshold (Coates et al. 2024) needs. Its 40 J/cm²
+ *     charring threshold is fixed and says nothing of pulse length; its
+ *     Tunguska radius and cloud cap are fitted there and not transferable.
+ * (d) FOR THE MONTE CARLO AND LEVEL B: population data independent of
+ *     this project's events — NEOWISE albedos, the size formula D =
+ *     1.326·10⁶ m·10^(−H/5)/√p_v, H frequencies, density and speed ranges
+ *     (Wheeler & Mathias). PAIR's fragment-cloud settings (80 % cloud,
+ *     strength scaling 0.1–0.3, a halved ablation coefficient) were informed
+ *     by fits to four of this project's development cases: adopting them
+ *     would fit nothing here, but would spend those cases' independence.
+ */
+export const RULE_1240_WRITTEN = '2026-09-26' as const;
