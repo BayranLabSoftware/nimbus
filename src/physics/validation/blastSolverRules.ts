@@ -376,3 +376,35 @@ export const RULE_1263_WRITTEN = '2026-09-26' as const;
  *     before the tests run again; the unit tests stay green.
  */
 export const RULE_1264_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1265. AN OPEN QUESTION AT 250 Mt, AND THE DIAGNOSTICS SO FAR (26
+ * September 2026, 17:30). Diagnostics, not tests: nothing is judged here.
+ *
+ * (a) THE QUESTION. In T3's stratified atmosphere the solver's ground wave
+ *     decays far more slowly than in a uniform one of the same ground density:
+ *     a surface burst of 250 Mt on the coarse grid keeps 7.7, 4.1, 2.9, 2.7 and
+ *     2.2 psi at 0.5 to 2.5 km scaled (32 to 158 km), against 4.7, 1.8, 1.1,
+ *     0.7 and 0.6 psi without gravity, and reaches 1 psi near 3.1 km scaled —
+ *     Aftosmis et al.'s Cart3D, 1.04. The superseded second-order runs show the
+ *     same slow decay, so it is not the fifth-order scheme's.
+ * (b) EXCLUDED so far: the domain's top (twice as high, the same peaks to the
+ *     hundredth of a psi); gravity at a small scale (1 kt at the ground with
+ *     and without an isothermal atmosphere, the peaks within 1 % out to 2 km);
+ *     a gross loss or gain of energy (internal, kinetic and potential energy
+ *     kept to 0.04 % over the first seconds at 250 Mt).
+ * (c) KOMPANEETS. A strong blast 6 H above the ground, the shock's shape
+ *     against Kompaneets (1960)'s relations as restated by Roy et al. (arXiv
+ *     1303.2664, sha-256 d182ea13…), which do not depend on his constant λ
+ *     (`scripts/blast2d-kompaneets.ts`, 20 cells per H): at a top of 0.5 H the
+ *     bottom and the widest radius agree (1.00 and 1.01 times); as the top
+ *     climbs to 3 H the solver's bottom lies 1.13 to 1.35 times, and its widest
+ *     radius 1.05 to 1.18 times, beyond Kompaneets's — the direction in which
+ *     his uniform-pressure assumption is expected to err (a top that climbs
+ *     too fast); by how much, the source read does not say. The solver keeps
+ *     more of the energy low: consistent with (a), not a proof of it.
+ * (d) WHAT DECIDES IT: T4, a comparison with another code (Collins et al.'s
+ *     iSALE) in a stratified atmosphere out to 1 kPa at 257 km. T3 is judged
+ *     only once T4 has spoken.
+ */
+export const RULE_1265_WRITTEN = '2026-09-26' as const;
