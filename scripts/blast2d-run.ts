@@ -75,7 +75,8 @@ export function runCase(c: BlastCase): BlastRun {
   while (solver.steps < guard) {
     solver.step();
     const peak = solver.groundPeak[last] ?? 0;
-    if (peak > 0 && solver.pressure(last, 0) - p0 < peak / 3) break;
+    // Rule 1263: a peak above rounding, a ten-thousandth of the ground's pressure.
+    if (peak > 1e-4 * p0 && solver.pressure(last, 0) - p0 < peak / 3) break;
   }
   return {
     case: c,

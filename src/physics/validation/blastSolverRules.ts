@@ -261,3 +261,84 @@ export const RULE_1259_WRITTEN = '2026-09-26' as const;
  *     and 5 m scaled to 1 kt, the finest judged.
  */
 export const RULE_1260_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1261. T2'S OUTCOME: FAILED, AND NOT CONVERGED (26 September 2026,
+ * 16:37; `blast2dT2.json`, `docs/BLAST2D_T2.md`).
+ *
+ * (a) AS RUN. Of 104 readings, 60 were judged and 44 left out (a zero, or
+ *     ill-conditioned under rule 1256 (a)); worst 67 %, median 10.4 % — T2
+ *     FAILS. At 1 psi the finest grid reaches 1.40 km at the ground (Glasstone
+ *     & Dolan 1.17), 1.95 km at their optimum (2.14) and 1.51 km at 1.27 km of
+ *     height (0.90): a flatter curve than theirs.
+ * (b) NOT CONVERGED. The reach grows by nearly equal steps from 20 to 10 to
+ *     5 m — at 1 psi and the optimum 1.22, 1.60, 1.95 km, observed order 0.14;
+ *     elsewhere 0.2 to 0.7. No extrapolation stands, and the finest grid is
+ *     not yet an answer: T2 cannot yet say whether the solver agrees with the
+ *     map.
+ * (c) THE DIAGNOSIS, one hypothesis at a time. (1) The domain's top: a run at
+ *     1.27 km with the top 1.2 and 2.4 km above the burst gives the same reach
+ *     to the metre, and the ground's peaks come with the direct wave —
+ *     excluded. (2) The source's resolution: in a one-dimensional spherical
+ *     version of the same scheme (a diagnostic, `scripts/blast1d-diagnostic.ts`),
+ *     cells of 0.625 m out to 500 m and 5 m beyond give 7.77 kPa at 1 km,
+ *     against 7.64 with 5 m everywhere and 9.08 with 0.625 m everywhere —
+ *     excluded. (3) The propagation: the same diagnostic gives the free-air
+ *     peak at 1 km as 4.60, 6.44, 7.64, 8.44, 8.96 and 9.08 kPa for cells of
+ *     20, 10, 5, 2.5, 1.25 and 0.625 m (at 2 km 1.72 to 3.95): the
+ *     second-order TVD reconstruction clips the pulse's peak — a local
+ *     extremum, where the limiter falls to first order — at every step of its
+ *     travel; at 5 m the peak is 16 % low at 1 km and 23 % at 2 km. That is
+ *     the fault: numerical.
+ * (d) OPEN, not acted on: Glasstone & Dolan (§1.25, fourmilab's Chapter I,
+ *     sha-256 e5a20d25…) put about half a fission burst's energy into the air
+ *     shock, and rule 1254 set 1 kt one for one. Whether that matters is read
+ *     only once T2 converges; any change to it would come after the outcome,
+ *     and is Andrea's.
+ * (e) T3, run on the same scheme, was stopped at 57 of 104 runs.
+ */
+export const RULE_1261_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1262. THE NUMERICAL FAULT MENDED: A FIFTH-ORDER RECONSTRUCTION
+ * (26 September 2026, 16:37). Under rule 1254 (d); written before the solver's
+ * code is changed.
+ *
+ * (a) THE CHANGE. The reconstruction of w (rule 1255 (b)) becomes the
+ *     fifth-order weighted essentially non-oscillatory one — the candidate
+ *     stencils, linear weights (1/10, 6/10, 3/10) and smoothness indicators
+ *     of Shu's ICASE report 97-65 (NASA/CR-97-206253, NTRS 19980007543,
+ *     sha-256 9d24d811…, read for them), with the «Z» weights of Borges et
+ *     al. (2008), αₖ = dₖ(1 + |β₀ − β₂|/(βₖ + ε)), in the form widely
+ *     restated (their paper was not read); three ghost layers; time by the
+ *     third-order strong-stability-preserving Runge–Kutta of Shu & Osher.
+ *     Berberich et al.'s theorem holds for any reconstruction of w: the
+ *     atmosphere at rest stays exact. Where a reconstructed face has no
+ *     positive ρ/α or p/β, that face falls back to first order, counted.
+ * (b) TRIED FIRST in the one-dimensional diagnostic: the free-air peak at
+ *     1 km, 8.52, 9.41, 8.48 and 8.88 kPa for cells of 20, 10, 5 and 2.5 m,
+ *     against 9.08 for the TVD scheme at 0.625 m; at 2 km 3.59, 3.76, 3.52,
+ *     3.87 against 3.95 — close at a cell ten to twenty times coarser, but not
+ *     monotone (±5 % from grid to grid). The classic Jiang–Shu weights, tried
+ *     in a draft of the diagnostic, did not finish a run; not diagnosed, not
+ *     used.
+ * (c) EVERY TEST RUNS AGAIN on the mended scheme, with its criteria as fixed:
+ *     T0, T1 (both of its judgements, rules 1257 and 1258), T2, T3 and T4
+ *     on the grids fixed for them. The superseded runs stay on record.
+ */
+export const RULE_1262_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1263. A LATENT FAULT OF THE RUNS' STOP, MENDED BEFORE THEY RUN AGAIN
+ * (26 September 2026, 16:41).
+ *
+ * A run stops once the incident wave has passed the farthest range read: its
+ * peak set there, and the overpressure there fallen below a third of it
+ * (`scripts/blast2d-run.ts`). «Its peak set» was «a peak above zero», and
+ * air at rest carries rounding of some 10⁻¹¹ Pa: the one-dimensional
+ * diagnostic, rewritten cleanly for the record, stopped on it at once. The
+ * condition becomes a peak above 10⁻⁴ of the ground's pressure (10 Pa).
+ * None of the runs so far was touched: every one of T2's 78 lasted at least
+ * 7.1 s, the wave's passage, with a peak of at least 1 979 Pa at the far end.
+ */
+export const RULE_1263_WRITTEN = '2026-09-26' as const;

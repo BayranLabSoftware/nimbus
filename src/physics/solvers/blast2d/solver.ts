@@ -9,13 +9,16 @@
  * - finite volumes on a uniform grid, Δr = Δz;
  * - Berberich, Chandrashekar, Klingenberg & Röpke (2019)'s well-balanced
  *   reconstruction: the variables w = (ρ/α, u, v, p/β), constant at rest,
- *   reconstructed to second order with the van Leer limiter and turned back
- *   with the background at the face; gravity on the vertical momentum
+ *   reconstructed to fifth order (WENO, the stencils and smoothness
+ *   indicators of Shu's ICASE report 97-65 with the Z weights of Borges et
+ *   al. 2008; rule 1262) and turned back with the background at the face,
+ *   a face with no positive ρ/α or p/β falling back to first order;
+ *   gravity on the vertical momentum
  *   (p₀ρᵢ/(ρ₀αᵢ))·(β_{j+½} − β_{j−½})/Δz, on the energy v times it;
  * - the HLLC Riemann solver (Toro), with Davis's wave-speed estimates;
  * - the axisymmetric term p/r on the radial momentum, rᵢ the midpoint of the
  *   cell's radial faces;
- * - the second-order strong-stability-preserving Runge–Kutta of Shu & Osher.
+ * - the third-order strong-stability-preserving Runge–Kutta of Shu & Osher.
  *
  * The reference implementation, float64 and SI throughout; its tests are the
  * six of rule 1254 (c).
@@ -23,8 +26,28 @@
 
 import type { Atmosphere } from './atmosphere.js';
 
-/** Two ghost layers on every side, for the second-order reconstruction. */
-const G = 2;
+/** Three ghost layers on every side, for the fifth-order reconstruction. */
+const G = 3;
+
+/**
+ * The fifth-order WENO value at the face between c and d, from the cells
+ * a, b, c, d, e in order: the three third-order candidates and Jiang & Shu's
+ * smoothness indicators (Shu, ICASE report 97-65, eqs. 2.51 and 2.63), linear
+ * weights 1/10, 6/10, 3/10, and the Z weights of Borges et al. (2008).
+ */
+function weno5z(a: number, b: number, c: number, d: number, e: number): number {
+  const q0 = (2 * a - 7 * b + 11 * c) / 6;
+  const q1 = (-b + 5 * c + 2 * d) / 6;
+  const q2 = (2 * c + 5 * d - e) / 6;
+  const b0 = (13 / 12) * (a - 2 * b + c) ** 2 + 0.25 * (a - 4 * b + 3 * c) ** 2;
+  const b1 = (13 / 12) * (b - 2 * c + d) ** 2 + 0.25 * (b - d) ** 2;
+  const b2 = (13 / 12) * (c - 2 * d + e) ** 2 + 0.25 * (3 * c - 4 * d + e) ** 2;
+  const tau = Math.abs(b0 - b2);
+  const w0 = 0.1 * (1 + tau / (b0 + 1e-40));
+  const w1 = 0.6 * (1 + tau / (b1 + 1e-40));
+  const w2 = 0.3 * (1 + tau / (b2 + 1e-40));
+  return (w0 * q0 + w1 * q1 + w2 * q2) / (w0 + w1 + w2);
+}
 
 export interface BlastGrid {
   /** Cells along the ground. */
@@ -73,7 +96,7 @@ export class BlastSolver2D {
 
   time = 0;
   steps = 0;
-  /** Cell-directions that fell back to first order (rule 1255 (d)). */
+  /** Faces that fell back to first order (rules 1255 (d), 1262 (a)). */
   fallbacks = 0;
 
   private readonly stride: number;
@@ -88,11 +111,15 @@ export class BlastSolver2D {
   private readonly vu: Float64Array;
   private readonly vv: Float64Array;
   private readonly q4: Float64Array;
-  // Slopes of w, one direction at a time.
+  // w at each cell's upper face (s) and lower face (t), one direction at a time.
   private readonly s1: Float64Array;
   private readonly su: Float64Array;
   private readonly sv: Float64Array;
   private readonly s4: Float64Array;
+  private readonly t1: Float64Array;
+  private readonly tu: Float64Array;
+  private readonly tv: Float64Array;
+  private readonly t4: Float64Array;
   // Right-hand side, and the state at the start of a step.
   private readonly d0: Float64Array;
   private readonly d1: Float64Array;
@@ -128,6 +155,10 @@ export class BlastSolver2D {
     this.su = f();
     this.sv = f();
     this.s4 = f();
+    this.t1 = f();
+    this.tu = f();
+    this.tv = f();
+    this.t4 = f();
     this.d0 = f();
     this.d1 = f();
     this.d2 = f();
@@ -339,38 +370,33 @@ export class BlastSolver2D {
     return fastest / this.dx;
   }
 
-  /** Van Leer's limited slopes of w along one direction (step 1 or stride),
-   *  with the fall-back to first order of rule 1255 (d). */
-  private slopes(step: number): void {
+  /** w at both faces of every cell along one direction (step 1 or stride),
+   *  by the fifth-order WENO reconstruction of rule 1262. */
+  private reconstruct(step: number): void {
     const { nr, nz, stride } = this;
-    const lim = (a: number, b: number): number => (a * b > 0 ? (2 * a * b) / (a + b) : 0);
     const iLo = step === 1 ? -1 : 0;
     const iHi = step === 1 ? nr : nr - 1;
     const jLo = step === 1 ? 0 : -1;
     const jHi = step === 1 ? nz - 1 : nz;
+    const vars: [Float64Array, Float64Array, Float64Array][] = [
+      [this.q1, this.s1, this.t1],
+      [this.vu, this.su, this.tu],
+      [this.vv, this.sv, this.tv],
+      [this.q4, this.s4, this.t4],
+    ];
+    const s2 = 2 * step;
     for (let j = jLo; j <= jHi; j++)
       for (let i = iLo; i <= iHi; i++) {
         const k = (j + G) * stride + (i + G);
-        const m = k - step;
-        const p = k + step;
-        const c1 = this.q1[k] ?? 0;
-        const c4 = this.q4[k] ?? 0;
-        const a1 = lim(c1 - (this.q1[m] ?? 0), (this.q1[p] ?? 0) - c1);
-        const a4 = lim(c4 - (this.q4[m] ?? 0), (this.q4[p] ?? 0) - c4);
-        if (c1 - 0.5 * Math.abs(a1) <= 0 || c4 - 0.5 * Math.abs(a4) <= 0) {
-          this.s1[k] = 0;
-          this.su[k] = 0;
-          this.sv[k] = 0;
-          this.s4[k] = 0;
-          if (i >= 0 && i < nr && j >= 0 && j < nz) this.fallbacks++;
-          continue;
+        for (const [w, up, down] of vars) {
+          const a = w[k - s2] ?? 0;
+          const b = w[k - step] ?? 0;
+          const c = w[k] ?? 0;
+          const d = w[k + step] ?? 0;
+          const e = w[k + s2] ?? 0;
+          up[k] = weno5z(a, b, c, d, e);
+          down[k] = weno5z(e, d, c, b, a);
         }
-        const cu = this.vu[k] ?? 0;
-        const cv = this.vv[k] ?? 0;
-        this.s1[k] = a1;
-        this.su[k] = lim(cu - (this.vu[m] ?? 0), (this.vu[p] ?? 0) - cu);
-        this.sv[k] = lim(cv - (this.vv[m] ?? 0), (this.vv[p] ?? 0) - cv);
-        this.s4[k] = a4;
       }
   }
 
@@ -431,6 +457,20 @@ export class BlastSolver2D {
     }
   }
 
+  /** Whether a face's reconstructed ρ/α and p/β are positive on both sides;
+   *  where not, the face falls back to first order, counted (rule 1262 (a)). */
+  private faceIsPositive(kl: number, kr: number): boolean {
+    if (
+      (this.s1[kl] ?? 0) > 0 &&
+      (this.s4[kl] ?? 0) > 0 &&
+      (this.t1[kr] ?? 0) > 0 &&
+      (this.t4[kr] ?? 0) > 0
+    )
+      return true;
+    this.fallbacks++;
+    return false;
+  }
+
   /** The right-hand side into d0..d3; returns the fastest signal over Δx. */
   private rhs(): number {
     const { nr, nz, stride, dx } = this;
@@ -443,7 +483,7 @@ export class BlastSolver2D {
     const out = this.flux;
 
     // Radial faces, row by row: face f lies between cells f − 1 and f.
-    this.slopes(1);
+    this.reconstruct(1);
     for (let j = 0; j < nz; j++) {
       const a = rho0 * (this.alphaC[j] ?? 0);
       const b = p0 * (this.betaC[j] ?? 0);
@@ -451,14 +491,15 @@ export class BlastSolver2D {
       for (let f = 0; f <= nr; f++) {
         const kl = row + f - 1;
         const kr = row + f;
-        const rL = a * ((this.q1[kl] ?? 0) + 0.5 * (this.s1[kl] ?? 0));
-        const uL = (this.vu[kl] ?? 0) + 0.5 * (this.su[kl] ?? 0);
-        const vL = (this.vv[kl] ?? 0) + 0.5 * (this.sv[kl] ?? 0);
-        const pL = b * ((this.q4[kl] ?? 0) + 0.5 * (this.s4[kl] ?? 0));
-        const rR = a * ((this.q1[kr] ?? 0) - 0.5 * (this.s1[kr] ?? 0));
-        const uR = (this.vu[kr] ?? 0) - 0.5 * (this.su[kr] ?? 0);
-        const vR = (this.vv[kr] ?? 0) - 0.5 * (this.sv[kr] ?? 0);
-        const pR = b * ((this.q4[kr] ?? 0) - 0.5 * (this.s4[kr] ?? 0));
+        const high = this.faceIsPositive(kl, kr);
+        const rL = a * ((high ? this.s1 : this.q1)[kl] ?? 0);
+        const uL = (high ? this.su : this.vu)[kl] ?? 0;
+        const vL = (high ? this.sv : this.vv)[kl] ?? 0;
+        const pL = b * ((high ? this.s4 : this.q4)[kl] ?? 0);
+        const rR = a * ((high ? this.t1 : this.q1)[kr] ?? 0);
+        const uR = (high ? this.tu : this.vu)[kr] ?? 0;
+        const vR = (high ? this.tv : this.vv)[kr] ?? 0;
+        const pR = b * ((high ? this.t4 : this.q4)[kr] ?? 0);
         this.hllc(rL, uL, vL, pL, rR, uR, vR, pR);
         const area = this.rF[f] ?? 0;
         const f0 = (out[0] ?? 0) * area;
@@ -484,7 +525,7 @@ export class BlastSolver2D {
 
     // Vertical faces, column by column: face g lies at z = gΔ, between cells
     // g − 1 and g, and is turned back with the background there.
-    this.slopes(stride);
+    this.reconstruct(stride);
     const invDx = 1 / dx;
     for (let g = 0; g <= nz; g++) {
       const a = rho0 * (this.alphaF[g] ?? 0);
@@ -492,14 +533,15 @@ export class BlastSolver2D {
       for (let i = 0; i < nr; i++) {
         const kl = (g - 1 + G) * stride + (i + G);
         const kr = kl + stride;
-        const rL = a * ((this.q1[kl] ?? 0) + 0.5 * (this.s1[kl] ?? 0));
-        const uL = (this.vu[kl] ?? 0) + 0.5 * (this.su[kl] ?? 0);
-        const vL = (this.vv[kl] ?? 0) + 0.5 * (this.sv[kl] ?? 0);
-        const pL = b * ((this.q4[kl] ?? 0) + 0.5 * (this.s4[kl] ?? 0));
-        const rR = a * ((this.q1[kr] ?? 0) - 0.5 * (this.s1[kr] ?? 0));
-        const uR = (this.vu[kr] ?? 0) - 0.5 * (this.su[kr] ?? 0);
-        const vR = (this.vv[kr] ?? 0) - 0.5 * (this.sv[kr] ?? 0);
-        const pR = b * ((this.q4[kr] ?? 0) - 0.5 * (this.s4[kr] ?? 0));
+        const high = this.faceIsPositive(kl, kr);
+        const rL = a * ((high ? this.s1 : this.q1)[kl] ?? 0);
+        const uL = (high ? this.su : this.vu)[kl] ?? 0;
+        const vL = (high ? this.sv : this.vv)[kl] ?? 0;
+        const pL = b * ((high ? this.s4 : this.q4)[kl] ?? 0);
+        const rR = a * ((high ? this.t1 : this.q1)[kr] ?? 0);
+        const uR = (high ? this.tu : this.vu)[kr] ?? 0;
+        const vR = (high ? this.tv : this.vv)[kr] ?? 0;
+        const pR = b * ((high ? this.t4 : this.q4)[kr] ?? 0);
         // Normal is v, tangential u: the flux's momenta swap back.
         this.hllc(rL, vL, uL, pL, rR, vR, uR, pR);
         const f0 = (out[0] ?? 0) * invDx;
@@ -539,32 +581,32 @@ export class BlastSolver2D {
     return fastest;
   }
 
-  /** One step of the Shu–Osher second-order Runge–Kutta; returns Δt (s). */
+  /** One step of the Shu–Osher third-order Runge–Kutta; returns Δt (s). */
   step(maxDt = Infinity): number {
     const { nr, nz, stride } = this;
+    const sets: [Float64Array, Float64Array, Float64Array][] = [
+      [this.rho, this.k0, this.d0],
+      [this.mr, this.k1, this.d1],
+      [this.mz, this.k2, this.d2],
+      [this.en, this.k3, this.d3],
+    ];
     const speed = this.rhs();
     const dt = Math.min(this.cfl / speed, maxDt);
-    for (let j = 0; j < nz; j++)
-      for (let i = 0; i < nr; i++) {
-        const k = (j + G) * stride + (i + G);
-        this.k0[k] = this.rho[k] ?? 0;
-        this.k1[k] = this.mr[k] ?? 0;
-        this.k2[k] = this.mz[k] ?? 0;
-        this.k3[k] = this.en[k] ?? 0;
-        this.rho[k] = (this.rho[k] ?? 0) + dt * (this.d0[k] ?? 0);
-        this.mr[k] = (this.mr[k] ?? 0) + dt * (this.d1[k] ?? 0);
-        this.mz[k] = (this.mz[k] ?? 0) + dt * (this.d2[k] ?? 0);
-        this.en[k] = (this.en[k] ?? 0) + dt * (this.d3[k] ?? 0);
-      }
+    // U¹ = Uⁿ + Δt L(Uⁿ); U² = ¾Uⁿ + ¼(U¹ + Δt L(U¹)); Uⁿ⁺¹ = ⅓Uⁿ + ⅔(U² + Δt L(U²)).
+    const stage = (keep: number, add: number): void => {
+      for (const [u, k0, d] of sets)
+        for (let j = 0; j < nz; j++)
+          for (let i = 0; i < nr; i++) {
+            const k = (j + G) * stride + (i + G);
+            u[k] = keep * (k0[k] ?? 0) + add * ((u[k] ?? 0) + dt * (d[k] ?? 0));
+          }
+    };
+    for (const [u, k0] of sets) k0.set(u);
+    stage(0, 1);
     this.rhs();
-    for (let j = 0; j < nz; j++)
-      for (let i = 0; i < nr; i++) {
-        const k = (j + G) * stride + (i + G);
-        this.rho[k] = 0.5 * ((this.k0[k] ?? 0) + (this.rho[k] ?? 0) + dt * (this.d0[k] ?? 0));
-        this.mr[k] = 0.5 * ((this.k1[k] ?? 0) + (this.mr[k] ?? 0) + dt * (this.d1[k] ?? 0));
-        this.mz[k] = 0.5 * ((this.k2[k] ?? 0) + (this.mz[k] ?? 0) + dt * (this.d2[k] ?? 0));
-        this.en[k] = 0.5 * ((this.k3[k] ?? 0) + (this.en[k] ?? 0) + dt * (this.d3[k] ?? 0));
-      }
+    stage(0.75, 0.25);
+    this.rhs();
+    stage(1 / 3, 2 / 3);
     this.time += dt;
     this.steps++;
     const p0 = this.backgroundPressure(0);
