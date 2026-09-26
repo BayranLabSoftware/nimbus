@@ -137,3 +137,65 @@ export const PORTA1_OPENED = '2026-09-26' as const;
  *       for the reviewer, as every round of this branch ends.
  */
 export const RULE_1227_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1228. RULE 1227'S OUTCOME, as measured on 26 September 2026 — and one
+ * mistake on the way, recorded.
+ *
+ * The mistake: the first version of `fcmBranchSettle.ts` settled a cloud
+ * also where its speed stood within the band from BELOW — which rule 1227
+ * (a)'s own words did not allow. Descending, the denser air brings a fresh
+ * cloud's terminal speed down onto its own speed before the cloud has slowed
+ * at all, and that first version stopped Tunguska's first cloud at 37.5 km
+ * at 15.0 km/s, 69.9 % of the entry's energy still given to the air at one
+ * altitude. Found by instrumenting the stops (why each stopped, where, at
+ * what speed), before anything was committed; the code now says what the
+ * rule says — only a cloud that has been above the band and has come down
+ * into it settles.
+ *
+ * (a) THE TESTS (`effects/fcmBranchSettle.test.ts`). A small body whose
+ *     clouds are all born above their band: the corrected engine is the
+ *     sealed one to the last bit (the deposit, the ledger, the pieces). A
+ *     Tunguska-scale body (60 m, 15 km/s, 30°): the sealed engine gives more
+ *     than 30 % of the entry's energy to the air at stops, the corrected one
+ *     less than 10⁻³, its ledger closed to 10⁻¹².
+ * (b) THE DECLARED SAMPLE (`scripts/porta1-settle-sample.ts`, five draws of
+ *     every development case of rule 1143, four configurations,
+ *     `docs/PORTA1_SETTLE_SAMPLE.md`): every draw of every case but one is
+ *     identical to the bit under the two engines — 60 of 60 configurations
+ *     of the cases of rule 961, the third set's six bodies and W18's four
+ *     events, and Chelyabinsk. Tunguska differs, in every configuration that
+ *     completes: the energy given to the air at stops falls from 69.9 %,
+ *     84.5 % and 54.0 % of the entry's to 2·10⁻⁶ or less, the deposit's peak
+ *     moves from 40.4, 34.9 and 37.9 km to 18.1, 13.7 and 20.7 km, and the
+ *     settled share from 90.7, 86.2 and 65.8 % to 21.1, 2.0 and 26.2 %
+ *     (M1/unlimited, M1/capped, M2/unlimited; M2/capped completes under
+ *     neither engine). The corrected engine's ledger, worst over every
+ *     completed draw: 5.3·10⁻¹⁶ (rule 1141 (a) asks 10⁻¹²).
+ * (c) WHAT THE CLOUD MASS DOES INSTEAD, on Tunguska's first draw: in the M1
+ *     configurations part of it now reaches the ground as a swarm (48.9 %
+ *     and 79.1 % of the mass) carrying 0.1 and 0.5 kt of the entry's 9 123
+ *     kt — debris already slowed, which the sealed engine had labelled
+ *     settled at birth. By the published model's own terms (rule 1227) it is
+ *     particulate debris, never meteorite mass: no ground or meteorite claim
+ *     is made of it.
+ * (d) GATE 2 (rule 1142): R17's four Chelyabinsk settings, both schemes —
+ *     identical results under the two engines. W18's events: identical under
+ *     the sample above; the gate script's own re-run on the corrected engine
+ *     is recorded in `docs/PORTA1_SETTLE.md` when it ends.
+ * (e) WHAT IT MEANS, AND WHAT IT DOES NOT. Round 3's candidate is untouched,
+ *     and so is its verdict: its domain is 0.1 to 10 m (rule 1163), where
+ *     every draw measured here is identical. Rule 1190's pooled 93.21 % is
+ *     weighted by mass and so dominated by the one body this defect distorts
+ *     — read beside this rule, not alone. For bodies whose first cloud is
+ *     born high and slow for its air — the large ones the audit says
+ *     dominate the risk — the sealed branch's deposit was not the model's
+ *     physics but its stopping rule; the corrected version is the one any
+ *     later run above 10 m should use. No adoption, no class B, no tuning:
+ *     the priors, `settleWithin` and every constant are as sealed.
+ * (f) NEXT, in rule 1224's order: the full development run on the corrected
+ *     engine, and gate 1's convergence (rule 1141 (c)) on the bodies it
+ *     changes, before any reading of the branch above 10 m; items (a) and (c)
+ *     wait for their sources (rule 1225).
+ */
+export const RULE_1228_WRITTEN = '2026-09-26' as const;
