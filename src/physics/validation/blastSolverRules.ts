@@ -408,3 +408,25 @@ export const RULE_1264_WRITTEN = '2026-09-26' as const;
  *     only once T4 has spoken.
  */
 export const RULE_1265_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1266. T1 AGAIN, ON RULE 1262'S SCHEME: CLOSER, AND STILL FAILED ON
+ * BOTH CRITERIA (26 September 2026, 18:53; `blast2dT1Sedov.json`,
+ * `blast2dT1Extrapolated.json`).
+ *
+ * (a) RULE 1254'S CRITERION. The worst judged deviation of the shock radius:
+ *     3.7, 6.1 and 2.9 % on 100, 200 and 400 cells (on the superseded scheme
+ *     10.4, 11.9 and 9.5 %). On the finest grid every reading from R = 0.08
+ *     (27 cells) out lies within 1.8 %; the one miss is the first judged
+ *     reading, R = 0.05 (17 cells), at 2.4, 2.9 and 1.9 % on the ground, the
+ *     axis and the diagonal. T1 FAILS, by 0.9 of a point.
+ * (b) RULE 1258'S CRITERION. Of 18 extrapolated readings 16 lie within 2 %;
+ *     the axis at R = 0.18 (not monotone, the three grids spread over 2.3 %;
+ *     the finest within 0.6 %) and at R = 0.45 (order 0.47, extrapolated 3.5 %;
+ *     the finest within 1.8 %) do not. T1 FAILS it too.
+ * (c) The finest grid's 400 cells fell back to first order at 147 688 faces:
+ *     the near-empty centre of a Sedov blast in gas at 10⁻⁶ of its pressure.
+ *     No new criterion is written; T1 stands failed on both, as before, with
+ *     the errors now a fifth of what they were.
+ */
+export const RULE_1266_WRITTEN = '2026-09-26' as const;
