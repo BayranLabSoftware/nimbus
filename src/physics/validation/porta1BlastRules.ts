@@ -57,7 +57,9 @@
 export const PORTA1_BLAST_OPENED = '2026-09-26' as const;
 
 /**
- * RULE 1242. THE FIRST SOURCES READ (26 September 2026, 07:55 to 08:20),
+ * RULE 1242. THE FIRST SOURCES READ (26 September 2026, 07:55 to 08:20
+ * [to 08:01 by the commit's clock: the times of rules 1242 to 1253 were
+ * estimated, not read, and ran ahead — corrected under rule 1253 (f)]),
  * whole — they name no event outside the development list — with what the
  * project had already measured, so that nothing is done twice.
  *
@@ -123,7 +125,7 @@ export const RULE_1242_WRITTEN = '2026-09-26' as const;
 /**
  * RULE 1243. THE DAMAGE CRITERION, fixed from sources independent of the
  * two events and before the product is read at it (rule 1241 (b)(2);
- * 26 September 2026, 08:10).
+ * 26 September 2026, 08:10 [before 08:06 by the commit's clock]).
  *
  * (a) WINDOWS. Glasstone & Dolan (1977), Table 5.145 (fourmilab's copy of
  *     Chapter V, sha-256 d1c87229…): large and small glass windows fail —
@@ -157,7 +159,7 @@ export const RULE_1242_WRITTEN = '2026-09-26' as const;
 export const RULE_1243_WRITTEN = '2026-09-26' as const;
 
 /**
- * RULE 1244. RULE 1243'S OUTCOME (26 September 2026, 08:15;
+ * RULE 1244. RULE 1243'S OUTCOME (26 September 2026, 08:15 [08:06];
  * `porta1BlastCriteria.json`, `docs/PORTA1_BLAST_CRITERIA.md`).
  *
  * (a) CHELYABINSK. The preset bursts at 27.1 km with a blast yield of 0.298
@@ -191,7 +193,7 @@ export const RULE_1244_WRITTEN = '2026-09-26' as const;
 
 /**
  * RULE 1245. THE SECOND READING, AND WHAT THE ROUND CAN AND CANNOT DO
- * (26 September 2026, 08:35).
+ * (26 September 2026, 08:35 [before 08:15]).
  *
  * (a) AN EXPOSURE, declared. Gi, Brown & Aftosmis (2018), MAPS 53 («The
  *     frequency of window damage caused by bolide airbursts»), could not be
@@ -362,7 +364,7 @@ export const RULE_1247_WRITTEN = '2026-09-26' as const;
 
 /**
  * RULE 1248. THE MOVING SOURCE, READ BEFORE ANY CHOICE (26 September 2026,
- * 09:15). Collins et al. (2017), re-fetched from Imperial College's open copy
+ * 09:15 [before 09:07]). Collins et al. (2017), re-fetched from Imperial College's open copy
  * after the machine's restart (sha-256 c1cb0fc6…, the same bytes as rule 1242
  * (b)), read again for what the second step of rule 1246 needs: the moving
  * source's bounds from their text.
@@ -437,7 +439,7 @@ export const RULE_1249_WRITTEN = '2026-09-26' as const;
 
 /**
  * RULE 1250. RULE 1249'S OUTCOME, AND THE SECOND STEP CLOSED (26 September
- * 2026, 09:40).
+ * 2026, 09:40 [before 09:28]).
  *
  * (a) The seal re-taken with its reason: numbers digest moved in none of the
  *     308 scenarios; drawing and text in the 57 complete airbursts, the only
@@ -458,7 +460,7 @@ export const RULE_1250_WRITTEN = '2026-09-26' as const;
 /**
  * RULE 1251. THE THIRD STEP: THE 250 Mt MAP READ OFF ITS FIGURE, AND THE
  * PRODUCT MEASURED AGAINST IT — BEFORE ANY DISPLAY (26 September 2026,
- * 09:50). Written before the figure is digitised.
+ * 09:30). Written before the figure is digitised.
  *
  * (a) THE SOURCE. Aftosmis, Mathias & Tarano (2019), Acta Astronautica 156,
  *     278–283, open (CC BY), Andrea's copy in the sources folder (sha-256
@@ -494,7 +496,7 @@ export const RULE_1251_WRITTEN = '2026-09-26' as const;
 
 /**
  * RULE 1252. THE PRINTED REPORT SPILLED, AND HOW IT IS MENDED (26 September
- * 2026, 10:25). Written before the fix.
+ * 2026, 09:38). Written before the fix.
  *
  * (a) WHAT FAILED. The CI of 5189a8f failed «prints to A4, a sheet a page»
  *     on Chromium and mobile Chrome: 13 pages where 12 is the budget, the
@@ -536,7 +538,7 @@ export const RULE_1251_WRITTEN = '2026-09-26' as const;
 export const RULE_1252_WRITTEN = '2026-09-26' as const;
 
 /**
- * RULE 1253. RULE 1251'S OUTCOME (26 September 2026, 11:00;
+ * RULE 1253. RULE 1251'S OUTCOME (26 September 2026, 09:48;
  * `porta1Hob250MtFigure.json`, `porta1Hob250Mt.json`,
  * `docs/PORTA1_HOB_250MT.md`).
  *
@@ -578,5 +580,9 @@ export const RULE_1252_WRITTEN = '2026-09-26' as const;
  *     of the map.
  * (e) WHAT IS LEFT TO DECIDE (rule 1251 (d)), by Andrea: whether and how the
  *     map is shown, and what, if anything, is done with (b).
+ * (f) THE TIMES. The times written in rules 1242 to 1253 were estimated, not
+ *     read from the clock, and ran ahead of it by up to an hour; the commits'
+ *     times are the record. The published rules carry the clock's time in
+ *     brackets; 1251 to 1253, not yet published, were set to it.
  */
 export const RULE_1253_WRITTEN = '2026-09-26' as const;
