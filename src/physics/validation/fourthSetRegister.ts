@@ -188,6 +188,7 @@ export const FOURTH_SET_CANDIDATES: readonly FourthSetCandidate[] = [
     widelyReported: true,
     instruments: 'video, infrasound',
     status: 'candidate',
+    note: 'rule 1245 (a): Gi et al. (2018), pasted into the conversation on 26 September 2026, showed its reported energy, speed, angle and azimuth, a mass and radius derived from them, and modelled ground overpressures; no altitude of it',
   },
   {
     event: 'Aguas Zarcas',
