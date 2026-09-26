@@ -428,3 +428,88 @@ export const RULE_1230_WRITTEN = '2026-09-26' as const;
  *     adoption, no class B, nothing tuned.
  */
 export const RULE_1231_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1232. ITEM (b), ITS SECOND PART — WHAT A SOURCE INDEPENDENT OF THIS
+ * PROJECT'S CASES SAYS OF A DEBRIS CLOUD'S LATE FATE (rule 1224 (b)),
+ * declared before any search (26 September 2026, 03:45), while the map of
+ * rule 1231 runs.
+ *
+ * (a) WHAT COUNTS. A source that measures or models what becomes of the
+ *     debris of a meteoroid's breakup once it has slowed — vapour, dust,
+ *     pieces; in what shares, of what sizes, on what time scales — and is
+ *     independent of this project's cases: about no event of rule 1143's
+ *     development list, of round 3, of level B's sets or of the fifth set's
+ *     candidates; a model counts only where its constants were not fitted
+ *     on those events. Open copies only (NTRS, arXiv, an open journal, an
+ *     author's repository), fetched directly and their SHA-256 recorded; a
+ *     source behind a paywall or a challenge is asked of Andrea (rule 1225),
+ *     never fetched around. Any altitude it gives for an event outside the
+ *     development list is read only through a mask.
+ * (b) HOW IT IS FOUND. A search of NTRS, arXiv and the open literature for
+ *     the fate of meteoroid debris and dust after atmospheric breakup; every
+ *     candidate named, with why it is kept or left, before any is read in
+ *     full.
+ * (c) WHAT IS WRITTEN. For each source read, a fact sheet in rule 1192's
+ *     form (the form it constrains, its domain, what it leaves free, the
+ *     observable that would discriminate, what would refute it); then item
+ *     (b)'s verdict: IDENTIFIABLE only where a source constrains the settled
+ *     mass's fate without new constants chosen on the development cases,
+ *     otherwise NOT IDENTIFIABLE, which rule 1191 prefers to a guess. No
+ *     code (rule 1224 (d)).
+ */
+export const RULE_1232_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1233. ITEM (b), THE READING DONE AS FAR AS OPEN COPIES GO — rule
+ * 1232's search, its sources and the verdict (26 September 2026, 03:48).
+ *
+ * (a) THE CANDIDATES. Kept and read: Della Corte, Rietmeijer, Rotundi,
+ *     Ferrari & Palumbo (2013), Tellus B 65, 20174 (open, sha-256
+ *     bf05d4cb…); Schulz & Glassmeier (2020), arXiv:2008.13032v1, published
+ *     as doi:10.1016/j.asr.2020.10.036 (open, sha-256 c22d5151…). Both read
+ *     whole, every altitude masked. Asked of Andrea, behind a paywall:
+ *     Klekociuk et al. (2005), Nature 436, 1132 — the one primary
+ *     measurement of a large meteoroid's dust cloud outside this project's
+ *     cases — and Rietmeijer et al. (2016), Icarus, on the debris collected
+ *     from settling bolide dust clouds. Left, as about this project's cases:
+ *     Popova et al. (2013) and Gorkavyi et al. (2013) (Chelyabinsk),
+ *     Borovička & Charvát (2009) (2008 TC3), Borovička et al. (2019)
+ *     (Maribo, in the fourth set's register).
+ * (b) FACT SHEET, DELLA CORTE ET AL. (2013). Constrains no share: a
+ *     balloon collector flying through the debris cloud of an unidentified
+ *     carbonaceous bolide (Arctic, June 2008) caught intact and thermally
+ *     eroded micrometre grains, melt and vapour condensates (CaO and carbon
+ *     nanoparticles) — the settled debris of a bolide is dust aloft, of
+ *     micrometre and nanometre sizes, and the authors call its residence
+ *     time unknown. Domain: one event, one collection. Free: every share
+ *     and size. Discriminating observable: in-situ collection after a known
+ *     bolide. Refuted by: no such products where a known bolide's cloud was
+ *     sampled.
+ * (c) FACT SHEET, SCHULZ & GLASSMEIER (2020). A budget study, not an entry
+ *     model. It cites three dust clouds against their entry mass —
+ *     Chelyabinsk about 24 %, the Antarctic bolide of 3 September 2004
+ *     about 79 % (at least 47 %, from Klekociuk et al.), 2008 TC3 about 20 %
+ *     (at least 15 %) — and ASSUMES an aerosol share rising linearly with
+ *     the logarithm of the mass, to 50 % at 10⁷ kg; the dust sediments
+ *     within several months (citing Klekociuk et al. and Gorkavyi et al.).
+ *     Domain: 10⁻² to 10⁸ kg, a yearly budget. Free: the linear form, by
+ *     the authors' own word an assumption, fit on three events of which two
+ *     are this project's development cases. Discriminating observable: a
+ *     dust cloud's mass after a bolide, against its entry mass. Refuted by:
+ *     large bolides whose dust clouds carry little of their mass.
+ * (d) THE VERDICT ON ITEM (b), as far as these sources go. The KIND of fate
+ *     is constrained without any new constant: what a large bolide neither
+ *     vaporises nor lands stays aloft as micrometre and smaller dust, which
+ *     sediments over months — never ground mass, never meteorite mass, and
+ *     depositing no energy of consequence once slowed, which is what the
+ *     branch's settle stop already does with it. The SHARE is NOT
+ *     IDENTIFIABLE from them: no form independent of the development cases
+ *     fixes it, and the one independent measurement (47 to 79 %, the 2004
+ *     bolide) is read here only through a review; its primary waits for
+ *     Andrea's download, and the verdict on the share is written again
+ *     when it is read. Nothing is coded, fitted or adopted: the dust
+ *     fraction of a known bolide is an observable the branch could be held
+ *     to later, never a constant to tune it on.
+ */
+export const RULE_1233_WRITTEN = '2026-09-26' as const;
