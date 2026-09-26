@@ -188,3 +188,62 @@ export const RULE_1243_WRITTEN = '2026-09-26' as const;
  *     used to choose it.
  */
 export const RULE_1244_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1245. THE SECOND READING, AND WHAT THE ROUND CAN AND CANNOT DO
+ * (26 September 2026, 08:35).
+ *
+ * (a) AN EXPOSURE, declared. Gi, Brown & Aftosmis (2018), MAPS 53 («The
+ *     frequency of window damage caused by bolide airbursts»), could not be
+ *     downloaded and its text was pasted into the conversation. It names
+ *     Park Forest, a candidate of the fourth set's register: its reported
+ *     energy, speed, angle and azimuth, a mass and radius derived from them,
+ *     and modelled ground overpressures — no altitude of it. It gives the
+ *     heights of the Marshall Islands fireball (in no set of this project)
+ *     and of two CNEOS rows already read for I2. Recorded here; Park
+ *     Forest's register is to carry it. What cannot be saved into the
+ *     folder is saved as a page, not pasted.
+ * (b) GI ET AL. (2018). Window breakage follows the probit of Reed (1992)
+ *     and Gilbert (1994): ordinary urban panes (0.5–1.5 m²) break at 0.01–
+ *     0.7 % at 0.2 kPa, 0.4–7 % at 0.5 kPa, 25–60 % at 3 kPa; they name 0.2
+ *     and 0.5 kPa the thresholds of light and heavy window damage. In
+ *     Chelyabinsk, 20 % of the panes seen in videos broke; the overpressure
+ *     there was estimated from the speed of flying glass at 2.6 kPa (Brown et
+ *     al. 2013) and from car exhaust at 1.6–1.9 kPa (Avramenko et al. 2014).
+ *     ReVelle's weak-shock line source is «largely inapplicable» beneath
+ *     Chelyabinsk's trail. So: rule 1243's edge at 0.7 kPa stands; and in
+ *     the city, 45 km out, the product's 0.74 kPa is 0.28× to 0.46× what was
+ *     measured — the static source is short where the shallow entry's line
+ *     of energy passed closest.
+ * (c) AFTOSMIS, MATHIAS & TARANO (2019), Acta Astronautica 156, 278–283,
+ *     open (CC BY; sha-256 5697fb52…). Yield scaling with Glasstone &
+ *     Dolan's 1 kt map predicts ground overpressure well up to 5–10 Mt; above,
+ *     the atmosphere's scale height breaks the similarity. Twenty-six Cart3D
+ *     bursts of 250 Mt at 0 to 80 km give a 250 Mt map — in a figure only
+ *     (1, 2, 4 and 10 psi) — whose optimum height is lower and whose bulge
+ *     is elongated; PAIR interpolates between maps and keeps the standard
+ *     behaviour below 5 Mt. Neither event is moved by it (0.3–0.5 Mt; 8 Mt);
+ *     what it would move — bodies above 50–80 m — has no observed event to
+ *     test, and its map would be read off a figure.
+ * (d) BOSLOUGH & CRAWFORD (2008), IJIE 35, 1441–1448 (sha-256 0458aafc…).
+ *     A point source at the altitude of peak deposition understates the
+ *     ground's blast: the body's fireball descends at 9 km/s from 9 km for a
+ *     15 Mt stony impactor. Treefall overstates Tunguska's yield — ridges
+ *     raise the wind, and the forest's own weakness (Florenskiy's
+ *     dynamometer) brings the needed point source to 3.5 Mt. Tunguska's
+ *     energy and its trees' criterion are uncertain by factors: the event
+ *     can test a blast law only loosely, and pin none (with Robertson &
+ *     Mathias, rule 1240 (b)).
+ * (e) WHAT FOLLOWS. The round has one change the sources support without
+ *     any event: the damage criterion. The product's rings say «window
+ *     breakage» at 6.9 kPa and «scattered windows» at 3.45 kPa, where the
+ *     sources put the onset of broken windows at 0.2–0.7 kPa and «most
+ *     shattered» at 3.4–6.9 kPa — at Chelyabinsk its lightest ring reaches
+ *     no ground while windows broke over 10 000 km². The moving source is
+ *     already the band's high edge; making it central needs a rule on where
+ *     it applies that no source gives in numbers. The 250 Mt map concerns
+ *     only large yields and a figure. The shallow entry's footprint has no
+ *     fast relation. Which of these becomes a product change is Andrea's
+ *     choice (they move the drawn rings, the report and the seal).
+ */
+export const RULE_1245_WRITTEN = '2026-09-26' as const;
