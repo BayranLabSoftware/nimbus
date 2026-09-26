@@ -534,3 +534,49 @@ export const RULE_1251_WRITTEN = '2026-09-26' as const;
  *     move).
  */
 export const RULE_1252_WRITTEN = '2026-09-26' as const;
+
+/**
+ * RULE 1253. RULE 1251'S OUTCOME (26 September 2026, 11:00;
+ * `porta1Hob250MtFigure.json`, `porta1Hob250Mt.json`,
+ * `docs/PORTA1_HOB_250MT.md`).
+ *
+ * (a) THE READING. The four thresholds' dashed curves were traced whole but
+ *     for 10 psi above 0.24 km, where the dashed curve lies on the solid one;
+ *     the axes, calibrated on the grid lines, agree with the frame within a
+ *     pixel. The solid curves check the reading: low bursts of the product —
+ *     the program's static source — lie on Glasstone & Dolan's 1 kt map,
+ *     within 1 % at 1 psi up to 0.32 km scaled (then up to 9 % farther as
+ *     the optimum nears), 2 % at 4 psi up to 0.24 km, 4 % at 10 psi up to
+ *     0.21 km, and 4 to 6 % short at 2 psi up to 0.24 km. The product
+ *     scales by the cube root of the yield alone (its scaled map is the
+ *     same at 250 Mt to 4·10⁻¹⁶ km).
+ * (b) A FINDING NOT ASKED FOR: above the optimum height the product departs
+ *     from Glasstone & Dolan's map. At 1 psi its reach drops at 0.45 km
+ *     scaled from 2.30 to 1.34 km and stays at 0.63 to 0.84 of the map up to
+ *     1.27 km; at 2 psi 0.68 to 0.92 from 0.43 to 0.90 km, and nothing at
+ *     0.95 km where the map still reaches 0.17 km; at 4 psi 0.91 to 1.07,
+ *     1.7 at the top; at 10 psi farther near the top (1.1 to 1.55). It is the
+ *     program's own switch from its Mach to its regular region, reproduced
+ *     here within 1 % of the program (rule 1242 (a)); PAIR reads Glasstone &
+ *     Dolan's maps themselves below 5 Mt.
+ * (c) AGAINST THE 250 Mt MAP. The Cart3D map's largest reaches stand at 0.16
+ *     km scaled (10 km at 250 Mt), lower than the product's (0.24 to 0.43
+ *     km). Between 0.16 and 0.21 km scaled (10 to 13 km at 250 Mt) the
+ *     product reaches 0.57 to 0.79 of the map at 1 psi, 0.64 to 0.78 at 2
+ *     psi, 0.67 to 0.84 at 4 psi — the map up to 1.75 times as far, three
+ *     times the area; at 1 psi already from 0.05 km (0.59 to 0.72). At 10
+ *     psi the product reaches farther than the map at every height read (1.1
+ *     to 1.7). From 0.24 to 0.43 km the product reaches farther at 1 psi
+ *     (1.1 to 1.6); so it does at zero height (1.13 at 1 psi to 1.68 at 10).
+ * (d) THE BODIES. Of 600 bodies (30 to 250 m, 12 to 25 km/s, 15° to 90°,
+ *     1 500 to 3 300 kg/m³) the product sends 190 to complete airbursts
+ *     above 5 Mt — every diameter from 40 m — 31 above 100 Mt and 14 above
+ *     250 Mt; those above 100 Mt burst at 0.001 to 0.25 km scaled, where the
+ *     map and the product differ most. The map is for 250 Mt alone; between
+ *     5 and 250 Mt PAIR interpolates by a variable its papers do not state.
+ *     No observed airburst reaches these yields: no event can test any use
+ *     of the map.
+ * (e) WHAT IS LEFT TO DECIDE (rule 1251 (d)), by Andrea: whether and how the
+ *     map is shown, and what, if anything, is done with (b).
+ */
+export const RULE_1253_WRITTEN = '2026-09-26' as const;

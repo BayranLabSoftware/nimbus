@@ -1,0 +1,2630 @@
+{
+  "rule": "1251 (c)",
+  "similarityKm1kt": 4.440892098500626e-16,
+  "thresholds": [
+    {
+      "psi": 1,
+      "rows": [
+        {
+          "hKm1kt": 0,
+          "productKm1kt": 1.173,
+          "glasstoneDolanKm1kt": 1.1733,
+          "cfd250MtKm1kt": 1.041,
+          "productOverGD": 1,
+          "productOverCFD": 1.13
+        },
+        {
+          "hKm1kt": 0.0159,
+          "productKm1kt": 1.215,
+          "glasstoneDolanKm1kt": 1.2082,
+          "cfd250MtKm1kt": 1.1524,
+          "productOverGD": 1.01,
+          "productOverCFD": 1.05
+        },
+        {
+          "hKm1kt": 0.0476,
+          "productKm1kt": 1.298,
+          "glasstoneDolanKm1kt": 1.2967,
+          "cfd250MtKm1kt": 1.8009,
+          "productOverGD": 1,
+          "productOverCFD": 0.72
+        },
+        {
+          "hKm1kt": 0.0794,
+          "productKm1kt": 1.382,
+          "glasstoneDolanKm1kt": 1.3892,
+          "cfd250MtKm1kt": 2.3432,
+          "productOverGD": 0.99,
+          "productOverCFD": 0.59
+        },
+        {
+          "hKm1kt": 0.1587,
+          "productKm1kt": 1.59,
+          "glasstoneDolanKm1kt": 1.607,
+          "cfd250MtKm1kt": 2.8087,
+          "productOverGD": 0.99,
+          "productOverCFD": 0.57
+        },
+        {
+          "hKm1kt": 0.1873,
+          "productKm1kt": 1.666,
+          "glasstoneDolanKm1kt": 1.6816,
+          "cfd250MtKm1kt": 2.7768,
+          "productOverGD": 0.99,
+          "productOverCFD": 0.6
+        },
+        {
+          "hKm1kt": 0.2064,
+          "productKm1kt": 1.716,
+          "glasstoneDolanKm1kt": 1.7293,
+          "cfd250MtKm1kt": 2.172,
+          "productOverGD": 0.99,
+          "productOverCFD": 0.79
+        },
+        {
+          "hKm1kt": 0.2381,
+          "productKm1kt": 1.799,
+          "glasstoneDolanKm1kt": 1.8069,
+          "cfd250MtKm1kt": 1.6408,
+          "productOverGD": 1,
+          "productOverCFD": 1.1
+        },
+        {
+          "hKm1kt": 0.2926,
+          "productKm1kt": 1.943,
+          "glasstoneDolanKm1kt": 1.9401,
+          "cfd250MtKm1kt": 1.539,
+          "productOverGD": 1,
+          "productOverCFD": 1.26
+        },
+        {
+          "hKm1kt": 0.3175,
+          "productKm1kt": 2.008,
+          "glasstoneDolanKm1kt": 1.9899,
+          "cfd250MtKm1kt": 1.5227,
+          "productOverGD": 1.01,
+          "productOverCFD": 1.32
+        },
+        {
+          "hKm1kt": 0.3651,
+          "productKm1kt": 2.133,
+          "glasstoneDolanKm1kt": 2.0535,
+          "cfd250MtKm1kt": 1.4999,
+          "productOverGD": 1.04,
+          "productOverCFD": 1.42
+        },
+        {
+          "hKm1kt": 0.4286,
+          "productKm1kt": 2.3,
+          "glasstoneDolanKm1kt": 2.1032,
+          "cfd250MtKm1kt": 1.4671,
+          "productOverGD": 1.09,
+          "productOverCFD": 1.57
+        },
+        {
+          "hKm1kt": 0.4762,
+          "productKm1kt": 1.343,
+          "glasstoneDolanKm1kt": 2.141,
+          "cfd250MtKm1kt": 1.4398,
+          "productOverGD": 0.63,
+          "productOverCFD": 0.93
+        },
+        {
+          "hKm1kt": 0.5238,
+          "productKm1kt": 1.325,
+          "glasstoneDolanKm1kt": 2.1122,
+          "cfd250MtKm1kt": 1.4004,
+          "productOverGD": 0.63,
+          "productOverCFD": 0.95
+        },
+        {
+          "hKm1kt": 0.5873,
+          "productKm1kt": 1.299,
+          "glasstoneDolanKm1kt": 1.7551,
+          "cfd250MtKm1kt": 1.3113,
+          "productOverGD": 0.74,
+          "productOverCFD": 0.99
+        },
+        {
+          "hKm1kt": 0.635,
+          "productKm1kt": 1.276,
+          "glasstoneDolanKm1kt": 1.5881,
+          "cfd250MtKm1kt": 1.249,
+          "productOverGD": 0.8,
+          "productOverCFD": 1.02
+        },
+        {
+          "hKm1kt": 0.6826,
+          "productKm1kt": 1.251,
+          "glasstoneDolanKm1kt": 1.5274,
+          "cfd250MtKm1kt": 1.1971,
+          "productOverGD": 0.82,
+          "productOverCFD": 1.05
+        },
+        {
+          "hKm1kt": 0.7461,
+          "productKm1kt": 1.214,
+          "glasstoneDolanKm1kt": 1.4637,
+          "cfd250MtKm1kt": 1.0624,
+          "productOverGD": 0.83,
+          "productOverCFD": 1.14
+        },
+        {
+          "hKm1kt": 0.7937,
+          "productKm1kt": 1.184,
+          "glasstoneDolanKm1kt": 1.421,
+          "cfd250MtKm1kt": 0.9983,
+          "productOverGD": 0.83,
+          "productOverCFD": 1.19
+        },
+        {
+          "hKm1kt": 0.8413,
+          "productKm1kt": 1.15,
+          "glasstoneDolanKm1kt": 1.3762,
+          "cfd250MtKm1kt": 0.969,
+          "productOverGD": 0.84,
+          "productOverCFD": 1.19
+        },
+        {
+          "hKm1kt": 0.9048,
+          "productKm1kt": 1.101,
+          "glasstoneDolanKm1kt": 1.3146,
+          "cfd250MtKm1kt": 0.8792,
+          "productOverGD": 0.84,
+          "productOverCFD": 1.25
+        },
+        {
+          "hKm1kt": 0.9524,
+          "productKm1kt": 1.06,
+          "glasstoneDolanKm1kt": 1.2688,
+          "cfd250MtKm1kt": 0.7967,
+          "productOverGD": 0.84,
+          "productOverCFD": 1.33
+        },
+        {
+          "hKm1kt": 1.032,
+          "productKm1kt": 0.983,
+          "glasstoneDolanKm1kt": 1.1873,
+          "cfd250MtKm1kt": 0.6459,
+          "productOverGD": 0.83,
+          "productOverCFD": 1.52
+        },
+        {
+          "hKm1kt": 1.111,
+          "productKm1kt": 0.893,
+          "glasstoneDolanKm1kt": 1.1037,
+          "cfd250MtKm1kt": 0.4999,
+          "productOverGD": 0.81,
+          "productOverCFD": 1.79
+        },
+        {
+          "hKm1kt": 1.191,
+          "productKm1kt": 0.783,
+          "glasstoneDolanKm1kt": 1.0132,
+          "cfd250MtKm1kt": 0.2819,
+          "productOverGD": 0.77,
+          "productOverCFD": 2.78
+        },
+        {
+          "hKm1kt": 1.27,
+          "productKm1kt": 0.647,
+          "glasstoneDolanKm1kt": 0.9038,
+          "cfd250MtKm1kt": null,
+          "productOverGD": 0.72,
+          "productOverCFD": null
+        }
+      ],
+      "largest": {
+        "product": {
+          "h": 0.4286,
+          "r": 2.3
+        },
+        "glasstoneDolan": {
+          "h": 0.4762,
+          "r": 2.141
+        },
+        "cfd250Mt": {
+          "h": 0.1587,
+          "r": 2.8087
+        }
+      }
+    },
+    {
+      "psi": 2,
+      "rows": [
+        {
+          "hKm1kt": 0,
+          "productKm1kt": 0.743,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": 0.5797,
+          "productOverGD": null,
+          "productOverCFD": 1.28
+        },
+        {
+          "hKm1kt": 0.0159,
+          "productKm1kt": 0.769,
+          "glasstoneDolanKm1kt": 0.8084,
+          "cfd250MtKm1kt": 0.6451,
+          "productOverGD": 0.95,
+          "productOverCFD": 1.19
+        },
+        {
+          "hKm1kt": 0.0476,
+          "productKm1kt": 0.822,
+          "glasstoneDolanKm1kt": 0.871,
+          "cfd250MtKm1kt": 0.8173,
+          "productOverGD": 0.94,
+          "productOverCFD": 1.01
+        },
+        {
+          "hKm1kt": 0.0794,
+          "productKm1kt": 0.875,
+          "glasstoneDolanKm1kt": 0.9347,
+          "cfd250MtKm1kt": 0.9232,
+          "productOverGD": 0.94,
+          "productOverCFD": 0.95
+        },
+        {
+          "hKm1kt": 0.1587,
+          "productKm1kt": 1.007,
+          "glasstoneDolanKm1kt": 1.059,
+          "cfd250MtKm1kt": 1.5621,
+          "productOverGD": 0.95,
+          "productOverCFD": 0.64
+        },
+        {
+          "hKm1kt": 0.1873,
+          "productKm1kt": 1.054,
+          "glasstoneDolanKm1kt": 1.1097,
+          "cfd250MtKm1kt": 1.4555,
+          "productOverGD": 0.95,
+          "productOverCFD": 0.72
+        },
+        {
+          "hKm1kt": 0.2064,
+          "productKm1kt": 1.086,
+          "glasstoneDolanKm1kt": 1.1425,
+          "cfd250MtKm1kt": 1.3952,
+          "productOverGD": 0.95,
+          "productOverCFD": 0.78
+        },
+        {
+          "hKm1kt": 0.2381,
+          "productKm1kt": 1.139,
+          "glasstoneDolanKm1kt": 1.1853,
+          "cfd250MtKm1kt": 1.3144,
+          "productOverGD": 0.96,
+          "productOverCFD": 0.87
+        },
+        {
+          "hKm1kt": 0.2926,
+          "productKm1kt": 1.23,
+          "glasstoneDolanKm1kt": 1.244,
+          "cfd250MtKm1kt": 1.2424,
+          "productOverGD": 0.99,
+          "productOverCFD": 0.99
+        },
+        {
+          "hKm1kt": 0.3175,
+          "productKm1kt": 1.271,
+          "glasstoneDolanKm1kt": 1.2638,
+          "cfd250MtKm1kt": 1.2171,
+          "productOverGD": 1.01,
+          "productOverCFD": 1.04
+        },
+        {
+          "hKm1kt": 0.3651,
+          "productKm1kt": 1.35,
+          "glasstoneDolanKm1kt": 1.2619,
+          "cfd250MtKm1kt": 1.1775,
+          "productOverGD": 1.07,
+          "productOverCFD": 1.15
+        },
+        {
+          "hKm1kt": 0.4286,
+          "productKm1kt": 0.833,
+          "glasstoneDolanKm1kt": 1.1594,
+          "cfd250MtKm1kt": 1.0652,
+          "productOverGD": 0.72,
+          "productOverCFD": 0.78
+        },
+        {
+          "hKm1kt": 0.4762,
+          "productKm1kt": 0.807,
+          "glasstoneDolanKm1kt": 0.9078,
+          "cfd250MtKm1kt": 1.0004,
+          "productOverGD": 0.89,
+          "productOverCFD": 0.81
+        },
+        {
+          "hKm1kt": 0.5238,
+          "productKm1kt": 0.777,
+          "glasstoneDolanKm1kt": 0.867,
+          "cfd250MtKm1kt": 0.9383,
+          "productOverGD": 0.9,
+          "productOverCFD": 0.83
+        },
+        {
+          "hKm1kt": 0.5873,
+          "productKm1kt": 0.73,
+          "glasstoneDolanKm1kt": 0.7994,
+          "cfd250MtKm1kt": 0.8335,
+          "productOverGD": 0.91,
+          "productOverCFD": 0.88
+        },
+        {
+          "hKm1kt": 0.635,
+          "productKm1kt": 0.689,
+          "glasstoneDolanKm1kt": 0.745,
+          "cfd250MtKm1kt": 0.7476,
+          "productOverGD": 0.92,
+          "productOverCFD": 0.92
+        },
+        {
+          "hKm1kt": 0.6826,
+          "productKm1kt": 0.642,
+          "glasstoneDolanKm1kt": 0.696,
+          "cfd250MtKm1kt": 0.658,
+          "productOverGD": 0.92,
+          "productOverCFD": 0.98
+        },
+        {
+          "hKm1kt": 0.7461,
+          "productKm1kt": 0.567,
+          "glasstoneDolanKm1kt": 0.6264,
+          "cfd250MtKm1kt": 0.5207,
+          "productOverGD": 0.9,
+          "productOverCFD": 1.09
+        },
+        {
+          "hKm1kt": 0.7937,
+          "productKm1kt": 0.498,
+          "glasstoneDolanKm1kt": 0.5617,
+          "cfd250MtKm1kt": 0.4384,
+          "productOverGD": 0.89,
+          "productOverCFD": 1.14
+        },
+        {
+          "hKm1kt": 0.8413,
+          "productKm1kt": 0.412,
+          "glasstoneDolanKm1kt": 0.4821,
+          "cfd250MtKm1kt": 0.3383,
+          "productOverGD": 0.86,
+          "productOverCFD": 1.22
+        },
+        {
+          "hKm1kt": 0.9048,
+          "productKm1kt": 0.243,
+          "glasstoneDolanKm1kt": 0.3568,
+          "cfd250MtKm1kt": 0.1419,
+          "productOverGD": 0.68,
+          "productOverCFD": 1.71
+        },
+        {
+          "hKm1kt": 0.9524,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": 0.1908,
+          "cfd250MtKm1kt": null,
+          "productOverGD": 0,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.032,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.111,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.191,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.27,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        }
+      ],
+      "largest": {
+        "product": {
+          "h": 0.3651,
+          "r": 1.35
+        },
+        "glasstoneDolan": {
+          "h": 0.3175,
+          "r": 1.2638
+        },
+        "cfd250Mt": {
+          "h": 0.1587,
+          "r": 1.5621
+        }
+      }
+    },
+    {
+      "psi": 4,
+      "rows": [
+        {
+          "hKm1kt": 0,
+          "productKm1kt": 0.493,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": 0.3357,
+          "productOverGD": null,
+          "productOverCFD": 1.47
+        },
+        {
+          "hKm1kt": 0.0159,
+          "productKm1kt": 0.511,
+          "glasstoneDolanKm1kt": 0.518,
+          "cfd250MtKm1kt": 0.3672,
+          "productOverGD": 0.99,
+          "productOverCFD": 1.39
+        },
+        {
+          "hKm1kt": 0.0476,
+          "productKm1kt": 0.546,
+          "glasstoneDolanKm1kt": 0.5538,
+          "cfd250MtKm1kt": 0.4464,
+          "productOverGD": 0.99,
+          "productOverCFD": 1.22
+        },
+        {
+          "hKm1kt": 0.0794,
+          "productKm1kt": 0.581,
+          "glasstoneDolanKm1kt": 0.5876,
+          "cfd250MtKm1kt": 0.5231,
+          "productOverGD": 0.99,
+          "productOverCFD": 1.11
+        },
+        {
+          "hKm1kt": 0.1587,
+          "productKm1kt": 0.669,
+          "glasstoneDolanKm1kt": 0.683,
+          "cfd250MtKm1kt": 0.9921,
+          "productOverGD": 0.98,
+          "productOverCFD": 0.67
+        },
+        {
+          "hKm1kt": 0.1873,
+          "productKm1kt": 0.701,
+          "glasstoneDolanKm1kt": 0.7069,
+          "cfd250MtKm1kt": 0.9414,
+          "productOverGD": 0.99,
+          "productOverCFD": 0.74
+        },
+        {
+          "hKm1kt": 0.2064,
+          "productKm1kt": 0.722,
+          "glasstoneDolanKm1kt": 0.7268,
+          "cfd250MtKm1kt": 0.8553,
+          "productOverGD": 0.99,
+          "productOverCFD": 0.84
+        },
+        {
+          "hKm1kt": 0.2381,
+          "productKm1kt": 0.757,
+          "glasstoneDolanKm1kt": 0.7527,
+          "cfd250MtKm1kt": 0.7963,
+          "productOverGD": 1.01,
+          "productOverCFD": 0.95
+        },
+        {
+          "hKm1kt": 0.2926,
+          "productKm1kt": 0.817,
+          "glasstoneDolanKm1kt": 0.7815,
+          "cfd250MtKm1kt": 0.7204,
+          "productOverGD": 1.05,
+          "productOverCFD": 1.13
+        },
+        {
+          "hKm1kt": 0.3175,
+          "productKm1kt": 0.868,
+          "glasstoneDolanKm1kt": 0.7944,
+          "cfd250MtKm1kt": 0.6907,
+          "productOverGD": 1.09,
+          "productOverCFD": 1.26
+        },
+        {
+          "hKm1kt": 0.3651,
+          "productKm1kt": 0.701,
+          "glasstoneDolanKm1kt": 0.7666,
+          "cfd250MtKm1kt": 0.638,
+          "productOverGD": 0.91,
+          "productOverCFD": 1.1
+        },
+        {
+          "hKm1kt": 0.4286,
+          "productKm1kt": 0.482,
+          "glasstoneDolanKm1kt": 0.4782,
+          "cfd250MtKm1kt": 0.5458,
+          "productOverGD": 1.01,
+          "productOverCFD": 0.88
+        },
+        {
+          "hKm1kt": 0.4762,
+          "productKm1kt": 0.435,
+          "glasstoneDolanKm1kt": 0.4145,
+          "cfd250MtKm1kt": 0.4655,
+          "productOverGD": 1.05,
+          "productOverCFD": 0.94
+        },
+        {
+          "hKm1kt": 0.5238,
+          "productKm1kt": 0.377,
+          "glasstoneDolanKm1kt": 0.3519,
+          "cfd250MtKm1kt": 0.3952,
+          "productOverGD": 1.07,
+          "productOverCFD": 0.95
+        },
+        {
+          "hKm1kt": 0.5873,
+          "productKm1kt": 0.267,
+          "glasstoneDolanKm1kt": 0.2494,
+          "cfd250MtKm1kt": 0.2783,
+          "productOverGD": 1.07,
+          "productOverCFD": 0.96
+        },
+        {
+          "hKm1kt": 0.635,
+          "productKm1kt": 0.114,
+          "glasstoneDolanKm1kt": 0.0674,
+          "cfd250MtKm1kt": 0.16,
+          "productOverGD": 1.7,
+          "productOverCFD": 0.72
+        },
+        {
+          "hKm1kt": 0.6826,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.7461,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.7937,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.8413,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.9048,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.9524,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.032,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.111,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.191,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.27,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        }
+      ],
+      "largest": {
+        "product": {
+          "h": 0.3175,
+          "r": 0.868
+        },
+        "glasstoneDolan": {
+          "h": 0.3175,
+          "r": 0.7944
+        },
+        "cfd250Mt": {
+          "h": 0.1587,
+          "r": 0.9921
+        }
+      }
+    },
+    {
+      "psi": 10,
+      "rows": [
+        {
+          "hKm1kt": 0,
+          "productKm1kt": 0.303,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": 0.1803,
+          "productOverGD": null,
+          "productOverCFD": 1.68
+        },
+        {
+          "hKm1kt": 0.0159,
+          "productKm1kt": 0.313,
+          "glasstoneDolanKm1kt": 0.327,
+          "cfd250MtKm1kt": 0.1926,
+          "productOverGD": 0.96,
+          "productOverCFD": 1.63
+        },
+        {
+          "hKm1kt": 0.0476,
+          "productKm1kt": 0.335,
+          "glasstoneDolanKm1kt": 0.3419,
+          "cfd250MtKm1kt": 0.2334,
+          "productOverGD": 0.98,
+          "productOverCFD": 1.44
+        },
+        {
+          "hKm1kt": 0.0794,
+          "productKm1kt": 0.357,
+          "glasstoneDolanKm1kt": 0.3578,
+          "cfd250MtKm1kt": 0.2637,
+          "productOverGD": 1,
+          "productOverCFD": 1.35
+        },
+        {
+          "hKm1kt": 0.1587,
+          "productKm1kt": 0.41,
+          "glasstoneDolanKm1kt": 0.4016,
+          "cfd250MtKm1kt": 0.3746,
+          "productOverGD": 1.02,
+          "productOverCFD": 1.1
+        },
+        {
+          "hKm1kt": 0.1873,
+          "productKm1kt": 0.43,
+          "glasstoneDolanKm1kt": 0.4225,
+          "cfd250MtKm1kt": 0.3704,
+          "productOverGD": 1.02,
+          "productOverCFD": 1.16
+        },
+        {
+          "hKm1kt": 0.2064,
+          "productKm1kt": 0.443,
+          "glasstoneDolanKm1kt": 0.4294,
+          "cfd250MtKm1kt": 0.3462,
+          "productOverGD": 1.03,
+          "productOverCFD": 1.28
+        },
+        {
+          "hKm1kt": 0.2381,
+          "productKm1kt": 0.475,
+          "glasstoneDolanKm1kt": 0.4284,
+          "cfd250MtKm1kt": 0.3113,
+          "productOverGD": 1.11,
+          "productOverCFD": 1.53
+        },
+        {
+          "hKm1kt": 0.2926,
+          "productKm1kt": 0.394,
+          "glasstoneDolanKm1kt": 0.2544,
+          "cfd250MtKm1kt": null,
+          "productOverGD": 1.55,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.3175,
+          "productKm1kt": 0.267,
+          "glasstoneDolanKm1kt": 0.2166,
+          "cfd250MtKm1kt": null,
+          "productOverGD": 1.23,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.3651,
+          "productKm1kt": 0.196,
+          "glasstoneDolanKm1kt": 0.14,
+          "cfd250MtKm1kt": null,
+          "productOverGD": 1.4,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.4286,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.4762,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.5238,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.5873,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.635,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.6826,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.7461,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.7937,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.8413,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.9048,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 0.9524,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.032,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.111,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.191,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        },
+        {
+          "hKm1kt": 1.27,
+          "productKm1kt": 0,
+          "glasstoneDolanKm1kt": null,
+          "cfd250MtKm1kt": null,
+          "productOverGD": null,
+          "productOverCFD": null
+        }
+      ],
+      "largest": {
+        "product": {
+          "h": 0.2381,
+          "r": 0.475
+        },
+        "glasstoneDolan": {
+          "h": 0.2064,
+          "r": 0.4294
+        },
+        "cfd250Mt": {
+          "h": 0.1587,
+          "r": 0.3746
+        }
+      }
+    }
+  ],
+  "airburstsAbove5Mt": {
+    "runs": 600,
+    "count": 190,
+    "bodies": [
+      {
+        "diameterM": 40,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 6.2,
+        "burstKm": 14.3,
+        "burstKm1kt": 0.777
+      },
+      {
+        "diameterM": 40,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 2600,
+        "blastMt": 5.5,
+        "burstKm": 11.1,
+        "burstKm1kt": 0.628
+      },
+      {
+        "diameterM": 40,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 3300,
+        "blastMt": 7,
+        "burstKm": 9.4,
+        "burstKm1kt": 0.492
+      },
+      {
+        "diameterM": 40,
+        "speedKms": 25,
+        "angleDeg": 60,
+        "densityKgM3": 2600,
+        "blastMt": 5.8,
+        "burstKm": 8.2,
+        "burstKm1kt": 0.456
+      },
+      {
+        "diameterM": 40,
+        "speedKms": 25,
+        "angleDeg": 60,
+        "densityKgM3": 3300,
+        "blastMt": 7.3,
+        "burstKm": 6.5,
+        "burstKm1kt": 0.332
+      },
+      {
+        "diameterM": 40,
+        "speedKms": 25,
+        "angleDeg": 90,
+        "densityKgM3": 2600,
+        "blastMt": 6,
+        "burstKm": 6.1,
+        "burstKm1kt": 0.336
+      },
+      {
+        "diameterM": 40,
+        "speedKms": 25,
+        "angleDeg": 90,
+        "densityKgM3": 3300,
+        "blastMt": 7.6,
+        "burstKm": 4.3,
+        "burstKm1kt": 0.221
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 6.2,
+        "burstKm": 10.3,
+        "burstKm1kt": 0.56
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 17,
+        "angleDeg": 45,
+        "densityKgM3": 2600,
+        "blastMt": 5.4,
+        "burstKm": 7.2,
+        "burstKm1kt": 0.411
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 17,
+        "angleDeg": 45,
+        "densityKgM3": 3300,
+        "blastMt": 6.8,
+        "burstKm": 5.5,
+        "burstKm1kt": 0.292
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 17,
+        "angleDeg": 60,
+        "densityKgM3": 2600,
+        "blastMt": 5.5,
+        "burstKm": 4.3,
+        "burstKm1kt": 0.246
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 17,
+        "angleDeg": 60,
+        "densityKgM3": 3300,
+        "blastMt": 7,
+        "burstKm": 2.6,
+        "burstKm1kt": 0.138
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 17,
+        "angleDeg": 90,
+        "densityKgM3": 2600,
+        "blastMt": 5.6,
+        "burstKm": 2.3,
+        "burstKm1kt": 0.129
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 17,
+        "angleDeg": 90,
+        "densityKgM3": 3300,
+        "blastMt": 7.2,
+        "burstKm": 0.6,
+        "burstKm1kt": 0.029
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 5.4,
+        "burstKm": 20.6,
+        "burstKm1kt": 1.177
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 6.7,
+        "burstKm": 19.2,
+        "burstKm1kt": 1.019
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 6.7,
+        "burstKm": 12.3,
+        "burstKm1kt": 0.651
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 8.5,
+        "burstKm": 10.7,
+        "burstKm1kt": 0.524
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 20,
+        "angleDeg": 45,
+        "densityKgM3": 2600,
+        "blastMt": 7.4,
+        "burstKm": 7.5,
+        "burstKm1kt": 0.387
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 20,
+        "angleDeg": 45,
+        "densityKgM3": 3300,
+        "blastMt": 9.3,
+        "burstKm": 5.8,
+        "burstKm1kt": 0.277
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 20,
+        "angleDeg": 60,
+        "densityKgM3": 2600,
+        "blastMt": 7.6,
+        "burstKm": 4.6,
+        "burstKm1kt": 0.235
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 20,
+        "angleDeg": 60,
+        "densityKgM3": 3300,
+        "blastMt": 9.7,
+        "burstKm": 2.9,
+        "burstKm1kt": 0.136
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 20,
+        "angleDeg": 90,
+        "densityKgM3": 2600,
+        "blastMt": 7.8,
+        "burstKm": 2.5,
+        "burstKm1kt": 0.128
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 20,
+        "angleDeg": 90,
+        "densityKgM3": 3300,
+        "blastMt": 9.9,
+        "burstKm": 0.8,
+        "burstKm1kt": 0.036
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 8.1,
+        "burstKm": 21.5,
+        "burstKm1kt": 1.071
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 10.1,
+        "burstKm": 20,
+        "burstKm1kt": 0.926
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 5.6,
+        "burstKm": 19.1,
+        "burstKm1kt": 1.072
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 10.4,
+        "burstKm": 12.8,
+        "burstKm1kt": 0.588
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 13.1,
+        "burstKm": 11.1,
+        "burstKm1kt": 0.473
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 6.4,
+        "burstKm": 13.6,
+        "burstKm1kt": 0.735
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 2600,
+        "blastMt": 11.4,
+        "burstKm": 7.9,
+        "burstKm1kt": 0.351
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 3300,
+        "blastMt": 14.4,
+        "burstKm": 6.2,
+        "burstKm1kt": 0.253
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 60,
+        "densityKgM3": 1500,
+        "blastMt": 6.7,
+        "burstKm": 10.4,
+        "burstKm1kt": 0.553
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 60,
+        "densityKgM3": 2600,
+        "blastMt": 11.9,
+        "burstKm": 4.9,
+        "burstKm1kt": 0.216
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 60,
+        "densityKgM3": 3300,
+        "blastMt": 15,
+        "burstKm": 3.2,
+        "burstKm1kt": 0.129
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 90,
+        "densityKgM3": 1500,
+        "blastMt": 6.9,
+        "burstKm": 8.2,
+        "burstKm1kt": 0.429
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 90,
+        "densityKgM3": 2600,
+        "blastMt": 12.1,
+        "burstKm": 2.8,
+        "burstKm1kt": 0.122
+      },
+      {
+        "diameterM": 50,
+        "speedKms": 25,
+        "angleDeg": 90,
+        "densityKgM3": 3300,
+        "blastMt": 15.4,
+        "burstKm": 1,
+        "burstKm1kt": 0.041
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 12,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 5.7,
+        "burstKm": 6.9,
+        "burstKm1kt": 0.386
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 12,
+        "angleDeg": 45,
+        "densityKgM3": 3300,
+        "blastMt": 6.1,
+        "burstKm": 2.3,
+        "burstKm1kt": 0.124
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 7.4,
+        "burstKm": 17.8,
+        "burstKm1kt": 0.915
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 9.2,
+        "burstKm": 16.4,
+        "burstKm1kt": 0.782
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 8.9,
+        "burstKm": 9.4,
+        "burstKm1kt": 0.455
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 11.3,
+        "burstKm": 7.8,
+        "burstKm1kt": 0.349
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 5.4,
+        "burstKm": 10.7,
+        "burstKm1kt": 0.609
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 45,
+        "densityKgM3": 2600,
+        "blastMt": 9.5,
+        "burstKm": 4.6,
+        "burstKm1kt": 0.219
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 45,
+        "densityKgM3": 3300,
+        "blastMt": 12.1,
+        "burstKm": 2.9,
+        "burstKm1kt": 0.128
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 60,
+        "densityKgM3": 1500,
+        "blastMt": 5.6,
+        "burstKm": 7.5,
+        "burstKm1kt": 0.422
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 60,
+        "densityKgM3": 2600,
+        "blastMt": 9.8,
+        "burstKm": 1.7,
+        "burstKm1kt": 0.081
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 60,
+        "densityKgM3": 3300,
+        "blastMt": 12.4,
+        "burstKm": 0,
+        "burstKm1kt": 0
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 17,
+        "angleDeg": 90,
+        "densityKgM3": 1500,
+        "blastMt": 5.7,
+        "burstKm": 5.2,
+        "burstKm1kt": 0.292
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 10,
+        "burstKm": 18.5,
+        "burstKm1kt": 0.858
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 12.4,
+        "burstKm": 17,
+        "burstKm1kt": 0.733
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 6.7,
+        "burstKm": 16.1,
+        "burstKm1kt": 0.856
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 12.2,
+        "burstKm": 9.8,
+        "burstKm1kt": 0.426
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 15.4,
+        "burstKm": 8.2,
+        "burstKm1kt": 0.327
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 7.4,
+        "burstKm": 10.7,
+        "burstKm1kt": 0.549
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 45,
+        "densityKgM3": 2600,
+        "blastMt": 13.2,
+        "burstKm": 4.9,
+        "burstKm1kt": 0.208
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 45,
+        "densityKgM3": 3300,
+        "blastMt": 16.6,
+        "burstKm": 3.2,
+        "burstKm1kt": 0.125
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 60,
+        "densityKgM3": 1500,
+        "blastMt": 7.7,
+        "burstKm": 7.5,
+        "burstKm1kt": 0.38
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 60,
+        "densityKgM3": 2600,
+        "blastMt": 13.5,
+        "burstKm": 2,
+        "burstKm1kt": 0.083
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 60,
+        "densityKgM3": 3300,
+        "blastMt": 17.1,
+        "burstKm": 0.2,
+        "burstKm1kt": 0.008
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 20,
+        "angleDeg": 90,
+        "densityKgM3": 1500,
+        "blastMt": 7.8,
+        "burstKm": 5.2,
+        "burstKm1kt": 0.264
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 7.6,
+        "burstKm": 26.4,
+        "burstKm1kt": 1.344
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 15.1,
+        "burstKm": 19.2,
+        "burstKm1kt": 0.778
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 18.9,
+        "burstKm": 17.7,
+        "burstKm1kt": 0.663
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 10.4,
+        "burstKm": 16.2,
+        "burstKm1kt": 0.742
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 18.9,
+        "burstKm": 10.3,
+        "burstKm1kt": 0.385
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 23.9,
+        "burstKm": 8.5,
+        "burstKm1kt": 0.297
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 11.6,
+        "burstKm": 10.8,
+        "burstKm1kt": 0.476
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 2600,
+        "blastMt": 20.4,
+        "burstKm": 5.2,
+        "burstKm1kt": 0.192
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 3300,
+        "blastMt": 25.9,
+        "burstKm": 3.5,
+        "burstKm1kt": 0.118
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 60,
+        "densityKgM3": 1500,
+        "blastMt": 12,
+        "burstKm": 7.6,
+        "burstKm1kt": 0.33
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 60,
+        "densityKgM3": 2600,
+        "blastMt": 21.1,
+        "burstKm": 2.2,
+        "burstKm1kt": 0.081
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 60,
+        "densityKgM3": 3300,
+        "blastMt": 26.7,
+        "burstKm": 0.4,
+        "burstKm1kt": 0.015
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 90,
+        "densityKgM3": 1500,
+        "blastMt": 12.3,
+        "burstKm": 5.3,
+        "burstKm1kt": 0.229
+      },
+      {
+        "diameterM": 60,
+        "speedKms": 25,
+        "angleDeg": 90,
+        "densityKgM3": 2600,
+        "blastMt": 21.4,
+        "burstKm": 0.1,
+        "burstKm1kt": 0.003
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 10,
+        "burstKm": 12.9,
+        "burstKm1kt": 0.602
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 12.4,
+        "burstKm": 11.5,
+        "burstKm1kt": 0.498
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 12,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 6.3,
+        "burstKm": 11.4,
+        "burstKm1kt": 0.62
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 12,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 11.3,
+        "burstKm": 4.7,
+        "burstKm1kt": 0.209
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 12,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 14.3,
+        "burstKm": 3.1,
+        "burstKm1kt": 0.127
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 12,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 6.7,
+        "burstKm": 6,
+        "burstKm1kt": 0.32
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 12,
+        "angleDeg": 60,
+        "densityKgM3": 1500,
+        "blastMt": 6.8,
+        "burstKm": 2.8,
+        "burstKm1kt": 0.15
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 12,
+        "angleDeg": 90,
+        "densityKgM3": 1500,
+        "blastMt": 6.9,
+        "burstKm": 0.6,
+        "burstKm1kt": 0.031
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 9.8,
+        "burstKm": 21.8,
+        "burstKm1kt": 1.016
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 19.2,
+        "burstKm": 14.3,
+        "burstKm1kt": 0.534
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 24,
+        "burstKm": 12.8,
+        "burstKm1kt": 0.443
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 12.5,
+        "burstKm": 11.6,
+        "burstKm1kt": 0.498
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 22.4,
+        "burstKm": 5.5,
+        "burstKm1kt": 0.194
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 28.3,
+        "burstKm": 3.8,
+        "burstKm1kt": 0.124
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 17,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 13.4,
+        "burstKm": 6.1,
+        "burstKm1kt": 0.259
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 17,
+        "angleDeg": 45,
+        "densityKgM3": 2600,
+        "blastMt": 23.4,
+        "burstKm": 0.5,
+        "burstKm1kt": 0.018
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 17,
+        "angleDeg": 60,
+        "densityKgM3": 1500,
+        "blastMt": 13.6,
+        "burstKm": 2.9,
+        "burstKm1kt": 0.123
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 17,
+        "angleDeg": 90,
+        "densityKgM3": 1500,
+        "blastMt": 13.7,
+        "burstKm": 0.7,
+        "burstKm1kt": 0.028
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 13.6,
+        "burstKm": 21.9,
+        "burstKm1kt": 0.917
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 26.1,
+        "burstKm": 14.8,
+        "burstKm1kt": 0.499
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 32.7,
+        "burstKm": 13.2,
+        "burstKm1kt": 0.414
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 17.3,
+        "burstKm": 11.6,
+        "burstKm1kt": 0.449
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 30.9,
+        "burstKm": 5.8,
+        "burstKm1kt": 0.184
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 39,
+        "burstKm": 4,
+        "burstKm1kt": 0.119
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 20,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 18.5,
+        "burstKm": 6.2,
+        "burstKm1kt": 0.233
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 20,
+        "angleDeg": 45,
+        "densityKgM3": 2600,
+        "blastMt": 32.4,
+        "burstKm": 0.7,
+        "burstKm1kt": 0.022
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 20,
+        "angleDeg": 60,
+        "densityKgM3": 1500,
+        "blastMt": 18.9,
+        "burstKm": 3,
+        "burstKm1kt": 0.111
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 20,
+        "angleDeg": 90,
+        "densityKgM3": 1500,
+        "blastMt": 19,
+        "burstKm": 0.7,
+        "burstKm1kt": 0.026
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 21.1,
+        "burstKm": 22,
+        "burstKm1kt": 0.796
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 39.9,
+        "burstKm": 15.4,
+        "burstKm1kt": 0.451
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 50.1,
+        "burstKm": 13.8,
+        "burstKm1kt": 0.374
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 27,
+        "burstKm": 11.7,
+        "burstKm1kt": 0.39
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 47.9,
+        "burstKm": 6.1,
+        "burstKm1kt": 0.168
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 60.7,
+        "burstKm": 4.3,
+        "burstKm1kt": 0.111
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 28.8,
+        "burstKm": 6.2,
+        "burstKm1kt": 0.203
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 2600,
+        "blastMt": 50.4,
+        "burstKm": 1,
+        "burstKm1kt": 0.026
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 25,
+        "angleDeg": 60,
+        "densityKgM3": 1500,
+        "blastMt": 29.5,
+        "burstKm": 3,
+        "burstKm1kt": 0.097
+      },
+      {
+        "diameterM": 80,
+        "speedKms": 25,
+        "angleDeg": 90,
+        "densityKgM3": 1500,
+        "blastMt": 29.7,
+        "burstKm": 0.7,
+        "burstKm1kt": 0.023
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 10.7,
+        "burstKm": 18.1,
+        "burstKm1kt": 0.823
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 20.4,
+        "burstKm": 10.3,
+        "burstKm1kt": 0.376
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 25.7,
+        "burstKm": 8.8,
+        "burstKm1kt": 0.298
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 12,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 12.8,
+        "burstKm": 8,
+        "burstKm1kt": 0.34
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 12,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 22.7,
+        "burstKm": 1.6,
+        "burstKm1kt": 0.058
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 12,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 13.3,
+        "burstKm": 2.5,
+        "burstKm1kt": 0.107
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 21.2,
+        "burstKm": 18.3,
+        "burstKm1kt": 0.663
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 39.8,
+        "burstKm": 11.4,
+        "burstKm1kt": 0.334
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 50.1,
+        "burstKm": 9.8,
+        "burstKm1kt": 0.266
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 25.6,
+        "burstKm": 8.1,
+        "burstKm1kt": 0.274
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 45.2,
+        "burstKm": 2.3,
+        "burstKm1kt": 0.064
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 57.2,
+        "burstKm": 0.6,
+        "burstKm1kt": 0.015
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 17,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 26.7,
+        "burstKm": 2.6,
+        "burstKm1kt": 0.087
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 29.3,
+        "burstKm": 18.4,
+        "burstKm1kt": 0.598
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 54.5,
+        "burstKm": 11.8,
+        "burstKm1kt": 0.312
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 68.6,
+        "burstKm": 10.2,
+        "burstKm1kt": 0.249
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 35.4,
+        "burstKm": 8.1,
+        "burstKm1kt": 0.247
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 62.3,
+        "burstKm": 2.5,
+        "burstKm1kt": 0.064
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 79,
+        "burstKm": 0.8,
+        "burstKm1kt": 0.018
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 20,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 36.9,
+        "burstKm": 2.6,
+        "burstKm1kt": 0.079
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 45.6,
+        "burstKm": 18.5,
+        "burstKm1kt": 0.518
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 83.9,
+        "burstKm": 12.3,
+        "burstKm1kt": 0.282
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 105.7,
+        "burstKm": 10.7,
+        "burstKm1kt": 0.225
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 55.3,
+        "burstKm": 8.2,
+        "burstKm1kt": 0.214
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 97.1,
+        "burstKm": 2.8,
+        "burstKm1kt": 0.061
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 3300,
+        "blastMt": 123,
+        "burstKm": 1,
+        "burstKm1kt": 0.021
+      },
+      {
+        "diameterM": 100,
+        "speedKms": 25,
+        "angleDeg": 45,
+        "densityKgM3": 1500,
+        "blastMt": 57.6,
+        "burstKm": 2.7,
+        "burstKm1kt": 0.069
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 19.7,
+        "burstKm": 15.3,
+        "burstKm1kt": 0.568
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 36.6,
+        "burstKm": 8,
+        "burstKm1kt": 0.241
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 46.1,
+        "burstKm": 6.5,
+        "burstKm1kt": 0.18
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 12,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 22.6,
+        "burstKm": 5.1,
+        "burstKm1kt": 0.181
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 39.3,
+        "burstKm": 15.5,
+        "burstKm1kt": 0.457
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 72,
+        "burstKm": 9,
+        "burstKm1kt": 0.216
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 90.8,
+        "burstKm": 7.3,
+        "burstKm1kt": 0.163
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 45.4,
+        "burstKm": 5.2,
+        "burstKm1kt": 0.146
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 54.2,
+        "burstKm": 15.6,
+        "burstKm1kt": 0.412
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 98.8,
+        "burstKm": 9.3,
+        "burstKm1kt": 0.202
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 124.6,
+        "burstKm": 7.7,
+        "burstKm1kt": 0.153
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 62.8,
+        "burstKm": 5.2,
+        "burstKm1kt": 0.132
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 84.5,
+        "burstKm": 15.7,
+        "burstKm1kt": 0.357
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 152.7,
+        "burstKm": 9.8,
+        "burstKm1kt": 0.183
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 192.9,
+        "burstKm": 8,
+        "burstKm1kt": 0.139
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 98.1,
+        "burstKm": 5.3,
+        "burstKm1kt": 0.115
+      },
+      {
+        "diameterM": 120,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 2600,
+        "blastMt": 171.2,
+        "burstKm": 0.1,
+        "burstKm1kt": 0.001
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 41,
+        "burstKm": 11.9,
+        "burstKm1kt": 0.345
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 74.2,
+        "burstKm": 5.1,
+        "burstKm1kt": 0.121
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 93.7,
+        "burstKm": 3.5,
+        "burstKm1kt": 0.077
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 12,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 45,
+        "burstKm": 1.6,
+        "burstKm1kt": 0.045
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 81.9,
+        "burstKm": 12,
+        "burstKm1kt": 0.277
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 147,
+        "burstKm": 5.9,
+        "burstKm1kt": 0.112
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 185.8,
+        "burstKm": 4.2,
+        "burstKm1kt": 0.074
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 17,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 90.3,
+        "burstKm": 1.7,
+        "burstKm1kt": 0.038
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 113.3,
+        "burstKm": 12.1,
+        "burstKm1kt": 0.25
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 202.4,
+        "burstKm": 6.2,
+        "burstKm1kt": 0.105
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 255.9,
+        "burstKm": 4.5,
+        "burstKm1kt": 0.071
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 20,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 124.9,
+        "burstKm": 1.7,
+        "burstKm1kt": 0.034
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 176.7,
+        "burstKm": 12.2,
+        "burstKm1kt": 0.217
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 314.2,
+        "burstKm": 6.5,
+        "burstKm1kt": 0.096
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 397.5,
+        "burstKm": 4.8,
+        "burstKm1kt": 0.065
+      },
+      {
+        "diameterM": 150,
+        "speedKms": 25,
+        "angleDeg": 30,
+        "densityKgM3": 1500,
+        "blastMt": 195.2,
+        "burstKm": 1.7,
+        "burstKm1kt": 0.03
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 102.8,
+        "burstKm": 7.4,
+        "burstKm1kt": 0.158
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 181.8,
+        "burstKm": 1.2,
+        "burstKm1kt": 0.021
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 206,
+        "burstKm": 7.5,
+        "burstKm1kt": 0.127
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 362.7,
+        "burstKm": 1.8,
+        "burstKm1kt": 0.025
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 459.5,
+        "burstKm": 0.1,
+        "burstKm1kt": 0.001
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 284.9,
+        "burstKm": 7.6,
+        "burstKm1kt": 0.115
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 500.8,
+        "burstKm": 2,
+        "burstKm1kt": 0.025
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 634.6,
+        "burstKm": 0.3,
+        "burstKm1kt": 0.003
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 444.9,
+        "burstKm": 7.6,
+        "burstKm1kt": 0.1
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 2600,
+        "blastMt": 780.2,
+        "burstKm": 2.3,
+        "burstKm1kt": 0.025
+      },
+      {
+        "diameterM": 200,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 3300,
+        "blastMt": 988.9,
+        "burstKm": 0.5,
+        "burstKm1kt": 0.005
+      },
+      {
+        "diameterM": 250,
+        "speedKms": 12,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 206.2,
+        "burstKm": 3.9,
+        "burstKm1kt": 0.066
+      },
+      {
+        "diameterM": 250,
+        "speedKms": 17,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 413.4,
+        "burstKm": 4,
+        "burstKm1kt": 0.054
+      },
+      {
+        "diameterM": 250,
+        "speedKms": 20,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 572.1,
+        "burstKm": 4,
+        "burstKm1kt": 0.049
+      },
+      {
+        "diameterM": 250,
+        "speedKms": 25,
+        "angleDeg": 15,
+        "densityKgM3": 1500,
+        "blastMt": 893.6,
+        "burstKm": 4.1,
+        "burstKm1kt": 0.042
+      }
+    ]
+  }
+}
