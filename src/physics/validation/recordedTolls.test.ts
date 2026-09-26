@@ -8,6 +8,11 @@ import {
 } from './recordedTolls.js';
 import { shippedPlanetTotal } from './shippedPopulation.js';
 
+/** Hands the worker's event loop back between cases, so a long test never
+ *  holds it past vitest's one-minute call to the runner (a slow CI runner
+ *  with coverage is several times slower than a Mac). */
+const breathe = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
+
 /**
  * The calibration net.
  *
@@ -109,12 +114,14 @@ describe('a band that could not fail', () => {
  * radii a realisation asks for run well outside them.
  */
 describe('every miss has a named cause', () => {
-  it('no row misses its record without saying why', () => {
+  it('no row misses its record without saying why', async () => {
     // A miss with no named cause is a miss nobody has understood. The
     // public validation page groups the rows by these causes and
     // explains each in two languages, so a row that misses and names
     // none would have nothing to stand beside on that page either.
-    for (const row of RECORDED_EVENTS.map(compareWithRecord)) {
+    for (const event of RECORDED_EVENTS) {
+      await breathe();
+      const row = compareWithRecord(event);
       if (row.contains) continue;
       expect(row.event.cause, `${row.event.name} misses and names no cause`).toBeDefined();
     }
@@ -132,9 +139,14 @@ describe('every miss has a named cause', () => {
 });
 
 describe('the interpolated band and the measured one', () => {
-  it('agree closely enough that the shipped band is about the event', () => {
+  it('agree closely enough that the shipped band is about the event', async () => {
     const fmt = (n: number): string => Math.round(n).toLocaleString('en-US').padStart(9);
-    const costs = RECORDED_EVENTS.map(interpolationCost).filter((c) => c !== null);
+    const costs: NonNullable<ReturnType<typeof interpolationCost>>[] = [];
+    for (const event of RECORDED_EVENTS) {
+      await breathe();
+      const c = interpolationCost(event);
+      if (c !== null) costs.push(c);
+    }
     const lines = costs.map(
       (c) =>
         `${c.event.name.padEnd(24)}${c.comparable ? ' ' : '*'}measured ${fmt(c.measured.low)} – ${fmt(c.measured.high)}   interpolated ${fmt(c.interpolated.low)} – ${fmt(c.interpolated.high)}   ${c.lowFactor.toFixed(2)}× / ${c.highFactor.toFixed(2)}×`

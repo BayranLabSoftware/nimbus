@@ -112,6 +112,7 @@ describe('rules 780 to 787: an airburst’s flash from the field’s model of it
       const started = performance.now();
       const read = checkScenario(lean, scenario);
       expect(performance.now() - started).toBeLessThan(2_000);
+      await breathe();
       expect(read).toEqual(checkScenario(full, scenario));
     }
   }, 240_000);

@@ -22,6 +22,11 @@ import {
 } from './impactField.js';
 import { IMPACT_PRESETS } from '../../simulate.js';
 
+/** Hands the worker's event loop back between cases, so a long test never
+ *  holds it past vitest's one-minute call to the runner (a slow CI runner
+ *  with coverage is several times slower than a Mac). */
+const breathe = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
+
 /**
  * Rule 626 of `validation/continuityRules.ts`: the field G5's harness reads
  * must be the field the product draws its rings from. A field computed beside
@@ -59,6 +64,7 @@ describe('rule 626: the field is the one the rings are drawn from', () => {
     const checkedByRegime = new Map<string, number>();
     let burnsChecked = 0;
     for (let i = 0; i < 400; i++) {
+      if (i % 20 === 0) await breathe();
       const input = impact.sample(u);
       let r: ReturnType<typeof simulateImpact>;
       try {

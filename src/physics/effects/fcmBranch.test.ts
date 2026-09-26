@@ -13,6 +13,11 @@ import { FCM_GATE1 } from '../validation/fcmRoundRules.js';
 import { FCM_ATMOSPHERE, FCM_FLOOR_BODY, FCM_PEAKS } from '../validation/fcmRound1Rules.js';
 
 const rad = (deg: number): number => (deg * Math.PI) / 180;
+
+/** Hands the worker's event loop back between cases, so a long test never
+ *  holds it past vitest's one-minute call to the runner (a slow CI runner
+ *  with coverage is several times slower than a Mac). */
+const breathe = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
 const rhoExp = (h: number): number => RHO_0 * Math.exp(-h / H_SCALE);
 
 /** A seeded generator: the verification's bodies are no development cases. */
@@ -124,7 +129,7 @@ describe('W18’s structure groups', () => {
 });
 
 describe('rule 1141 (a): the ledger closes at every break and at the end', () => {
-  it('on random bodies, splits, structures and clouds, gravity and curvature on', () => {
+  it('on random bodies, splits, structures and clouds, gravity and curvature on', async () => {
     const r = lcg(1_141);
     const splits: FcmOptions['split'][] = [
       { kind: 'cloud' },
@@ -134,6 +139,7 @@ describe('rule 1141 (a): the ledger closes at every break and at the end', () =>
     ];
     let completed = 0;
     for (let i = 0; i < 40; i++) {
+      await breathe();
       const structured = i % 3 === 0;
       const res = fcmEntry(
         {
@@ -204,8 +210,10 @@ describe('rule 1138 (b) and the bound: a cascade that does not end stops', () =>
 });
 
 describe('identical fragments flying as one', () => {
-  it('gives the same ledger, profile and ground as flying each member apart', () => {
-    const b = { diameter: 3, velocity: 18_000, density: 3_000, angle: rad(50), strength: 5e5 };
+  it('gives the same ledger, profile and ground as flying each member apart', async () => {
+    // 1.5 m: three identical fragments per break still bundle (1 457
+    // components), at a third of the 3 m body's cost on a slow runner.
+    const b = { diameter: 1.5, velocity: 18_000, density: 3_000, angle: rad(50), strength: 5e5 };
     const o: FcmOptions = {
       ablation: 5e-9,
       cloudDispersion: 2,
@@ -213,6 +221,7 @@ describe('identical fragments flying as one', () => {
       split: { kind: 'mass', fragments: 3, larger: 1 / 3, cloud: 0.3 },
     };
     const together = fcmEntry(b, o);
+    await breathe();
     const apart = fcmEntry(b, { ...o, bundle: false });
     expect(together.components).toBe(apart.components);
     const sum = (xs: number[]): number => xs.reduce((a, x) => a + x, 0);

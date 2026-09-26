@@ -8,6 +8,11 @@ import {
 } from './pointSourceDistance.js';
 import { simulateEarthquake, type EarthquakeScenarioInput } from './simulate.js';
 
+/** Hands the worker's event loop back between cases, so a long test never
+ *  holds it past vitest's one-minute call to the runner (a slow CI runner
+ *  with coverage is several times slower than a Mac). */
+const breathe = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
+
 /**
  * Rule 51 of validation/pointSourceRules.ts, held before any score: the
  * integral is ps2ff's, the grid keeps to it, and the scenario input moves
@@ -34,7 +39,7 @@ describe('rule 51 (a): Thompson & Worden 2018 as ps2ff 1.5.9 computes it', () =>
 });
 
 describe('rule 51 (b): the grid keeps to the integral', () => {
-  it('within 5 %, and within 2 % where the depth or the distance is 3 km or more', () => {
+  it('within 5 %, and within 2 % where the depth or the distance is 3 km or more', async () => {
     const magnitudes = [5.05, 6.05, 7.45];
     const depths = [...Array.from({ length: 10 }, (_, i) => 1.05 + 0.2 * i), 3.5, 9.5, 39.5];
     const distances = [...Array.from({ length: 21 }, (_, i) => 1 + 0.1 * i), 5, 20, 100, 300];
@@ -42,6 +47,7 @@ describe('rule 51 (b): the grid keeps to the integral', () => {
     let worstFar = 0;
     for (const magnitude of magnitudes) {
       for (const depthKm of depths) {
+        await breathe();
         const grid = pointSourceDistances(magnitude, depthKm);
         for (const r of distances) {
           const exact = thompsonWorden2018Averages(magnitude, depthKm, r);

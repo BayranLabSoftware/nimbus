@@ -10,6 +10,11 @@ import { pickQuantile } from './engine.js';
 import { mulberry32 } from './sampling.js';
 import { runImpactMonteCarlo } from './impactMonteCarlo.js';
 
+/** Hands the worker's event loop back between cases, so a long test never
+ *  holds it past vitest's one-minute call to the runner (a slow CI runner
+ *  with coverage is several times slower than a Mac). */
+const breathe = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
+
 /**
  * Coverage and self-consistency tests for the Monte-Carlo engine, as
  * flagged by the audit (NUM-002). The headline question: is N=200
@@ -135,12 +140,13 @@ describe('Monte-Carlo coverage — N=200 vs N=2000 reference (Tunguska)', () => 
 });
 
 describe('Monte-Carlo determinism — same seed produces identical percentiles', () => {
-  it('two N=200 runs with the same seed return bit-identical percentiles', () => {
+  it('two N=200 runs with the same seed return bit-identical percentiles', async () => {
     const a = runImpactMonteCarlo({
       nominal: NOMINAL,
       rng: mulberry32('determinism-test'),
       iterations: 200,
     });
+    await breathe();
     const b = runImpactMonteCarlo({
       nominal: NOMINAL,
       rng: mulberry32('determinism-test'),
@@ -160,12 +166,13 @@ describe('Monte-Carlo determinism — same seed produces identical percentiles',
     }
   }, 90_000);
 
-  it('different seeds produce different percentiles (sanity)', () => {
+  it('different seeds produce different percentiles (sanity)', async () => {
     const a = runImpactMonteCarlo({
       nominal: NOMINAL,
       rng: mulberry32('seed-A'),
       iterations: 200,
     });
+    await breathe();
     const b = runImpactMonteCarlo({
       nominal: NOMINAL,
       rng: mulberry32('seed-B'),

@@ -64,14 +64,22 @@ function leaves(value: unknown, path: string, out: Map<string, number>): void {
   }
 }
 
+/** Hands the worker's event loop back between scenarios, so a slice never
+ *  holds it past vitest's one-minute call to the runner (a slow CI runner
+ *  with coverage is several times slower than a Mac). */
+const breathe = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
+
 /** Every scenario of one domain's slice, as its own sampler draws it. */
-const slice = (name: string): { input: Record<string, unknown>; out: Map<string, number> }[] => {
+const slice = async (
+  name: string
+): Promise<{ input: Record<string, unknown>; out: Map<string, number> }[]> => {
   const hazard = HAZARDS.find((h) => h.name === name);
   if (hazard === undefined) throw new Error(`no hazard ${name}`);
   const rng = mulberry32(SWEEP_SEED(name));
   const u = (): number => rng.next();
   const rows: { input: Record<string, unknown>; out: Map<string, number> }[] = [];
   for (let i = 0; i < (SLICE[name] ?? 120); i++) {
+    await breathe();
     const input = hazard.sample(u);
     try {
       const out = new Map<string, number>();
@@ -85,9 +93,9 @@ const slice = (name: string): { input: Record<string, unknown>; out: Map<string,
 };
 
 describe('rules 548 to 554: a wave inside its water', () => {
-  it('holds on every landslide of the slice — the question B-084 came from', () => {
+  it('holds on every landslide of the slice — the question B-084 came from', async () => {
     let read = 0;
-    for (const { input, out } of slice('landslide')) {
+    for (const { input, out } of await slice('landslide')) {
       const depth = input.meanOceanDepth;
       const amp = out.get('tsunami.sourceAmplitude');
       if (typeof depth !== 'number' || !(depth > 0) || amp === undefined || !(amp > 0)) continue;
@@ -120,9 +128,9 @@ describe('rules 548 to 554: rings nest', () => {
 
   it.each(Object.keys(chains))(
     'holds for every graded ring of a %s',
-    (name) => {
+    async (name) => {
       let read = 0;
-      for (const { out } of slice(name)) {
+      for (const { out } of await slice(name)) {
         for (const chain of chains[name] ?? []) {
           for (let k = 1; k < chain.length; k++) {
             const severe = out.get(chain[k - 1] ?? '');
@@ -152,9 +160,9 @@ describe('rules 548 to 554: nothing negative, and a crater is not deeper than it
 
   it.each(['landslide', 'volcano', 'explosion'])(
     'finds nothing negative in a %s',
-    (name) => {
+    async (name) => {
       let read = 0;
-      for (const { out } of slice(name)) {
+      for (const { out } of await slice(name)) {
         for (const [path, v] of out) {
           if (!Number.isFinite(v) || signed.test(path)) continue;
           read++;
@@ -166,9 +174,9 @@ describe('rules 548 to 554: nothing negative, and a crater is not deeper than it
     60_000
   );
 
-  it('keeps an impact crater no deeper than its diameter', () => {
+  it('keeps an impact crater no deeper than its diameter', async () => {
     let read = 0;
-    for (const { out } of slice('impact')) {
+    for (const { out } of await slice('impact')) {
       const depth = out.get('crater.depth');
       const dia = out.get('crater.finalDiameter');
       if (depth === undefined || dia === undefined || !(depth > 0) || !(dia > 0)) continue;

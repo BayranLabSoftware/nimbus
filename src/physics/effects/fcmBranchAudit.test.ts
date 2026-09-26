@@ -4,6 +4,11 @@ import { fcmEntryAudit } from './fcmBranchAudit.js';
 
 const rad = (deg: number): number => (deg * Math.PI) / 180;
 
+/** Hands the worker's event loop back between cases, so a long test never
+ *  holds it past vitest's one-minute call to the runner (a slow CI runner
+ *  with coverage is several times slower than a Mac). */
+const breathe = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
+
 function lcg(seed: number): () => number {
   let s = seed >>> 0;
   return () => {
@@ -13,7 +18,7 @@ function lcg(seed: number): () => number {
 }
 
 describe('rule 1189 (b): the audit’s fork carries no physics change — exact equality with the sealed engine', () => {
-  it('reproduces the sealed candidate’s own output, bit for bit, on random M1 and M2 cases', () => {
+  it('reproduces the sealed candidate’s own output, bit for bit, on random M1 and M2 cases', async () => {
     const r = lcg(1_189);
     const splits: FcmOptions['split'][] = [
       { kind: 'cloud' },
@@ -23,6 +28,7 @@ describe('rule 1189 (b): the audit’s fork carries no physics change — exact 
     ];
     let completed = 0;
     for (let i = 0; i < 40; i++) {
+      await breathe();
       const structured = i % 3 === 0;
       const body: FcmBody = {
         diameter: 0.3 * 10 ** r(),

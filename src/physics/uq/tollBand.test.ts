@@ -29,6 +29,11 @@ import {
 import { EARTHQUAKE_PRESETS, simulateEarthquake } from '../events/earthquake/simulate.js';
 import { IMPACT_PRESETS, simulateImpact } from '../simulate.js';
 
+/** Hands the worker's event loop back between cases, so a long test never
+ *  holds it past vitest's one-minute call to the runner (a slow CI runner
+ *  with coverage is several times slower than a Mac). */
+const breathe = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
+
 const explosion = (
   input: ExplosionScenarioInput = EXPLOSION_PRESETS.HIROSHIMA_1945.input
 ): ActiveResult => ({
@@ -162,7 +167,7 @@ describe('the draws one at a time', () => {
     }
   };
 
-  it('are the plans sampleScenarioPlans returns, for an impact, a quake and a blast', () => {
+  it('are the plans sampleScenarioPlans returns, for an impact, a quake and a blast', async () => {
     configureCountryLookup(() => 'IT');
     const results: ActiveResult[] = [
       { type: 'impact', data: simulateImpact(IMPACT_PRESETS.TUNGUSKA.input) },
@@ -170,6 +175,7 @@ describe('the draws one at a time', () => {
       explosion(),
     ];
     for (const result of results) {
+      await breathe();
       const options: ScenarioPlanOptions = {
         result,
         planFor: (r) => casualtyPlanForResult(r, location),

@@ -7,6 +7,11 @@ import { FCM_H2_SIGMA_RANGE } from '../validation/fcmSurvivalLightRules.js';
 const rad = (deg: number): number => (deg * Math.PI) / 180;
 const rhoExp = (h: number): number => RHO_0 * Math.exp(-h / H_SCALE);
 
+/** Hands the worker's event loop back between cases, so a long test never
+ *  holds it past vitest's one-minute call to the runner (a slow CI runner
+ *  with coverage is several times slower than a Mac). */
+const breathe = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
+
 function lcg(seed: number): () => number {
   let s = seed >>> 0;
   return () => {
@@ -65,7 +70,7 @@ describe('rule 1182 (c): H2 repeats gate 1’s limits (rule 1141 (b) unaffected 
 });
 
 describe('rule 1182 (c): the ledger closes with an independent σ per solid fragment', () => {
-  it('on random bodies, splits, structures and clouds, to rule 1141 (a)’s tolerance', () => {
+  it('on random bodies, splits, structures and clouds, to rule 1141 (a)’s tolerance', async () => {
     const r = lcg(1_186);
     const splits: FcmH2Options['split'][] = [
       { kind: 'cloud' },
@@ -75,6 +80,7 @@ describe('rule 1182 (c): the ledger closes with an independent σ per solid frag
     ];
     let completed = 0;
     for (let i = 0; i < 40; i++) {
+      await breathe();
       const structured = i % 3 === 0;
       const res = fcmEntryH2(
         {
@@ -187,8 +193,9 @@ describe('rule 1186: σ is redrawn once per break, and identical fragments still
     expect(r.completed).toBe(true);
   }, 30_000);
 
-  it('closes the ledger the same way whether fragments bundle or fly apart', () => {
-    const b = { diameter: 3, velocity: 18_000, density: 3_000, angle: rad(50), strength: 5e5 };
+  it('closes the ledger the same way whether fragments bundle or fly apart', async () => {
+    // 1.5 m: the fragments still bundle, at a third of the 3 m body's cost.
+    const b = { diameter: 1.5, velocity: 18_000, density: 3_000, angle: rad(50), strength: 5e5 };
     const o: FcmH2Options = {
       sigmaRange: FCM_H2_SIGMA_RANGE,
       sigmaDraw: lcg(9),
@@ -200,7 +207,12 @@ describe('rule 1186: σ is redrawn once per break, and identical fragments still
     // processing order, which itself changes with bundling — so, unlike the
     // sealed engine's shared-σ case, the two runs need not reach the same
     // ledger value; each must still close its own to the tolerance.
-    for (const r of [fcmEntryH2(b, o), fcmEntryH2(b, { ...o, sigmaDraw: lcg(9), bundle: false })]) {
+    for (const run of [
+      () => fcmEntryH2(b, o),
+      () => fcmEntryH2(b, { ...o, sigmaDraw: lcg(9), bundle: false }),
+    ]) {
+      await breathe();
+      const r = run();
       expect(Math.abs(r.ledger.massResidual)).toBeLessThan(FCM_GATE1.ledger);
       expect(Math.abs(r.ledger.energyResidual)).toBeLessThan(FCM_GATE1.ledger);
       expect(r.ledger.momentumResidual).toBeLessThan(FCM_GATE1.ledger);
