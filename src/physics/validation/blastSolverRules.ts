@@ -3056,3 +3056,215 @@ export const RULE_1343_WRITTEN = '2026-09-27' as const;
  *     cell each face state's Newton starts from.
  */
 export const RULE_1344_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1345. V6's DETAILS, FIXED BEFORE THE SCHEME RUNS (27 September 2026,
+ * 21:54; `scripts/riemann-air-exact.ts`, `scripts/verify-blast-v6.ts`;
+ * Toro's solution moved unchanged to `scripts/riemann-toro.ts`).
+ *
+ * (a) THE EXACT SOLVER, tried before any scheme run: with the ideal gas it
+ *     meets Toro's Sod within 4·10⁻¹⁴ (p*, u*, the star densities, ρ at 401
+ *     values of x/t, the fan included). Its RK4 step is 10⁻⁴ in ln v: at
+ *     10⁻³ the fans of the first case (c) tried, which cross the band seam
+ *     at Y = −0.5 (a C¹ join, where RK4 loses its order), moved by 3·10⁻⁹
+ *     when the step was halved, beyond the 10⁻¹⁰ of rule 1334 (c).
+ * (b) CASE (c) — «a shock inside a single column»: 4 atm and 5 500 K
+ *     against 1 atm and 4 500 K; all four states lie in band 2's column 1.5
+ *     < Z ≤ 2.22, at Y from −1.29 to −0.79 and Z from 1.98 to 2.08, away
+ *     from every blend (checked at a 10⁻³ step); the right shock's pressure
+ *     ratio about 2.04. The states of every case from (p, T) by RP-1181's
+ *     T(e, ρ), ρ bisected in ln ρ between p/(5RT) and 1.2 p/(RT).
+ * (c) THE READING, as the script's header states: along z, 4 columns, 1 m,
+ *     the diaphragm at 0.45 m, read when the fastest wave has run 0.4 m; the
+ *     L1 error of density against exact cell averages (8-point Gauss between
+ *     the waves); the shock the highest crossing of the mean of the densities
+ *     either side of the right shock; the plateau the mean pressure of the
+ *     cells between the left wave's tail and the right shock, three cells in
+ *     from each end, against p*.
+ */
+export const RULE_1345_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1346. V8's DETAILS, FIXED BEFORE IT RUNS (27 September 2026, 21:59;
+ * `scripts/verify-blast-v8.ts`).
+ *
+ * (a) THE WAVES. An entropy wave at constant pressure p and speed u = 100 m/s
+ *     along z, Z = 0.4 + (Z_top − 0.4)·exp(−((z − 120 m)/15 m)²), ρ from p
+ *     and e: (I) p = 30 atm, Z_top = 2.6 (band 3: the cold blend, the columns'
+ *     seams at 1.7 and 2.35); (II) 1 atm, Z_top = 3.0 (the band seam at Y =
+ *     −0.5, band 2's seams at 1.5, 2.22 and 2.95); (III) 10⁻⁴ atm, Z_top =
+ *     3.2 (the band seam at Y = −4.5, band 1's seams at 1.5, 2.2 and 3.05);
+ *     (IV) 10⁻⁵ atm, Z_top = 1.2 (band 1's cold blend). Every path stays
+ *     below Z_h; band 1's seam at Z = 3.4 lies beyond Z_h wherever band 1
+ *     reaches it and is not crossed — declared. (V) the axisymmetric case:
+ *     wave II as a ring, Z = 0.4 + 2.6·exp(−((r − 30 m)² + (z − 120 m)²)/
+ *     (15 m)²).
+ * (b) THE RUNS: the 2D solver with real air and the limiter 'has', no
+ *     gravity, 200 m in z (60 m in r for V); planar on 4 columns with 2, 1,
+ *     0.5 and 0.25 m cells, V on 4, 2, 1 and 0.5 m; read at t = 0.15 s (the
+ *     wave moved 15 m). The ground is a wall: the flow leaving it sends a
+ *     rarefaction up at c + u ≈ 432 m/s, 65 m by then; the reading takes the
+ *     cells above 80 m and below 190 m.
+ * (c) THE MEASURE: max |p/p₀ − 1| over the read cells at t = 0.15 s; PASSES
+ *     where it falls with an observed order of at least 2 between the two
+ *     finest grids, for each of I–V (rule 1334 (c) V8).
+ */
+export const RULE_1346_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1347. THE COST DECIDES: THE BLENDED FUNCTION TABULATED (27 September
+ * 2026, 22:06; rule 1334 (d); `src/physics/solvers/blast1d/solver.ts`, the
+ * one-dimensional solver brought in).
+ *
+ * (a) THE ONE-DIMENSIONAL SOLVER, rule 1328's surrogate brought into the
+ *     project with real air as rule 1343 (a) put it in the two-dimensional
+ *     one: with the ideal gas, the laboratory's hot sphere (10 m, 2 kt, 5 m
+ *     cells, 13 531 steps) gives every cell's peak and its time equal to the
+ *     surrogate's to the bit, no fall-back in either.
+ * (b) THE COST, measured: the same run in real air took 41.5 s against 3.3 s
+ *     — 12.6 times — the shocked air above about 415 K taking the hot branch
+ *     and each hot face its Newton; the two-dimensional first sight (rule
+ *     1343 (c)) was 1.7 times a step. Rule 1334 (d)'s threshold, 30 % over
+ *     the ideal gas for the whole run, is exceeded many times over; T4's
+ *     large run, which could only confirm it, is not made for this. C1's
+ *     finest grid (0.156 m) would take some 7 hours.
+ * (c) THE TABLE: γ̃, γ̃_Y, γ̃_Z and γ̃_YZ (γ̃_YZ by central differences of γ̃_Z
+ *     in Y, h = 10⁻⁶) every 0.01 in Y from −7 to 3 and in Z from 0.58 to 4.5,
+ *     read by bicubic Hermite interpolation, c² from the interpolant's own
+ *     derivatives (Swesty 1996), Z held beyond 4.5 (the continuation is
+ *     constant there). Built once (about 6 s); 59 ns an evaluation against
+ *     2 269 ns.
+ * (d) THE TABLE'S CRITERIA, fixed now: against the blended function at
+ *     300 000 points (a fixed seed, Y in −7 … 3, Z in 0.58 … 4.48), γ̃ − 1
+ *     within 10⁻³ and c² within 2 % — half RP-1181's own accuracy of about 4
+ *     % — everywhere; a first look found 1.7·10⁻⁴ and 1.85 % at worst, the
+ *     latter at a kink near Z_h (Y = 2.27, Z = 2.91), the 99.9th percentile
+ *     of c²'s error 0.3 % near Z_h and 0.05 % away from it. And the table
+ *     passes rule 1334 (a)(7)'s four checks itself (the grid between the
+ *     nodes, rule 1344 (b)).
+ * (e) THEN: both solvers take the table for hot states (the cold branch is
+ *     untouched: rule 1343's V7 (ii) stands); V6's exact solver takes the
+ *     same table (it verifies the scheme, not the fit); V6 and V8 run on the
+ *     table. Their first runs on the blended function, stopped for this,
+ *     are kept as a record: V6 (a) orders 0.67, 0.90 on 100–400 cells, the
+ *     shock within 0.8 cells, the plateau within 0.12 %; V8 (I) orders 1.75,
+ *     2.18.
+ */
+export const RULE_1347_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1348. THE TABLE PASSES; V6 FAILS AS FIXED ON ITS TWO STRONG CASES, AND
+ * WHY (27 September 2026, 22:15; `verifyAirEosTable.json`,
+ * `verifyBlastV6.json`).
+ *
+ * (a) THE TABLE (rule 1347 (d)), its checks on a grid between its nodes in Y
+ *     and in Z: Hilsenrath–Klein 1.77 % (median 0.57 %); γ̃ − 1 ≥ 0.0738,
+ *     ∂p/∂e ≥ 0.107 ρ(γ̃ − 1), c² ≥ 0.786 eγ̃(γ̃ − 1), 𝒢 at and below Z_h ≥
+ *     0.349; its derivatives within 3.0·10⁻⁹ of central differences; the
+ *     entropy wave 4.4·10⁻⁵ → 5.7·10⁻⁷ over 100–800 cells; against the
+ *     blended function γ̃ − 1 within 1.6·10⁻⁴ and c² within 0.29 % — PASSES;
+ *     56 ns an evaluation. The first run, its Z grid on the nodes, failed
+ *     check (3) at 1.84·10⁻⁵: at a node the interpolant is C¹ (γ̃_Z equal
+ *     above and below to nine digits) but γ̃_ZZ jumps, and a central
+ *     difference straddling it reads the jump — the check's, not the
+ *     derivative's, as rule 1344 (b) found in Y.
+ * (b) V6 on the table (rule 1345): the exact solver's checks pass (Toro
+ *     within 7.7·10⁻¹⁴; Rankine–Hugoniot residuals ≤ 5·10⁻¹⁶; halving its
+ *     step moves it ≤ 2.1·10⁻¹²). Case (c) PASSES: order 1.00, the shock
+ *     0.04 cells off, the plateau within 0.001 %. Cases (a) and (b): the
+ *     shock within 0.83 and 0.39 cells, the plateau within 0.09 and 0.06 %,
+ *     but the L1 order of density between the two finest 0.63 and 0.70
+ *     against at least 0.8 — V6 FAILS as fixed.
+ * (c) WHY, one run: the same states in the ideal gas (γ = 1.4, Toro's exact
+ *     solution, the same scheme) give 0.68 and 0.75 between the two finest
+ *     (1.01, 0.84 and 0.99, 1.02 before) — the order sinks with the contact's
+ *     density jump (7.5 in (a)) after a strong rarefaction whatever the gas;
+ *     real air costs about 0.05 of it. Rule 1295 (c)'s 0.8 was set on Sod's
+ *     mild jumps. Declared, not amended: V6 stays failed on (a) and (b), the
+ *     scheme's real-air behaviour is the ideal gas's on the same waves (the
+ *     run: `scripts/verify-blast-v6-ideal.ts`, `verifyBlastV6Ideal.json`).
+ */
+export const RULE_1348_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1349. C1–C3's EXECUTION, FIXED BEFORE ANY JUDGED NUMBER (27 September
+ * 2026, 22:19; `scripts/blast1d-c1-runs.ts`, `scripts/verify-blast-c1.ts`;
+ * the targets transcribed by amanuensis A into
+ * `~/Desktop/Nimbus-laboratorio/trascrizioni/passo2/amanuense-A.json`).
+ *
+ * (a) THE RUNS: the one-dimensional solver with the table (rule 1347), W = 1
+ *     kt (4.184·10¹² J) in a hot sphere of air at rest at ρ₀ = 1.225 kg/m³,
+ *     p₀ = 101 325 Pa, of 35, 40 or 45 m; 2.7 km of cells of 2.5, 1.25,
+ *     0.625, 0.3125 and 0.15625 m; to the end of the first positive phase at
+ *     2.6 km. A share f_b is the run read at R/f_b^(1/3) and t·f_b^(1/3). The
+ *     energy beyond Z_h is sampled every 200 steps (the 5 m trial: none).
+ * (b) THE READINGS: the recorded peak, linear between cell centres; the foot
+ *     at 5 % of each cell's final peak (the ladder of overpressures 2 % apart,
+ *     linear in time within a step, in ln Δp between rungs); the first
+ *     positive phase's impulse. Converged from the three finest grids by
+ *     rule 1256 (c) — an order of at least 1 extrapolated, below it the
+ *     finest with the three's spread as the band (rule 1318 (d)).
+ * (c) THE TARGETS, read by the script, one transcription: N&C's Eq. 7 with
+ *     the 1981 constants AC, AQ, ASTAR, RSTAR, whose assignment to A, B, C,
+ *     R₀ and whose units the report does not print — the script takes the
+ *     one assignment and unit system (MKS or cgs) that reproduces App. III's
+ *     radius-to-pressure rows from 10 m to 10 km within 0.5 %, and stops if
+ *     none or several do; B87's Eq. 40 (sr in kilofeet, m = W^(1/3)), Eq. 33
+ *     and Eq. 48 beside; f_th from G&D's Table 7.88 at 1 kt, lowest altitude
+ *     (up to 15 kilofeet), f_n the initial nuclear radiation's share of §1.25.
+ *     The Director saw the forms and printed coefficients of B87's Eqs. 33,
+ *     40 and 48 to code them, after rules 1333–1334 were committed and
+ *     pushed (5c877af); none of N&C's constants or table, nor G&D's shares.
+ * (d) THE ORDER: the central source's chain first, its PASS or not judged at
+ *     once; the 35 and 45 m chains and the ideal gas's after, for CONSISTENT
+ *     (f_b scanned over its interval in 101 steps, every source) and for
+ *     real air's effect.
+ */
+export const RULE_1349_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1350. V8 AND STEP 2's FIRST VALIDATION: C1 AND C2 CONSISTENT, NOT
+ * PASSED (27 September 2026, 23:39; `verifyBlastV8.json`,
+ * `verifyBlastC1.json`).
+ *
+ * (a) V8 on the table (rule 1346): I (30 atm) orders 1.75, 2.19, 4.00; II (1
+ *     atm) −0.31, 3.88, 2.99; V (the ring) 2.96, 0.78, 2.07 — PASS. III (10⁻⁴
+ *     atm) 1.77, 0.49, 1.72, the finest 0.15 %; IV (10⁻⁵ atm) 1.95, 1.82,
+ *     1.97, the finest 4.7·10⁻⁶ — FAIL as fixed. IV is second order short of
+ *     the bar by 0.03; III's irregular order and 0.15 % sit near Z_h at the
+ *     lowest densities (15 000–20 000 K at about 65 km) — no bearing on C1 at
+ *     sea level, an open point for step 3's wakes aloft.
+ * (b) C1–C3 (rules 1333, 1349), the central source (40 m) converged from
+ *     0.625, 0.3125 and 0.15625 m (242 108 steps on the finest, no fall-back,
+ *     nothing beyond Z_h). N&C's constants: one assignment and unit system
+ *     (cgs) reproduces App. III within 0.5 %. f_b a priori (G&D): 0.600, its
+ *     interval 0.487–0.975.
+ *     With the central f_b the model lies BELOW the standard: −30.2, −27.4,
+ *     −26.1, −23.5, −21.8, −12.8, −12.7, −11.8, −10.9 % at 100 m … 2 km;
+ *     arrivals +10.4, +5.8, +3.6, +2.1 % at 300 m … 1 km — neither passes.
+ *     Over f_b's interval, with the same source, every f_b from 0.882 to
+ *     0.975 brings all nine C1 readings within 12 % and all four C2
+ *     readings within 7 % at once (at f_b = 0.936 the worst C1 reading is
+ *     8.5 %: −5.1 % at 100 m, −2.6 … +0.7 % at 150–500 m, +5.8 … +7.2 % at
+ *     700 m – 2 km) — C1 and C2 CONSISTENT; the window lies wholly above
+ *     f_b's parametric band (which reaches about 0.71), on the model's
+ *     uncertainty that rule 1333 (b) added.
+ * (c) WHAT IT SAYS: a hydrodynamic model matches the radiation-
+ *     hydrodynamic standard only with nearly all the yield in the blast —
+ *     the energy the fireball radiates in reality stays, in the model, in a
+ *     hot core that does little work on the wave (rule 1333 (b)'s model
+ *     uncertainty, the thirteenth review's point). The a priori partition is
+ *     the wrong input for this model; radiation (rule 1333 (e)) is what must
+ *     yield the effective share. Across the range the model's shape departs
+ *     from N&C's by about 12 % (low near, high far), within the spread of the
+ *     field's own standards (B87 against N&C −6 … +16 %).
+ * (d) REPORTED: C3's impulse against B87's Eqs. 48 on 33, −33 … +18 % (the
+ *     two standards differ by up to 51 %); 20–100 m, −92 … −30 % with the
+ *     central f_b — the hot sphere is no fireball there, as rule 1333 (c)
+ *     foresaw.
+ * (e) STILL OPEN before C1 counts for the product: the two-dimensional solver
+ *     within 1 % of the one-dimensional on 5, 2.5 and 1.25 m (rule 1333 (c)),
+ *     which needs real air on the GPU; the 35 and 45 m sources (running) and
+ *     the ideal gas's runs, for the sources' spread and real air's effect.
+ */
+export const RULE_1350_WRITTEN = '2026-09-27' as const;

@@ -27,12 +27,13 @@
  *
  * The reference implementation, float64 and SI throughout; its tests are the
  * six of rule 1254 (c). With `eos: 'air'` (rule 1334) the gas is real air —
- * `airBlended` above Z = 0.58, the ideal gas's own arithmetic below it — and
+ * the blended function's table `airTabled` above Z = 0.58 (rule 1347), the
+ * ideal gas's own arithmetic below it — and
  * the positivity limiter is required.
  */
 
 import type { Atmosphere } from './atmosphere.js';
-import { AIR_COLD_E, airBlended } from './airEos.js';
+import { AIR_COLD_E, airTabled } from './airEos.js';
 
 /** Three ghost layers on every side, for the fifth-order reconstruction. */
 const G = 3;
@@ -439,7 +440,7 @@ export class BlastSolver2D {
     const b = this.mz[k] ?? 0;
     const rhoE = (this.en[k] ?? 0) - (0.5 * (a * a + b * b)) / r;
     if (this.eos === 'ideal' || rhoE <= r * AIR_COLD_E) return (this.gamma - 1) * rhoE;
-    return airBlended(rhoE / r, r).p;
+    return airTabled(rhoE / r, r).p;
   }
 
   /** Volume of a cell of ring i (m³). */
@@ -568,7 +569,7 @@ export class BlastSolver2D {
             eint[k] = rhoE / r;
           }
         } else {
-          const hot = airBlended(rhoE / r, r);
+          const hot = airTabled(rhoE / r, r);
           p = hot.p;
           c = Math.sqrt(hot.c2);
           gam[k] = (r * hot.c2) / p;
@@ -830,7 +831,7 @@ export class BlastSolver2D {
     let hi = target / 0.05;
     let e = guess > lo && guess < hi ? guess : cold / r;
     for (let it = 0; it < 80; it++) {
-      const s = airBlended(e, r);
+      const s = airTabled(e, r);
       const f = s.p / r - target;
       if (Math.abs(f) <= 1e-14 * target) {
         this.faceC2 = s.c2;
@@ -843,7 +844,7 @@ export class BlastSolver2D {
       this.faceIterations++;
       e = next;
     }
-    this.faceC2 = airBlended(e, r).c2;
+    this.faceC2 = airTabled(e, r).c2;
     return r * e;
   }
 
@@ -1196,7 +1197,7 @@ export class BlastSolver2D {
       p = (this.gamma - 1) * rhoE;
       c = Math.sqrt((this.gamma * p) / rho);
     } else {
-      const hot = airBlended(rhoE / rho, rho);
+      const hot = airTabled(rhoE / rho, rho);
       p = hot.p;
       c = Math.sqrt(hot.c2);
     }
@@ -1232,7 +1233,7 @@ export class BlastSolver2D {
         if (this.eos === 'ideal' || rhoE <= r * AIR_COLD_E) {
           const p = (gamma - 1) * rhoE;
           c = Math.sqrt((gamma * p) / r);
-        } else c = Math.sqrt(airBlended(rhoE / r, r).c2);
+        } else c = Math.sqrt(airTabled(rhoE / r, r).c2);
         if (Math.abs(u) + c > ar) ar = Math.abs(u) + c;
         if (Math.abs(v) + c > az) az = Math.abs(v) + c;
       }

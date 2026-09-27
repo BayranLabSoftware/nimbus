@@ -4,9 +4,9 @@
  * `src/physics/solvers/blast2d/airEos.ts`) checked before the solver uses it.
  *
  *   (1) Hilsenrath & Klein's 49 points: p within 5 %, the median within 2 %;
- *   (2) on a fine grid (Y every 0.01 from −7.495 to 3.495 — between the
- *       tables' nodes, rule 1344 — Z every 0.002 from
- *       −0.5 to 4.2, the held and clamped zones included): γ̃ > 1,
+ *   (2) on a fine grid (Y every 0.01 from −7.495 to 3.495, Z every 0.002 from
+ *       −0.499 to 4.2 — both between the table's nodes, rules 1344 and 1348 —
+ *       the held and clamped zones included): γ̃ > 1,
  *       ∂p/∂e > 0, c² > 0 everywhere, and the fundamental derivative 𝒢 > 0
  *       (by central differences along the isentrope) at and below Z_h —
  *       beyond it reported, not claimed (rule 1338 (c));
@@ -18,7 +18,10 @@
  *       periodic, one period, the scheme in one planar dimension; max |Δp|/p
  *       falling at every halving over 100, 200, 400 and 800 cells.
  *
- *   pnpm exec tsx scripts/verify-air-eos-blended.ts
+ *   pnpm exec tsx scripts/verify-air-eos-blended.ts [table]
+ *
+ * With 'table' (rule 1347 (d)) the checks run on the bicubic table the
+ * solvers read, and (5) compares it with the blended function.
  *
  * Writes src/physics/validation/verifyAirEosBlended.json.
  */
@@ -30,10 +33,17 @@ import {
   airBlendedCounts,
   airEffectiveEdge,
   airGammaBlended,
+  airGammaTable,
+  airTabled,
   rp1181,
 } from '../src/physics/solvers/blast2d/airEos.js';
 import table from '../src/physics/validation/hilsenrathKlein49.json';
 
+// Rule 1347 (d): 'table' checks the bicubic table the solvers read, and
+// compares it with the blended function.
+const useTable = process.argv[2] === 'table';
+const gammaOf = useTable ? airGammaTable : airGammaBlended;
+const stateOf = useTable ? airTabled : airBlended;
 const RT0 = rp1181.RT0;
 
 // (1) Hilsenrath & Klein.
@@ -54,7 +64,7 @@ const hk = table.points.map((pt) => {
   const rho = rho0hk * 10 ** pt.logRho;
   const e = read(values['E/RT']) * R * pt.T;
   const pTable = read(values.Z) * rho * R * pt.T;
-  const pModule = airBlended(e, rho).p;
+  const pModule = stateOf(e, rho).p;
   return { T: pt.T, logRho: pt.logRho, off: pModule / pTable - 1 };
 });
 const hkOffs = hk.map((r) => Math.abs(r.off)).sort((a, b) => a - b);
@@ -78,18 +88,18 @@ airBlendedCounts.held = 0;
 airBlendedCounts.clamped = 0;
 const H = 1e-6;
 function soundAt(e: number, rho: number): number {
-  return Math.sqrt(airBlended(e, rho).c2);
+  return Math.sqrt(stateOf(e, rho).c2);
 }
 for (let iy = 0; iy < 1100; iy++) {
   const y = -7.495 + iy / 100;
   const zh = airEffectiveEdge(y).z;
   for (let iz = 0; iz <= 2350; iz++) {
-    const z = -0.5 + iz / 500;
+    const z = -0.499 + iz / 500;
     points++;
     const rho = AIR_RHO0 * 10 ** y;
     const e = RT0 * 10 ** z;
-    const g = airGammaBlended(y, z);
-    const s = airBlended(e, rho);
+    const g = gammaOf(y, z);
+    const s = stateOf(e, rho);
     const at = `Y ${y.toFixed(2)}, Z ${z.toFixed(3)}`;
     const dpdeRel = s.dpde / (g.f - 1);
     const c2Rel = s.c2 / (e * g.f * (g.f - 1));
@@ -123,8 +133,8 @@ for (let iy = 0; iy < 1100; iy++) {
         minima[k] = v;
         where[k] = at;
       }
-    const fy = (airGammaBlended(y + H, z).f - airGammaBlended(y - H, z).f) / (2 * H);
-    const fz = (airGammaBlended(y, z + H).f - airGammaBlended(y, z - H).f) / (2 * H);
+    const fy = (gammaOf(y + H, z).f - gammaOf(y - H, z).f) / (2 * H);
+    const fz = (gammaOf(y, z + H).f - gammaOf(y, z - H).f) / (2 * H);
     // At the clamp's own ends (Y = −7, 3) the derivative in Y is one-sided.
     const onClampEnd = Math.abs(y + 7) < 1e-9 || Math.abs(y - 3) < 1e-9;
     const scale = Math.max(1, Math.abs(g.fY), Math.abs(g.fZ));
@@ -146,7 +156,7 @@ console.log(
 
 // (4) the entropy wave.
 function eos(e: number, rho: number): { p: number; c2: number; pe: number } {
-  const s = airBlended(e, rho);
+  const s = stateOf(e, rho);
   return { p: s.p, c2: s.c2, pe: rho * s.dpde };
 }
 function eOf(p: number, rho: number, guess: number): number {
@@ -187,7 +197,7 @@ function entropyWave(n: number): number {
     const x = (i - G + 0.5) * dx;
     const e = RT0 * 10 ** (1.4 + 0.6 * Math.exp(-(((x - 50) / 15) ** 2)));
     let r = P0 / (0.25 * e);
-    for (let it = 0; it < 80; it++) r = P0 / (e * (airBlended(e, r).gamma - 1));
+    for (let it = 0; it < 80; it++) r = P0 / (e * (stateOf(e, r).gamma - 1));
     rho[i] = r;
     mom[i] = r * U0;
     en[i] = r * e + 0.5 * r * U0 * U0;
@@ -345,21 +355,58 @@ console.log(
   `(4) entropy wave, max |Δp|/p over the run on ${waveCells.join(', ')} cells: ${wave.map((v) => v.toExponential(2)).join(', ')}; orders ${waveOrders.map((o) => o.toFixed(2)).join(', ')} — ${wavePasses ? 'PASSES' : 'FAILS'}`
 );
 
+// (5) Rule 1347 (d), the table only: against the blended function at
+// 300 000 points (a fixed seed), γ̃ − 1 within 10⁻³ and c² within 2 %.
+let tableGamma = 0;
+let tableC2 = 0;
+let tableWhere = '';
+let seed = 20260927;
+const random = (): number => {
+  seed = (seed * 1103515245 + 12345) % 2147483648;
+  return seed / 2147483648;
+};
+if (useTable)
+  for (let k = 0; k < 300_000; k++) {
+    const y = -7 + 10 * random();
+    const z = 0.58 + 3.9 * random();
+    const rho = AIR_RHO0 * 10 ** y;
+    const e = RT0 * 10 ** z;
+    const a = airBlended(e, rho);
+    const b = airTabled(e, rho);
+    const dg = Math.abs((b.gamma - 1) / (a.gamma - 1) - 1);
+    const dc = Math.abs(b.c2 / a.c2 - 1);
+    if (dg > tableGamma) tableGamma = dg;
+    if (dc > tableC2) {
+      tableC2 = dc;
+      tableWhere = `Y ${y.toFixed(3)}, Z ${z.toFixed(3)}`;
+    }
+  }
+const tablePasses = !useTable || (tableGamma <= 1e-3 && tableC2 <= 0.02);
+if (useTable)
+  console.log(
+    `(5) the table against the blended function: γ̃ − 1 within ${tableGamma.toExponential(2)}, c² within ${tableC2.toExponential(2)} (${tableWhere}) — ${tablePasses ? 'PASSES' : 'FAILS'}`
+  );
+
 // The cost of one evaluation (rule 1334 (d)), measured apart.
 const reps = 200_000;
 let sink = 0;
 const started = performance.now();
-for (let k = 0; k < reps; k++) sink += airBlended(1e6 * (1 + (k % 97) / 97), 1.2).p;
+for (let k = 0; k < reps; k++) sink += stateOf(1e6 * (1 + (k % 97) / 97), 1.2).p;
 const nsPerState = ((performance.now() - started) * 1e6) / reps;
 console.log(`cost: ${nsPerState.toFixed(0)} ns a hot state (${String(sink > 0)})`);
 
-const passes = hkPasses && gridPasses && derivPasses && wavePasses;
+const passes = hkPasses && gridPasses && derivPasses && wavePasses && tablePasses;
 console.log(`blended equation of state ${passes ? 'PASSES' : 'FAILS'}`);
 writeFileSync(
-  'src/physics/validation/verifyAirEosBlended.json',
+  useTable
+    ? 'src/physics/validation/verifyAirEosTable.json'
+    : 'src/physics/validation/verifyAirEosBlended.json',
   `${JSON.stringify(
     {
-      rule: '1334 (a)(7), 1336, 1337, 1338',
+      rule: useTable ? '1334 (a)(7), 1347 (d)' : '1334 (a)(7), 1336, 1337, 1338',
+      ...(useTable
+        ? { table: { gamma: tableGamma, c2: tableC2, where: tableWhere, passes: tablePasses } }
+        : {}),
       hilsenrathKlein: { worst: hkWorst, median: hkMedian, passes: hkPasses },
       grid: {
         points,

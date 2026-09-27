@@ -484,3 +484,120 @@ export function airBlended(
     dpde: g.f - 1 + g.fZ / LN10,
   };
 }
+
+/*
+ * Rule 1334 (d): the blended function tabulated once in (Y, Z) and read by
+ * bicubic Hermite interpolation — values, γ̃_Y, γ̃_Z and γ̃_YZ at the nodes
+ * (γ̃_YZ by central differences of γ̃_Z in Y), every TABLE_STEP in Y from −7
+ * to 3 and in Z from AIR_COLD_Z to TABLE_Z_TOP (held beyond, where the
+ * continuation is constant in Z) — its c² from the interpolant's own
+ * derivatives (Swesty 1996), so the table is itself a thermodynamically
+ * consistent equation of state.
+ */
+const TABLE_STEP = 0.01;
+const TABLE_Z_TOP = 4.5;
+const TABLE_NY = Math.round(10 / TABLE_STEP) + 1;
+const TABLE_NZ = Math.round((TABLE_Z_TOP - AIR_COLD_Z) / TABLE_STEP) + 1;
+let airTableData: Float64Array | null = null;
+
+/** The table: 4 numbers per node (f, f_Y, f_Z, f_YZ), node (m, n) at
+ *  4(m·TABLE_NZ + n), Y = −7 + m·step, Z = AIR_COLD_Z + n·step. */
+function airTable(): Float64Array {
+  if (airTableData !== null) return airTableData;
+  const t = new Float64Array(4 * TABLE_NY * TABLE_NZ);
+  const saved = { ...airBlendedCounts };
+  const h = 1e-6;
+  for (let m = 0; m < TABLE_NY; m++) {
+    const y = -7 + m * TABLE_STEP;
+    for (let n = 0; n < TABLE_NZ; n++) {
+      const z = AIR_COLD_Z + n * TABLE_STEP;
+      const v = airGammaBlended(y, z);
+      const up = airGammaBlended(Math.min(3, y + h), z);
+      const down = airGammaBlended(Math.max(-7, y - h), z);
+      const o = 4 * (m * TABLE_NZ + n);
+      t[o] = v.f;
+      t[o + 1] = v.fY;
+      t[o + 2] = v.fZ;
+      t[o + 3] = (up.fZ - down.fZ) / (Math.min(3, y + h) - Math.max(-7, y - h));
+    }
+  }
+  airBlendedCounts.held = saved.held;
+  airBlendedCounts.clamped = saved.clamped;
+  airTableData = t;
+  return t;
+}
+
+/** Cubic Hermite basis and its derivative at u ∈ [0, 1]. */
+function hermiteBasis(u: number): [number, number, number, number, number, number, number, number] {
+  const u2 = u * u;
+  const u3 = u2 * u;
+  return [
+    2 * u3 - 3 * u2 + 1,
+    u3 - 2 * u2 + u,
+    -2 * u3 + 3 * u2,
+    u3 - u2,
+    6 * u2 - 6 * u,
+    3 * u2 - 4 * u + 1,
+    -6 * u2 + 6 * u,
+    3 * u2 - 2 * u,
+  ];
+}
+
+/** γ̃ and its derivatives from the table (rule 1334 (d)); Y clamped to −7 … 3
+ *  and Z to the table's top (counted as the blended function counts). */
+export function airGammaTable(y: number, z: number): Blended {
+  if (z <= AIR_COLD_Z) return { f: 1.4, fY: 0, fZ: 0 };
+  const t = airTable();
+  const yc = Math.min(3, Math.max(-7, y));
+  if (yc !== y) airBlendedCounts.clamped++;
+  const zc = Math.min(TABLE_Z_TOP, z);
+  const x = (yc + 7) / TABLE_STEP;
+  const w = (zc - AIR_COLD_Z) / TABLE_STEP;
+  const m = Math.min(TABLE_NY - 2, Math.floor(x));
+  const n = Math.min(TABLE_NZ - 2, Math.floor(w));
+  const [a0, a1, a2, a3, da0, da1, da2, da3] = hermiteBasis(x - m);
+  const [b0, b1, b2, b3, db0, db1, db2, db3] = hermiteBasis(w - n);
+  const H = TABLE_STEP;
+  let f = 0;
+  let fY = 0;
+  let fZ = 0;
+  // Corners (m + i, n + j), i, j ∈ {0, 1}: weights in Y (value, slope) and Z.
+  for (let i = 0; i < 2; i++) {
+    const wy = i === 0 ? a0 : a2;
+    const sy = (i === 0 ? a1 : a3) * H;
+    const dwy = (i === 0 ? da0 : da2) / H;
+    const dsy = i === 0 ? da1 : da3;
+    for (let j = 0; j < 2; j++) {
+      const wz = j === 0 ? b0 : b2;
+      const sz = (j === 0 ? b1 : b3) * H;
+      const dwz = (j === 0 ? db0 : db2) / H;
+      const dsz = j === 0 ? db1 : db3;
+      const o = 4 * ((m + i) * TABLE_NZ + (n + j));
+      const v = t[o] ?? NaN;
+      const vy = t[o + 1] ?? NaN;
+      const vz = t[o + 2] ?? NaN;
+      const vyz = t[o + 3] ?? NaN;
+      f += wy * wz * v + sy * wz * vy + wy * sz * vz + sy * sz * vyz;
+      fY += dwy * wz * v + dsy * wz * vy + dwy * sz * vz + dsy * sz * vyz;
+      fZ += wy * dwz * v + sy * dwz * vy + wy * dsz * vz + sy * dsz * vyz;
+    }
+  }
+  if (z > TABLE_Z_TOP) fZ = 0;
+  return yc !== y ? { f, fY: 0, fZ } : { f, fY, fZ };
+}
+
+/** The tabulated state at e (J/kg) and ρ (kg/m³), as `airBlended`. */
+export function airTabled(
+  e: number,
+  rho: number
+): { gamma: number; p: number; c2: number; dpde: number } {
+  const y = Math.log10(rho / AIR_RHO0);
+  const z = Math.log10(e / RT0);
+  const g = airGammaTable(y, z);
+  return {
+    gamma: g.f,
+    p: rho * e * (g.f - 1),
+    c2: soundSquared(e, g),
+    dpde: g.f - 1 + g.fZ / LN10,
+  };
+}
