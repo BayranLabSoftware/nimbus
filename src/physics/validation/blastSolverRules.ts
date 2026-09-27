@@ -992,3 +992,55 @@ export const RULE_1283_WRITTEN = '2026-09-27' as const;
  *     state from the rest. Nothing is changed.
  */
 export const RULE_1284_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1285. RULE 1284 (d)'S FIRST QUESTION ANSWERED FROM THE TEXT: THE SAME
+ * EQUATION OF STATE (27 September 2026, 04:44). A diagnostic.
+ *
+ * (a) READ. Collins et al. (2017), the same open copy as rules 1242 and 1248
+ *     (SHA-256 c1cb0fc6…), Methods: iSALE's atmosphere «using a perfect gas
+ *     equation of state … p = ΓρE, with Γ = 0.4» — γ = 1.4, this solver's —
+ *     isothermal, 1 kg/m³ and 10⁵ Pa at the base; «Ten computational cells
+ *     resolved the fireball radius»; no radiative transfer in iSALE; the
+ *     static source verified against Glasstone & Dolan's 1 kt data with «good
+ *     agreement», no number given.
+ * (b) SO the equation of state is not the difference, and neither is the
+ *     resolution on this side: at 0.5 Mt the source's radius is 772 m, and
+ *     the solver's middle grid (79 m, 9.7 cells across it — iSALE's own)
+ *     already gives 68.8 km for 1 kPa against their 52.3 (1.32); the three
+ *     grids give 71.7, 68.8 and 73.5.
+ * (c) WHAT REMAINS: iSALE's own dissipation (a code built for impacts on
+ *     solids, ten cells per radius carried some seventy radii out), or this
+ *     solver's. T1 says something here: its Sedov shock runs 3.8 % (100
+ *     cells) and 6.1 % (200 cells) ahead of the exact radius — a radius 5 %
+ *     long is an energy 28 % high — though rule 1257 found the reading itself
+ *     ahead of the density's peak. An independent ideal-gas reference with no
+ *     numerical dissipation of its own decides it: T1 on its finest grid
+ *     (running), read at the density's peak as well as at rule 1257's
+ *     flank; and Brode's (1956) hot sphere of air in a perfect gas, the
+ *     static source exactly (a RAND research memorandum, openly published),
+ *     to be read before it is used. T3 (Cart3D, a perfect gas, adaptive
+ *     high resolution) runs meanwhile.
+ */
+export const RULE_1285_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1286. THE SEDOV SHOCK READ AT ITS DENSITY PEAK: NOT AHEAD, A LITTLE
+ * BEHIND (27 September 2026, 04:49). A diagnostic, for rule 1285 (c).
+ *
+ * (a) T1's case on rule 1280's scheme, 200 cells
+ *     (`scripts/blast2d-t1-peak.ts`): the density's peak along the ground
+ *     and the axis (a parabola through the top three cells)
+ *     against ξ(2Et²/ρ)^(1/5). From 8 to 92 cells of radius it lies 0.3 to
+ *     1.0 cell BEHIND the exact radius (−4.5 to −0.4 %), closing as the shock
+ *     grows (−0.7 and −0.4 % at 92 cells, ground and axis).
+ * (b) SO the solver's shock does not outrun Sedov's: T1's failure is its
+ *     reading on the outer flank (rule 1257's finding, again), and the exact
+ *     solution shows no excess of energy in this solver — if anything a
+ *     shock a fraction of a cell slow, as a captured shock's peak sits. The
+ *     excess against iSALE (rule 1284) is then not this solver's energy
+ *     budget; iSALE's own dissipation over seventy source radii is the
+ *     likelier cause, not yet shown. Brode's (1956) hot sphere (rule 1285
+ *     (c)) is the next independent reference. Nothing is changed.
+ */
+export const RULE_1286_WRITTEN = '2026-09-27' as const;
