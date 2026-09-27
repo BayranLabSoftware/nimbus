@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import {
   AIR_R,
   AIR_RHO0,
@@ -76,6 +76,12 @@ describe('the real-air fits of RP-1181', () => {
 
 /** Rules 1334 (a), 1335 (c) and 1336: the fit blended for the solver. */
 describe('the blended equation of state', () => {
+  // The continuation's table of Z_h is built on first use (rules 1336, 1338,
+  // 1339): a few seconds under a loaded suite, outside any one test's time.
+  beforeAll(() => {
+    airEffectiveEdge(0);
+  }, 120_000);
+
   it('is the ideal gas at γ = 1.4 exactly in the cold branch', () => {
     for (const [e, rho] of [
       [2e5, 1.225],
