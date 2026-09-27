@@ -2166,3 +2166,19 @@ export const RULE_1321_WRITTEN = '2026-09-27' as const;
  *     PASSES.
  */
 export const RULE_1322_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1323. ERRATUM FROM THE SEVENTH REVIEW (27 September 2026, 14:34;
+ * `scripts/tmp/review7-*.ts`). Text only; the code and the data found
+ * correct, and the test failing on every fault put in.
+ *
+ * Rule 1322 (a)'s «the jump case catches that fault too» is false for τ ×
+ * 1 000: next to a jump the flat stencil has β = 0 and its weight is about
+ * τ/10⁻⁴⁰, so scaling τ changes nothing there (2·10⁻¹⁶); that fault is
+ * caught by the smooth part alone, on its first pair of resolutions (4.35
+ * against 4.5), the thin margin the review marked. Swapped indicators are
+ * caught by the jump (off by 0.91), wrong linear weights by the smooth part.
+ * And the jump is tested at columns 2, 3 and 300, not at «the axis's first
+ * columns».
+ */
+export const RULE_1323_WRITTEN = '2026-09-27' as const;
