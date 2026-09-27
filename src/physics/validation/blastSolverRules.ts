@@ -2356,3 +2356,67 @@ export const RULE_1327_WRITTEN = '2026-09-27' as const;
  *         artificial viscosity and the fit's error, read from the report.
  */
 export const RULE_1328_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1329. THE LABORATORY'S PROBLEM 1, PHASE 5: THE TESTS AND THEIR
+ * CRITERIA, FIXED BEFORE ANY OF THEM RUNS (27 September 2026, 18:00; the
+ * mediators' `~/Desktop/Nimbus-laboratorio/p1/fase4/fermi.md`, `maxwell.md`,
+ * `maxwell-per-fermi.md`, and the sceptics' verdicts in `p1/fase3/`).
+ *
+ * (a) THE THEORY UNDER TEST (the mediators'): T1, the Lamb wave's linear gain
+ *     in an isothermal atmosphere (established); T2, a Mach reflection where
+ *     the tilted front grazes the rigid ground — a stem thinner than the
+ *     cells between about 100 and 160 km for the ground burst (the peak does
+ *     not converge there, and does on either side), gain 2–3 from the
+ *     incident Π; T3, both the linear and the nonlinear lift owe to the
+ *     isothermal idealisation and shrink in a real atmosphere; T4, V3 as rule
+ *     1328 states it. Not explained: the plateau at 200–240 km (B), the
+ *     hump's position, the moving source (D), the venting (E).
+ * (b) THE TESTS, in the mediators' order and with their criteria:
+ *     P2 the same Taylor–Sedov start in the Lagrangian code (rule 1328
+ *        (d)(1)), p(1)/p(2) and p(1)/p(2.8) read from the FOOT in every code:
+ *        3.05–3.12 in the Lagrangian kills «Brode's shape is wrong»; the
+ *        surrogate staying at 2.98 ± 1 % with the hot sphere blames the
+ *        scheme, reaching 3.05 or more blames the start.
+ *     P1 the one-dimensional surrogate with p(t), u(t) at λ = 1, 1.5, 2, 2.8:
+ *        where the peak moves more than 2 % (5 to 1.25 m) the impulse moves
+ *        less than 1 %.
+ *     P7a the linear code in the US 1976 atmosphere: the real Lamb wave's lag
+ *        of 19–29 s at 100 km and a gain under 1.3 keep T3; a gain reaching
+ *        80 % of the isothermal one kills it.
+ *     P3 the canonical stem: a planar shock of Π = 0.1 grazing a wall at 15°
+ *        (a = 0.63, inside Mach) and at 35° (beyond detachment at 28.1°), the
+ *        stem over 2, 4, 8 and 16 cells: T2's premise dies if the wall's peak
+ *        changes under 3 % per halving already at 2–4 cells; it lives if it
+ *        grows at least 10 % at 4 cells or fewer, changes under 5 % from 8
+ *        cells, and the gain at detachment lies within 2.92–2.97.
+ *     P7b the nonlinear 250 Mt ground burst in a two-layer atmosphere (a
+ *        troposphere), 1 260 and 630 m: at 140 km the peak changes under 5 %
+ *        between them and the hump is gone — a +15 % kills T2 and T3 together.
+ *     P4 T3 recorded (rMax 260 km, 850 s; 1 260, 630, 315 m): columns at
+ *        100, 120, 140, 170, 200, 240 km up to 30 km (peak, its time, the 5 %
+ *        foot, any second shock), the ground's p(t) and impulse every 10 km,
+ *        the energy flux through z = H and 3H. Criteria: θ 0.30–0.45 rad
+ *        below 10 km changing under 30 % between grids; the stem's height at
+ *        least 4 cells and the same in metres (±25 %) on 630 and 315 m; the
+ *        foot's speed over the Rankine–Hugoniot speed 1.00 ± 0.01 where θ is
+ *        below detachment for its incident Π, (U_i/cos θ)/U_RH ± 1 % where
+ *        above; a Friedlander wave at 170–240 km kills the transonic boom;
+ *        the flux through H at 150–240 km downward and covering half the
+ *        need says the lift comes from the front aloft, upward or under 10 %
+ *        says from the low layer.
+ *     P5 T4 again on the present scheme (15 and 50 Mt, static and moving, 20,
+ *        10, 5 m scaled), the peak's and the foot's times recorded: moving
+ *        over static at least 1.15 at each halving keeps the moving source's
+ *        own excess; the peak at least 2 cells/U after the foot keeps the
+ *        vortex ring; a peak zone 2–4 cells wide against about R/2 in metres
+ *        decides the caustic.
+ *     P6 (hybrid grid, damping layer) only if P3 and P4 leave the error's
+ *        birth open. The third grid's increments are read with V3's clipping
+ *        (1.8–2.75 % per halving at 5 m scaled) taken out.
+ * (c) ORDER, two heavy computations at a time: on the CPU P2, P1, P7a, P3
+ *     while the GPU finishes T3's standard cases; T3's 26 sensitivity cases
+ *     (H = 7.6 km) deferred — they decide no hypothesis; then P7b, P4, P5 on
+ *     the GPU. Popper checks each result for artefacts before it counts.
+ */
+export const RULE_1329_WRITTEN = '2026-09-27' as const;

@@ -57,9 +57,12 @@ const caseAt = (hKm1kt: number, dx1kt: number, scaleHeight: number): BlastCase =
   limiter: 'has',
 });
 
+// Rule 1329 (c): the sensitivity to H = 7.6 km may be deferred (it decides no
+// hypothesis of the laboratory's); its column then reads «—».
+const skipSensitivity = process.env.BLAST2D_T3_SKIP_SENSITIVITY === '1';
 const cases = [
   ...GRIDS_1KT.flatMap((dx) => heights.map((h) => caseAt(h, dx, H_FIGURE))),
-  ...heights.map((h) => caseAt(h, 5, H_MEAN)),
+  ...(skipSensitivity ? [] : heights.map((h) => caseAt(h, 5, H_MEAN))),
 ];
 const runs = await runPool(cases, 'scripts/tmp/blast2d-cache', parallel);
 const n = heights.length;
@@ -70,7 +73,9 @@ const thresholds = [1, 2, 4, 10].map((psi) => {
   const ref = figure.curves[`${String(psi)} psi`]?.cartesian3d250Mt;
   if (ref === undefined) throw new Error('no reference');
   const rows = judge(psi, heights, ref, byGrid, SCALE);
-  const atMeanH = sensitivity.map((run) => reachOf(run, psi * 6_894.757) / 1_000 / SCALE);
+  const atMeanH = skipSensitivity
+    ? heights.map((): number | null => null)
+    : sensitivity.map((run): number | null => reachOf(run, psi * 6_894.757) / 1_000 / SCALE);
   return { psi, verdict: verdict(rows), rows, reachAtH76: atMeanH };
 });
 const overall = verdict(thresholds.flatMap((t) => t.rows));
