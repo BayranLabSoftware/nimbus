@@ -160,7 +160,7 @@ console.log(
 
 // (5) a² against ∂p/∂ρ|ₑ + (p/ρ²)∂p/∂e|_ρ from the p fit, T ≤ 25 000 K. Rule
 // 1317 (a): a point the module refuses, or where anything is NaN, counts as
-// a failure; the largest departure is also reported within the data alone.
+// a failure; the largest departure is also reported over the accepted points.
 let worstA = 0;
 let worstAt = '';
 let points = 0;
@@ -209,7 +209,7 @@ for (let y = -6.75; y <= 2.76; y += 0.25)
     }
   }
 console.log(
-  `(5) a against the p fit's derivative: ${String(broken)} of ${String(points)} points refused or NaN (failures); within the data the largest ${(worstA * 100).toFixed(2)} % at ${worstAt}`
+  `(5) a against the p fit's derivative: ${String(broken)} of ${String(points)} points refused or NaN (failures, a lower bound on those beyond the data); over the accepted points the largest ${(worstA * 100).toFixed(2)} % at ${worstAt}`
 );
 
 const checks = {
@@ -227,7 +227,7 @@ writeFileSync(
       junctures: { total: junctures.length, missed, spurious },
       idealLimit: { ratio, off: ideal },
       continuity: { largestP: jumpP, largestA: jumpA, above1percent: jumps },
-      consistency: { largestWithinData: worstA, at: worstAt, points, refusedOrNaN: broken },
+      consistency: { largestAccepted: worstA, at: worstAt, points, refusedOrNaN: broken },
       checks,
     },
     null,

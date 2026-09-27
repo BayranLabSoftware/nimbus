@@ -5,9 +5,11 @@
  * (22)–(28) and its Tables A1–A6 (`airEosRp1181.json`, two blind
  * transcriptions, identical), from 10⁻⁷ to 10³ times ρ₀ (outside, the
  * nearest band). Their reach in energy is the report's data (its Fig. 11:
- * log₁₀(e/RT₀) up to about 3.0 at ρ₀, 3.57 at 10⁻⁷ ρ₀) — below 25 000 K at
- * high densities; beyond it γ̃ falls below 1, and the module refuses (a
- * RangeError) where γ̃ ≤ 1 or a² ≤ 0 (rule 1317 (b)).
+ * log₁₀(e/RT₀) up to about 3.0 at ρ₀, 3.57 at 10⁻⁷ ρ₀), which end near
+ * 17 700–23 000 K from 10⁻⁷ to 10² ρ₀ and reach 25 000 K only at 10³ ρ₀
+ * (its Fig. 13). Beyond it the fits turn unphysical, and the module refuses
+ * (a RangeError) where γ̃ ≤ 1, a² ≤ 0, ∂p/∂e|ρ ≤ 0 or T does not rise with e
+ * (rules 1317 (b), 1318 (a)).
  *
  * γ̃ = h/e is fitted in Y = log₁₀(ρ/ρ₀) and Z = log₁₀(e/RT₀) as
  *   γ̃ = P₁(Y, Z) + P₂(Y, Z)/[1 ± exp(a₂₁ + a₂₂Y + a₂₃Z + a₂₄YZ)],
@@ -150,18 +152,29 @@ export function airGamma(e: number, rho: number): number {
   return acrossBands(y, (yy) => gammaAt(yy, z).f);
 }
 
-/** Eq. (25): the pressure (Pa). */
+function refuse(what: string, e: number, rho: number): never {
+  throw new RangeError(
+    `airEos: beyond RP-1181's data (${what} at e = ${String(e)} J/kg, ρ = ${String(rho)} kg/m³)`
+  );
+}
+
+/** Eq. (25): the pressure (Pa); refused where γ̃ ≤ 1 or ∂p/∂e|ρ =
+ *  ρ[(γ̃ − 1) + γ̃_Z/ln 10] ≤ 0 (rule 1318 (a)), at both ends of a blend. */
 export function airPressure(e: number, rho: number): number {
-  const g = airGamma(e, rho);
-  if (!(g > 1))
-    throw new RangeError(
-      `airEos: beyond RP-1181's data (γ̃ = ${String(g)} at e = ${String(e)} J/kg, ρ = ${String(rho)} kg/m³)`
-    );
+  const y = Math.log10(rho / AIR_RHO0);
+  const z = Math.log10(e / RT0);
+  const g = acrossBands(y, (yy) => {
+    const v = gammaAt(yy, z);
+    if (!(v.f > 1)) refuse(`γ̃ = ${String(v.f)}`, e, rho);
+    if (!(v.f - 1 + v.fZ / LN10 > 0)) refuse('∂p/∂e ≤ 0', e, rho);
+    return v.f;
+  });
   return rho * e * (g - 1);
 }
 
 /** Eq. (27): the sound speed (m/s). */
 export function airSoundSpeed(e: number, rho: number): number {
+  airPressure(e, rho);
   const y = Math.log10(rho / AIR_RHO0);
   const z = Math.log10(e / RT0);
   const a = acrossBands(y, (yy) => Math.sqrt(soundSquared(e, gammaAt(yy, z))));
@@ -180,7 +193,10 @@ export function airTemperature(e: number, rho: number): number {
   if (z <= 0.25) return p / (rho * AIR_R);
   const logT = acrossBands(y, (yy) => {
     const c = column(band(TEMPERATURE, yy), z);
-    return grabau(c.coefficients, c.sign, yy, z).f;
+    const v = grabau(c.coefficients, c.sign, yy, z);
+    // Rule 1318 (a): T must rise with e (Z_T rises with p, and p with e).
+    if (!(v.fZ > 0)) refuse('T not rising with e', e, rho);
+    return v.f;
   });
   return AIR_T0 * Math.pow(10, logT);
 }

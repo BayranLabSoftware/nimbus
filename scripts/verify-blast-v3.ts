@@ -4,7 +4,8 @@
  * free-air burst of 2 kt (ε = 435.5 m), started from the Taylor–Sedov
  * similarity solution with its shock 40 m out, on 5, 2.5 and 1.25 m cells
  * (GPU); the ground's recorded peak at λ = 1.0 … 2.8 against RM-1363's
- * Eq. 17, extrapolated from the three grids by rule 1256 (c), within 3 %.
+ * Eq. 17, extrapolated from the three grids by rule 1256 (c) (an order below 1
+ * not extrapolated, the band the three's spread: rule 1318 (d)), within 3 %.
  *
  *   pnpm exec tsx scripts/verify-blast-v3.ts [5,2.5,1.25]
  *
@@ -89,14 +90,17 @@ const rows = LAMBDAS.map((l) => {
   if (r1 !== undefined && r2 !== undefined && r3 !== undefined) {
     const d1 = r1 - r2;
     const d2 = r2 - r3;
-    if (d1 * d2 > 0 && Math.abs(d1) > Math.abs(d2)) {
-      order = Math.log2(d1 / d2);
-      extrapolated = r3 + (r3 - r2) / (2 ** order - 1);
+    const p = d1 * d2 > 0 ? Math.log2(d1 / d2) : NaN;
+    // Rule 1318 (d): an order below 1 is judged as non-monotone, and a
+    // non-monotone reading's band is the spread of the three grids.
+    if (p >= 1) {
+      order = p;
+      extrapolated = r3 + (r3 - r2) / (2 ** p - 1);
       judged = extrapolated;
       band = 0;
     } else {
       judged = r3;
-      band = Math.abs(d2);
+      band = Math.max(r1, r2, r3) - Math.min(r1, r2, r3);
     }
   } else {
     judged = v[v.length - 1] ?? NaN;
@@ -125,5 +129,5 @@ console.log(`V3 ${passes ? 'PASSES' : 'FAILS'}`);
 if (GRIDS.length === 3)
   writeFileSync(
     'src/physics/validation/verifyBlastV3.json',
-    `${JSON.stringify({ rule: '1295 (c) V3, 1314, 1315', tolerance: TOLERANCE, grids: GRIDS, steps: runs.map((r) => r.steps), rows, passes }, null, 2)}\n`
+    `${JSON.stringify({ rule: '1295 (c) V3, 1314, 1315, 1318 (d)', tolerance: TOLERANCE, grids: GRIDS, steps: runs.map((r) => r.steps), rows, passes }, null, 2)}\n`
   );

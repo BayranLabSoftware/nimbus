@@ -2006,3 +2006,36 @@ export const RULE_1316_WRITTEN = '2026-09-27' as const;
  *     V-tests with rule 1316.
  */
 export const RULE_1317_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1318. THE THIRD REVIEW: THE AIR MODULE STILL ACCEPTED NONSENSE; V3'S
+ * EXTRAPOLATION BOUNDED BEFORE ITS NUMBERS ARE SEEN (27 September 2026,
+ * 13:53). Written before the code; no reading of V3 has been looked at.
+ *
+ * (a) THE GUARD WAS TOO WEAK: between the fits' data and the point where γ̃
+ *     falls below 1 the module accepted states where p and T fall as e
+ *     rises (Y = 1, Z = 3.15: T = 3 954 K; 4 562 points of a fine grid with
+ *     ∂p/∂e|ρ ≤ 0, 4 606 with T falling). Physics forbids both. The module
+ *     now also refuses where ∂p/∂e|ρ = ρ[(γ̃ − 1) + γ̃_Z/ln 10] ≤ 0 and where
+ *     T does not rise with e (∂log₁₀T/∂Z_T ≤ 0 in the T fit); in a band's
+ *     blending both ends are checked. The data's own edge (the report's
+ *     Fig. 11, Z_max(Y)) is to be read by two blind transcriptions and
+ *     added as the refusal it should be.
+ * (b) CHECK (5)'s label: its «largest within the data» was a point outside
+ *     the data (Y = −4, Z = 3.6); it is renamed to the largest over the
+ *     accepted points, and the count of refusals is a lower bound on the
+ *     points beyond the data, as the review says.
+ * (c) TEXT: rule 1317 (c)'s «six more beyond 0.2 %» is five more (six in
+ *     all: 0.217 %, four A-upper values of 0.211–0.311 %, and the 1.303 %
+ *     one). The module's comment «below 25 000 K at high densities» had it
+ *     backwards: the report's data end near 17 700–23 000 K from 10⁻⁷ to
+ *     10² ρ₀ and reach about 25 000 K only at 10³ ρ₀ (its Fig. 13; at the
+ *     Fig. 11 edges the module gives 17 895, 18 068, 23 290 and 25 672 K).
+ * (d) V3'S EXTRAPOLATION, completing rule 1314 (d) before any reading: an
+ *     observed order below 1 is not extrapolated (1/(2^p − 1) grows without
+ *     bound as p falls: at p = 0.14 it adds ten times the last change) and is
+ *     judged as non-monotone convergence; the band of a non-monotone
+ *     reading is the spread of the three grids, as rule 1256 (c) says, not
+ *     the last change alone.
+ */
+export const RULE_1318_WRITTEN = '2026-09-27' as const;

@@ -312,10 +312,10 @@
     ]
   },
   "consistency": {
-    "largestWithinData": 2.2573524938174216e-8,
-    "at": "Y -4.00, Z 3.60",
-    "points": 2266,
-    "refusedOrNaN": 120
+    "largestAccepted": 1.8677531077315734e-8,
+    "at": "Y -6.50, Z 3.30",
+    "points": 2283,
+    "refusedOrNaN": 181
   },
   "checks": {
     "junctures": false,
