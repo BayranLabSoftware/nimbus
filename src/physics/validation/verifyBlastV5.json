@@ -1,0 +1,55 @@
+{
+  "rule": "1309 (d) V5",
+  "limit": 0.005,
+  "planar": [
+    {
+      "mach": 1.02,
+      "steps": 1555,
+      "largestExcess": 0.000041802369197720915,
+      "smallestExcess": 0.000025358298907138265,
+      "passes": true
+    },
+    {
+      "mach": 1.05,
+      "steps": 1561,
+      "largestExcess": 0.0001299652566839391,
+      "smallestExcess": 0.0000701810985149084,
+      "passes": true
+    },
+    {
+      "mach": 1.125,
+      "steps": 1569,
+      "largestExcess": 0.0003050005328510352,
+      "smallestExcess": 0.00011255922844796266,
+      "passes": true
+    },
+    {
+      "mach": 1.3,
+      "steps": 1568,
+      "largestExcess": 0.0004894357931682681,
+      "smallestExcess": -0.00000184063938983818,
+      "passes": true
+    },
+    {
+      "mach": 2,
+      "steps": 1501,
+      "largestExcess": 0.00007945175174001205,
+      "smallestExcess": -0.00006940732670031457,
+      "passes": true
+    },
+    {
+      "mach": 5,
+      "steps": 1379,
+      "largestExcess": 0.00006978591879473465,
+      "smallestExcess": -0.000007237247447745034,
+      "passes": true
+    }
+  ],
+  "passes": false,
+  "radial": {
+    "cells": 157,
+    "largestSecondDifference": 0.012219002641088099,
+    "atLambda": 1.0161198185667806,
+    "passes": false
+  }
+}

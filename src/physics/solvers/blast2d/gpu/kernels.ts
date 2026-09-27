@@ -14,8 +14,9 @@
  * states scaled towards their cell (scaleR, scaleZ), every face at fifth
  * order, and each face's flux blended with the Lax–Friedrichs flux by Hu,
  * Adams & Shu's θ (limitR, limitZ), on the full variables, as the CPU
- * reference does; and rules 1297–1298's radial reconstruction for r-weighted
- * averages and the axisymmetric source as a mean over the cell (sourceR).
+ * reference does; rules 1297–1298's radial reconstruction for r-weighted
+ * averages and the axisymmetric source as a mean over the cell (sourceR);
+ * and rule 1309's reconstruction in characteristic fields (charR, charZ).
  */
 
 export const WORKGROUP = 128;
@@ -245,6 +246,73 @@ fn hllc(rL: f32, unL: f32, utL: f32, pL: f32, rR: f32, unR: f32, utR: f32, pR: f
     S[k] = weno5z(a, b, c, d, e);
     T[k] = weno5z(e, d, c, b, a);
   }
+}
+
+// ---- rule 1309 (e): the reconstruction in characteristic fields, per face.
+//      The six cells' deviations turned into ρ − ρ̄ = A·w.x and p − p̄ = B·w.w
+//      (A, B the row's background along r, the face's along z) and projected
+//      on the left eigenvectors of the Euler equations at the face's mean
+//      state — p − ρ̄c̄uₙ, c̄²ρ − p, u_t, p + ρ̄c̄uₙ (the background's constant
+//      parts drop out: the reconstruction is linear and blind to a constant)
+//      — each field by WENO-Z (rule 1297's weights along r), and projected
+//      back into the left cell's upper and the right cell's lower face. ----
+fn charFace(kl: i32, step: i32, a: f32, b: f32, atL: i32, atR: i32, radial: bool) {
+  let kr = kl + step;
+  let wl = W[kl];
+  let wr = W[kr];
+  let rhoBar = 0.5 * a * (2.0 + wl.x + wr.x);
+  let pBar = 0.5 * b * (2.0 + wl.w + wr.w);
+  let c = sqrt(P.gamma * pBar / rhoBar);
+  let z = rhoBar * c;
+  let c2 = c * c;
+  var x: array<vec4<f32>, 6>;
+  for (var m = 0; m < 6; m++) {
+    let w = W[kl + (m - 2) * step];
+    let un = select(w.z, w.y, radial);
+    let ut = select(w.y, w.z, radial);
+    let p = b * w.w;
+    x[m] = vec4<f32>(p - z * un, c2 * a * w.x - p, ut, p + z * un);
+  }
+  var l: vec4<f32>;
+  var r: vec4<f32>;
+  if (radial) {
+    l = weno5zCyl(x[0], x[1], x[2], x[3], x[4], atL);
+    r = weno5zCyl(x[1], x[2], x[3], x[4], x[5], atR);
+  } else {
+    l = weno5z(x[0], x[1], x[2], x[3], x[4]);
+    r = weno5z(x[5], x[4], x[3], x[2], x[1]);
+  }
+  let pl = 0.5 * (l.x + l.w);
+  let unl = (l.w - l.x) / (2.0 * z);
+  let rl = (l.y + pl) / c2;
+  let pr = 0.5 * (r.x + r.w);
+  let unr = (r.w - r.x) / (2.0 * z);
+  let rr = (r.y + pr) / c2;
+  if (radial) {
+    S[kl] = vec4<f32>(rl / a, unl, l.z, pl / b);
+    T[kr] = vec4<f32>(rr / a, unr, r.z, pr / b);
+  } else {
+    S[kl] = vec4<f32>(rl / a, l.z, unl, pl / b);
+    T[kr] = vec4<f32>(rr / a, r.z, unr, pr / b);
+  }
+}
+// Radial faces f in [0, nr] of rows j (cells f − 1 and f).
+@compute @workgroup_size(WG) fn charR(@builtin(global_invocation_id) id: vec3<u32>) {
+  let width = P.nr + 1;
+  if (id.x >= u32(width * P.nz)) { return; }
+  let f = i32(id.x) % width;
+  let j = i32(id.x) / width;
+  let bg = ROW[j];
+  charFace(cell(f - 1, j), 1, bg.x, bg.y, 6 * f, 6 * (f + 1) + 3, true);
+}
+// Vertical faces g in [0, nz] of columns i (cells g − 1 and g).
+@compute @workgroup_size(WG) fn charZ(@builtin(global_invocation_id) id: vec3<u32>) {
+  let height = P.nz + 1;
+  if (id.x >= u32(P.nr * height)) { return; }
+  let i = i32(id.x) % P.nr;
+  let g = i32(id.x) / P.nr;
+  let bg = FACE[g];
+  charFace(cell(i, g - 1), P.stride, bg.x, bg.y, 0, 0, false);
 }
 
 // ---- rule 1298: each interior cell's mean of (p − p̄)/p̄ over r — the

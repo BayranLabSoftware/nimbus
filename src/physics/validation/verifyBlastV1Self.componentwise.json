@@ -10,32 +10,32 @@
       "widthCells": 8,
       "dx": 12.5,
       "steps": 82,
-      "seconds": 0.567,
-      "relativeL1Exact": 0.00024275555944312
+      "seconds": 0.574,
+      "relativeL1Exact": 0.00024002495571623128
     },
     {
       "widthCells": 16,
       "dx": 6.25,
       "steps": 164,
-      "seconds": 4.379,
-      "relativeL1Exact": 0.00003367738755711578
+      "seconds": 4.52,
+      "relativeL1Exact": 0.00003367033209003699
     },
     {
       "widthCells": 32,
       "dx": 3.125,
       "steps": 327,
-      "seconds": 39.091,
-      "relativeL1Exact": 0.000026080279225235494
+      "seconds": 34.191,
+      "relativeL1Exact": 0.000026077840856933423
     },
     {
       "widthCells": 64,
       "dx": 1.5625,
       "steps": 654,
-      "seconds": 314.662,
-      "relativeL1Exact": 0.000025618802854918145
+      "seconds": 280.249,
+      "relativeL1Exact": 0.000025613866860277062
     }
   ],
-  "differences": [0.00021700535611213301, 0.000009444097029965598, 6.86215342498434e-7],
-  "orders": [4.52217397729733, 3.7826795767461325],
+  "differences": [0.000214042424763756, 0.000009461464721171203, 6.868026254833876e-7],
+  "orders": [4.499689424157319, 3.784096083681945],
   "passes": true
 }

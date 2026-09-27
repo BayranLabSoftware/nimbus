@@ -593,11 +593,30 @@ export class BlastSolver2D {
   /** w at both faces of every cell along one direction (step 1 or stride),
    *  by the fifth-order WENO reconstruction of rule 1262. */
   private reconstruct(step: number): void {
-    const { nr, nz, stride } = this;
+    const { nr, nz } = this;
     const iLo = step === 1 ? -1 : 0;
     const iHi = step === 1 ? nr : nr - 1;
     const jLo = step === 1 ? 0 : -1;
     const jHi = step === 1 ? nz - 1 : nz;
+    if (this.limiter !== 'has') {
+      this.reconstructCells(step, iLo, iHi, jLo, jHi);
+      return;
+    }
+    // Rule 1309 (e): the first and the last cell of each line have one face
+    // no stencil reaches; those two stay componentwise (no flux reads them).
+    if (step === 1) {
+      this.reconstructCells(step, iLo, iLo, jLo, jHi);
+      this.reconstructCells(step, iHi, iHi, jLo, jHi);
+    } else {
+      this.reconstructCells(step, iLo, iHi, jLo, jLo);
+      this.reconstructCells(step, iLo, iHi, jHi, jHi);
+    }
+    this.reconstructCharacteristic(step);
+  }
+
+  /** Each variable of w reconstructed on its own (the scheme before rule 1309). */
+  private reconstructCells(step: number, iLo: number, iHi: number, jLo: number, jHi: number): void {
+    const { stride } = this;
     const vars: [Float64Array, Float64Array, Float64Array][] = [
       [this.q1, this.s1, this.t1],
       [this.vu, this.su, this.tu],
@@ -624,6 +643,92 @@ export class BlastSolver2D {
             down[k] = weno5zCylindrical(a, b, c, d, e, coefficients, 1);
           }
         }
+      }
+  }
+
+  /**
+   * Rule 1309 (e): the reconstruction in characteristic fields. At each face
+   * between cells kl and kr = kl + step, the six cells' w are turned into
+   * ρ = Aq₁ and p = Bq₄ (A = ρ₀α, B = p₀β of the row along r, of the face
+   * along z) and projected on the left eigenvectors of the Euler equations
+   * in primitive form at the face's mean state — p − ρ̄c̄uₙ, c̄²ρ − p, u_t,
+   * p + ρ̄c̄uₙ — each field reconstructed by WENO-Z (rule 1297's weights along
+   * r), and the two face values projected back.
+   */
+  private reconstructCharacteristic(step: number): void {
+    const { nr, nz, stride, gamma } = this;
+    const { rho0, p0 } = this.atmosphere;
+    const radialDir = step === 1;
+    const lines = radialDir ? nz : nr;
+    const faces = radialDir ? nr : nz;
+    const normal = radialDir ? this.vu : this.vv;
+    const tangent = radialDir ? this.vv : this.vu;
+    const upN = radialDir ? this.su : this.sv;
+    const upT = radialDir ? this.sv : this.su;
+    const downN = radialDir ? this.tu : this.tv;
+    const downT = radialDir ? this.tv : this.tu;
+    const { q1, q4, s1, s4, t1, t4 } = this;
+    const x = [new Float64Array(6), new Float64Array(6), new Float64Array(6), new Float64Array(6)];
+    const left = new Float64Array(4);
+    const right = new Float64Array(4);
+    for (let line = 0; line < lines; line++)
+      for (let f = 0; f <= faces; f++) {
+        let kl: number;
+        let a: number;
+        let b: number;
+        if (radialDir) {
+          kl = (line + G) * stride + (f - 1 + G);
+          a = rho0 * (this.alphaC[line] ?? 0);
+          b = p0 * (this.betaC[line] ?? 0);
+        } else {
+          kl = (f - 1 + G) * stride + (line + G);
+          a = rho0 * (this.alphaF[f] ?? 0);
+          b = p0 * (this.betaF[f] ?? 0);
+        }
+        const kr = kl + step;
+        const rhoBar = 0.5 * a * ((q1[kl] ?? 0) + (q1[kr] ?? 0));
+        const pBar = 0.5 * b * ((q4[kl] ?? 0) + (q4[kr] ?? 0));
+        const c = Math.sqrt((gamma * pBar) / rhoBar);
+        const z = rhoBar * c;
+        const c2 = c * c;
+        for (let m = 0; m < 6; m++) {
+          const k = kl + (m - 2) * step;
+          const p = b * (q4[k] ?? 0);
+          const un = normal[k] ?? 0;
+          (x[0] as Float64Array)[m] = p - z * un;
+          (x[1] as Float64Array)[m] = c2 * a * (q1[k] ?? 0) - p;
+          (x[2] as Float64Array)[m] = tangent[k] ?? 0;
+          (x[3] as Float64Array)[m] = p + z * un;
+        }
+        const cl = radialDir ? this.radial?.[f] : undefined;
+        const cr = radialDir ? this.radial?.[f + 1] : undefined;
+        for (let q = 0; q < 4; q++) {
+          const v = x[q] as Float64Array;
+          const v0 = v[0] ?? 0;
+          const v1 = v[1] ?? 0;
+          const v2 = v[2] ?? 0;
+          const v3 = v[3] ?? 0;
+          const v4 = v[4] ?? 0;
+          const v5 = v[5] ?? 0;
+          left[q] =
+            cl === undefined
+              ? weno5z(v0, v1, v2, v3, v4)
+              : weno5zCylindrical(v0, v1, v2, v3, v4, cl, 0);
+          right[q] =
+            cr === undefined
+              ? weno5z(v5, v4, v3, v2, v1)
+              : weno5zCylindrical(v1, v2, v3, v4, v5, cr, 1);
+        }
+        const pl = 0.5 * ((left[0] ?? 0) + (left[3] ?? 0));
+        s1[kl] = ((left[1] ?? 0) + pl) / (c2 * a);
+        upN[kl] = ((left[3] ?? 0) - (left[0] ?? 0)) / (2 * z);
+        upT[kl] = left[2] ?? 0;
+        s4[kl] = pl / b;
+        const pr = 0.5 * ((right[0] ?? 0) + (right[3] ?? 0));
+        t1[kr] = ((right[1] ?? 0) + pr) / (c2 * a);
+        downN[kr] = ((right[3] ?? 0) - (right[0] ?? 0)) / (2 * z);
+        downT[kr] = right[2] ?? 0;
+        t4[kr] = pr / b;
       }
   }
 

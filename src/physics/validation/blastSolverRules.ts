@@ -1646,3 +1646,247 @@ export const RULE_1306_WRITTEN = '2026-09-27' as const;
  *     times Cart3D), which stays an open question.
  */
 export const RULE_1307_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1308. STEP 2 PREPARED WHILE V3 WAITS: THE EQUATION OF STATE OF REAL
+ * AIR, AS A MODULE OF ITS OWN (27 September 2026, 12:20). Written before the
+ * transcription and the code. Nothing of it enters the solver before V3 is
+ * closed (rule 1295 (a)).
+ *
+ * (a) THE SOURCE: Srinivasan, Tannehill & Weilmuenster (1987), NASA RP-1181
+ *     (sha-256 4ebf31de…), the fits p(e, ρ), a(e, ρ) and T(e, ρ) of
+ *     equilibrium air — valid to 25 000 K and from 10⁻⁷ to 10³ times the
+ *     sea-level density, their largest errors against NASA's RGAS 3.9, 4.5
+ *     and 4.4 % as the report states them — from its equations and its
+ *     tables of coefficients, never from its FORTRAN listing (TGAS). Above
+ *     25 000 K (the fireball's core) Gilmore (1967, DASA 1917-1) under a rule
+ *     of its own.
+ * (b) THE TRANSCRIPTION, twice and blind: two independent transcriptions of
+ *     the functional forms, the reference values, the regions and every
+ *     coefficient, each from the page images, neither seeing the other; a
+ *     script compares them entry by entry, and every disagreement is settled
+ *     by reading the page again. The agreed data are a JSON file of the
+ *     project with the pages they come from.
+ * (c) THE MODULE: pure functions, `src/physics/solvers/blast2d/airEos.ts`,
+ *     outside the solver.
+ * (d) ITS VERIFICATION, criteria fixed now:
+ *     (1) the report's own printed checks — the values it tabulates at its
+ *         junctures (its Tables 12–14 and alike) — reproduced within the
+ *         last printed digit;
+ *     (2) against Hilsenrath & Klein (1965, AEDC-TR-65-58), independent of
+ *         RGAS: at T = 2 000, 4 000, 6 000, 8 000, 10 000, 12 000 and
+ *         14 000 K and log₁₀(ρ/ρ₀) = −5, −4, −3, −2, −1, 0, 1 (49 points,
+ *         read from their tables, e from E/RT), the fit's p(e, ρ) within
+ *         5 % everywhere (the report's 3.9 % against RGAS and the two tables'
+ *         own difference) and within 2 % in the median;
+ *     (3) the ideal-gas limit: at sea level and 300 K, p/(ρe) = 0.4 within
+ *         0.5 %;
+ *     (4) continuity: across every boundary between the fit's regions, the
+ *         jump in p and in a below 1 % (reported entry by entry);
+ *     (5) consistency: a² against ∂p/∂ρ|ₑ + (p/ρ²)∂p/∂e|_ρ from the p fit,
+ *         within 5 % where T ≤ 25 000 K; which of the two the solver's
+ *         fluxes take is decided under the rule that brings the module in.
+ */
+export const RULE_1308_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1309. THE PEAK A CELL RECORDS OVERSHOOTS BEHIND A MOVING SHOCK: THE
+ * COMPONENTWISE RECONSTRUCTION; V5 TO MEASURE IT, THE CURE TO TRY (27
+ * September 2026, 12:25). A diagnostic's outcome, then a test and a change
+ * written before their code.
+ *
+ * (a) THE DIAGNOSIS (a sub-task, `scripts/tmp/diag1d-*.ts`): in the 1D
+ *     spherical diagnostic the peak overpressure beyond λ ≈ 1.9 is jagged by
+ *     ±2 %. Cause, shown alone: the fifth-order WENO-Z reconstruction of the
+ *     primitive variables component by component leaves behind a moving
+ *     shock a pressure overshoot that alternates between neighbouring cells;
+ *     the maximum in time each cell records exceeds the post-shock pressure.
+ *     On a planar shock with an exact uniform solution the records exceed it
+ *     by 0.6–3.1 % at M = 1.045, 0.9–4.3 % at 1.125, 2.2–7.1 % at 1.3; with a
+ *     characteristic reconstruction (the fields projected at each face) by
+ *     0.01–0.03 %. Excluded one by one: a second wave, the grid's growth, the
+ *     first-order fall-back (5–11 faces, all at r = 0), the time step (CFL
+ *     0.2: 0.009 % on the mean).
+ * (b) THE TWO-DIMENSIONAL SOLVER reconstructs w = (ρ/α, u, v, p/β) the same
+ *     way: the ground's recorded peaks of a ground burst in uniform air on
+ *     5 m cells alternate cell to cell from λ ≈ 1.3, by 8 % at λ = 1.5 and
+ *     3.5 % at 2.5 (MOOD and the limiter alike; van Leer's scheme before rule
+ *     1262 below 0.02 %; weak at 10 m, absent at 20 m). Every ground peak read
+ *     from this solver since rule 1262 carries it; the tests' outcomes since
+ *     then (T1–T4) are to be read with it in mind.
+ * (c) THE HOT SPHERE IS NOT A POINT SOURCE (same sub-task): a second pulse
+ *     from the sphere reaches the shock at a range set by R/ε, the same on 1,
+ *     0.5 and 0.25 m cells — the source's physics, not the grid's. So V3
+ *     (rule 1295 (c)) is set up as Brode set his: from the point source's
+ *     similarity solution, under a rule of its own.
+ * (d) V5 — THE PEAK RECORD, criteria fixed now. A planar shock along z in
+ *     uniform air (ρ₀ = 1.225, p₀ = 101 325, no gravity, 4 cells in r), the
+ *     shocked air above moving down, the shock moving down into air at rest,
+ *     at M = 1.02, 1.05, 1.125, 1.3, 2 and 5 on 400 cells; each cell's
+ *     largest pressure in time, over the cells the shock crosses from 20
+ *     cells below its start to 20 cells above the ground: the largest
+ *     excess over the exact post-shock pressure at most 0.5 % of the exact
+ *     overpressure, at every Mach. And the radial direction, where the
+ *     product reads: T2's 1 kt ground burst in uniform air on 5 m cells (a
+ *     45 m sphere), the ground's recorded peaks from λ = 1 to 2.8 (ε for
+ *     2 kt), the largest |second difference| between neighbours at most
+ *     0.5 % of the local peak (the smooth decay's own second difference is
+ *     about 10⁻³ of it).
+ * (e) THE CURE to try if V5 fails as the diagnosis says it will: the
+ *     reconstruction in characteristic fields — at each face, w's five
+ *     values projected on the left eigenvectors of the Euler equations
+ *     (their Jacobian in w, at the face's arithmetic mean of the two cells,
+ *     α and β at the face), reconstructed each by the same WENO-Z (with rule
+ *     1297's radial weights along r), and projected back. At rest the fields
+ *     are constant and the projection linear: the atmosphere stays at rest.
+ *     Then V1, V2, V4 (self-convergence) and V5 again with their criteria as
+ *     fixed, and the GPU with G0–G2.
+ */
+export const RULE_1309_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1310. ERRATA FROM AN INDEPENDENT REVIEW OF RULES 1297–1308 (27
+ * September 2026, 12:50; the review's proofs in `scripts/tmp/review-*.ts`).
+ * What was claimed wrongly is corrected here; nothing measured is changed.
+ *
+ * (a) IN A STRATIFIED ATMOSPHERE THE SCHEME IS OF SECOND ORDER in the
+ *     departures from its state at rest. The lift −g(2H/Δ)sinh(Δ/2H)
+ *     overstates g on the density's departures by Δ²/(24H²), and the
+ *     vertical flux of the departures takes ⟨p⟩/β(z_c) for the mean of p/β.
+ *     Proof: the steady Lamb state with k = 0 (p = p̄ + A·E(z), exact in the
+ *     nonlinear equations) drifts at the ground by 8.2·10⁻⁵ … 1.29·10⁻⁶ of A
+ *     on 500 … 62.5 m in 30 s, order 2.00 on every pair. So: rule 1304 (b)'s
+ *     «fourth order» from the third row up, and rule 1306 (b)'s orders 4.63
+ *     and 4.45, are pre-asymptotic; V4 still passes (its criterion is at
+ *     least 2); rule 1306 (a)'s «the floor was the amplitude's
+ *     nonlinearity» is half wrong — of the 1.64·10⁻⁶ read at A = 10⁻⁶ p₀ on
+ *     62.5 m, about 1.3·10⁻⁶ is this error. At a blast's cells (5 m) it is
+ *     of order 10⁻⁸: negligible there, a limit of the verification.
+ * (b) AT THE AXIS the Jiang–Shu smoothness indicators, taken on r-weighted
+ *     averages, misjudge an odd variable (u = r gives Z weights 0.065,
+ *     0.523, 0.412 in cell 0 instead of the linear 0.1, 0.6, 0.3): the
+ *     faces' error there is of third order, not fifth, and the mass
+ *     residual in cells 0–2 of second. V1's volume-weighted L1 hides it; a
+ *     reading in the axis's column (the point below the burst) does not.
+ *     Rule 1309's characteristic reconstruction inherits it.
+ * (c) TEXT: rule 1297 (b)'s weights «0.10/0.63/0.27 at the axis» are cell
+ *     1's; the axis cell's are exactly 0.1/0.6/0.3.
+ * (d) DOUBTS, recorded: rule 1298's parabola misses a cubic's −a₃κ/120,
+ *     third order in the axis's cells; the ground's slope (rule 1306) read
+ *     half a cell up leaves a first-order error local to the first row
+ *     (global order 2; the slope extrapolated to the wall brings that row
+ *     to the interior's level); the test of rule 1297's weights cannot see a
+ *     scheme exact only to degree 3 and exercises neither the WENO nor the
+ *     mirrored ghosts; rule 1294 (b) read Brode at λ = 2.89, outside his Eq.
+ *     17's range (λ < 2.8); the 1D diagnostic is of second order in its
+ *     geometry.
+ * (e) QUEUED, each under a rule of its own, after rule 1309's cure is on the
+ *     GPU: the axis's indicators (b); the slope extrapolated to the wall;
+ *     a stronger test of the radial reconstruction; then (a), a high-order
+ *     treatment of gravity on the departures.
+ */
+export const RULE_1310_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1311. V5 ON RULE 1309'S CURE: THE PLANE PASSES, THE GROUND BURST
+ * FAILS AS FIXED; WHAT IS LEFT (27 September 2026, 13:12;
+ * `verifyBlastV5.json`, the scheme before the cure in
+ * `verifyBlastV5.componentwise.json`).
+ *
+ * (a) THE CURE ON CPU AND GPU (charR and charZ, the same projection on the
+ *     departures from the background; G0 exactly at rest, G2 mass to
+ *     2.0·10⁻¹¹ and 2.4·10⁻¹¹, energy to 4.6·10⁻⁹ and 1.2·10⁻⁷). V1 again by
+ *     self-convergence: orders 4.52 and 3.78 — passes. V2 again: 1.10 on the
+ *     last pair, the shock 0.11 cells off — passes.
+ * (b) V5, planar: the largest excess of a cell's record over the exact
+ *     post-shock pressure 0.004, 0.013, 0.031, 0.049, 0.008 and 0.007 % of
+ *     the overpressure at M = 1.02 … 5 (before: up to 7.2 %) — within 0.5 %,
+ *     PASSES. V5, radial (GPU, 5 m): the largest |second difference| of the
+ *     ground's peaks 1.22 % of the peak at λ = 1.02 (before: 18.2 %) — beyond
+ *     0.5 %, FAILS AS FIXED.
+ * (c) WHAT IS LEFT, diagnosed on the CPU one hypothesis at a time: an
+ *     odd–even alternation of the record where the peak sits at the front of
+ *     a DECAYING shock. A shock moving outward along r: 0.13 % (M 1.05) and
+ *     0.65 % (M 1.3) of the overpressure, the sign changing at every cell;
+ *     the same shock moving inward, its post-shock pressure growing behind
+ *     it: 0.003 %, no alternation; a planar shock followed by a rarefaction
+ *     (a 40-cell slab): 0.74 %, the same slab thick enough not to decay:
+ *     0.10 %. Neither rule 1298's source nor rule 1297's weights: without
+ *     either, 0.651 % unchanged. Its size does not follow the cell: 0.21,
+ *     1.22 and 1.06 % on 10, 5 and 2.5 m — its mechanism is open.
+ * (d) UNTIL IT IS UNDERSTOOD: every ground peak read from this solver
+ *     carries a numerical uncertainty of half the local |second
+ *     difference| of its record (about ±0.6 % at λ = 1, ±0.1 % at λ = 2.8 on
+ *     5 m for 1 kt), stated beside it. The mechanism goes to the laboratory's
+ *     numerics (Eulero) as an open problem.
+ */
+export const RULE_1311_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1312. RP-1181 TRANSCRIBED TWICE AND BLIND: THE DATA, AND WHAT THE
+ * PRINTED REPORT GETS WRONG (27 September 2026, 13:13). Written before the
+ * module's code (rule 1308 (b), (c)).
+ *
+ * (a) THE TRANSCRIPTIONS: two, independent, from the page images — the
+ *     functional forms (Eqs. 22–28, A1–A6), the density bands (−7 ≤ Y ≤ −4.5,
+ *     −4.5 < Y ≤ −0.5, −0.5 < Y ≤ 3), the energy columns, the signs before
+ *     the Grabau exponential, 624 coefficients (Tables A1–A6) and the
+ *     juncture tables 10–12: all 969 entries AGREE, character for character.
+ * (b) TWO COEFFICIENTS MISPRINTED IN THE REPORT, found by both transcribers
+ *     alone, the report's own Table 12 the arbiter: Table A5, 0.25 < Z ≤ 0.95,
+ *     b4 printed −3.27402E-01 (T at the juncture 946 K against the 481 K
+ *     printed; with −3.27402E-02, 481 K); Table A5, 1.40 < Z ≤ 2.00, b18
+ *     printed 4.5413E-01, a digit short of its column's (7 524 K against
+ *     10 364 K; with 4.45413E-01, 10 373 K). The corrected values are used;
+ *     the printed ones stay in the data file beside them, with the page.
+ * (c) THE APPENDIX'S FORMULAS READ FOR WHAT THEY STATE: (A1)–(A2), printed
+ *     as f(Y_hi) + [f(Y_hi) − f(Y_lo)](Y − Y_lo)/ΔY, are discontinuous at
+ *     their own ends; the text calls them the interpolation that keeps the
+ *     fits continuous across the density boundaries, so the module uses the
+ *     linear interpolation f(Y_lo) + [f(Y_hi) − f(Y_lo)](Y − Y_lo)/ΔY — rule
+ *     1308 (d)(4) checks the choice. (A3)'s ∂γ is ∂Y; (A6)'s 2a₁₇Y² is a₁₇Y²
+ *     (the derivative of a₁₇Y²Z): the module's derivatives are the exact
+ *     ones, checked against finite differences of γ̃ to 10⁻⁶.
+ * (d) THE REFERENCE VALUES, not printed as numbers: the subscript o is 1 atm
+ *     and 273.15 K, R = 287.06 J/(kg K), so p₀ = 101 325 N/m², ρ₀ = p₀/(RT₀)
+ *     = 1.29224 kg/m³ and e/RT₀ with RT₀ = 78 410.4 m²/s².
+ * (e) THE JUNCTURE CHECKS of rule 1308 (d)(1) stand as fixed; the entries
+ *     the transcribers could not reproduce (a at E, 10⁻⁷, upper: 4 776
+ *     against 4 715; a at E, 10⁻⁵, lower: 5 267 against 5 259; T at C, 10²,
+ *     upper: 6 946 against 6 960) are reported as they come, not corrected;
+ *     the E entry printed in the 10⁻⁴ row, where that band has no fifth
+ *     juncture and its value repeats the 10⁻³ row's A, is left out as
+ *     spurious and listed.
+ */
+export const RULE_1312_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1313. V4 ON RULE 1309'S CURE, AND THE AIR MODULE'S VERIFICATION (27
+ * September 2026, 13:18; `verifyBlastV4Self.json`, `verifyAirEos.json`).
+ *
+ * (a) V4 by self-convergence on the cure: differences 6.11·10⁻³, 2.52·10⁻⁴,
+ *     1.12·10⁻⁵, orders 4.60 and 4.49 (pre-asymptotic, rule 1310 (a)), the
+ *     other criteria within 1 % — PASSES. With rule 1311 (a): V1, V2 and V4
+ *     hold on the characteristic reconstruction; V5 as rule 1311 states it.
+ * (b) THE AIR MODULE (`airEos.ts`, `scripts/verify-air-eos.ts`), rule 1308
+ *     (d) as fixed: (1) the report's juncture tables — 223 of 252 entries
+ *     within the last printed digit; the 29 others off by 1 to 14 of it, at
+ *     most 0.2 % (T at C, 10², upper: 6 946 against 6 960), the report's own
+ *     rounding of its coefficients or misprints the transcriptions cannot
+ *     tell apart — FAILS AS FIXED, by that much; 2 spurious entries left
+ *     out. (3) p/(ρe) = 0.39880 at sea level and 300 K, 0.30 % from 0.4 —
+ *     PASSES. (4) The fits jump across their energy columns' boundaries by
+ *     up to 2.31 % in p and 2.90 % in a, 31 junctures beyond 1 % — FAILS AS
+ *     FIXED: the report's discontinuities, its Tables 10–11 print them too.
+ *     (5) a from Eq. (27) against ∂p/∂ρ|ₑ + (p/ρ²)∂p/∂e|_ρ from the p fit
+ *     (the finite differences kept within one band and one column): equal to
+ *     rounding at 2 266 points — PASSES, by construction, since Eq. (27) is
+ *     that derivative of p = ρe(γ̃ − 1); it confirms the module's exact
+ *     derivatives (rule 1312 (c)). (2), against Hilsenrath & Klein, waits
+ *     for its two transcriptions.
+ * (c) FOR THE SOLVER: a 3 % jump of the sound speed and a 2 % jump of the
+ *     pressure across a line in (e, ρ) are what a conservative scheme turns
+ *     into small spurious waves; the rule that brings the module in decides
+ *     how they are bridged.
+ */
+export const RULE_1313_WRITTEN = '2026-09-27' as const;

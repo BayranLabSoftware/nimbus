@@ -1,0 +1,325 @@
+{
+  "rule": "1308 (d), 1312",
+  "junctures": {
+    "total": 252,
+    "missed": [
+      {
+        "table": "11",
+        "densityRatio": "10^-7",
+        "point": "B",
+        "side": "lower",
+        "printed": "769",
+        "computed": 767.3312090802115,
+        "offDigits": 1.6687909197885347
+      },
+      {
+        "table": "11",
+        "densityRatio": "10^-7",
+        "point": "D",
+        "side": "upper",
+        "printed": "2733",
+        "computed": 2734.0874850866912,
+        "offDigits": 1.0874850866912311
+      },
+      {
+        "table": "11",
+        "densityRatio": "10^-7",
+        "point": "E",
+        "side": "upper",
+        "printed": "4715",
+        "computed": 4776.453069727619,
+        "offDigits": 61.45306972761864
+      },
+      {
+        "table": "11",
+        "densityRatio": "10^-6",
+        "point": "E",
+        "side": "lower",
+        "printed": "4983",
+        "computed": 4980.580540994136,
+        "offDigits": 2.419459005864155
+      },
+      {
+        "table": "11",
+        "densityRatio": "10^-5",
+        "point": "B",
+        "side": "lower",
+        "printed": "831",
+        "computed": 829.7648299578896,
+        "offDigits": 1.2351700421104397
+      },
+      {
+        "table": "11",
+        "densityRatio": "10^-5",
+        "point": "E",
+        "side": "lower",
+        "printed": "5259",
+        "computed": 5266.731387625581,
+        "offDigits": 7.731387625581192
+      },
+      {
+        "table": "11",
+        "densityRatio": "10^-3",
+        "point": "D",
+        "side": "upper",
+        "printed": "3116",
+        "computed": 3117.0919505878264,
+        "offDigits": 1.0919505878264317
+      },
+      {
+        "table": "11",
+        "densityRatio": "10^-1",
+        "point": "D",
+        "side": "lower",
+        "printed": "3596",
+        "computed": 3594.829209850736,
+        "offDigits": 1.1707901492641213
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-7",
+        "point": "B",
+        "side": "upper",
+        "printed": "2091",
+        "computed": 2088.5536360884466,
+        "offDigits": 2.4463639115533624
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-7",
+        "point": "C",
+        "side": "lower",
+        "printed": "4033",
+        "computed": 4035.8284132527947,
+        "offDigits": 2.8284132527946895
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-7",
+        "point": "C",
+        "side": "upper",
+        "printed": "4034",
+        "computed": 4031.382125152511,
+        "offDigits": 2.61787484748902
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-7",
+        "point": "D",
+        "side": "lower",
+        "printed": "7 868",
+        "computed": 7866.928034958588,
+        "offDigits": 1.0719650414121134
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-7",
+        "point": "D",
+        "side": "upper",
+        "printed": "7 869",
+        "computed": 7864.121548132204,
+        "offDigits": 4.878451867795775
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-6",
+        "point": "B",
+        "side": "upper",
+        "printed": "2168",
+        "computed": 2164.7597943495184,
+        "offDigits": 3.2402056504815846
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-6",
+        "point": "C",
+        "side": "upper",
+        "printed": "4284",
+        "computed": 4280.4437751835685,
+        "offDigits": 3.556224816431495
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-5",
+        "point": "B",
+        "side": "lower",
+        "printed": "2243",
+        "computed": 2246.7492038910377,
+        "offDigits": 3.7492038910377232
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-5",
+        "point": "C",
+        "side": "lower",
+        "printed": "4548",
+        "computed": 4545.878012528927,
+        "offDigits": 2.1219874710732256
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-4",
+        "point": "A",
+        "side": "upper",
+        "printed": "481",
+        "computed": 479.74856647048284,
+        "offDigits": 1.2514335295171577
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-4",
+        "point": "C",
+        "side": "lower",
+        "printed": "4837",
+        "computed": 4841.534655374035,
+        "offDigits": 4.534655374034628
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-4",
+        "point": "C",
+        "side": "upper",
+        "printed": "4818",
+        "computed": 4813.202846296794,
+        "offDigits": 4.797153703206277
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-4",
+        "point": "D",
+        "side": "lower",
+        "printed": "10 364",
+        "computed": 10372.762946009861,
+        "offDigits": 8.76294600986148
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-4",
+        "point": "D",
+        "side": "upper",
+        "printed": "10 319",
+        "computed": 10311.233290931714,
+        "offDigits": 7.766709068286218
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-3",
+        "point": "A",
+        "side": "upper",
+        "printed": "481",
+        "computed": 479.74767219227726,
+        "offDigits": 1.252327807722736
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-3",
+        "point": "C",
+        "side": "upper",
+        "printed": "5088",
+        "computed": 5083.030373805515,
+        "offDigits": 4.96962619448459
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-3",
+        "point": "D",
+        "side": "upper",
+        "printed": "11 177",
+        "computed": 11166.693575375411,
+        "offDigits": 10.306424624588544
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^-2",
+        "point": "D",
+        "side": "upper",
+        "printed": "12 006",
+        "computed": 12007.344770771304,
+        "offDigits": 1.3447707713039563
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^1",
+        "point": "A",
+        "side": "upper",
+        "printed": "482",
+        "computed": 480.9808137729514,
+        "offDigits": 1.0191862270485785
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^2",
+        "point": "C",
+        "side": "upper",
+        "printed": "6960",
+        "computed": 6946.374501508203,
+        "offDigits": 13.625498491796861
+      },
+      {
+        "table": "12",
+        "densityRatio": "10^3",
+        "point": "A",
+        "side": "upper",
+        "printed": "483",
+        "computed": 481.4970057464398,
+        "offDigits": 1.502994253560189
+      }
+    ],
+    "spurious": [
+      "Table 10, 10^-4, point E lower: 1.80 × 10^2",
+      "Table 10, 10^-4, point E upper: 1.81 × 10^2"
+    ]
+  },
+  "idealLimit": {
+    "ratio": 0.39880000000000004,
+    "off": 0.0029999999999998916
+  },
+  "continuity": {
+    "largestP": 0.02311934765953083,
+    "largestA": 0.028976775884299366,
+    "above1percent": [
+      "Y -7.00, Z 1.50: p 0.74 %, a 2.90 %",
+      "Y -6.75, Z 1.50: p 0.34 %, a 2.20 %",
+      "Y -6.50, Z 1.50: p 0.04 %, a 1.59 %",
+      "Y -6.50, Z 2.20: p 0.96 %, a 1.12 %",
+      "Y -6.50, Z 3.40: p 1.08 %, a 0.95 %",
+      "Y -6.25, Z 1.50: p 0.33 %, a 1.14 %",
+      "Y -6.25, Z 2.20: p 1.18 %, a 1.18 %",
+      "Y -6.25, Z 3.40: p 1.02 %, a 0.85 %",
+      "Y -6.00, Z 2.20: p 1.27 %, a 1.20 %",
+      "Y -5.75, Z 2.20: p 1.27 %, a 1.20 %",
+      "Y -5.50, Z 1.50: p 0.29 %, a 1.09 %",
+      "Y -5.50, Z 2.20: p 1.23 %, a 1.19 %",
+      "Y -5.25, Z 1.50: p 0.01 %, a 1.34 %",
+      "Y -5.25, Z 2.20: p 1.17 %, a 1.19 %",
+      "Y -5.00, Z 1.50: p 0.27 %, a 1.32 %",
+      "Y -5.00, Z 2.20: p 1.13 %, a 1.22 %",
+      "Y -4.75, Z 2.20: p 1.14 %, a 1.30 %",
+      "Y -4.25, Z 2.22: p 1.02 %, a 0.82 %",
+      "Y 1.50, Z 2.35: p 1.26 %, a 0.92 %",
+      "Y 1.75, Z 1.70: p 1.05 %, a 0.54 %",
+      "Y 1.75, Z 2.35: p 1.53 %, a 1.06 %",
+      "Y 2.00, Z 1.70: p 1.28 %, a 0.60 %",
+      "Y 2.00, Z 2.35: p 1.77 %, a 1.16 %",
+      "Y 2.25, Z 1.70: p 1.52 %, a 0.65 %",
+      "Y 2.25, Z 2.35: p 1.95 %, a 1.22 %",
+      "Y 2.50, Z 1.70: p 1.78 %, a 0.69 %",
+      "Y 2.50, Z 2.35: p 2.06 %, a 1.24 %",
+      "Y 2.75, Z 1.70: p 2.04 %, a 0.73 %",
+      "Y 2.75, Z 2.35: p 2.09 %, a 1.20 %",
+      "Y 3.00, Z 1.70: p 2.31 %, a 0.75 %",
+      "Y 3.00, Z 2.35: p 2.02 %, a 1.11 %"
+    ]
+  },
+  "consistency": {
+    "largest": 4.372941608821179e-8,
+    "at": "Y -4.25, Z 3.60",
+    "points": 2266
+  },
+  "checks": {
+    "junctures": false,
+    "idealLimit": true,
+    "continuity": false,
+    "consistency": true
+  }
+}
