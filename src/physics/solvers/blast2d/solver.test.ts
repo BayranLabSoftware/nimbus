@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { isothermalAtmosphere, scaleHeight, uniformAtmosphere } from './atmosphere.js';
-import { BlastSolver2D, radialCoefficients } from './solver.js';
+import { BlastSolver2D, radialCoefficients, weno5zCylindrical } from './solver.js';
 
 /** Rule 1254 (c) T0 and the scheme's conservation, on small grids. */
 
@@ -150,6 +150,28 @@ describe("rule 1297's radial reconstruction (Mignone 2014)", () => {
           }
           const face = i + (side === 0 ? 1 : 0);
           expect(Math.abs(value - f(face))).toBeLessThan(1e-9 * Math.max(1, Math.abs(f(face))));
+        }
+  });
+
+  it('reconstructs, WENO-Z and all, smooth data even or odd across the axis (rule 1316 (b))', () => {
+    // Degree ≤ 2: every candidate is exact, whatever the nonlinear weights;
+    // odd data through the mirrored ghosts (signed coordinates) included.
+    for (const i of [-1, 0, 1, 2, 3, 5, 7, 300])
+      for (const parity of [1, -1])
+        for (const degree of [0, 1, 2]) {
+          const f = (x: number): number => {
+            const base = parity === 1 ? x * x + 0.7 : x * (x * x + 1.3);
+            return degree === 0 ? (parity === 1 ? 2 : x) : degree === 1 ? 3 * x - 1 : base;
+          };
+          if (parity === -1 && degree === 2) continue;
+          const k = radialCoefficients(i);
+          const cells = [i - 2, i - 1, i, i + 1, i + 2].map((j) => average(f, j));
+          const [a, b, c, d, e] = cells as [number, number, number, number, number];
+          const up = weno5zCylindrical(a, b, c, d, e, k, 0);
+          const down = weno5zCylindrical(a, b, c, d, e, k, 1);
+          const scale = Math.max(1, Math.abs(f(i + 1)), Math.abs(f(i)));
+          expect(Math.abs(up - f(i + 1))).toBeLessThan(1e-9 * scale);
+          expect(Math.abs(down - f(i))).toBeLessThan(1e-9 * scale);
         }
   });
 

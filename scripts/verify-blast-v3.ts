@@ -93,8 +93,8 @@ const rows = LAMBDAS.map((l) => {
     const p = d1 * d2 > 0 ? Math.log2(d1 / d2) : NaN;
     // Rule 1318 (d): an order below 1 is judged as non-monotone, and a
     // non-monotone reading's band is the spread of the three grids.
+    order = Number.isFinite(p) ? p : null;
     if (p >= 1) {
-      order = p;
       extrapolated = r3 + (r3 - r2) / (2 ** p - 1);
       judged = extrapolated;
       band = 0;

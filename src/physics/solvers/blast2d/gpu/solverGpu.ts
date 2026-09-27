@@ -36,6 +36,8 @@ const KERNELS = [
   'sourceR',
   'charR',
   'charZ',
+  'mirrorR',
+  'mirrorZ',
 ] as const;
 type Kernel = (typeof KERNELS)[number];
 
@@ -484,11 +486,13 @@ export class BlastSolverGpu {
         ['ghostsZ', nr + 2 * G],
         ['reconR', (nr + 2) * nz],
         ['charR', (nr + 1) * nz],
+        ['mirrorR', nz],
         ['scaleR', (nr + 2) * nz],
         ['fluxR', (nr + 1) * nz],
         ['sourceR', nr * nz],
         ['reconZ', nr * (nz + 2)],
         ['charZ', nr * (nz + 1)],
+        ['mirrorZ', nr],
         ['scaleZ', nr * (nz + 2)],
         ['fluxZ', nr * (nz + 1)],
         ['limitR', nr * nz],
@@ -534,11 +538,13 @@ export class BlastSolverGpu {
         ['ghostsZ', nr + 2 * G],
         ['reconR', (nr + 2) * nz],
         ['charR', (nr + 1) * nz],
+        ['mirrorR', nz],
         ['scaleR', (nr + 2) * nz],
         ['fluxR', (nr + 1) * nz],
         ['sourceR', nr * nz],
         ['reconZ', nr * (nz + 2)],
         ['charZ', nr * (nz + 1)],
+        ['mirrorZ', nr],
         ['scaleZ', nr * (nz + 2)],
         ['fluxZ', nr * (nz + 1)],
         ['limitR', nr * nz],
@@ -557,11 +563,13 @@ export class BlastSolverGpu {
       ['ghostsZ', nr + 2 * G],
       ['reconR', (nr + 2) * nz],
       ['charR', (nr + 1) * nz],
+      ['mirrorR', nz],
       ['scaleR', (nr + 2) * nz],
       ['fluxR', (nr + 1) * nz],
       ['sourceR', nr * nz],
       ['reconZ', nr * (nz + 2)],
       ['charZ', nr * (nz + 1)],
+      ['mirrorZ', nr],
       ['scaleZ', nr * (nz + 2)],
       ['fluxZ', nr * (nz + 1)],
     ]);
@@ -753,5 +761,8 @@ function usedBindings(name: Kernel): number[] {
       return [0, 2, 3, 4, 9, 19];
     case 'charZ':
       return [0, 2, 3, 4, 10, 19];
+    case 'mirrorR':
+    case 'mirrorZ':
+      return [0, 3, 4];
   }
 }

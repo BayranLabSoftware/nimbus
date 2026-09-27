@@ -10,28 +10,28 @@
       "widthCells": 8,
       "dx": 12.5,
       "steps": 82,
-      "seconds": 0.567,
+      "seconds": 0.971,
       "relativeL1Exact": 0.00024275555944312
     },
     {
       "widthCells": 16,
       "dx": 6.25,
       "steps": 164,
-      "seconds": 4.379,
+      "seconds": 7.653,
       "relativeL1Exact": 0.00003367738755711578
     },
     {
       "widthCells": 32,
       "dx": 3.125,
       "steps": 327,
-      "seconds": 39.091,
+      "seconds": 54.338,
       "relativeL1Exact": 0.000026080279225235494
     },
     {
       "widthCells": 64,
       "dx": 1.5625,
       "steps": 654,
-      "seconds": 314.662,
+      "seconds": 404.049,
       "relativeL1Exact": 0.000025618802854918145
     }
   ],

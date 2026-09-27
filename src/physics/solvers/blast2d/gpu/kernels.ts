@@ -222,8 +222,10 @@ fn hllc(rL: f32, unL: f32, utL: f32, pL: f32, rR: f32, unR: f32, utR: f32, pR: f
 @compute @workgroup_size(WG) fn ghostsZ(@builtin(global_invocation_id) id: vec3<u32>) {
   let i = i32(id.x) - G;
   if (i >= P.nr + G) { return; }
+  // Rule 1316 (a): q and ρ/ρ̄ taken at the wall from the first two rows.
   let first = W[cell(i, 0)];
-  let s = P.slope * (first.w - first.x);
+  let second = W[cell(i, 1)];
+  let s = P.slope * ((1.5 * first.w - 0.5 * second.w) - (1.5 * first.x - 0.5 * second.x));
   for (var g = 1; g <= G; g++) {
     let inner = W[cell(i, g - 1)];
     W[cell(i, -g)] = vec4<f32>(inner.x, inner.y, -inner.z, inner.w - 2.0 * s * (f32(g) - 0.5) * P.dx);
@@ -313,6 +315,21 @@ fn charFace(kl: i32, step: i32, a: f32, b: f32, atL: i32, atR: i32, radial: bool
   let g = i32(id.x) / P.nr;
   let bg = FACE[g];
   charFace(cell(i, g - 1), P.stride, bg.x, bg.y, 0, 0, false);
+}
+
+// ---- rule 1317 (e): the ghost beside the axis (below the wall) takes as its
+//      outer face the mirror of the first cell's, u (v) odd ----
+@compute @workgroup_size(WG) fn mirrorR(@builtin(global_invocation_id) id: vec3<u32>) {
+  let j = i32(id.x);
+  if (j >= P.nz) { return; }
+  let s0 = S[cell(0, j)];
+  T[cell(-1, j)] = vec4<f32>(s0.x, -s0.y, s0.z, s0.w);
+}
+@compute @workgroup_size(WG) fn mirrorZ(@builtin(global_invocation_id) id: vec3<u32>) {
+  let i = i32(id.x);
+  if (i >= P.nr) { return; }
+  let s0 = S[cell(i, 0)];
+  T[cell(i, -1)] = vec4<f32>(s0.x, s0.y, -s0.z, s0.w);
 }
 
 // ---- rule 1298: each interior cell's mean of (p − p̄)/p̄ over r — the

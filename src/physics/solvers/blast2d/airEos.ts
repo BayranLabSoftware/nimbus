@@ -7,9 +7,9 @@
  * nearest band). Their reach in energy is the report's data (its Fig. 11:
  * log₁₀(e/RT₀) up to about 3.0 at ρ₀, 3.57 at 10⁻⁷ ρ₀), which end near
  * 17 700–23 000 K from 10⁻⁷ to 10² ρ₀ and reach 25 000 K only at 10³ ρ₀
- * (its Fig. 13). Beyond it the fits turn unphysical, and the module refuses
- * (a RangeError) where γ̃ ≤ 1, a² ≤ 0, ∂p/∂e|ρ ≤ 0 or T does not rise with e
- * (rules 1317 (b), 1318 (a)).
+ * (its Fig. 13). The module refuses (a RangeError) beyond that edge (rule
+ * 1319 (c)), and wherever γ̃ ≤ 1, a² ≤ 0, ∂p/∂e|ρ ≤ 0 or T does not rise with
+ * e (rules 1317 (b), 1318 (a)).
  *
  * γ̃ = h/e is fitted in Y = log₁₀(ρ/ρ₀) and Z = log₁₀(e/RT₀) as
  *   γ̃ = P₁(Y, Z) + P₂(Y, Z)/[1 ± exp(a₂₁ + a₂₂Y + a₂₃Z + a₂₄YZ)],
@@ -145,11 +145,19 @@ function soundSquared(e: number, g: GrabauValue): number {
   return e * ((g.f - 1) * (g.f + g.fZ / LN10) + g.fY / LN10);
 }
 
-/** γ̃ = h/e at specific internal energy e (J/kg) and density ρ (kg/m³). */
-export function airGamma(e: number, rho: number): number {
-  const y = Math.log10(rho / AIR_RHO0);
-  const z = Math.log10(e / RT0);
-  return acrossBands(y, (yy) => gammaAt(yy, z).f);
+/**
+ * Rule 1319 (c): the edge of the report's data in energy, Z_max at
+ * Y = −7 … 3 (its Fig. 11, the highest compared point of each isochore,
+ * the mean of two blind readings that agree within 0.005); linear in Y
+ * between them, the ends held beyond.
+ */
+const DATA_EDGE = [3.573, 3.516, 3.456, 3.298, 3.288, 3.268, 3.219, 3.031, 2.961, 2.924, 2.883];
+export function airDataEdge(y: number): number {
+  const x = Math.min(3, Math.max(-7, y)) + 7;
+  const n = Math.min(9, Math.floor(x));
+  const lo = DATA_EDGE[n] ?? NaN;
+  const hi = DATA_EDGE[n + 1] ?? NaN;
+  return lo + (hi - lo) * (x - n);
 }
 
 function refuse(what: string, e: number, rho: number): never {
@@ -158,18 +166,24 @@ function refuse(what: string, e: number, rho: number): never {
   );
 }
 
-/** Eq. (25): the pressure (Pa); refused where γ̃ ≤ 1 or ∂p/∂e|ρ =
- *  ρ[(γ̃ − 1) + γ̃_Z/ln 10] ≤ 0 (rule 1318 (a)), at both ends of a blend. */
-export function airPressure(e: number, rho: number): number {
+/** γ̃ = h/e at specific internal energy e (J/kg) and density ρ (kg/m³);
+ *  refused where γ̃ ≤ 1 or ∂p/∂e|ρ = ρ[(γ̃ − 1) + γ̃_Z/ln 10] ≤ 0 (rule 1318
+ *  (a)), at both ends of a blend. */
+export function airGamma(e: number, rho: number): number {
   const y = Math.log10(rho / AIR_RHO0);
   const z = Math.log10(e / RT0);
-  const g = acrossBands(y, (yy) => {
+  if (z > airDataEdge(y)) refuse(`Z = ${z.toFixed(3)} beyond the data's edge`, e, rho);
+  return acrossBands(y, (yy) => {
     const v = gammaAt(yy, z);
     if (!(v.f > 1)) refuse(`γ̃ = ${String(v.f)}`, e, rho);
     if (!(v.f - 1 + v.fZ / LN10 > 0)) refuse('∂p/∂e ≤ 0', e, rho);
     return v.f;
   });
-  return rho * e * (g - 1);
+}
+
+/** Eq. (25): the pressure (Pa), refused where γ̃ is. */
+export function airPressure(e: number, rho: number): number {
+  return rho * e * (airGamma(e, rho) - 1);
 }
 
 /** Eq. (27): the sound speed (m/s). */

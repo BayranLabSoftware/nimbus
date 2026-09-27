@@ -2039,3 +2039,42 @@ export const RULE_1317_WRITTEN = '2026-09-27' as const;
  *     the last change alone.
  */
 export const RULE_1318_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1319. RULES 1316 (a) AND 1317 (e) IN THE CODE AND CHECKED; THE FITS'
+ * DATA EDGE READ TWICE (27 September 2026, 14:17). The edge's use written
+ * before its code.
+ *
+ * (a) IN THE CODE: the ground's slope from q and ρ/(ρ₀α) extrapolated to the
+ *     wall (1.5f₀ − 0.5f₁), CPU `primitives` and GPU `ghostsZ`; the ghost's
+ *     outer face the mirror of the first cell's, CPU `reconstruct` and GPU
+ *     `mirrorR`/`mirrorZ`; `weno5zCylindrical` tested on smooth data even
+ *     and odd through the mirrored ghosts, degrees 0–2 at columns −1 … 7 and
+ *     300 (13 tests of the solver's pass).
+ * (b) CHECKED, criteria as fixed: G0 exactly at rest; G2 mass to 2.0·10⁻¹¹
+ *     and 8.7·10⁻¹¹, energy to 4.6·10⁻⁹ and 2.7·10⁻⁷; V1 by self-convergence
+ *     4.52, 3.78; V2 1.10 on the last pair, the shock 0.11 cells off; V4 by
+ *     self-convergence 4.60, 4.51; V5 planar within 0.049 % at every Mach;
+ *     V5 radial 1.222 % (unchanged, uniform air). All as before or better.
+ *     Rule 1310 (d)'s measure: the steady Lamb state's drift in the ground's
+ *     row 6.04·10⁻⁵, 1.53·10⁻⁵, 3.84·10⁻⁶, 9.59·10⁻⁷ of A on 500 … 62.5 m
+ *     (the review's with the first row's slope: 8.2·10⁻⁵ … 1.29·10⁻⁶), order
+ *     2.00, and no longer worse than the rows above: what is left is rule
+ *     1310 (a)'s second order of gravity on the departures.
+ * (c) THE DATA'S EDGE (rule 1318 (a)), read by two blind transcriptions of
+ *     RP-1181's Fig. 11 (p. 12): the figure is in (log₁₀(p/p₀), log₁₀(e/RT₀))
+ *     with the 11 isochores 10⁻⁷ … 10³ ρ₀; the edge is the highest compared
+ *     point on each, not an isotherm (it lies at 17 600–27 200 K, Fig. 13).
+ *     The two readings agree within 0.005 in Z (each ±0.006): Z_max = 3.573,
+ *     3.516, 3.456, 3.298, 3.288, 3.268, 3.219, 3.031, 2.961, 2.924, 2.883 at
+ *     Y = −7 … 3, the means. The module refuses Z > Z_max(Y) (linear in Y
+ *     between the isochores, the ends held beyond them); both readers note
+ *     RGAS's line runs 0.02–0.03 further than the last point — the refusal
+ *     keeps to the points.
+ * (d) The laboratory's Kestenboym, Turetskaya & Chudov (1969, NASA TT
+ *     F-13,012; free explosion, γ = 1.2, no ground, no gravity, the strong
+ *     shock only, energy imbalance up to 30 %) does not bear on the weak
+ *     far-field lift at the ground; it is kept as a possible check of the
+ *     strong phase.
+ */
+export const RULE_1319_WRITTEN = '2026-09-27' as const;

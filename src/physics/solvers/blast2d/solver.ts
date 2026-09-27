@@ -162,7 +162,7 @@ function clamp01(x: number): number {
  * reconstruction — and Jiang and Shu's smoothness indicators; side 0 the
  * upper face, 1 the lower.
  */
-function weno5zCylindrical(
+export function weno5zCylindrical(
   a: number,
   b: number,
   c: number,
@@ -564,11 +564,15 @@ export class BlastSolver2D {
       }
     }
     // Rules 1304–1306: at the wall ∂p/∂z = −ρg, so q = p/(p₀β) has the slope
-    // (q − ρ/(ρ₀α))/H there; the mirror corrected by it, from the first row.
+    // (q − ρ/(ρ₀α))/H there; the mirror corrected by it, q and ρ/(ρ₀α) taken
+    // at the wall from the first two rows (rule 1316 (a)).
     const lift = this.groundSlope === 'momentum' ? (rho0 * this.atmosphere.g) / p0 : 0;
     for (let i = -G; i < nr + G; i++) {
       const first = G * stride + (i + G);
-      const slope = lift * ((this.q4[first] ?? 0) - (this.q1[first] ?? 0));
+      const second = first + stride;
+      const qw = 1.5 * (this.q4[first] ?? 0) - 0.5 * (this.q4[second] ?? 0);
+      const rw = 1.5 * (this.q1[first] ?? 0) - 0.5 * (this.q1[second] ?? 0);
+      const slope = lift * (qw - rw);
       for (let g = 1; g <= G; g++) {
         const inner = (G + (g - 1)) * stride + (i + G);
         const ghost = (G - g) * stride + (i + G);
@@ -612,6 +616,28 @@ export class BlastSolver2D {
       this.reconstructCells(step, iLo, iHi, jHi, jHi);
     }
     this.reconstructCharacteristic(step);
+    // Rule 1317 (e): the ghost below the wall (and beside the axis) takes as
+    // its outer face the mirror of the first cell's, so rule 1280's ramp,
+    // which reads both faces, treats the wall's face and its mirror alike.
+    const { stride } = this;
+    if (step === 1)
+      for (let j = 0; j < nz; j++) {
+        const inner = (j + G) * stride + G;
+        const ghost = inner - 1;
+        this.t1[ghost] = this.s1[inner] ?? 0;
+        this.tu[ghost] = -(this.su[inner] ?? 0);
+        this.tv[ghost] = this.sv[inner] ?? 0;
+        this.t4[ghost] = this.s4[inner] ?? 0;
+      }
+    else
+      for (let i = 0; i < nr; i++) {
+        const inner = G * stride + (i + G);
+        const ghost = inner - stride;
+        this.t1[ghost] = this.s1[inner] ?? 0;
+        this.tu[ghost] = this.su[inner] ?? 0;
+        this.tv[ghost] = -(this.sv[inner] ?? 0);
+        this.t4[ghost] = this.s4[inner] ?? 0;
+      }
   }
 
   /** Each variable of w reconstructed on its own (the scheme before rule 1309). */

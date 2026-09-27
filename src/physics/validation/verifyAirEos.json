@@ -314,8 +314,8 @@
   "consistency": {
     "largestAccepted": 1.8677531077315734e-8,
     "at": "Y -6.50, Z 3.30",
-    "points": 2283,
-    "refusedOrNaN": 181
+    "points": 2349,
+    "refusedOrNaN": 306
   },
   "checks": {
     "junctures": false,
