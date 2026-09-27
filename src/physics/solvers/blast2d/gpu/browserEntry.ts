@@ -6,6 +6,7 @@
 
 import { isothermalAtmosphere, uniformAtmosphere, type Atmosphere } from '../atmosphere.js';
 import { BlastSolver2D } from '../solver.js';
+import { sedovStart } from '../sedov.js';
 import { BlastSolverGpu } from './solverGpu.js';
 import type { Gpu, GpuDevice } from './webgpu.js';
 
@@ -22,6 +23,10 @@ export interface GpuCase {
   readonly zMax: number;
   /** Rule 1274's floor, as `scripts/blast2d-run.ts` reads it. */
   readonly soundFloor?: number;
+  /** Rule 1314: start from the Taylor–Sedov solution of the mirrored free
+   *  air (twice `energy`), its shock at this radius (m), instead of the hot
+   *  sphere (a burst at the ground only). */
+  readonly sedovShock?: number;
   /** Rule 1277's limiter. */
   readonly limiter?: 'has';
 }
@@ -50,7 +55,10 @@ function reference(c: GpuCase, withSource = true): BlastSolver2D {
   const nr = Math.ceil((1.15 * c.rMax) / c.dx);
   const nz = Math.ceil(c.zMax / c.dx);
   const solver = new BlastSolver2D({ nr, nz, dx: c.dx }, atmosphereOf(c));
-  if (withSource)
+  if (withSource && c.sedovShock !== undefined) {
+    if (c.height !== 0) throw new Error('blast2d: rule 1314 -- the Sedov start is a ground burst');
+    sedovStart(solver, 2 * c.energy, c.sedovShock);
+  } else if (withSource)
     solver.deposit({
       energy: c.energy,
       height: c.height,

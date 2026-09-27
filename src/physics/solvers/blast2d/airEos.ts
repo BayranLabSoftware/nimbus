@@ -3,8 +3,11 @@
  * of state of equilibrium air of Srinivasan, Tannehill & Weilmuenster (1987,
  * NASA RP-1181) — p(e, ρ), a(e, ρ) and T(e, ρ) — from the report's equations
  * (22)–(28) and its Tables A1–A6 (`airEosRp1181.json`, two blind
- * transcriptions, identical). Valid to 25 000 K and from 10⁻⁷ to 10³ times
- * ρ₀; outside the density range the nearest band is used.
+ * transcriptions, identical), from 10⁻⁷ to 10³ times ρ₀ (outside, the
+ * nearest band). Their reach in energy is the report's data (its Fig. 11:
+ * log₁₀(e/RT₀) up to about 3.0 at ρ₀, 3.57 at 10⁻⁷ ρ₀) — below 25 000 K at
+ * high densities; beyond it γ̃ falls below 1, and the module refuses (a
+ * RangeError) where γ̃ ≤ 1 or a² ≤ 0 (rule 1317 (b)).
  *
  * γ̃ = h/e is fitted in Y = log₁₀(ρ/ρ₀) and Z = log₁₀(e/RT₀) as
  *   γ̃ = P₁(Y, Z) + P₂(Y, Z)/[1 ± exp(a₂₁ + a₂₂Y + a₂₃Z + a₂₄YZ)],
@@ -149,14 +152,24 @@ export function airGamma(e: number, rho: number): number {
 
 /** Eq. (25): the pressure (Pa). */
 export function airPressure(e: number, rho: number): number {
-  return rho * e * (airGamma(e, rho) - 1);
+  const g = airGamma(e, rho);
+  if (!(g > 1))
+    throw new RangeError(
+      `airEos: beyond RP-1181's data (γ̃ = ${String(g)} at e = ${String(e)} J/kg, ρ = ${String(rho)} kg/m³)`
+    );
+  return rho * e * (g - 1);
 }
 
 /** Eq. (27): the sound speed (m/s). */
 export function airSoundSpeed(e: number, rho: number): number {
   const y = Math.log10(rho / AIR_RHO0);
   const z = Math.log10(e / RT0);
-  return acrossBands(y, (yy) => Math.sqrt(soundSquared(e, gammaAt(yy, z))));
+  const a = acrossBands(y, (yy) => Math.sqrt(soundSquared(e, gammaAt(yy, z))));
+  if (!(a > 0))
+    throw new RangeError(
+      `airEos: beyond RP-1181's data (a² ≤ 0 at e = ${String(e)} J/kg, ρ = ${String(rho)} kg/m³)`
+    );
+  return a;
 }
 
 /** Eq. (28): the temperature (K). */

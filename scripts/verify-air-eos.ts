@@ -158,15 +158,17 @@ console.log(
   `(4) largest jump across a boundary: p ${(jumpP * 100).toFixed(2)} %, a ${(jumpA * 100).toFixed(2)} %; ${String(jumps.length)} above 1 %`
 );
 
-// (5) a² against ∂p/∂ρ|ₑ + (p/ρ²)∂p/∂e|_ρ from the p fit, T ≤ 25 000 K.
+// (5) a² against ∂p/∂ρ|ₑ + (p/ρ²)∂p/∂e|_ρ from the p fit, T ≤ 25 000 K. Rule
+// 1317 (a): a point the module refuses, or where anything is NaN, counts as
+// a failure; the largest departure is also reported within the data alone.
 let worstA = 0;
 let worstAt = '';
 let points = 0;
+let broken = 0;
 for (let y = -6.75; y <= 2.76; y += 0.25)
   for (let z = 0.3; z <= 3.61; z += 0.05) {
     const rho = AIR_RHO0 * 10 ** y;
     const e = RT0 * 10 ** z;
-    if (airTemperature(e, rho) > 25_000) continue;
     const h = 1e-5;
     // Only where the finite differences stay within one band and one column.
     const colOf = (yy: number, zz: number): string => {
@@ -185,27 +187,36 @@ for (let y = -6.75; y <= 2.76; y += 0.25)
       colOf(y, z - dy) !== here
     )
       continue;
-    const p = airPressure(e, rho);
-    const dpdr = (airPressure(e, rho * (1 + h)) - airPressure(e, rho * (1 - h))) / (2 * h * rho);
-    const dpde = (airPressure(e * (1 + h), rho) - airPressure(e * (1 - h), rho)) / (2 * h * e);
-    const a2 = dpdr + (p / (rho * rho)) * dpde;
-    const a = airSoundSpeed(e, rho);
-    const off = Math.abs(Math.sqrt(Math.max(a2, 0)) / a - 1);
+    let off = NaN;
+    try {
+      if (!(airTemperature(e, rho) <= 25_000)) continue;
+      const p = airPressure(e, rho);
+      const dpdr = (airPressure(e, rho * (1 + h)) - airPressure(e, rho * (1 - h))) / (2 * h * rho);
+      const dpde = (airPressure(e * (1 + h), rho) - airPressure(e * (1 - h), rho)) / (2 * h * e);
+      const a2 = dpdr + (p / (rho * rho)) * dpde;
+      off = Math.abs(Math.sqrt(a2) / airSoundSpeed(e, rho) - 1);
+    } catch {
+      off = NaN;
+    }
     points++;
+    if (!Number.isFinite(off)) {
+      broken++;
+      continue;
+    }
     if (off > worstA) {
       worstA = off;
       worstAt = `Y ${y.toFixed(2)}, Z ${z.toFixed(2)}`;
     }
   }
 console.log(
-  `(5) a against the p fit's derivative: largest ${(worstA * 100).toFixed(2)} % at ${worstAt} over ${String(points)} points`
+  `(5) a against the p fit's derivative: ${String(broken)} of ${String(points)} points refused or NaN (failures); within the data the largest ${(worstA * 100).toFixed(2)} % at ${worstAt}`
 );
 
 const checks = {
   junctures: missed.length === 0,
   idealLimit: ideal <= 0.005,
   continuity: jumpP < 0.01 && jumpA < 0.01,
-  consistency: worstA <= 0.05,
+  consistency: broken === 0 && worstA <= 0.05,
 };
 console.log(JSON.stringify(checks));
 writeFileSync(
@@ -216,7 +227,7 @@ writeFileSync(
       junctures: { total: junctures.length, missed, spurious },
       idealLimit: { ratio, off: ideal },
       continuity: { largestP: jumpP, largestA: jumpA, above1percent: jumps },
-      consistency: { largest: worstA, at: worstAt, points },
+      consistency: { largestWithinData: worstA, at: worstAt, points, refusedOrNaN: broken },
       checks,
     },
     null,

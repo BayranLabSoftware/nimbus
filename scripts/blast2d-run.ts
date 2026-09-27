@@ -15,6 +15,7 @@ import {
   type Atmosphere,
 } from '../src/physics/solvers/blast2d/atmosphere.js';
 import { BlastSolver2D } from '../src/physics/solvers/blast2d/solver.js';
+import { sedovStart } from '../src/physics/solvers/blast2d/sedov.js';
 
 export interface BlastCase {
   readonly atmosphere:
@@ -37,6 +38,10 @@ export interface BlastCase {
    *  sound wave at the ground's speed of sound takes to reach the farthest
    *  range read (absent: rule 1263's stop alone). */
   readonly soundFloor?: number;
+  /** Rule 1314: start from the Taylor–Sedov solution of the mirrored free
+   *  air (twice `energy`), its shock at this radius (m), instead of the hot
+   *  sphere (a burst at the ground only). */
+  readonly sedovShock?: number;
   /** Rule 1277: Hu, Adams & Shu's continuous limiter (absent: rules 1262,
    *  1264 and 1268's fall-backs). */
   readonly limiter?: 'has';
@@ -87,12 +92,16 @@ export function runCase(c: BlastCase): BlastRun {
     atmosphereOf(c),
     c.limiter === undefined ? {} : { limiter: c.limiter }
   );
-  solver.deposit({
-    energy: c.energy,
-    height: c.height,
-    radius: c.radius,
-    kineticShare: c.kineticShare ?? 0,
-  });
+  if (c.sedovShock !== undefined) {
+    if (c.height !== 0) throw new Error('blast2d: rule 1314 -- the Sedov start is a ground burst');
+    sedovStart(solver, 2 * c.energy, c.sedovShock);
+  } else
+    solver.deposit({
+      energy: c.energy,
+      height: c.height,
+      radius: c.radius,
+      kineticShare: c.kineticShare ?? 0,
+    });
   const last = Math.min(nr - 1, Math.floor(c.rMax / c.dx));
   const p0 = solver.backgroundPressure(0);
   const floor = soundFloorTime(

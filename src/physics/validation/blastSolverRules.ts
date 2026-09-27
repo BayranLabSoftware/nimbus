@@ -1890,3 +1890,119 @@ export const RULE_1312_WRITTEN = '2026-09-27' as const;
  *     how they are bridged.
  */
 export const RULE_1313_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1314. V3 SET UP AS BRODE SET HIS: FROM THE POINT SOURCE'S SIMILARITY
+ * SOLUTION (27 September 2026, 13:21). What rule 1295 (c) left open, written
+ * before the code; its criteria unchanged.
+ *
+ * (a) WHY: the hot sphere is not a point source (rule 1309 (c)); Brode's
+ *     Eq. 17 is the point source's, integrated from the Taylor–Sedov
+ *     similarity solution at 2 000 atm (RM-1363). V3 starts from the same
+ *     solution, for γ = 1.4.
+ * (b) THE SIMILARITY SOLUTION, derived and integrated in the project
+ *     (`src/physics/solvers/blast2d/sedov.ts`): u = Uφ(η), ρ = ρ₀ψ(η),
+ *     p = ρ₀U²χ(η), η = r/R, R = ξ₀(Et²/ρ₀)^(1/5), U = dR/dt — the
+ *     spherical equations of mass, momentum and entropy as three ordinary
+ *     differential equations in η, integrated from the strong shock's
+ *     conditions at η = 1 (φ = 2/(γ+1), ψ = (γ+1)/(γ−1), χ = 2/(γ+1)) inward
+ *     by fourth-order Runge–Kutta, ξ₀ from the energy integral. Checked
+ *     before use: ξ₀ = 1.033 for γ = 1.4 (Taylor 1950) to three decimals,
+ *     the energy integral stable to 10⁻⁶ on halving the step.
+ * (c) THE START: the mirrored free-air burst of twice the ground burst's
+ *     1 kt, at the moment its shock is 40 m out (8 cells of the coarsest
+ *     grid; overpressure about 200 atm, where the strong shock's neglect of
+ *     p₀ is 0.5 %): ρ, the radial momentum and the energy p/(γ−1) + ½ρu² with
+ *     p = p₀ + ρ₀U²χ, as cell averages (16 × 16 points in a cell the shock
+ *     crosses, 4 × 4 Gauss elsewhere, r-weighted), air at rest outside. The
+ *     energy put in above the air at rest is reported; the run goes on as
+ *     T2's does, uniform air, the limiter and rules 1297–1309.
+ * (d) THE READING: the ground's recorded peak at λ = 1.0, 1.2, …, 2.8 (ε for
+ *     2 kt, 435.5 m), linearly between the rings' centres, on 5, 2.5 and
+ *     1.25 m (GPU); rule 1256 (c)'s extrapolation; each within 3 % of Eq. 17
+ *     (rule 1295 (c)). Where the three grids do not converge monotonically
+ *     the finest's value is judged with the last change as its band — the
+ *     band wholly within 3 %. Rule 1311 (d)'s uncertainty stated beside.
+ */
+export const RULE_1314_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1315. V3'S START COMPLETED: THE EMPTY CORE GIVEN A FLOOR (27
+ * September 2026, 13:25). Written before any run of V3.
+ *
+ * (a) THE CORE: the similarity solution's density falls as η^(3/(γ−1)) =
+ *     η^7.5 while its pressure stays finite (ξ₀ = 1.03278, the central
+ *     pressure 0.3655 of the shock's; `sedov.ts` checked to 10⁻⁶ on halving
+ *     its step, its mass integral 1.000001): inside η = 0.5 lie 0.04 % of
+ *     the mass and 7.5 % of the energy, at densities down to 10⁻⁵ ρ₀ — a
+ *     sound speed without bound, a time step without floor on an Eulerian
+ *     grid (Brode's was Lagrangian).
+ * (b) THE FLOOR: in the start, ρ ≥ 0.01 ρ₀ with the pressure unchanged and
+ *     the velocity scaled to keep each point's kinetic energy — the
+ *     internal energy, and so the work the core does as it expands (set by
+ *     its pressure, not its density), unchanged; the mass grows by about
+ *     0.1 % of the swept air's; the core's sound speed about 6.5 times the
+ *     shock's speed.
+ * (c) The energy put in above the air at rest is reported beside the
+ *     readings, as rule 1314 (c) says.
+ */
+export const RULE_1315_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1316. TWO OF RULE 1310 (e)'S QUEUE, BEFORE T3 AND T4 RUN AGAIN (27
+ * September 2026, 13:27). Written before the code, which waits for G1 on
+ * rule 1309's cure to finish.
+ *
+ * (a) THE GROUND'S SLOPE AT THE WALL: s = (q − r)/H with q and r
+ *     extrapolated to z = 0 from the first two rows (1.5f₀ − 0.5f₁, second
+ *     order) instead of read at the first row's centre; at rest and without
+ *     gravity still the mirror to the bit. Measured as rule 1310 (d) says:
+ *     the steady Lamb state's drift in the ground's row against the rows
+ *     above, and V4 by self-convergence with its criteria as fixed.
+ * (b) A STRONGER TEST of the radial reconstruction: weno5zCylindrical
+ *     itself (not only its linear weights) on smooth data, even and odd
+ *     across the axis through the mirrored ghosts, of degree 0 to 4, at
+ *     columns −1 to 7 and 300 — within 10⁻⁹ where the Z weights stay
+ *     linear, and the axis's odd case (rule 1310 (b)) reported, not hidden.
+ * (c) Then the GPU with G0–G2, V1, V2, V4, V5 once more, and T3 and T4 on
+ *     the scheme as it then stands.
+ */
+export const RULE_1316_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1317. ERRATA FROM THE SECOND REVIEW (OF 72650EC, RULES 1308–1313), AND
+ * THE WALL'S MIRROR KEPT (27 September 2026, 13:40; the review's proofs in
+ * `scripts/tmp/review2-*.ts`). Written before the code.
+ *
+ * (a) THE AIR MODULE'S CHECK (5) counted broken points as good: its filter
+ *     T > 25 000 K let T = NaN through and its maximum skipped NaN; of its
+ *     2 266 points 114 have p ≤ 0 and 21 an undefined a, and the «largest»
+ *     it reported had p = −160 Pa. Rule 1313 (b)(5)'s «PASSES» is withdrawn;
+ *     the check runs again counting every NaN or non-positive p as a failure.
+ * (b) THE MODULE'S DOMAIN: «valid to 25 000 K» is not what the fits cover.
+ *     Beyond the report's data (its Fig. 11: Z_max about 3.0 at ρ₀, 3.57 at
+ *     10⁻⁷ ρ₀) γ̃ falls below 1: at ρ₀, T peaks at 18 068 K (Z = 3.0) and
+ *     falls, a is undefined from Z = 3.15 and p < 0 from 3.20; for
+ *     −4.5 ≤ Y ≤ −3.5 and −0.5 ≤ Y ≤ 1.25 the module never reaches 25 000 K.
+ *     So the module refuses (a RangeError) where γ̃ ≤ 1 or a² ≤ 0, its
+ *     comment states the fits' true reach, and the hand-over to Gilmore
+ *     (rule 1308 (a)) is set by the data's edge, not by T.
+ * (c) TEXT: rule 1313 (b)(1)'s «off by 1 to 14 of it, at most 0.2 %» is
+ *     false — Table 11, 10⁻⁷, E upper is off by 61.5 of its last digit
+ *     (1.30 %), and six more beyond 0.2 %. With the strict reading (half a
+ *     digit, the rounding) 183 of 252 entries pass; with one digit, 223.
+ * (d) TEXT: rule 1311 (d)'s «half the local |second difference|» is, for a
+ *     pure odd–even alternation of ±δ, twice δ: a conservative bound, so
+ *     stated.
+ * (e) THE WALL'S MIRROR: rule 1309 (e) left the ghost row's lower face
+ *     (below the ground) componentwise while its upper face (the wall's) is
+ *     characteristic, and rule 1280's ramp takes the smaller of the two: in
+ *     extreme states it rescales the wall's face without its mirror (96 of
+ *     4 800 faces in a synthetic test, a mass flux through the wall up to
+ *     2.6 ρc; never in the 1 kt ground burst). The ghost row's lower face
+ *     becomes the mirror of the first row's upper face (v odd), the axis's
+ *     ghost column likewise (u odd), before the ramp: in uniform air the
+ *     wall is again exactly symmetric. CPU and GPU; then G0–G2 and the
+ *     V-tests with rule 1316.
+ */
+export const RULE_1317_WRITTEN = '2026-09-27' as const;

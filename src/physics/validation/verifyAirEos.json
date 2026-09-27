@@ -312,14 +312,15 @@
     ]
   },
   "consistency": {
-    "largest": 4.372941608821179e-8,
-    "at": "Y -4.25, Z 3.60",
-    "points": 2266
+    "largestWithinData": 2.2573524938174216e-8,
+    "at": "Y -4.00, Z 3.60",
+    "points": 2266,
+    "refusedOrNaN": 120
   },
   "checks": {
     "junctures": false,
     "idealLimit": true,
     "continuity": false,
-    "consistency": true
+    "consistency": false
   }
 }
