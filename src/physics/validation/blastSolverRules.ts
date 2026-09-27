@@ -2114,3 +2114,55 @@ export const RULE_1319_WRITTEN = '2026-09-27' as const;
  *     of rule 1317 (e) acts in uniform air too).
  */
 export const RULE_1320_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1321. HILSENRATH & KLEIN'S 49 POINTS, TRANSCRIBED BLIND AND SETTLED;
+ * RULE 1308 (d)(2) READY TO RUN (27 September 2026, 14:30). Written before
+ * the check's code.
+ *
+ * (a) THE TRANSCRIPTIONS: two independent readings of AEDC-TR-65-58's tables
+ *     at T = 2 000 … 14 000 K and log₁₀(ρ/ρ₀) = −5 … 1 (49 rows, 8 columns,
+ *     PDF pages 83–323) disagreed on 23 of 392 entries, nearly all in the
+ *     last digit on the worn pages of 10 000–14 000 K; a third reader, told
+ *     only where to look, settled 22 by majority; the 23rd (H/RT at 12 000 K
+ *     and ρ₀: 14.1558, 14.1568, 14.1559) has none and is not used by the
+ *     check. The agreed data are a file of the project with their pages.
+ * (b) THE CONVERSION, from the report's own definitions: Z = pV/RT per mole
+ *     of undissociated air, R = 1.98726 cal/(mol K), M = 28.967 g/mol, the
+ *     thermochemical calorie 4.184 J, so R/M = 287.04 J/(kg K) (RP-1181's
+ *     287.06, 0.007 % apart); ρ₀ = 1.29313 kg/m³ (their Table D — not
+ *     RP-1181's 1.29224: each document's densities are taken in its own
+ *     units); e = (E/RT)(R/M)T, the energy's zero the undissociated molecules
+ *     at 0 K as in the fits; p = Z ρ (R/M) T.
+ * (c) THE CHECK, as rule 1308 (d)(2) fixed it: the module's p(e, ρ) against
+ *     p at the 49 points, within 5 % everywhere and 2 % in the median; a
+ *     point the module refuses counts as a failure.
+ */
+export const RULE_1321_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1322. THE SIXTH REVIEW: A FAULT NO SMOOTH TEST SEES; AND HILSENRATH &
+ * KLEIN AGAINST THE AIR MODULE (27 September 2026, 14:31; the review's
+ * proofs in `scripts/tmp/review6-*.ts`, `verifyAirEosHK.json`).
+ *
+ * (a) RULE 1320 (a) WAS WRONG in «which each of those faults breaks»: with
+ *     β₀ and β₂ swapped the rewritten test passes (orders 5.00–5.07), and no
+ *     test on smooth data can see it — there the two indicators share their
+ *     leading term and the swap moves the weights only at order h³. Next to
+ *     a jump it shows at once: on the cells 0, 0, 0, 1, 1 the face on the
+ *     flat side is 5·10⁻⁴¹ with the shipped function and −0.83 with the
+ *     swap. The test gains that jump, at a column far from the axis and at
+ *     the axis's first columns: the flat side's face within 10⁻⁶ of 0. The
+ *     review also marks the margin on τ × 1 000 (4.35 against 4.5) as thin:
+ *     the jump case catches that fault too. TEXT: the test uses three
+ *     resolutions (two pairs), not «two cells a factor 2 apart»; of the 11
+ *     isochores of the data only ρ₀ is refused before the edge, the other
+ *     refusals under it lie between isochores (Y from −0.5 to −0.225 and
+ *     from 0 to 0.625).
+ * (b) RULE 1308 (d)(2), run as rule 1321 fixed it: the air module's p(e, ρ)
+ *     against Hilsenrath & Klein's tables, independent of the fits' source,
+ *     at 49 points from 2 000 to 14 000 K and 10⁻⁵ to 10 ρ₀: the worst 1.77 %
+ *     (8 000 K, 10 ρ₀), the median 0.57 %, none refused — within 5 % and 2 %,
+ *     PASSES.
+ */
+export const RULE_1322_WRITTEN = '2026-09-27' as const;

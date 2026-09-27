@@ -194,6 +194,13 @@ describe("rule 1297's radial reconstruction (Mignone 2014)", () => {
     const o = order(faceError(odd, 0.5, 0), faceError(odd, 0.25, 0));
     expect(o).toBeGreaterThan(2.5);
     expect(o).toBeLessThan(3.5);
+    // Rule 1322 (a): next to a jump the face on the flat side stays flat —
+    // what swapped indicators or a scaled τ break and no smooth data show.
+    for (const i of [2, 3, 300]) {
+      const k = radialCoefficients(i);
+      expect(Math.abs(weno5zCylindrical(0, 0, 0, 1, 1, k, 1))).toBeLessThan(1e-6);
+      expect(Math.abs(weno5zCylindrical(0, 0, 1, 1, 1, k, 0) - 1)).toBeLessThan(1e-6);
+    }
   });
 
   it('has positive linear weights that sum to one', () => {

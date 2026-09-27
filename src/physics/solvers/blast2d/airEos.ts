@@ -9,8 +9,9 @@
  * edge the module's temperature runs from 16 609 K (10⁻⁴ ρ₀) to 25 192 K
  * (10² ρ₀) and 27 522 K (10³ ρ₀) (rule 1320 (c)). The module refuses (a
  * RangeError) beyond the edge, and wherever γ̃ ≤ 1, a² ≤ 0, ∂p/∂e|ρ ≤ 0 or T
- * does not rise with e (rules 1317 (b), 1318 (a)) — which on some isochores
- * comes before the edge (on ρ₀ from Z = 2.998).
+ * does not rise with e (rules 1317 (b), 1318 (a)) — which on the ρ₀ isochore
+ * comes before the edge (from Z = 2.998), and between some isochores too
+ * (rule 1322 (a)).
  *
  * γ̃ = h/e is fitted in Y = log₁₀(ρ/ρ₀) and Z = log₁₀(e/RT₀) as
  *   γ̃ = P₁(Y, Z) + P₂(Y, Z)/[1 ± exp(a₂₁ + a₂₂Y + a₂₃Z + a₂₄YZ)],
