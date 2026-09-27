@@ -1044,3 +1044,43 @@ export const RULE_1285_WRITTEN = '2026-09-27' as const;
  *     (c)) is the next independent reference. Nothing is changed.
  */
 export const RULE_1286_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1287. T1 ON RULE 1280'S SCHEME: FAILED AS FIXED, NEARER THAN EVER
+ * (27 September 2026, 04:58; `blast2dT1Sedov.json`,
+ * `blast2dT1Extrapolated.json`).
+ *
+ * (a) On the CPU reference, 100, 200 and 400 cells (2 220, 9 282 and 38 160
+ *     steps; 36 s, 8 min, 3.2 h), no fall-back. The worst judged deviation
+ *     of the flank reading: 3.8, 6.1 and 3.1 % (the old scheme 10.4, 11.9,
+ *     9.5) — the 2 % criterion FAILS on every grid.
+ * (b) Re-judged on the extrapolated radius (rule 1258): 17 of 18 readings
+ *     within 2 %, the worst 1.3 %; the eighteenth (0.18, the diagonal) does
+ *     not converge monotonically (0.1868, 0.1817, 0.1819) and its spread,
+ *     2.8 %, stands as its error — FAILS, by that one reading (the old
+ *     scheme: 16 of 18).
+ * (c) Read at the density's peak instead (rule 1286), the shock is a fraction
+ *     of a cell behind the exact radius and closing: T1's criteria, fixed on
+ *     the flank, measure the reading as much as the solver. Nothing changed.
+ */
+export const RULE_1287_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1288. T3 ON THE GPU STOPPED BY A FAILURE THE CPU DOES NOT HAVE (27
+ * September 2026, 04:58).
+ *
+ * (a) After 21 of its 104 runs (the coarse grid up to 0.90 km scaled), T3's
+ *     GPU batch failed: at 1.111 km scaled (70 km of altitude) a cell of the
+ *     domain's top row, 145 km up — the air there 7·10⁻¹⁰ kg/m³, the rising
+ *     gas 300 times that at 133 km/s — turned NaN at 0.68 s (step 1 095).
+ * (b) The CPU reference runs that case, and those at 0.95 and 1.03 km scaled,
+ *     to their end without a failure; on those two the GPU agrees with it in
+ *     the same number of steps within 0.07 %. On the failing case the two
+ *     engines, fed the same steps, agree within 10⁻⁴ through step 1 090, and
+ *     at step 1 095 the first stage's fluxes about the cell are the same on
+ *     both: the NaN arises later in that step, on the GPU only. A clamp that
+ *     sends NaN to 0, as the reference's does, was tried and did not change
+ *     it (not kept). Not yet found; T3 waits for it (rule 1270 (d): a GPU
+ *     failure is diagnosed like any other).
+ */
+export const RULE_1288_WRITTEN = '2026-09-27' as const;
