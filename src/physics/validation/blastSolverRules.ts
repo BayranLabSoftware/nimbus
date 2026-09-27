@@ -2312,3 +2312,47 @@ export const RULE_1326_WRITTEN = '2026-09-27' as const;
  *     stays under 1 %, rule 1325 (b)).
  */
 export const RULE_1327_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1328. RULE 1325 (b)'S HYPOTHESIS FAILS: NO ENERGY IS LOST; THE
+ * COARSE GRIDS' DEFICIT IS THE READING, AND WHAT CONVERGES HAS ANOTHER SHAPE
+ * THAN EQ. 17 (27 September 2026, 17:47; the laboratory's
+ * `lab/v3/eulero-v3-1d.md`, `lab-eulero-v3-1d.ts`, raw data kept). The next
+ * tests written before they run. (The eighth review's word, recorded: the
+ * foot «reduces», not «removes», the lag's bias.)
+ *
+ * (a) THE ONE-DIMENSIONAL SURROGATE: the same scheme (characteristic WENO-Z,
+ *     HLLC, SSP-RK3), the same Taylor–Sedov start with rule 1315's floor,
+ *     reproduces the two-dimensional V3 within 0.6 % on 5, 2.5 and 1.25 m
+ *     (λ = 1: 45.83/46.77/48.28 against 45.57/46.82/47.99 kPa), its energy
+ *     kept to 3·10⁻⁹. On 5 … 0.156 m the recorded peak rises from below and
+ *     the Rankine–Hugoniot reading of the foot falls from above to the same
+ *     limit (λ = 2: 16.95 and 16.92; λ = 2.8: 10.53 and 10.53) — the record
+ *     meets the foot at first order (the gap 2.97, 1.70, 0.87, 0.54 kPa) and
+ *     only below 1.25 m. V3's grids could not have converged: a flaw of its
+ *     design (rule 1295 (c)), found and declared.
+ * (b) NO ENERGY LOST: the hot core keeps 0.213–0.225 E at λ = 1 on every grid
+ *     and the 5 m wave holds 1.3 % MORE energy than the finest; starting at
+ *     20 m instead of 40 m moves the peak at λ = 1 by −0.008, +0.27 and
+ *     +0.17 % on 5, 2.5 and 0.625 m. Rule 1325 (b)'s hypothesis FAILS on
+ *     each of rule 1327's criteria.
+ * (c) WHAT CONVERGES differs from Eq. 17 in SHAPE, not in level: about −1.5
+ *     to −2 % at λ = 1, +2.9 % at λ = 2, +5.5 % at λ = 2.8; p(1)/p(2) = 2.98
+ *     (Brode 3.12), p(1)/p(2.8) 4.78 (Brode 5.14). The one dimension has
+ *     neither axis nor ground: the fase-3 inference that the flatter shape is
+ *     the two-dimensional setup's is withdrawn. Left: the start (its floor),
+ *     the scheme, or Eq. 17 itself; independent codes of the laboratory (a
+ *     Lagrangian one, a point source) gave 3.05–3.12 with other sources.
+ * (d) THE NEXT TESTS, criteria fixed now:
+ *     (1) THE SAME START IN ANOTHER CODE: the Taylor–Sedov start of rules
+ *         1314–1315 (40 m, the floor 0.01 ρ₀) in the laboratory's Lagrangian
+ *         1D code, refined until it converges: p(1)/p(2) within 1 % of 2.98
+ *         says the start sets the shape; within 1 % of 3.12, the scheme.
+ *     (2) THE FLOOR: the one-dimensional surrogate on 0.625 and 0.3125 m
+ *         with the floor at 0.01, 0.001 and 0.0001 ρ₀: if p(1)/p(2.8) moves
+ *         toward 5.14 by more than half the gap as the floor falls, the floor
+ *         is the cause.
+ *     (3) EQ. 17'S OWN ACCURACY: what RM-1363 states of its zoning, its
+ *         artificial viscosity and the fit's error, read from the report.
+ */
+export const RULE_1328_WRITTEN = '2026-09-27' as const;
