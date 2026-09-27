@@ -2286,3 +2286,29 @@ export const RULE_1325_WRITTEN = '2026-09-27' as const;
  *     between successive grids is at most 1/1.5 of the one before it.
  */
 export const RULE_1326_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1327. RULE 1326 COMPLETED BY THE NINTH REVIEW, STILL BEFORE ANY OF
+ * THE ONE-DIMENSIONAL TEST'S NUMBERS IS SEEN (27 September 2026, 17:01).
+ *
+ * (a) RULE 1326 (c)'S FOOT, CORRECTED: the planar test's converging foot
+ *     (77.8, 80.9, 81.1 against 81.6 kPa) was read where the front did not
+ *     yet decay; where it decays (z = 400 m) the foot's times scatter as the
+ *     peaks' do (72.7, 68.4, 71.0 against 72.1, 69.2, 71.4 kPa). The foot
+ *     removes the lag's bias, not the scatter. So the one-dimensional test
+ *     also reads the shock's path from the front's position at fixed times
+ *     (the foot's radius at each of 200 instants), fitted over ±60 m, and
+ *     reports both readings.
+ * (b) THE ENERGY BUDGET'S CRITERION: the hypothesis of rule 1325 (b) is
+ *     borne out by it if the hot core's share of the energy at λ = 1 falls
+ *     as the grid is refined and converges (each of the last two changes at
+ *     most 1/1.5 of the one before), and if the wave's deficit of energy on
+ *     5 m against the finest grid, times 0.60 (Eq. 17's d ln Δp/d ln E at
+ *     λ = 1, from λ ∝ E^(−1/3)), accounts for at least half of the recorded
+ *     peak's deficit there.
+ * (c) THE 20 m START ON THE COARSE GRIDS: the hypothesis predicts that
+ *     starting at 20 m (worse resolved) lowers the peak at λ = 1 on 5 and
+ *     2.5 m, and that the drop shrinks from 5 to 2.5 to 0.625 m (where it
+ *     stays under 1 %, rule 1325 (b)).
+ */
+export const RULE_1327_WRITTEN = '2026-09-27' as const;
