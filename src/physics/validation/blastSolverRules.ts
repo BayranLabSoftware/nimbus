@@ -2251,3 +2251,38 @@ export const RULE_1324_WRITTEN = '2026-09-27' as const;
  *     at 20 m instead of 40 m changes the λ = 1 value by less than 1 %.
  */
 export const RULE_1325_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1326. ERRATA OF THE EIGHTH REVIEW (OF 49B31A9, RULES 1324–1325), AND
+ * RULE 1325 (b)'S TEST MENDED BEFORE ANY OF ITS NUMBERS IS SEEN (27
+ * September 2026, 16:59; `scripts/tmp/review8-*.ts`).
+ *
+ * (a) TEXT, rule 1324 (b): the 1.25 m run took 257 459 steps, not «about
+ *     270 000»; «by as much or more each time» fails at λ = 1, where the
+ *     second change is the smaller (1.17 against 1.25 kPa, order +0.10).
+ * (b) TEXT, rule 1325 (a): condition (1) fails at seven λ of ten (1.2, 1.4,
+ *     1.6, 1.8, 2.2, 2.4, 2.6), not four; condition (2) fails at λ = 1 only
+ *     (−4.09 %), not at 1.2 (−2.60 %, within 3 %). The verdict — the
+ *     hypothesis fails as fixed — stands.
+ * (c) WITHDRAWN: rule 1325 (a)'s «the shock's path is slower on the coarser
+ *     grids, so the wave carries less energy there» is not shown. The
+ *     recorded peak lags the front by two to three cells, a delay Δx/U that
+ *     grows as U falls; a line t(r) through the peaks' times then overstates
+ *     dt/dr more on coarser grids — about −2.4 to −4 % in Δp at λ = 1 on 5 m,
+ *     −0.6 to −1 % on 1.25 m, as large as the differences read. On a planar
+ *     shock the peaks' times give Δp scattered by about ±3 % over ±20 m,
+ *     while the arrival of the front's foot converges (77.8, 80.9, 81.1
+ *     against 81.6 kPa). The shock's path must be read from the foot, or at
+ *     fixed times, not from the peaks.
+ * (d) RULE 1325 (b)'S TEST, mended before it runs (Eulero, one dimension):
+ *     the Rankine–Hugoniot overpressure from the FOOT's arrival (the first
+ *     time a cell's overpressure passes 5 % of its own final peak), not the
+ *     peak's; the energy budget measured directly on every grid — the
+ *     energy above the air at rest inside the hot core (the cells whose
+ *     entropy p/ρ^γ exceeds ten times the ambient) against the rest — at the
+ *     times the shock passes λ = 1 and 2.8; the 20 m against 40 m start on
+ *     the 5 and 2.5 m grids as well as on 0.625 m; «shrinking by a factor
+ *     1.5 over the last three» meaning that each of the last two changes
+ *     between successive grids is at most 1/1.5 of the one before it.
+ */
+export const RULE_1326_WRITTEN = '2026-09-27' as const;
