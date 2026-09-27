@@ -76,6 +76,8 @@ export class BlastSolverGpu {
 
   /** Rule 1277's limiter in place of the fall-backs. */
   readonly has: boolean;
+  /** Rule 1306: 1/H where the reference slopes the ground's ghosts, else 0. */
+  private readonly groundLift: number;
   private readonly speedV: GpuBuffer;
   private readonly flux: GpuBuffer;
   private readonly epsRho: number;
@@ -99,6 +101,10 @@ export class BlastSolverGpu {
     this.partials = Math.ceil(this.interior / WORKGROUP);
     const atm = reference.atmosphere;
     this.pBar0 = reference.backgroundPressure(0);
+    this.groundLift =
+      reference.groundSlope === 'momentum'
+        ? (reference.atmosphere.rho0 * reference.atmosphere.g) / reference.atmosphere.p0
+        : 0;
 
     // The initial state as deviations from the atmosphere at rest, each
     // split into its high and low single-precision halves.
@@ -248,7 +254,7 @@ export class BlastSolverGpu {
     const data = new ArrayBuffer(80);
     const ints = new Int32Array(data, 0, 4);
     const floats = new Float32Array(data, 16, 14);
-    const flags = new Uint32Array(data, 72, 2);
+    const flags = new Uint32Array(data, 72, 1);
     ints[0] = this.nr;
     ints[1] = this.nz;
     ints[2] = this.stride;
@@ -271,6 +277,8 @@ export class BlastSolverGpu {
     floats[12] = this.ar;
     floats[13] = this.az;
     flags[0] = this.has ? 1 : 0;
+    // Rule 1306: the ground's slope factor 1/H, the reference's own choice.
+    new Float32Array(data, 76, 1)[0] = this.groundLift;
     this.device.queue.writeBuffer(this.params, 0, data);
   }
 

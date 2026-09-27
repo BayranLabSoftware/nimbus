@@ -1599,3 +1599,50 @@ export const RULE_1304_WRITTEN = '2026-09-27' as const;
  *     port with G0 to G2, under the rule that records (c) and (d).
  */
 export const RULE_1305_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1306. V4 PASSES WITH THE MOMENTUM'S SLOPE AT THE GROUND, WHICH THE
+ * SOLVER ADOPTS (27 September 2026, 11:56; `verifyBlastV4Self.json`,
+ * `scripts/verify-blast-v4-self.ts`). The adoption written before its code.
+ *
+ * (a) Rule 1305 (c): at A = 10⁻⁶ p₀ the ground's error on 62.5 m is
+ *     1.64·10⁻⁶ (at most 3·10⁻⁶ required) and the profile's 5.9·10⁻⁶ (below
+ *     10⁻⁵): the floor of rule 1305 (b) was the amplitude's nonlinearity.
+ * (b) Rule 1305 (d): the ground's P between successive grids 5.93·10⁻³,
+ *     2.40·10⁻⁴, 1.10·10⁻⁵ — observed orders 4.63 and 4.45, at least 2
+ *     required; the finest against the exact solution 1.0·10⁻⁵, |w|/|u|
+ *     3.1·10⁻⁶, the profile 5.0·10⁻⁵, each within 1 %. V4 PASSES.
+ * (c) ADOPTED: the solver's ground condition is the momentum's slope
+ *     (`groundSlope: 'momentum'` the default; 'mirror' kept, so the runs made
+ *     before can be made again). Without gravity and at rest it is the
+ *     mirror to the bit; nothing measured in uniform air moves.
+ * (d) THE GPU, the same: the slope's factor 1/H in the Params' last word (0
+ *     for the mirror), the ghosts of the deviation of p/p̄ as the reference
+ *     sets them (the deviations' difference is q − r, the 1s cancel); then
+ *     G0, G1 and G2 with their criteria as fixed, G1's CPU runs made again
+ *     under the adopted code.
+ * (e) G1's new CPU runs beside its old ones answer, as a diagnostic, how much
+ *     the ground's condition moved the stratified cases (T4's 5 Mt and T3's
+ *     two heights on their coarse grids) — whether it bears on the lift near
+ *     the ground of rules 1292–1293.
+ */
+export const RULE_1306_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1307. THE ADOPTION'S CHECKS PASS; WHAT IT MOVED (27 September 2026,
+ * 12:19; `blast2dG1.json`).
+ *
+ * (a) The GPU with the slope (rule 1306 (d)): G0 exactly at rest; G2 mass to
+ *     1.8·10⁻¹¹ and 9.1·10⁻¹², energy to 3.7·10⁻⁹ and 1.6·10⁻⁷; G1 all
+ *     eight cases in the reference's own number of steps, every reach within
+ *     0.002 %, every peak within 0.020 %. ALL PASS.
+ * (b) Rule 1306 (e), a diagnostic — the same CPU runs under the mirror (made
+ *     this morning) and under the slope: T4's 5 Mt, reaches within 0.15 %;
+ *     T3 high (30 km), the largest peak 0.98 % higher, the 4 psi reach
+ *     1.7 %; T3 low (3 km), the largest peak 4.2 % higher and the 2 psi reach
+ *     4.2 % farther (a flat stretch of its curve). The ground's condition
+ *     moves the stratified cases by a few per cent, upwards: it does not
+ *     account for the lift near the ground of rules 1292–1293 (2 to 4.6
+ *     times Cart3D), which stays an open question.
+ */
+export const RULE_1307_WRITTEN = '2026-09-27' as const;

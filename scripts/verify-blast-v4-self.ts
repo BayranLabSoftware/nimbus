@@ -1,5 +1,9 @@
 /**
- * Rules 1295 (c) V4 and 1303 (`src/physics/validation/blastSolverRules.ts`):
+ * Rule 1305 (d) (`src/physics/validation/blastSolverRules.ts`): V4 with the
+ * ground's ghosts of p/β sloped by the momentum equation (rule 1304 (d)), its
+ * order by self-convergence — the ground's P on successive grids, the finer
+ * brought to the coarser by volume-weighted pairs of rings. As rules 1295 (c)
+ * V4 and 1303 otherwise:
  * Lamb's wave. In the isothermal atmosphere with gravity the mode with no
  * vertical velocity is exact in the linear equations — p' = c²ρ' =
  * P(r, t)e^{−z/(γH)}, u = U(r, t)e^{(γ−1)z/(γH)}, P obeying the cylindrical
@@ -7,9 +11,9 @@
  * four grids: the vertical velocity, the vertical profile and the ground's P
  * against the exact solution (a Hankel transform, checked before use).
  *
- *   pnpm exec tsx scripts/verify-blast-v4.ts
+ *   pnpm exec tsx scripts/verify-blast-v4-self.ts
  *
- * Writes src/physics/validation/verifyBlastV4.json.
+ * Writes src/physics/validation/verifyBlastV4Self.json.
  */
 
 import { writeFileSync } from 'node:fs';
@@ -143,14 +147,14 @@ interface Row {
   uProfile: number;
 }
 const rows: Row[] = [];
+/** Each grid's ground P (Pa) and its rings' volumes. */
+const grounds: { p: Float64Array; volume: Float64Array }[] = [];
 for (const dx of DX) {
   const nr = Math.round(R_MAX / dx);
   const nz = Math.round(Z_MAX / dx);
-  // The ground's plain mirror, as the test ran before rule 1306 adopted the
-  // momentum's slope (`scripts/verify-blast-v4-self.ts` runs it with the slope).
   const solver = new BlastSolver2D({ nr, nz, dx }, isothermalAtmosphere(RHO0, P0, GRAV), {
     limiter: 'has',
-    groundSlope: 'mirror',
+    groundSlope: 'momentum',
   });
   const p0Ring = ringAverages(nr, dx, (radii) => radii.map(start));
   for (let j = 0; j < nz; j++) {
@@ -216,6 +220,10 @@ for (const dx of DX) {
     err += Math.abs((ground[i] ?? 0) / e0 - want) * v;
     norm += Math.abs(want) * v;
   }
+  grounds.push({
+    p: Float64Array.from(ground, (g) => g / e0),
+    volume: Float64Array.from({ length: nr }, (_, i) => solver.cellVolume(i)),
+  });
   const row: Row = {
     dx,
     cells: nr * nz,
@@ -231,26 +239,49 @@ for (const dx of DX) {
     `${String(dx)} m: |w|/|u| ${row.wOverU.toExponential(2)}, profile ${row.profile.toExponential(2)}, ground L1 ${row.groundL1.toExponential(3)}, u profile ${row.uProfile.toExponential(2)}, ${String(row.steps)} steps, ${seconds.toFixed(1)} s`
   );
 }
-const orders = rows.slice(1).map((r, k) => Math.log2((rows[k]?.groundL1 ?? NaN) / r.groundL1));
+/** The relative L1 difference of the ground's P, coarse against fine. */
+function difference(
+  coarse: { p: Float64Array; volume: Float64Array },
+  fine: { p: Float64Array; volume: Float64Array }
+): number {
+  let diff = 0;
+  let norm = 0;
+  for (let i = 0; i < coarse.p.length; i++) {
+    const va = fine.volume[2 * i] ?? 0;
+    const vb = fine.volume[2 * i + 1] ?? 0;
+    const f = ((fine.p[2 * i] ?? 0) * va + (fine.p[2 * i + 1] ?? 0) * vb) / (va + vb);
+    const v = coarse.volume[i] ?? 0;
+    diff += Math.abs((coarse.p[i] ?? 0) - f) * v;
+    norm += Math.abs(coarse.p[i] ?? 0) * v;
+  }
+  return diff / norm;
+}
+const differences = grounds.slice(1).map((fine, k) => {
+  const coarse = grounds[k];
+  return coarse === undefined ? NaN : difference(coarse, fine);
+});
+const orders = differences.slice(1).map((d, k) => Math.log2((differences[k] ?? NaN) / d));
 const finest = rows[rows.length - 1];
 const lastOrder = orders[orders.length - 1] ?? NaN;
 const checks = {
   verticalVelocity: (finest?.wOverU ?? Infinity) <= 0.01,
   profile: (finest?.profile ?? Infinity) <= 0.01,
-  ground: (finest?.groundL1 ?? Infinity) <= 0.01 && lastOrder >= 2,
+  groundExact: (finest?.groundL1 ?? Infinity) <= 0.01,
+  selfOrder: lastOrder >= 2,
 };
-const passes = checks.verticalVelocity && checks.profile && checks.ground;
+const passes = checks.verticalVelocity && checks.profile && checks.groundExact && checks.selfOrder;
 console.log(
-  `observed orders ${orders.map((o) => o.toFixed(2)).join(', ')}; ${JSON.stringify(checks)} — ${passes ? 'PASSES' : 'FAILS'}`
+  `differences ${differences.map((d) => d.toExponential(3)).join(', ')}; observed orders ${orders.map((o) => o.toFixed(2)).join(', ')}; ${JSON.stringify(checks)} — ${passes ? 'PASSES' : 'FAILS'}`
 );
 writeFileSync(
-  'src/physics/validation/verifyBlastV4.json',
+  'src/physics/validation/verifyBlastV4Self.json',
   `${JSON.stringify(
     {
-      rule: '1295 (c) V4, 1303',
-      criteria: { wOverU: 0.01, profile: 0.01, groundL1: 0.01, order: 2 },
+      rule: '1305 (d)',
+      criteria: { wOverU: 0.01, profile: 0.01, groundL1Exact: 0.01, selfOrder: 2 },
       exactChecks: { j0Error, startError, refineChange },
       results: rows,
+      differences,
       orders,
       checks,
       passes,

@@ -216,8 +216,9 @@ export interface BlastOptions {
   readonly cfl?: number;
   /** How positivity is kept (rule 1277); 'mood' by default. */
   readonly limiter?: 'mood' | 'has';
-  /** Rule 1304 (d), a diagnostic: the ground's ghosts of p/β with the slope
-   *  the vertical momentum equation imposes at the wall; 'mirror' by default. */
+  /** Rules 1304–1306: the ground's ghosts of p/β with the slope the vertical
+   *  momentum equation imposes at the wall ('momentum', the default), or the
+   *  plain mirror of the runs made before rule 1306. */
   readonly groundSlope?: 'mirror' | 'momentum';
 }
 
@@ -244,7 +245,7 @@ export class BlastSolver2D {
   readonly cfl: number;
   readonly atmosphere: Atmosphere;
   readonly limiter: 'mood' | 'has';
-  /** Rule 1304 (d): the ground's ghosts of p/β. */
+  /** Rules 1304–1306: the ground's ghosts of p/β. */
   readonly groundSlope: 'mirror' | 'momentum';
 
   /** Conserved variables per cell, ghosts included: ρ, ρu, ρv, E (no potential). */
@@ -329,7 +330,7 @@ export class BlastSolver2D {
     this.gamma = options.gamma ?? 1.4;
     this.cfl = options.cfl ?? 0.4;
     this.limiter = options.limiter ?? 'mood';
-    this.groundSlope = options.groundSlope ?? 'mirror';
+    this.groundSlope = options.groundSlope ?? 'momentum';
     this.atmosphere = atmosphere;
     this.stride = nr + 2 * G;
     const n = this.stride * (nz + 2 * G);
@@ -562,7 +563,7 @@ export class BlastSolver2D {
         this.q4[out] = this.q4[last] ?? 0;
       }
     }
-    // Rule 1304 (d): at the wall ∂p/∂z = −ρg, so q = p/(p₀β) has the slope
+    // Rules 1304–1306: at the wall ∂p/∂z = −ρg, so q = p/(p₀β) has the slope
     // (q − ρ/(ρ₀α))/H there; the mirror corrected by it, from the first row.
     const lift = this.groundSlope === 'momentum' ? (rho0 * this.atmosphere.g) / p0 : 0;
     for (let i = -G; i < nr + G; i++) {

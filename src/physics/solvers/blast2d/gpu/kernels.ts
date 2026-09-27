@@ -29,7 +29,7 @@ struct Params {
   dx: f32, gamma: f32, dt: f32, keepHi: f32,
   keepLo: f32, addHi: f32, addLo: f32, time: f32,
   lamR: f32, lamZ: f32, epsRho: f32, epsP: f32,
-  ar: f32, az: f32, has: u32, pad: u32,
+  ar: f32, az: f32, has: u32, slope: f32,
 };
 
 @group(0) @binding(0) var<uniform> P: Params;
@@ -215,13 +215,17 @@ fn hllc(rL: f32, unL: f32, utL: f32, pL: f32, rR: f32, unR: f32, utR: f32, pR: f
   }
 }
 
-// ---- ghosts: the ground reflects, the top copies (per column, ghosts included) ----
+// ---- ghosts: the ground reflects, the top copies (per column, ghosts included);
+//      rule 1306: the deviation of p/p̄ sloped by the momentum equation,
+//      (w − r)/H from the first row (P.slope = 1/H, 0 for the mirror) ----
 @compute @workgroup_size(WG) fn ghostsZ(@builtin(global_invocation_id) id: vec3<u32>) {
   let i = i32(id.x) - G;
   if (i >= P.nr + G) { return; }
+  let first = W[cell(i, 0)];
+  let s = P.slope * (first.w - first.x);
   for (var g = 1; g <= G; g++) {
     let inner = W[cell(i, g - 1)];
-    W[cell(i, -g)] = vec4<f32>(inner.x, inner.y, -inner.z, inner.w);
+    W[cell(i, -g)] = vec4<f32>(inner.x, inner.y, -inner.z, inner.w - 2.0 * s * (f32(g) - 0.5) * P.dx);
     W[cell(i, P.nz - 1 + g)] = W[cell(i, P.nz - 1)];
   }
 }
