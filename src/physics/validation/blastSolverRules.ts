@@ -958,3 +958,37 @@ export const RULE_1282_WRITTEN = '2026-09-27' as const;
  *     knee is a question of its own. Nothing is changed here.
  */
 export const RULE_1283_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1284. T4 ON RULE 1280'S SCHEME: FAILED AS FIXED — THE SOLVER RUNS
+ * HOTTER THAN ISALE, EVERYWHERE (27 September 2026, 04:41; `blast2dT4.json`,
+ * `docs/BLAST2D_T4.md`).
+ *
+ * (a) THE NUMBERS. 28 runs on the GPU (the finest, up to 2.3 million cells,
+ *     about an hour each three at a time), no fall-back. 1 of 39 numbers
+ *     within 15 %. T4 FAILS.
+ * (b) THE SHAPE: every number above Collins et al.'s iSALE, none below —
+ *     median 1.29; the peak at ground zero 1.18 to 1.70, at three burst
+ *     altitudes 1.17 to 1.55, the ranges of 1 to 35 kPa 1.12 to 1.41 (6 of
+ *     them lower bounds, rule 1276), with two outliers where a range sits at
+ *     a knee (20 kPa at 5 Mt static, 1.98; 35 kPa at 5 Mt moving, 6.0). The
+ *     three grids agree with each other to a few per cent almost everywhere:
+ *     not a resolution effect. The literal 45 m·W^(1/3) radius changes the
+ *     far field by a few per cent, the ground zero of 15 and 50 Mt by 9 and
+ *     15 %.
+ * (c) WHAT IT MEANS. By Hopkinson–Cranz scaling a range 1.2 to 1.3 times
+ *     farther is a blast energy 1.7 to 2.2 times larger: the solver carries
+ *     more of the source's energy into the blast than iSALE does, in the
+ *     same direction as T2 (rule 1283 (c): 1 kt of this source ≈ 1.39 kt of
+ *     G&D's, while Collins et al. report their 1 kt close to the nuclear
+ *     data). Rule 1265 (d) made T4 the judge of the slow ground wave at
+ *     250 Mt: T4 says the excess is the solver's, or its physics', not the
+ *     stratification's alone.
+ * (d) OPEN, not settled here: whether it is the air's equation of state
+ *     (this solver's ideal gas at 12 500 K in the source against whatever
+ *     iSALE's air was — to be read in their text), the source's energy
+ *     partition, or this scheme. T3 (Aftosmis et al.'s Cart3D, a perfect gas
+ *     like this solver's) runs on the GPU now and separates the equation of
+ *     state from the rest. Nothing is changed.
+ */
+export const RULE_1284_WRITTEN = '2026-09-27' as const;
