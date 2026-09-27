@@ -1326,3 +1326,276 @@ export const RULE_1295_WRITTEN = '2026-09-27' as const;
  *     second question, which these linear tests cannot see.)
  */
 export const RULE_1296_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1297. THE MEND OF RULE 1296: THE RADIAL RECONSTRUCTION AND THE AXIAL
+ * SOURCE WRITTEN FOR THE GEOMETRY (27 September 2026, 10:29). Written before
+ * the code.
+ *
+ * (a) THE SOURCE, read (Andrea's leave): Mignone (2014), arXiv 1404.0537
+ *     (sha-256 1ee5ef49…), §§2–4. A face value from r-weighted averages is
+ *     Σₛ wₛ⟨Q⟩ᵢ₊ₛ with weights solving his Eq. 21 — the transposed matrix of
+ *     the moments βᵢ₊ₛ,ₙ = (1/ΔV)∫(ξ − ξc)ⁿ ξ dξ (his Eq. 16 with the
+ *     cylindrical Jacobian) against the face's powers; across the axis the
+ *     mirrored ghost cells take their signed coordinates, consistent with the
+ *     mirror (even quantities keep, odd change sign). The geometrical source
+ *     p/R as a volume average by Simpson's rule, (p₋ + 4p_c + p₊)/(6Rᵢ) (his
+ *     Eqs. 65 and 67, m = 1), from the cell's own face values and its centre.
+ * (b) OUR CONSTRUCTION ON IT, derived here: fifth-order WENO-Z in r keeps its
+ *     three three-cell candidates and its Z weights, each candidate's face
+ *     value taken with his weights for its stencil, and the linear weights
+ *     dₖ(i) found per column so that the three reproduce his five-cell
+ *     weights exactly — computed now for the first thousand columns: exact
+ *     (residual ≤ 10⁻¹²), all positive, 0.10/0.63/0.27 at the axis tending to
+ *     0.1/0.6/0.3; the smoothness indicators stay Jiang and Shu's. The moments
+ *     in coordinates centred on the cell, so large i loses no precision. The
+ *     centre value for Simpson's rule from his weights for the centred
+ *     three-cell stencil, held between the three averages (a continuous
+ *     clamp, idle where the flow is smooth). The vertical direction is
+ *     Cartesian and unchanged; at rest the source still balances the
+ *     pressure's flux exactly (p uniform: (1 + 4 + 1)p/(6Rᵢ) = p/Rᵢ).
+ * (c) ON rule 1277's limiter only (the old scheme stays as it was, on
+ *     record); the CPU reference first, V1 run again with its criteria as
+ *     fixed and the planar case beside it; then the GPU and G0 to G2. The
+ *     second question of rule 1296 (primitive variables from conserved
+ *     averages, his §4.1) is not taken up here.
+ */
+export const RULE_1297_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1298. V1 ON RULE 1297: NEAR, NOT YET — THE CENTRE'S CLAMP CUTS THE
+ * AXIS; THE SOURCE FROM A PARABOLA THROUGH THE FACES INSTEAD (27 September
+ * 2026, 10:34). Written before the code of (c).
+ *
+ * (a) V1 on rule 1297's scheme: relative L1 7.2·10⁻³, 3.6·10⁻⁴, 2.4·10⁻⁵,
+ *     3.9·10⁻⁶ (rule 1296's: to 2.2·10⁻⁴) — observed orders 4.31, 3.89,
+ *     2.63; the last below 3, V1 still FAILS. The largest error sits in the
+ *     cell at the corner of the axis and the ground and falls at order 2.1.
+ * (b) THE CAUSE: on the axis every smooth radial profile has zero slope — an
+ *     extremum — and the value at the first cell's centre lies outside the
+ *     three r-weighted averages (for f = f₀ + ar², the point value at Δ/2 is
+ *     f₀ + aΔ²/4, the cell's r-weighted average f₀ + aΔ²/2): rule 1297 (b)'s
+ *     clamp moved it by O(Δ²) at every step. A caution of this project's, not
+ *     of the source.
+ * (c) THE MEND: no separate centre value. In each cell the parabola through
+ *     its two radial face values (the WENO's, after rule 1280's blend) that
+ *     keeps the cell's r-weighted average; its plain integral over the cell
+ *     gives the volume average of p/R exactly: with ξ in [−½, ½], κ = Δ/Rᵢ,
+ *     c₁ = f₊ − f₋, c₂ = 6[(f₋ + f₊)/2 − ⟨p⟩ + κc₁/12], c₀ = (f₋ + f₊)/2 −
+ *     c₂/4, ⟨p/R⟩ = (c₀ + c₂/12)/Rᵢ. At rest the faces equal the average and
+ *     the source is p/Rᵢ, balancing the pressure's flux exactly as before;
+ *     near a shock it is as bounded as the faces. V1 run again, its criteria
+ *     as fixed.
+ */
+export const RULE_1298_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1299. V1 ON RULE 1298: THE AXIS MENDED; THE TEST'S OWN FLOOR REACHED
+ * BY ITS FINEST GRID; THE ORDER MEASURED BY SELF-CONVERGENCE (27 September
+ * 2026, 10:38). The measure written before its run.
+ *
+ * (a) V1 on rule 1298's scheme: relative L1 5.3·10⁻³, 2.2·10⁻⁴, 1.1·10⁻⁵,
+ *     2.75·10⁻⁶ — orders 4.56, 4.33, 2.02; the largest error 8.2·10⁻⁴,
+ *     3.8·10⁻⁵, 2.1·10⁻⁶, 2.0·10⁻⁷ of the amplitude — orders 4.4, 4.2, 3.4:
+ *     the corner of rule 1298 is gone. As fixed, V1 FAILS on the last pair.
+ * (b) THE FLOOR, a diagnostic: the same test at 10⁻⁸ and 10⁻⁴ p₀ (8, 16 and
+ *     32 cells per width). At 10⁻⁸ the errors stall near 2·10⁻⁴ — an
+ *     absolute noise of about 10⁻⁷ Pa, the double precision's rounding in
+ *     pressures of 10⁵ Pa, relatively a hundred times larger than at 10⁻⁶;
+ *     at 10⁻⁴ they stall near 3·10⁻⁵ — the nonlinearity of the equations
+ *     against a linear exact solution, a hundred times larger than at 10⁻⁶.
+ *     At 10⁻⁶ the two together make a floor of about 2·10⁻⁶, where the
+ *     finest grid stopped: the test, not the scheme. Rule 1295 (c)'s V1 chose
+ *     an amplitude and a finest grid that its own floor overlaps — a flaw of
+ *     the test, found and declared.
+ * (c) THE MEASURE NOW, standard where an exact solution carries a floor: the
+ *     order by self-convergence — the same nonlinear pulse at 10⁻⁴ p₀ on the
+ *     pulse's width over 8, 16, 32 and 64 cells, the L1 norm of the
+ *     differences between successive grids' cell averages (brought to the
+ *     coarser grid), the observed order at least 3 between the two finest
+ *     differences — and, against the exact solution, the finest grid's
+ *     relative L1 error at most 1 % (rule 1295's). Nothing in the scheme
+ *     changes.
+ */
+export const RULE_1299_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1300. V1 BY SELF-CONVERGENCE: PASSES (27 September 2026, 10:46;
+ * `verifyBlastV1Self.json`, `scripts/verify-blast-v1-self.ts`).
+ *
+ * (a) The pulse at 10⁻⁴ p₀ on 8, 16, 32 and 64 cells per width: the relative
+ *     L1 differences between successive grids 2.14·10⁻⁴, 9.46·10⁻⁶,
+ *     6.87·10⁻⁷ — observed orders 4.50 and 3.78, at least 3 required; the
+ *     finest's error against the exact linear solution 2.56·10⁻⁵, at most
+ *     10⁻² required. RULE 1299 (c) PASSES: the axisymmetric scheme of rules
+ *     1297–1298 is of fourth order and more on a smooth solution.
+ * (b) Rule 1299 (b)'s reading holds: against the exact linear solution the
+ *     error stops at 2.61·10⁻⁵ and 2.56·10⁻⁵ on the two finest grids while
+ *     the differences between grids go on falling by 14 — the equations'
+ *     own nonlinearity, which the scheme resolves and the linear solution
+ *     lacks.
+ * (c) V1 as rule 1295 (c) fixed it stays FAILED on record (rule 1299 (a));
+ *     what passes is the measure rule 1299 (c) wrote before its run.
+ */
+export const RULE_1300_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1301. V2'S MEASURE, WHAT RULE 1295 (c) LEFT OPEN (27 September 2026,
+ * 10:48). Written before the code.
+ *
+ * (a) THE PROBLEM. Sod's (1978) tube as Toro sets it: ρ = 1, p = 1 below
+ *     z = ½, ρ = 0.125, p = 0.1 above, at rest, γ = 1.4; uniform in r, no
+ *     gravity, the background uniformAtmosphere(1, 1); the domain z ∈ [0, 1]
+ *     (the ground's wall below, the open top above), 4 cells in r; read at
+ *     t = 0.2, when the rarefaction's head is at 0.263 and the shock at
+ *     0.850 — neither boundary reached. On rule 1277's limiter with rules
+ *     1297–1298, CFL as the solver's own.
+ * (b) THE EXACT SOLUTION: Toro's (Riemann Solvers, ch. 4) — the star
+ *     pressure by Newton's iteration on his pressure functions to 10⁻¹⁴, the
+ *     solution sampled in x/t — written in the project from the book's
+ *     equations. Its cell averages exact: each cell split at the waves'
+ *     positions inside it, each piece by eight-point Gauss–Legendre (exact on
+ *     the constant states, far below the errors measured in the fan).
+ * (c) THE ERROR: the L1 error of density along z (the mean over the four
+ *     columns, which the problem makes equal), divided by nothing (Sod's
+ *     densities are of order 1), on 100, 200, 400 and 800 cells in z; the
+ *     observed order between the two finest at least 0.8 (rule 1295 (c)).
+ * (d) THE SHOCK'S POSITION on the finest grid: the highest z at which the
+ *     density, linearly interpolated between cell centres, crosses the mean
+ *     of the exact post-shock and pre-shock densities; within one cell (1/800)
+ *     of the exact shock (rule 1295 (c)).
+ * (e) The columns' spread — the largest difference between the four columns'
+ *     densities — reported: a planar problem must stay planar in the
+ *     axisymmetric scheme (rule 1298's source balances the pressure's flux
+ *     exactly where p is uniform in r).
+ */
+export const RULE_1301_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1302. V2: PASSES (27 September 2026, 10:48; `verifyBlastV2.json`,
+ * `scripts/verify-blast-v2.ts`).
+ *
+ * (a) Toro's exact solution as written reproduces his table: p* = 0.303130,
+ *     u* = 0.927453, the shock at 0.85043 at t = 0.2.
+ * (b) The L1 error of density on 100, 200, 400 and 800 cells: 3.15·10⁻³,
+ *     1.76·10⁻³, 8.43·10⁻⁴, 3.94·10⁻⁴ — observed orders 0.84, 1.06, 1.10,
+ *     at least 0.8 required. The finest's shock at 0.85058, 0.12 of a cell
+ *     from the exact, within one required. V2 PASSES.
+ * (c) The four columns agree to 7.9·10⁻¹² at most (rule 1301 (e)): the
+ *     axisymmetric scheme keeps a planar flow planar.
+ */
+export const RULE_1302_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1303. V4'S MEASURE, WHAT RULE 1295 (c) LEFT OPEN (27 September 2026,
+ * 10:51). Written before the code.
+ *
+ * (a) THE ATMOSPHERE: isothermal, ρ₀ = 1.225 kg/m³, p₀ = 101 325 Pa, g =
+ *     9.80665 m/s² (H = 8 434.5 m, γH = 11 808 m, c = 340.29 m/s).
+ * (b) THE START: P(r, 0) = A·exp(−((r − R₀)/W)²), A = 10⁻⁵ p₀, R₀ = 10 km,
+ *     W = 2 km; p' = P·E(z), E = e^{−z/(γH)}, ρ' = p'/c², at rest — as cell
+ *     averages (r-weighted four-point Gauss in r, E averaged exactly in z)
+ *     added to the solver's own rest state. Read at T = 30 s, just after
+ *     the inward half has reached the axis (R₀/c = 29.4 s): the axis in play.
+ * (c) THE DOMAIN: r ≤ 30 km, z ≤ 40 km — the top 14.7 km above 3H, more
+ *     than cT = 10.2 km, and the outgoing ring's 4W edge at 28.2 km. Grids of
+ *     500, 250, 125 and 62.5 m (the width over 4 to 32 cells). On rule
+ *     1277's limiter with rules 1297–1298.
+ * (d) THE EXACT P(r, T): the Hankel transform Φ(k) = ∫ r P(r, 0) J₀(kr) dr,
+ *     then P(r, T) = ∫ k Φ(k) J₀(kr) cos(ckT) dk, composite Gauss–Legendre
+ *     on both; J₀ by the trapezoid rule on its integral (1/π)∫₀^π cos(x sin θ)
+ *     dθ, which converges geometrically. Checked in the script before use:
+ *     at T = 0 it gives back the start within 10⁻⁶ A, and doubling every
+ *     quadrature moves P(r, T) by less than 10⁻⁷ A.
+ * (e) THE MEASURES, on the cells with their top at or below 3H:
+ *     (1) VERTICAL VELOCITY: the largest |w| at most 1 % of the largest |u|,
+ *         on the finest grid;
+ *     (2) PROFILE: in the columns whose ground |p'| is at least half the
+ *         largest, |(p'ᵢⱼ/p'ᵢ₀)/(Ēⱼ/Ē₀) − 1| at most 1 % (Ē the exact cell
+ *         average of E), on the finest grid;
+ *     (3) THE GROUND: Pᵢ = p'ᵢ₀/Ē₀ against the r-weighted cell average of the
+ *         exact P(r, T), the relative L1 error (weighted by the cell's
+ *         volume) at most 1 % on the finest grid, and the observed order at
+ *         least 2 between the two finest.
+ *     All three must hold. The u profile against e^{(γ−1)z/(γH)} is reported
+ *     beside them, not judged.
+ */
+export const RULE_1303_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1304. V4: FAILED AS FIXED — FIRST ORDER IN THE GROUND'S ROW; THE GPU
+ * ON RULES 1297–1298 PASSES G0 TO G2 (27 September 2026, 11:15;
+ * `verifyBlastV4.json`, `blast2dG1.json`).
+ *
+ * (a) V4 (`scripts/verify-blast-v4.ts`). The exact solution passes its own
+ *     checks (J₀ within 1.1·10⁻¹⁵, the start given back within 1.4·10⁻¹¹ A,
+ *     doubled quadratures moving it by 7·10⁻¹⁵ A). On 500, 250, 125 and
+ *     62.5 m: |w|/|u| 3.99·10⁻³ to 4.41·10⁻⁴, the profile 3.59·10⁻³ to
+ *     3.47·10⁻⁴ — both within 1 %; the ground's P 6.75·10⁻³, 1.10·10⁻³,
+ *     5.49·10⁻⁴, 2.75·10⁻⁴, within 1 %, but observed orders 2.61, 1.01,
+ *     1.00 against at least 2. V4 FAILS.
+ * (b) WHERE (a diagnostic, `scripts/tmp/v4-where.ts`, 250 and 125 m): the
+ *     error of p' row by row falls from 1.1·10⁻⁵ to 7.4·10⁻⁷ of the ground's
+ *     scale everywhere from the third row up — fourth order — but in the
+ *     ground's row only from 5.1·10⁻⁵ to 2.5·10⁻⁵, first order (the second
+ *     row by 2.9); along the ground the error is even in r, not the axis's;
+ *     the largest |w| sits in the corner cell and halves with the cell.
+ * (c) THE HYPOTHESIS: the ground's ghosts mirror ρ/α, u and p/β evenly.
+ *     Without gravity an acoustic field has ∂p/∂z = 0 at the wall and the
+ *     mirror is exact (V1); with gravity the wall imposes ∂p/∂z = −ρg, and
+ *     in Berberich's variable q = p/(p₀β) the slope at the ground is
+ *     (q − ρ/(ρ₀α))/H — (γ − 1)p'/(γp₀H) for Lamb's wave, not zero. The even
+ *     mirror puts a kink there; a kink costs O(Δx) in the cells beside it,
+ *     the first row, where every ground reading of this solver is made.
+ * (d) THE TEST OF IT, one change, a diagnostic before any adoption: an
+ *     option of the solver, off unless asked (nothing else changes), in
+ *     which the ground's ghosts of q take the slope the vertical momentum
+ *     equation imposes — q(ghost at −z) = q(z) − 2sz, s = (q₀ − r₀)/H from
+ *     the first row's own q and r = ρ/(ρ₀α) — ρ/α and u still mirrored, v
+ *     still odd. At rest q = r and s = 0; without gravity 1/H = 0: in both
+ *     the ghosts are the mirror's to the bit. If V4's ground row then
+ *     converges at second order or better on 250, 125 and 62.5 m, the
+ *     hypothesis holds and the change is proposed for adoption under its
+ *     own rule; if not, it is set aside and the next hypothesis (the kinks of
+ *     ρ/α and u) is tested alone.
+ * (e) THE GPU on rules 1297–1298 (the radial coefficients the reference's own
+ *     in single precision, the parabola's mean kept per cell by a kernel of
+ *     its own): G0 exactly at rest; G2 mass to 1.8·10⁻¹¹ and 8.2·10⁻¹²,
+ *     energy to 3.7·10⁻⁹ and 1.6·10⁻⁷; G1 all eight cases in the
+ *     reference's own number of steps, every reach within 0.002 %, every
+ *     peak within 0.048 %. ALL PASS.
+ */
+export const RULE_1304_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1305. RULE 1304 (d)'S TEST: THE FIRST ORDER IS GONE; THE LAST PAIR
+ * MEETS V4'S OWN FLOOR (27 September 2026, 11:31; `scripts/tmp/v4-momentum.ts`).
+ * Written before the runs it names.
+ *
+ * (a) V4 with the ground's ghosts of q sloped by the momentum equation, all
+ *     else as fixed: the ground's P 6.16·10⁻³, 2.53·10⁻⁴, 1.62·10⁻⁵,
+ *     1.02·10⁻⁵ — orders 4.61, 3.97, 0.67 (the mirror: 2.61, 1.01, 1.00);
+ *     |w|/|u| 4.7·10⁻⁵ to 3.1·10⁻⁶ (the mirror: 4.4·10⁻⁴ on the finest); the
+ *     profile 1.05·10⁻⁴, then 6.4, 5.3 and 5.0·10⁻⁵. The hypothesis of rule
+ *     1304 (c) holds where the grids are coarse enough to see it.
+ * (b) THE LAST PAIR: the ground's error stops at 1.0·10⁻⁵ and the profile's
+ *     at 5·10⁻⁵ on every grid from 250 m — the amplitude's own size: at
+ *     A = 10⁻⁵ p₀, p'/p̄ reaches 2.4·10⁻⁵ at 3H, and the equations'
+ *     nonlinearity departs from the linear exact solution by as much. Rule
+ *     1299's flaw again, in V4's amplitude.
+ * (c) THE DIAGNOSTIC THAT DECIDES: the same on 125 and 62.5 m at A = 10⁻⁶ p₀.
+ *     If the floor is the nonlinearity, the relative errors fall by about
+ *     ten — the ground's on 62.5 m to at most 3·10⁻⁶ and the profile's below
+ *     10⁻⁵; if they do not, the floor is something else and is diagnosed.
+ * (d) IF (c) CONFIRMS IT, V4's order is measured as rule 1299 (c) measured
+ *     V1's: by self-convergence at V4's own amplitude, 10⁻⁵ p₀, on the four
+ *     grids — the relative L1 difference (weighted by the cells' volume) of
+ *     the ground's P between successive grids, the finer brought to the
+ *     coarser by volume-weighted pairs of rings — the observed order at least
+ *     2 between the two finest differences; the other criteria of rule 1303
+ *     (e) as fixed, the finest against the exact solution within 1 %. With
+ *     the momentum's slope; the mirror's outcome stays FAILED on record.
+ * (e) Adoption of the slope as the solver's ground condition, and its GPU
+ *     port with G0 to G2, under the rule that records (c) and (d).
+ */
+export const RULE_1305_WRITTEN = '2026-09-27' as const;

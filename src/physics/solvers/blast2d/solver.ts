@@ -54,9 +54,140 @@ function weno5z(a: number, b: number, c: number, d: number, e: number): number {
   return (w0 * q0 + w1 * q1 + w2 * q2) / (w0 + w1 + w2);
 }
 
+/**
+ * Rule 1297: Mignone's (2014) reconstruction weights for r-weighted cell
+ * averages (his Eqs. 16 and 21, the cylindrical Jacobian), in units of the
+ * cell: cell j spans [j, j + 1], the mirrored ghosts across the axis with
+ * their signed coordinates; the moments centred on the reconstructing cell.
+ * Returns the weights of the cells `cells` for the point value at `x`
+ * (relative to that cell's centre `c`).
+ */
+function cylindricalWeights(cells: readonly number[], c: number, x: number): number[] {
+  const p = cells.length;
+  // β[s][n] = (1/ΔV)∫(ξ − c)ⁿ ξ dξ over cell s; ∫(ξ − c)ⁿξ = (ξ − c)ⁿ⁺²/(n + 2) + c(ξ − c)ⁿ⁺¹/(n + 1).
+  const moment = (a: number, b: number, n: number): number => {
+    const f = (xi: number): number =>
+      (xi - c) ** (n + 2) / (n + 2) + (c * (xi - c) ** (n + 1)) / (n + 1);
+    return f(b) - f(a);
+  };
+  const m: number[][] = cells.map((j) => {
+    const volume = (Math.pow(j + 1, 2) - Math.pow(j, 2)) / 2;
+    return Array.from({ length: p }, (_, n) => moment(j, j + 1, n) / volume);
+  });
+  // Solve Bᵀw = (1, x, x², …) by Gaussian elimination with partial pivoting.
+  const a: number[][] = Array.from({ length: p }, (_, n) => [
+    ...cells.map((_, q) => m[q]?.[n] ?? 0),
+    x ** n,
+  ]);
+  for (let col = 0; col < p; col++) {
+    let pivot = col;
+    for (let r = col + 1; r < p; r++)
+      if (Math.abs(a[r]?.[col] ?? 0) > Math.abs(a[pivot]?.[col] ?? 0)) pivot = r;
+    const tmp = a[col];
+    a[col] = a[pivot] ?? [];
+    a[pivot] = tmp ?? [];
+    const rowC = a[col] ?? [];
+    for (let r = 0; r < p; r++) {
+      if (r === col) continue;
+      const rowR = a[r] ?? [];
+      const factor = (rowR[col] ?? 0) / (rowC[col] ?? 1);
+      for (let q = col; q <= p; q++) rowR[q] = (rowR[q] ?? 0) - factor * (rowC[q] ?? 0);
+    }
+  }
+  return a.map((row, q) => (row[p] ?? 0) / (row[q] ?? 1));
+}
+
+/**
+ * Rule 1297's per-column coefficients: for the upper (+) and lower (−) face
+ * of cell i, each three-cell candidate's weights and the linear weights that
+ * make the three reproduce the five-cell reconstruction; and the weights of
+ * the centred three-cell stencil for the value at the cell's centre.
+ */
+export interface RadialCoefficients {
+  /** [side][k][q]: side 0 upper, 1 lower; candidate k on cells i − 2 + k … i + k. */
+  readonly candidate: number[][][];
+  /** [side][k]. */
+  readonly linear: number[][];
+  /** Cells i − 1, i, i + 1. */
+  readonly centre: number[];
+}
+
+export function radialCoefficients(i: number): RadialCoefficients {
+  const c = i + 0.5;
+  const candidate: number[][][] = [];
+  const linear: number[][] = [];
+  for (const x of [0.5, -0.5]) {
+    const cand = [0, 1, 2].map((k) => cylindricalWeights([i - 2 + k, i - 1 + k, i + k], c, x));
+    const full = cylindricalWeights([i - 2, i - 1, i, i + 1, i + 2], c, x);
+    // Least squares on the 5 × 3 system Σₖ dₖ·(candidate k placed on its cells) = full.
+    const col = (k: number, row: number): number => {
+      const q = row - k;
+      return q >= 0 && q < 3 ? (cand[k]?.[q] ?? 0) : 0;
+    };
+    const ata = [0, 1, 2].map((k1) =>
+      [0, 1, 2].map((k2) =>
+        [0, 1, 2, 3, 4].reduce((sum, row) => sum + col(k1, row) * col(k2, row), 0)
+      )
+    );
+    const atb = [0, 1, 2].map((k) =>
+      [0, 1, 2, 3, 4].reduce((sum, row) => sum + col(k, row) * (full[row] ?? 0), 0)
+    );
+    // 3 × 3 solve by Cramer's rule (well conditioned: the columns are near-disjoint).
+    const det = (m: number[][]): number =>
+      (m[0]?.[0] ?? 0) *
+        ((m[1]?.[1] ?? 0) * (m[2]?.[2] ?? 0) - (m[1]?.[2] ?? 0) * (m[2]?.[1] ?? 0)) -
+      (m[0]?.[1] ?? 0) *
+        ((m[1]?.[0] ?? 0) * (m[2]?.[2] ?? 0) - (m[1]?.[2] ?? 0) * (m[2]?.[0] ?? 0)) +
+      (m[0]?.[2] ?? 0) *
+        ((m[1]?.[0] ?? 0) * (m[2]?.[1] ?? 0) - (m[1]?.[1] ?? 0) * (m[2]?.[0] ?? 0));
+    const d0 = det(ata);
+    const d = [0, 1, 2].map(
+      (k) => det(ata.map((row, r) => row.map((v, q) => (q === k ? (atb[r] ?? 0) : v)))) / d0
+    );
+    candidate.push(cand);
+    linear.push(d);
+  }
+  return { candidate, linear, centre: cylindricalWeights([i - 1, i, i + 1], c, 0) };
+}
+
 /** x clamped to [0, 1] (NaN to 0). */
 function clamp01(x: number): number {
   return x > 1 ? 1 : x > 0 ? x : 0;
+}
+
+/**
+ * Rule 1297: the fifth-order WENO-Z value at a face of cell c (from the cells
+ * a, b, c, d, e in order of r) with Mignone's weights for r-weighted averages
+ * — each candidate's own, and linear weights that reproduce the five-cell
+ * reconstruction — and Jiang and Shu's smoothness indicators; side 0 the
+ * upper face, 1 the lower.
+ */
+function weno5zCylindrical(
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  e: number,
+  k: RadialCoefficients,
+  side: 0 | 1
+): number {
+  const cand = k.candidate[side] ?? [];
+  const lin = k.linear[side] ?? [];
+  const v = [a, b, c, d, e];
+  const q = [0, 1, 2].map((s) => {
+    const w = cand[s] ?? [];
+    return (
+      (w[0] ?? 0) * (v[s] ?? 0) + (w[1] ?? 0) * (v[s + 1] ?? 0) + (w[2] ?? 0) * (v[s + 2] ?? 0)
+    );
+  });
+  const b0 = (13 / 12) * (a - 2 * b + c) ** 2 + 0.25 * (a - 4 * b + 3 * c) ** 2;
+  const b1 = (13 / 12) * (b - 2 * c + d) ** 2 + 0.25 * (b - d) ** 2;
+  const b2 = (13 / 12) * (c - 2 * d + e) ** 2 + 0.25 * (3 * c - 4 * d + e) ** 2;
+  const tau = Math.abs(b0 - b2);
+  const w0 = (lin[0] ?? 0) * (1 + tau / (b0 + 1e-40));
+  const w1 = (lin[1] ?? 0) * (1 + tau / (b1 + 1e-40));
+  const w2 = (lin[2] ?? 0) * (1 + tau / (b2 + 1e-40));
+  return (w0 * (q[0] ?? 0) + w1 * (q[1] ?? 0) + w2 * (q[2] ?? 0)) / (w0 + w1 + w2);
 }
 
 export interface BlastGrid {
@@ -85,6 +216,9 @@ export interface BlastOptions {
   readonly cfl?: number;
   /** How positivity is kept (rule 1277); 'mood' by default. */
   readonly limiter?: 'mood' | 'has';
+  /** Rule 1304 (d), a diagnostic: the ground's ghosts of p/β with the slope
+   *  the vertical momentum equation imposes at the wall; 'mirror' by default. */
+  readonly groundSlope?: 'mirror' | 'momentum';
 }
 
 /** Rule 1277's work arrays: each face's high-order and Lax–Friedrichs flux
@@ -110,6 +244,8 @@ export class BlastSolver2D {
   readonly cfl: number;
   readonly atmosphere: Atmosphere;
   readonly limiter: 'mood' | 'has';
+  /** Rule 1304 (d): the ground's ghosts of p/β. */
+  readonly groundSlope: 'mirror' | 'momentum';
 
   /** Conserved variables per cell, ghosts included: ρ, ρu, ρv, E (no potential). */
   readonly rho: Float64Array;
@@ -175,6 +311,8 @@ export class BlastSolver2D {
   private readonly pre2: Float64Array;
   private readonly pre3: Float64Array;
   private readonly work: HasWork | undefined;
+  /** Rule 1297: per column i ∈ [−1, nr], the radial reconstruction's coefficients. */
+  private readonly radial: RadialCoefficients[] | undefined;
   // Rule 1277's scratch: two cells' states and fluxes, and a limited flux.
   private readonly stL = new Float64Array(4);
   private readonly stR = new Float64Array(4);
@@ -191,6 +329,7 @@ export class BlastSolver2D {
     this.gamma = options.gamma ?? 1.4;
     this.cfl = options.cfl ?? 0.4;
     this.limiter = options.limiter ?? 'mood';
+    this.groundSlope = options.groundSlope ?? 'mirror';
     this.atmosphere = atmosphere;
     this.stride = nr + 2 * G;
     const n = this.stride * (nz + 2 * G);
@@ -242,6 +381,10 @@ export class BlastSolver2D {
             epsRho: NaN,
             epsP: NaN,
           }
+        : undefined;
+    this.radial =
+      this.limiter === 'has'
+        ? Array.from({ length: nr + 2 }, (_, q) => radialCoefficients(q - 1))
         : undefined;
     this.fillAtRest();
   }
@@ -419,14 +562,22 @@ export class BlastSolver2D {
         this.q4[out] = this.q4[last] ?? 0;
       }
     }
+    // Rule 1304 (d): at the wall ∂p/∂z = −ρg, so q = p/(p₀β) has the slope
+    // (q − ρ/(ρ₀α))/H there; the mirror corrected by it, from the first row.
+    const lift = this.groundSlope === 'momentum' ? (rho0 * this.atmosphere.g) / p0 : 0;
     for (let i = -G; i < nr + G; i++) {
+      const first = G * stride + (i + G);
+      const slope = lift * ((this.q4[first] ?? 0) - (this.q1[first] ?? 0));
       for (let g = 1; g <= G; g++) {
         const inner = (G + (g - 1)) * stride + (i + G);
         const ghost = (G - g) * stride + (i + G);
         this.q1[ghost] = this.q1[inner] ?? 0;
         this.vu[ghost] = this.vu[inner] ?? 0;
         this.vv[ghost] = -(this.vv[inner] ?? 0);
-        this.q4[ghost] = this.q4[inner] ?? 0;
+        this.q4[ghost] =
+          lift === 0
+            ? (this.q4[inner] ?? 0)
+            : (this.q4[inner] ?? 0) - 2 * slope * (g - 0.5) * this.dx;
         const last = (G + nz - 1) * stride + (i + G);
         const out = (G + nz - 1 + g) * stride + (i + G);
         this.q1[out] = this.q1[last] ?? 0;
@@ -453,17 +604,24 @@ export class BlastSolver2D {
       [this.q4, this.s4, this.t4],
     ];
     const s2 = 2 * step;
+    const radial = step === 1 ? this.radial : undefined;
     for (let j = jLo; j <= jHi; j++)
       for (let i = iLo; i <= iHi; i++) {
         const k = (j + G) * stride + (i + G);
+        const coefficients = radial?.[i + 1];
         for (const [w, up, down] of vars) {
           const a = w[k - s2] ?? 0;
           const b = w[k - step] ?? 0;
           const c = w[k] ?? 0;
           const d = w[k + step] ?? 0;
           const e = w[k + s2] ?? 0;
-          up[k] = weno5z(a, b, c, d, e);
-          down[k] = weno5z(e, d, c, b, a);
+          if (coefficients === undefined) {
+            up[k] = weno5z(a, b, c, d, e);
+            down[k] = weno5z(e, d, c, b, a);
+          } else {
+            up[k] = weno5zCylindrical(a, b, c, d, e, coefficients, 0);
+            down[k] = weno5zCylindrical(a, b, c, d, e, coefficients, 1);
+          }
         }
       }
   }
@@ -865,6 +1023,24 @@ export class BlastSolver2D {
 
     // Vertical faces: face g of column i between cells g − 1 and g; the
     // ground's ghost mirrors the first cell, the top's copies the last.
+    // Rules 1297–1298: the axisymmetric source p/R as a volume average — the
+    // parabola through the cell's two radial face values that keeps its
+    // r-weighted average, integrated plainly over the cell.
+    for (let j = 0; j < nz; j++) {
+      const b = p0 * (this.betaC[j] ?? 0);
+      for (let i = 0; i < nr; i++) {
+        const k = (j + G) * stride + (i + G);
+        const radius = this.rC[i] ?? 0;
+        const kappa = dx / radius;
+        const lower = this.t4[k] ?? 0;
+        const upper = this.s4[k] ?? 0;
+        const c1 = upper - lower;
+        const c2 = 6 * ((lower + upper) / 2 - (this.q4[k] ?? 0) + (kappa * c1) / 12);
+        const c0 = (lower + upper) / 2 - c2 / 4;
+        work.source[4 * k + 1] = (b * (c0 + c2 / 12)) / radius;
+      }
+    }
+
     this.reconstruct(stride);
     this.scaleFaces(stride);
     const off = (nr + 1) * nz;
@@ -905,12 +1081,10 @@ export class BlastSolver2D {
     for (let j = 0; j < nz; j++) {
       const lift =
         (pr * ((this.betaF[j + 1] ?? 0) - (this.betaF[j] ?? 0))) / (dx * (this.alphaC[j] ?? 0));
-      const b = p0 * (this.betaC[j] ?? 0);
       for (let i = 0; i < nr; i++) {
         const k = (j + G) * stride + (i + G);
         const force = (this.rho[k] ?? 0) * lift;
         work.source[4 * k] = 0;
-        work.source[4 * k + 1] = (b * (this.q4[k] ?? 0)) / (this.rC[i] ?? 0);
         work.source[4 * k + 2] = force;
         work.source[4 * k + 3] = (this.vv[k] ?? 0) * force;
       }

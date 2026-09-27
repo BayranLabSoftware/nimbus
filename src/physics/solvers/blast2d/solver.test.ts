@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { isothermalAtmosphere, scaleHeight, uniformAtmosphere } from './atmosphere.js';
-import { BlastSolver2D } from './solver.js';
+import { BlastSolver2D, radialCoefficients } from './solver.js';
 
 /** Rule 1254 (c) T0 and the scheme's conservation, on small grids. */
 
@@ -110,4 +110,55 @@ describe("rule 1277's continuous limiter (Hu, Adams & Shu 2013)", () => {
     }
     expect(worst).toBeLessThan(1e-6);
   }, 30_000);
+});
+
+describe("rule 1297's radial reconstruction (Mignone 2014)", () => {
+  /** The r-weighted average of f over cell j (cell units, signed coordinates:
+   *  a mirrored ghost below the axis keeps its own), exact for polynomials. */
+  const average = (f: (x: number) => number, j: number): number => {
+    const gauss = [
+      [-0.8611363115940526, 0.3478548451374538],
+      [-0.3399810435848563, 0.6521451548625461],
+      [0.3399810435848563, 0.6521451548625461],
+      [0.8611363115940526, 0.3478548451374538],
+    ] as const;
+    let sum = 0;
+    let weight = 0;
+    for (const [t, w] of gauss) {
+      const x = j + 0.5 + 0.5 * t;
+      sum += w * f(x) * x;
+      weight += w * x;
+    }
+    return sum / weight;
+  };
+
+  it('gives back every polynomial to degree 4 at both faces, the axis included', () => {
+    for (const i of [-1, 0, 1, 2, 7, 300])
+      for (const side of [0, 1] as const)
+        for (const degree of [0, 1, 2, 3, 4]) {
+          const f = (x: number): number => x ** degree + 0.3 * x - 2;
+          const cells = [i - 2, i - 1, i, i + 1, i + 2].map((j) => average(f, j));
+          const k = radialCoefficients(i);
+          let value = 0;
+          for (let c = 0; c < 3; c++) {
+            const w = k.candidate[side]?.[c] ?? [];
+            const q =
+              (w[0] ?? 0) * (cells[c] ?? 0) +
+              (w[1] ?? 0) * (cells[c + 1] ?? 0) +
+              (w[2] ?? 0) * (cells[c + 2] ?? 0);
+            value += (k.linear[side]?.[c] ?? 0) * q;
+          }
+          const face = i + (side === 0 ? 1 : 0);
+          expect(Math.abs(value - f(face))).toBeLessThan(1e-9 * Math.max(1, Math.abs(f(face))));
+        }
+  });
+
+  it('has positive linear weights that sum to one', () => {
+    for (let i = -1; i < 400; i++)
+      for (const side of [0, 1] as const) {
+        const d = radialCoefficients(i).linear[side] ?? [];
+        expect(Math.min(...d)).toBeGreaterThan(0);
+        expect(Math.abs(d.reduce((a, b) => a + b, 0) - 1)).toBeLessThan(1e-12);
+      }
+  });
 });

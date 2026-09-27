@@ -14,7 +14,8 @@
  * states scaled towards their cell (scaleR, scaleZ), every face at fifth
  * order, and each face's flux blended with the Lax–Friedrichs flux by Hu,
  * Adams & Shu's θ (limitR, limitZ), on the full variables, as the CPU
- * reference does.
+ * reference does; and rules 1297–1298's radial reconstruction for r-weighted
+ * averages and the axisymmetric source as a mean over the cell (sourceR).
  */
 
 export const WORKGROUP = 128;
@@ -52,6 +53,11 @@ struct Params {
 @group(0) @binding(17) var<storage, read_write> PRELO: array<vec4<f32>>;
 // Rule 1277: each cell's |v| + c (SPEED then holds |u| + c), with the partial maxima.
 @group(0) @binding(18) var<storage, read_write> SPEEDV: array<f32>;
+// Rule 1297: per column i in [-1, nr], RADIAL[6(i + 1) + 3·side + k] = (the
+// radial candidate k's three weights, its linear weight), side 0 the upper
+// face, 1 the lower. Rule 1298: each cell's mean of (p − p̄)/p̄ over r.
+@group(0) @binding(19) var<storage, read> RADIAL: array<vec4<f32>>;
+@group(0) @binding(20) var<storage, read_write> SRC: array<f32>;
 
 fn cell(i: i32, j: i32) -> i32 { return (j + G) * P.stride + (i + G); }
 
@@ -87,13 +93,12 @@ fn dfMul(x: DF, y: DF) -> DF {
 /** The state the fluxes and checks read: its high half (rule 1272 (a)). */
 fn state(k: i32) -> vec4<f32> { return U[k]; }
 
-// The Z-weighted fifth-order value at the face between c and d
-// (Shu, ICASE 97-65; Borges et al. 2008). In single precision ε is 1e-20:
-// 1e-40 is below the normal range and a flushed zero would divide 0 by 0.
-fn weno5z(a: vec4<f32>, b: vec4<f32>, c: vec4<f32>, d: vec4<f32>, e: vec4<f32>) -> vec4<f32> {
-  let q0 = (2.0 * a - 7.0 * b + 11.0 * c) / 6.0;
-  let q1 = (-b + 5.0 * c + 2.0 * d) / 6.0;
-  let q2 = (2.0 * c + 5.0 * d - e) / 6.0;
+// The Z weights' factors of the candidates on (a, b, c), (b, c, d) and
+// (c, d, e), each weight the linear one times its factor (Shu, ICASE 97-65;
+// Borges et al. 2008). In single precision ε is 1e-20: 1e-40 is below the
+// normal range and a flushed zero would divide 0 by 0.
+struct ZFactors { f0: vec4<f32>, f1: vec4<f32>, f2: vec4<f32> };
+fn zFactors(a: vec4<f32>, b: vec4<f32>, c: vec4<f32>, d: vec4<f32>, e: vec4<f32>) -> ZFactors {
   let x0 = a - 2.0 * b + c; let y0 = a - 4.0 * b + 3.0 * c;
   let x1 = b - 2.0 * c + d; let y1 = b - d;
   let x2 = c - 2.0 * d + e; let y2 = 3.0 * c - 4.0 * d + e;
@@ -110,9 +115,32 @@ fn weno5z(a: vec4<f32>, b: vec4<f32>, c: vec4<f32>, d: vec4<f32>, e: vec4<f32>) 
   let h2 = (b2 + 1e-20) / (tau + b2 + 1e-20);
   let hm = min(min(h0, h1), h2);
   let one = vec4<f32>(1.0);
-  let w0 = 0.1 * select(hm / h0, one, h0 <= hm);
-  let w1 = 0.6 * select(hm / h1, one, h1 <= hm);
-  let w2 = 0.3 * select(hm / h2, one, h2 <= hm);
+  return ZFactors(select(hm / h0, one, h0 <= hm), select(hm / h1, one, h1 <= hm), select(hm / h2, one, h2 <= hm));
+}
+
+// The Z-weighted fifth-order value at the face between c and d.
+fn weno5z(a: vec4<f32>, b: vec4<f32>, c: vec4<f32>, d: vec4<f32>, e: vec4<f32>) -> vec4<f32> {
+  let q0 = (2.0 * a - 7.0 * b + 11.0 * c) / 6.0;
+  let q1 = (-b + 5.0 * c + 2.0 * d) / 6.0;
+  let q2 = (2.0 * c + 5.0 * d - e) / 6.0;
+  let z = zFactors(a, b, c, d, e);
+  let w0 = 0.1 * z.f0;
+  let w1 = 0.6 * z.f1;
+  let w2 = 0.3 * z.f2;
+  return (w0 * q0 + w1 * q1 + w2 * q2) / (w0 + w1 + w2);
+}
+
+// Rule 1297: the same at a radial face of c with Mignone's (2014) weights for
+// r-weighted averages, the candidates' and the linear ones from RADIAL[at..].
+fn weno5zCyl(a: vec4<f32>, b: vec4<f32>, c: vec4<f32>, d: vec4<f32>, e: vec4<f32>, at: i32) -> vec4<f32> {
+  let k0 = RADIAL[at]; let k1 = RADIAL[at + 1]; let k2 = RADIAL[at + 2];
+  let q0 = k0.x * a + k0.y * b + k0.z * c;
+  let q1 = k1.x * b + k1.y * c + k1.z * d;
+  let q2 = k2.x * c + k2.y * d + k2.z * e;
+  let z = zFactors(a, b, c, d, e);
+  let w0 = k0.w * z.f0;
+  let w1 = k1.w * z.f1;
+  let w2 = k2.w * z.f2;
   return (w0 * q0 + w1 * q1 + w2 * q2) / (w0 + w1 + w2);
 }
 
@@ -206,8 +234,30 @@ fn hllc(rL: f32, unL: f32, utL: f32, pL: f32, rR: f32, unR: f32, utR: f32, pR: f
   let j = i32(id.x) / width;
   let k = cell(i, j);
   let a = W[k - 2]; let b = W[k - 1]; let c = W[k]; let d = W[k + 1]; let e = W[k + 2];
-  S[k] = weno5z(a, b, c, d, e);
-  T[k] = weno5z(e, d, c, b, a);
+  if (P.has == 1u) {
+    S[k] = weno5zCyl(a, b, c, d, e, 6 * (i + 1));
+    T[k] = weno5zCyl(a, b, c, d, e, 6 * (i + 1) + 3);
+  } else {
+    S[k] = weno5z(a, b, c, d, e);
+    T[k] = weno5z(e, d, c, b, a);
+  }
+}
+
+// ---- rule 1298: each interior cell's mean of (p − p̄)/p̄ over r — the
+//      parabola through its radial faces' values (after scaleR) that keeps
+//      its r-weighted average — for rhs and the limiter's pieces ----
+@compute @workgroup_size(WG) fn sourceR(@builtin(global_invocation_id) id: vec3<u32>) {
+  if (id.x >= u32(P.nr * P.nz)) { return; }
+  let i = i32(id.x) % P.nr;
+  let j = i32(id.x) / P.nr;
+  let k = cell(i, j);
+  let lower = T[k].w;
+  let upper = S[k].w;
+  let kappa = 1.0 / (f32(i) + 0.5);
+  let c1 = upper - lower;
+  let c2 = 6.0 * (0.5 * (lower + upper) - W[k].w + kappa * c1 / 12.0);
+  let c0 = 0.5 * (lower + upper) - 0.25 * c2;
+  SRC[k] = c0 + c2 / 12.0;
 }
 
 // ---- WENO faces along z: columns i in [0, nr), cells j in [-1, nz] ----
@@ -290,7 +340,7 @@ fn high(kl: i32, kr: i32) -> bool {
   // The axisymmetric term on the deviation of pressure; gravity on the
   // deviation of density through the reference's lift; the energy's source
   // the vertical velocity times the full density's weight.
-  d.y += bg.y * w.w / rc;
+  d.y += bg.y * select(w.w, SRC[k], P.has == 1u) / rc;
   d.z += q.x * bg.z;
   d.w += w.z * (bg.x + q.x) * bg.z;
   D[k] = d;
@@ -383,11 +433,13 @@ fn eulerFlux(s: vec4<f32>, dir: i32) -> vec4<f32> {
   let un = select(s.z, s.y, dir == 0) / s.x;
   return vec4<f32>(s.x * un, s.y * un + select(0.0, p, dir == 0), s.z * un + select(0.0, p, dir == 1), (s.w + p) * un);
 }
-// A cell's sources on the full variables: p/r on the radial momentum, the
-// well-balanced gravity ρ·lift on the vertical, v times it on the energy.
+// A cell's sources on the full variables: p/r on the radial momentum (rule
+// 1298's mean), the well-balanced gravity ρ·lift on the vertical, v times it
+// on the energy.
 fn sourceOf(s: vec4<f32>, i: i32, j: i32) -> vec4<f32> {
   let force = s.x * ROW[j].z;
-  return vec4<f32>(0.0, pressureOf(s) / ((f32(i) + 0.5) * P.dx), force, s.z / s.x * force);
+  let p = ROW[j].y * (1.0 + SRC[cell(i, j)]);
+  return vec4<f32>(0.0, p / ((f32(i) + 0.5) * P.dx), force, s.z / s.x * force);
 }
 // A piece Uₖ + σF + ΔtSₖ, its pressure (−1 where its density is not positive).
 fn piecePressure(s: vec4<f32>, src: vec4<f32>, sigma: f32, f: vec4<f32>) -> f32 {

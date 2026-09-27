@@ -10,9 +10,9 @@
       "dx": 25,
       "cells": 784,
       "steps": 41,
-      "seconds": 0.044,
-      "relativeL1": 0.011313736965406935,
-      "maxOverAmplitude": 0.0030506487345315935,
+      "seconds": 0.094,
+      "relativeL1": 0.0052978612369971485,
+      "maxOverAmplitude": 0.0008217850425612998,
       "limitedFaces": 0,
       "scaledFaces": 0
     },
@@ -21,9 +21,9 @@
       "dx": 12.5,
       "cells": 3136,
       "steps": 82,
-      "seconds": 0.201,
-      "relativeL1": 0.0033408398301851662,
-      "maxOverAmplitude": 0.0011221532354682702,
+      "seconds": 0.586,
+      "relativeL1": 0.00022411772593651283,
+      "maxOverAmplitude": 0.00003798667747764271,
       "limitedFaces": 0,
       "scaledFaces": 0
     },
@@ -32,9 +32,9 @@
       "dx": 6.25,
       "cells": 12544,
       "steps": 164,
-      "seconds": 1.457,
-      "relativeL1": 0.0008540282770399786,
-      "maxOverAmplitude": 0.0003336118995585247,
+      "seconds": 4.515,
+      "relativeL1": 0.000011127975655508194,
+      "maxOverAmplitude": 0.0000021185131578590688,
       "limitedFaces": 0,
       "scaledFaces": 0
     },
@@ -43,13 +43,13 @@
       "dx": 3.125,
       "cells": 50176,
       "steps": 327,
-      "seconds": 11.545,
-      "relativeL1": 0.00021501901906005735,
-      "maxOverAmplitude": 0.00009627937957581992,
+      "seconds": 34.307,
+      "relativeL1": 0.000002750120459963869,
+      "maxOverAmplitude": 1.997892578580554e-7,
       "limitedFaces": 0,
       "scaledFaces": 0
     }
   ],
-  "orders": [1.7597928127280713, 1.9678550735737763, 1.9898195624983277],
+  "orders": [4.56308139252547, 4.331993685160381, 2.0166244511998226],
   "passes": false
 }

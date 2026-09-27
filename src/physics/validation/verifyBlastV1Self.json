@@ -1,0 +1,41 @@
+{
+  "rule": "1299 (c)",
+  "criteria": {
+    "order": 3,
+    "relativeL1Exact": 0.01
+  },
+  "amplitudeOverP0": 0.0001,
+  "results": [
+    {
+      "widthCells": 8,
+      "dx": 12.5,
+      "steps": 82,
+      "seconds": 0.574,
+      "relativeL1Exact": 0.00024002495571623128
+    },
+    {
+      "widthCells": 16,
+      "dx": 6.25,
+      "steps": 164,
+      "seconds": 4.52,
+      "relativeL1Exact": 0.00003367033209003699
+    },
+    {
+      "widthCells": 32,
+      "dx": 3.125,
+      "steps": 327,
+      "seconds": 34.191,
+      "relativeL1Exact": 0.000026077840856933423
+    },
+    {
+      "widthCells": 64,
+      "dx": 1.5625,
+      "steps": 654,
+      "seconds": 280.249,
+      "relativeL1Exact": 0.000025613866860277062
+    }
+  ],
+  "differences": [0.000214042424763756, 0.000009461464721171203, 6.868026254833876e-7],
+  "orders": [4.499689424157319, 3.784096083681945],
+  "passes": true
+}

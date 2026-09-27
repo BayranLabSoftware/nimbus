@@ -9,7 +9,7 @@
  * copies within a step held as double-floats (rule 1272).
  */
 
-import type { BlastSolver2D } from '../solver.js';
+import { radialCoefficients, type BlastSolver2D } from '../solver.js';
 import { BLAST2D_WGSL, WORKGROUP } from './kernels.js';
 import { BUFFER, MAP_READ, type GpuBuffer, type GpuDevice } from './webgpu.js';
 
@@ -33,6 +33,7 @@ const KERNELS = [
   'limitR',
   'limitZ',
   'reduceMaxV',
+  'sourceR',
 ] as const;
 type Kernel = (typeof KERNELS)[number];
 
@@ -164,6 +165,22 @@ export class BlastSolverGpu {
     this.uLo = make(vec4s);
     this.k0Lo = make(vec4s);
     this.preLo = make(vec4s);
+    // Rule 1297's coefficients by column, the reference's own, in single precision.
+    const radial = new Float32Array(24 * (nr + 2));
+    for (let q = 0; q < nr + 2; q++) {
+      const c = radialCoefficients(q - 1);
+      for (let side = 0; side < 2; side++)
+        for (let k = 0; k < 3; k++) {
+          const at = 4 * (6 * q + 3 * side + k);
+          const w = c.candidate[side]?.[k] ?? [];
+          radial[at] = w[0] ?? 0;
+          radial[at + 1] = w[1] ?? 0;
+          radial[at + 2] = w[2] ?? 0;
+          radial[at + 3] = c.linear[side]?.[k] ?? 0;
+        }
+    }
+    const radialBuffer = make(radial.byteLength);
+    const source = make(4 * this.cells);
     const rowBuffer = make(row.byteLength);
     const faceBuffer = make(face.byteLength);
     this.low = make(4 * this.cells);
@@ -179,6 +196,7 @@ export class BlastSolverGpu {
     device.queue.writeBuffer(this.uLo, 0, stateLo);
     device.queue.writeBuffer(rowBuffer, 0, row);
     device.queue.writeBuffer(faceBuffer, 0, face);
+    device.queue.writeBuffer(radialBuffer, 0, radial);
 
     const module = device.createShaderModule({ code: BLAST2D_WGSL });
     const pipelines = {} as Record<Kernel, unknown>;
@@ -209,6 +227,8 @@ export class BlastSolverGpu {
       this.k0Lo,
       this.preLo,
       this.speedV,
+      radialBuffer,
+      source,
     ];
     const groups = {} as Record<Kernel, unknown>;
     for (const name of KERNELS) {
@@ -455,6 +475,7 @@ export class BlastSolverGpu {
         ['reconR', (nr + 2) * nz],
         ['scaleR', (nr + 2) * nz],
         ['fluxR', (nr + 1) * nz],
+        ['sourceR', nr * nz],
         ['reconZ', nr * (nz + 2)],
         ['scaleZ', nr * (nz + 2)],
         ['fluxZ', nr * (nz + 1)],
@@ -502,6 +523,7 @@ export class BlastSolverGpu {
         ['reconR', (nr + 2) * nz],
         ['scaleR', (nr + 2) * nz],
         ['fluxR', (nr + 1) * nz],
+        ['sourceR', nr * nz],
         ['reconZ', nr * (nz + 2)],
         ['scaleZ', nr * (nz + 2)],
         ['fluxZ', nr * (nz + 1)],
@@ -522,6 +544,7 @@ export class BlastSolverGpu {
       ['reconR', (nr + 2) * nz],
       ['scaleR', (nr + 2) * nz],
       ['fluxR', (nr + 1) * nz],
+      ['sourceR', nr * nz],
       ['reconZ', nr * (nz + 2)],
       ['scaleZ', nr * (nz + 2)],
       ['fluxZ', nr * (nz + 1)],
@@ -680,6 +703,7 @@ function usedBindings(name: Kernel): number[] {
     case 'ghostsZ':
       return [0, 2];
     case 'reconR':
+      return [0, 2, 3, 4, 19];
     case 'reconZ':
       return [0, 2, 3, 4];
     case 'fluxR':
@@ -687,7 +711,7 @@ function usedBindings(name: Kernel): number[] {
     case 'fluxZ':
       return [0, 2, 3, 4, 5, 10, 11, 13];
     case 'rhs':
-      return [0, 1, 2, 5, 6, 9];
+      return [0, 1, 2, 5, 6, 9, 20];
     case 'stage':
       return [0, 1, 6, 7, 8, 15, 16, 17];
     case 'check':
@@ -702,10 +726,12 @@ function usedBindings(name: Kernel): number[] {
     case 'scaleZ':
       return [0, 2, 3, 4, 13];
     case 'limitR':
-      return [0, 1, 5, 9, 13];
+      return [0, 1, 5, 9, 13, 20];
     case 'limitZ':
-      return [0, 1, 5, 9, 10, 13];
+      return [0, 1, 5, 9, 10, 13, 20];
     case 'reduceMaxV':
       return [0, 18];
+    case 'sourceR':
+      return [0, 2, 3, 4, 20];
   }
 }
