@@ -2465,3 +2465,20 @@ export const RULE_1329_WRITTEN = '2026-09-27' as const;
  *     undecided.
  */
 export const RULE_1330_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1331. RULE 1330 COMPLETED BY THE ELEVENTH REVIEW, STILL BEFORE ANY
+ * RESULT (27 September 2026, 18:36).
+ *
+ * (a) P2: «|D| ≥ 2 % on either ratio» prevails — a defect — even when the
+ *     two ratios point opposite ways; «opposite ways, undecided» holds only
+ *     when neither |D| reaches 2 %.
+ * (b) P4's FLUX TEST gains the runs it needs: the same ground burst in
+ *     uniform air, the same domain and grids. «Wave energy» is the acoustic
+ *     energy density ½ρ|u|² + p′²/(2ρ̄c̄²), p′ the departure from the
+ *     background at rest, the same measure in both runs.
+ * (c) P4's FRIEDLANDER: t = 0 at the front's 5 % foot, and the fit covers the
+ *     rise as well as the decay, so a slow rise (a transonic boom's) cannot
+ *     pass for a shock's; residual RMS under 5 % of Δp.
+ */
+export const RULE_1331_WRITTEN = '2026-09-27' as const;
