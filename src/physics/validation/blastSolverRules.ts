@@ -1125,3 +1125,59 @@ export const RULE_1289_WRITTEN = '2026-09-27' as const;
  *     peak within 0.13 %. ALL PASS. T3 runs again on the GPU, all its cases.
  */
 export const RULE_1290_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1291. T3 ON RULE 1280'S SCHEME: FAILED AS FIXED (27 September 2026,
+ * 09:45; `blast2dT3.json`, `docs/BLAST2D_T3.md`).
+ *
+ * (a) 104 runs on the GPU after rule 1289's weights, the finest 713 × 320
+ *     cells. Of 104 readings 53 judged (51 left out by rule 1256 (a)), 2 of
+ *     them lower bounds (rule 1276): worst 3.62, median 0.23 — T3 FAILS.
+ * (b) THE SHAPE, against Cart3D (a perfect gas and gravity, as this solver):
+ *     for bursts from about 10 km of real altitude up to the curves' knee the
+ *     solver lies 5 to 23 % beyond (1 psi 1.09 to 1.18, 2 psi 1.05 to 1.19,
+ *     4 psi 1.16 to 1.32) — the order of T2's offset; above the knee 1.3 to
+ *     1.85 beyond; and for bursts within about 5 km of the ground 2 to 4.6
+ *     times (2 psi at the ground 2.63 km scaled against 0.58). The three
+ *     grids agree: not resolution.
+ */
+export const RULE_1291_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1292. THE EXCESS NEAR THE GROUND, DIAGNOSED SO FAR (27 September 2026,
+ * 09:45; Andrea: «sì, cerca la causa dell'eccesso vicino al suolo»). A
+ * diagnostic; nothing is changed.
+ *
+ * (a) THE SOURCE IS NOT IT. The same 250 Mt at the ground in a uniform
+ *     atmosphere without gravity (the stratified run's ground density) gives
+ *     1, 2, 4 and 10 psi at 1.57, 0.95, 0.60 and 0.35 km scaled — T2's own
+ *     1 kt at the ground, scaled (1.54, 0.95, 0.60, 0.33).
+ * (b) THE STRATIFICATION IS. With the scale height 108, 27 and 6.76 km the
+ *     reaches grow — 1 psi 1.63, 1.85, 3.10 (the domain's edge) — where
+ *     Cart3D's shrink below the uniform ones (1.04). The ground's peak
+ *     departs from the uniform run's beyond some 2 scale heights (+22 % at
+ *     12.6 km, +48 % at 19 km, +70 % at 31 km, double at 63 km) and then
+ *     barely decays (exponent −0.8), even growing from 18.3 to 20.1 kPa
+ *     between 106 and 144 km.
+ * (c) THE FRONT LEADS ALOFT: at 120 km of range it reaches 60 km of altitude
+ *     at 222 s, 20 km at 292 s, the ground at 315 s; the peak along the
+ *     ground is always the front's (no later wave).
+ * (d) NOT THE DOMAIN'S TOP: with the top at 100, 60, 40, 20 and 15 km the
+ *     10 and 4 psi reaches do not move (0.45, 0.97), 2 psi falls from 2.63
+ *     to 1.80 only below 20 km. NOT AN ENERGY SOURCE: with nothing leaving
+ *     the domain (top at 200 km) the total energy, internal, kinetic and
+ *     potential, changes by −0.08 % of the source over 120 s, the mass by
+ *     10⁻¹⁴. NOT THE LIMITER: the old scheme showed the same excess (rule
+ *     1265). The atmosphere's ringing after a gentle pulse has periods of
+ *     324 to 344 s at 5.5 km, on the gravity-wave branch (2π/N = 309 s):
+ *     no gross error in the dynamics with gravity, though not a clean test.
+ * (e) WHERE IT STANDS: the solver keeps more of a low burst's energy near the
+ *     ground than Cart3D and iSALE do (rule 1269 saw it against
+ *     Kompaneets), with every check this project can make on it passing.
+ *     Which is right needs an independent reference for a strong explosion
+ *     in an exponential atmosphere: Laumbach & Probstein (1969, J. Fluid
+ *     Mech. 35) for the shock's strength along the horizontal; Aftosmis et
+ *     al.'s fuller NASA report for their setup (domain, duration, source at
+ *     the ground); Brode (1956) for the hot sphere itself.
+ */
+export const RULE_1292_WRITTEN = '2026-09-27' as const;

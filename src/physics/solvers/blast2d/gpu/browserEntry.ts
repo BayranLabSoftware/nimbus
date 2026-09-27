@@ -99,7 +99,7 @@ export async function runCaseGpu(c: GpuCase, tEnd?: number): Promise<Record<stri
     // Rule 1263: a peak above rounding, then fallen below a third of it.
     if (solver.time >= floor && probe.peak > 1e-4 * p0 && probe.now < probe.peak / 3) break;
   }
-  const { peak } = await solver.groundPeaks();
+  const { peak, time: peakTime } = await solver.groundPeaks();
   return {
     case: c,
     engine: 'gpu',
@@ -117,6 +117,8 @@ export async function runCaseGpu(c: GpuCase, tEnd?: number): Promise<Record<stri
     halvings: solver.halvings,
     ranges: Array.from({ length: last + 1 }, (_, i) => ref.radius(i)),
     peaks: Array.from(peak.subarray(0, last + 1)),
+    // When each ground cell's peak was reached (s): which wave set it.
+    peakTimes: Array.from(peakTime.subarray(0, last + 1)),
   };
 }
 
