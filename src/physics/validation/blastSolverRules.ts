@@ -2420,3 +2420,48 @@ export const RULE_1328_WRITTEN = '2026-09-27' as const;
  *     the GPU. Popper checks each result for artefacts before it counts.
  */
 export const RULE_1329_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1330. RULE 1329'S CRITERIA MADE DECISIVE BY THE TENTH REVIEW, BEFORE
+ * ANY RESULT OF P2 OR LATER IS SEEN (27 September 2026, 18:35;
+ * `scripts/tmp/review9-*`). This rule replaces rule 1328 (d)(1) and the
+ * criteria of rule 1329 (b) where they differ. (Rule 1328 (a)'s gap of the
+ * record to the foot, 2.97 … 0.54 kPa, is at λ = 1 on 1.25, 0.625, 0.3125
+ * and 0.156 m.)
+ *
+ * (a) P2, ONE TABLE. Every code read from the FOOT, converged, both ratios
+ *     p(1)/p(2) and p(1)/p(2.8). The deciding quantity is the difference D
+ *     between the Lagrangian code and this solver's surrogate run with the
+ *     SAME source: D_S with the Taylor–Sedov start of rules 1314–1315 (the
+ *     surrogate's 2.98 and 4.78), D_h with the Lagrangian's own hot sphere.
+ *     |D_S| ≤ 1 % and |D_h| ≤ 1 % on both ratios: the scheme is clean, the
+ *     shape is the source's — V3's gap to Eq. 17 then lies with the start or
+ *     with the fit. |D_S| ≥ 2 % or |D_h| ≥ 2 % on either ratio: the scheme
+ *     departs from the Lagrangian, a defect to be found. Anything else, or
+ *     the two ratios pointing opposite ways: undecided, and the finer
+ *     Lagrangian grid and the floor's test (rule 1328 (d)(2)) come next.
+ * (b) P1 IS A CHECK, NOT A TEST: the impulse is an integral and the energy is
+ *     kept (rule 1328 (b)), so «under 1 %» confirms and decides nothing; it
+ *     is run and reported, at all four λ, and moves no verdict.
+ * (c) P5, the caustic: the width of the zone where the ground's peak exceeds
+ *     half its axial value, on 20, 10 and 5 m scaled — constant in CELLS
+ *     (±25 %) says numerical, the caustic falls; constant in METRES (±25 %)
+ *     says physical, the caustic lives; neither: undecided.
+ * (d) P7b, the hump: the ground peak's local maximum between 120 and 160 km,
+ *     its prominence the excess over the lower of its two neighbouring
+ *     minima (or the 100 km value), in per cent of the peak. «Gone»:
+ *     prominence under 2 %. A change of the 140 km peak between 1 260 and
+ *     630 m under 5 % with the hump gone keeps T2 and T3; over 15 % kills
+ *     them; 5–15 %, or the hump kept, undecided.
+ * (e) P4: «Friedlander» — p(t) over the positive phase fitted by
+ *     Δp(1 − t/t₊)e^(−bt/t₊), residual RMS under 5 % of Δp; the flux test —
+ *     the net flux of wave energy down through z = H over 150–240 km,
+ *     integrated from the front's arrival over its positive phase, against
+ *     the stratified run's excess of wave energy below H over the uniform
+ *     run's at the same range: at least 50 % from aloft, upward or under
+ *     10 % from the low layer, between undecided; θ between grids within
+ *     ±15 % (not ±30 %).
+ * (f) P7a: a gain between 1.3 and 80 % of the isothermal gain is stated as
+ *     undecided.
+ */
+export const RULE_1330_WRITTEN = '2026-09-27' as const;
