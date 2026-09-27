@@ -2182,3 +2182,72 @@ export const RULE_1322_WRITTEN = '2026-09-27' as const;
  * columns».
  */
 export const RULE_1323_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1324. V3 FAILS AS FIXED: THE PEAK RISES WITH EVERY REFINEMENT; G1
+ * PASSES ON RULE 1319'S BLOCK; A HYPOTHESIS AND ITS TEST (27 September
+ * 2026, 16:50; `verifyBlastV3.json`, `blast2dG1.json`). The test written
+ * before its numbers are computed.
+ *
+ * (a) G1 on rule 1319's block (the slope extrapolated, the wall's mirror):
+ *     all eight cases in the reference's own number of steps, every reach
+ *     within 0.000 %, every peak within 0.004 % — PASSES.
+ * (b) V3 (rules 1314, 1315, 1318 (d)), from Taylor–Sedov at 40 m, on 5, 2.5
+ *     and 1.25 m (68 373, 134 706 and about 270 000 steps): the ground's
+ *     recorded peak rises with every refinement and by as much or more each
+ *     time (at λ = 1: 45.6, 46.8, 48.0 kPa against Brode's 51.3; observed
+ *     orders from 0.10 down to −0.68), so nothing is extrapolated and the
+ *     band is the three's spread: the finest from −6.4 % (λ = 1) to +1.7 %
+ *     (λ = 2.8), no reading within 3 % with its band — V3 FAILS AS FIXED.
+ *     The same approach from below as the 1D diagnostic's (rule 1294), and
+ *     the same non-convergence the laboratory found in T3's ground peaks.
+ * (c) THE HYPOTHESIS: a shock-capturing scheme spreads the shock over two to
+ *     three cells, and behind a DECAYING front (a blast wave's) the pressure
+ *     falls within that width, so each cell's recorded maximum is clipped
+ *     below the true post-shock pressure by an amount set by the front's
+ *     numerical width against the wave's own gradient — converging slowly,
+ *     and not at all while the positive phase spans few cells. The shock's
+ *     PATH is not clipped.
+ * (d) THE TEST, on the three runs as they are (no new run): the shock's
+ *     speed from the arrival times of the ground's peak (a straight line
+ *     fitted over ±20 m of range at each reading), the overpressure from
+ *     Rankine–Hugoniot, Δp = p₀·2γ/(γ+1)·(M² − 1), M = U/c₀. The hypothesis
+ *     holds if this overpressure (1) varies between the 2.5 and 1.25 m grids
+ *     by less than half as much as the recorded peak does, at every λ from 1
+ *     to 2.8, and (2) lies within 3 % of Eq. 17 on the finest grid. It fails
+ *     otherwise, and the non-convergence is diagnosed further. Nothing of
+ *     V3's verdict changes either way; how the product reads a peak would be
+ *     a rule of its own.
+ */
+export const RULE_1324_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1325. RULE 1324'S HYPOTHESIS FAILS AS FIXED: THE SHOCK ITSELF IS
+ * WEAKER ON THE COARSER GRIDS (27 September 2026, 16:51;
+ * `scripts/tmp/v3-rankine-hugoniot.ts`). The next test written before it.
+ *
+ * (a) THE NUMBERS: the overpressure from the shock's speed (Rankine–
+ *     Hugoniot) on 5, 2.5 and 1.25 m — at λ = 1: 47.6, 48.6, 49.2 kPa (the
+ *     recorded peak 45.6, 46.8, 48.0; Brode 51.3), at λ = 2: 15.8, 16.3,
+ *     16.4 (16.3 recorded on the finest; Brode 16.5). It lies nearer Brode
+ *     than the record where the wave is steep (λ = 1: −4.1 % against −6.4 %),
+ *     but it too rises with the refinement, and its changes between the two
+ *     finest grids exceed half the record's at λ = 1.2, 1.6, 2.2 and 2.6 (the
+ *     arrival times' own jitter): condition (1) fails, and condition (2) fails
+ *     at λ = 1 and 1.2. THE HYPOTHESIS FAILS AS FIXED. The clipping of the
+ *     record is a part of the deficit, not the whole: the shock's path is
+ *     slower on the coarser grids, so the wave carries less energy there.
+ * (b) THE NEXT HYPOTHESIS: the strong phase just after the start (the shock
+ *     8, 16 and 32 cells out) turns part of the energy into heat left at the
+ *     centre instead of wave — a loss that shrinks as the start is resolved
+ *     better. THE TEST, in one spherical dimension where very fine cells are
+ *     cheap, with this solver's own reconstruction (characteristic WENO-Z,
+ *     HLLC, SSP-RK3): the same Taylor–Sedov start (2 kt, 40 m, the floor of
+ *     rule 1315) on 5, 2.5, 1.25, 0.625, 0.3125 and 0.156 m; the recorded
+ *     peak and the Rankine–Hugoniot overpressure at λ = 1 … 2.8. The
+ *     hypothesis holds if both converge (the changes between successive
+ *     grids shrinking by at least a factor 1.5 over the last three) to
+ *     within 3 % of Eq. 17 at every λ; and, on the 0.625 m grid, starting
+ *     at 20 m instead of 40 m changes the λ = 1 value by less than 1 %.
+ */
+export const RULE_1325_WRITTEN = '2026-09-27' as const;
