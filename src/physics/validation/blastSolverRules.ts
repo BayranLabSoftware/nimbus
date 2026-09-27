@@ -2734,3 +2734,325 @@ export const RULE_1333_WRITTEN = '2026-09-27' as const;
  *     project; then C1–C3 (rule 1333).
  */
 export const RULE_1334_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1335. WHERE THE HELD ZONE BEGINS, MENDED BEFORE THE CODE (27
+ * September 2026, 19:46; found while writing rule 1334 (a)(6), before any
+ * result).
+ *
+ * (a) THE DEFECT. Rule 1334 (a)(6) holds γ̃ constant beyond the first Z where
+ *     ∂p/∂e reaches 0 and joins it to the fit by the C¹ blend. Inside a join
+ *     over [Z_e − δ, Z_e] toward the held value H = γ̃(Z_e), with γ̃_Z nearly
+ *     constant there, the blend's slope is γ̃_Z·[(1 − w) + 6s(1 − s)²], whose
+ *     factor peaks at 1.6875 (s = 0.25), whatever δ: joined at the zero of
+ *     ∂p/∂e = ρ[(γ̃ − 1) + γ̃_Z/ln 10], the join makes it negative. Widening δ
+ *     cannot mend it.
+ * (b) THE MEND. With the margin μ = 1 + γ̃_Z/[(γ̃ − 1) ln 10] (1 for a perfect
+ *     gas, 0 where ∂p/∂e = 0) and κ = c²/[e γ̃(γ̃ − 1)] (1 for a perfect gas),
+ *     the effective edge Z_e(Y) is the least of the data's Z_max(Y) and the
+ *     first Z above 0.72 where μ or κ falls to 1/2 — so the join, whose worst
+ *     slope is 1.6875 times the fit's, keeps μ at least 1 − 1.6875/2 ≈ 0.16.
+ *     The join runs over [Z_e − 0.05, Z_e]; beyond Z_e, γ̃ = H(Y) = γ̃(Y,
+ *     Z_e(Y)). Z_e(Y) is tabulated once, every 0.01 in Y from −7 to 3 (the
+ *     scan in Z every 0.001), linear between nodes; the derivatives in Y of
+ *     H and of the join's weight carry Z_e′(Y), so c² stays the exact
+ *     derivative of the function used. The blended function's checks of
+ *     rule 1334 (a)(7) apply to it, 𝒢 by finite differences.
+ * (c) IN DENSITY, beyond −7 ≤ Y ≤ 3, Y is held at the nearer end (γ̃_Y = 0
+ *     there) — the nearest band at the nearest density of its range, never
+ *     its cubic extrapolated — and every such evaluation counted.
+ */
+export const RULE_1335_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1336. RULE 1335 (b) WITHDRAWN BEFORE ANY USE: THE FIT CONTINUED, NOT
+ * HELD (27 September 2026, 19:52; `airGammaInner` scanned every 0.01 in Y
+ * and 0.001 in Z, before any solver run).
+ *
+ * (a) WHY. Rule 1335's threshold μ = 1/2 falls inside the physics: μ =
+ *     1 + γ̃_Z/[(γ̃ − 1) ln 10] dips with oxygen's dissociation (Z ≈ 1.3–1.7,
+ *     down to 0.107 at 10⁻⁷ ρ₀) and, at the lowest densities, with
+ *     nitrogen's (μ ≤ 0.1 from Z ≈ 2.33 at Y = −7 to 2.55 at Y = −4.5): the
+ *     effective edge came at Z ≈ 1.3–1.6 below Y = −1.85, and would have
+ *     frozen the chemistry step 2 exists to bring in. No threshold on μ
+ *     parts physics from the fit's failure. The failure — μ, κ or γ̃ − 1
+ *     reaching 0 inside the data — occurs only just below the edge for
+ *     −0.5 ≲ Y ≲ 0.5 (Z₀ = 3.094, 2.998 and 2.984 at Y = −0.5, 0 and 0.5,
+ *     against edges 3.125, 3.031 and 2.996); elsewhere the first zero lies
+ *     beyond the edge or nowhere up to it plus 0.3.
+ * (b) THE MEND, replacing rule 1335 (b) and rule 1334 (a)(6)'s hold: Z_h(Y)
+ *     is the least of the data's edge and Z₀(Y) − 0.05, Z₀ the first Z above
+ *     0.72 where μ, κ or γ̃ − 1 reaches 0 (scanned every 0.001 to the edge
+ *     plus 0.3). Beyond Z_h, φ = ln(γ̃ − 1) continues linearly in Z with the
+ *     fit's slope there: μ is held at its value at Z_h, positive since Z_h <
+ *     Z₀, so γ̃ > 1, p > 0 and ∂p/∂e > 0 for every Z, and φ and its slope
+ *     are continuous at Z_h — c does not jump — with no join and no
+ *     threshold. Z_h and the slope S are tabulated every 0.01 in Y and read
+ *     by cubic Hermite interpolation (central-difference slopes: C¹ in Y,
+ *     so γ̃_Y and c² do not jump at the nodes, as linear reading made them
+ *     by about 1 % of γ̃_Y); the function used is φ_fit(Y, Z_h(Y)) +
+ *     S(Y)(Z − Z_h(Y)), its derivatives exact; its slope at Z_h matches the
+ *     fit's exactly at the nodes and to the interpolation's order between.
+ * (c) Rule 1335 (c) stands; rule 1334 (a)(7)'s checks apply to this
+ *     function, the continued zone included; rule 1334 (e)'s «beyond the
+ *     effective edge» reads beyond Z_h.
+ */
+export const RULE_1336_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1337. RULE 1336'S CONTINUATION BOUNDED: ITS SLOPE LET DOWN TO ZERO
+ * OVER 0.05 IN Z (27 September 2026, 19:56; the first run of
+ * `scripts/verify-air-eos-blended.ts`, on rule 1336 with linear tables).
+ *
+ * (a) WHAT THE CHECK FOUND. Hilsenrath–Klein passes (worst 1.77 %, median
+ *     0.57 %). But continued linearly in Z, φ = ln(γ̃ − 1) carries in its Y
+ *     derivative the term S′(Y)(Z − Z_h), unbounded with the distance beyond
+ *     Z_h: c² fell to −13 e γ̃(γ̃ − 1) at Y = −0.48, Z = 4.2, where S(Y) turns
+ *     as Z_h passes from the data's edge to Z₀ − 0.05. A negative c² would
+ *     stop the solver. (The 𝒢 = −117 at Y = 3 was the check's own: its
+ *     differences straddled the clamp's line, where γ̃_Y drops to 0 and c
+ *     jumps — rule 1335 (c)'s clamp is C⁰ in Y; declared, and 𝒢 is measured
+ *     with differences on one side of Y = −7 and 3.)
+ * (b) THE MEND. Beyond Z_h the fit's slope S(Y) is let down to 0 over δ =
+ *     0.05, closed-form: with s = (Z − Z_h)/δ, φ = Φ(Y) + S(Y) δ J(s), J(s) =
+ *     s − s³ + s⁴/2 for s ≤ 1 and 1/2 beyond, so φ_Z = S (1 − w(s)), w the
+ *     C¹ weight: φ is C¹ at both ends, μ = w + (1 − w) μ(Z_h) lies between
+ *     its value at Z_h and 1 — positive — and beyond Z_h + δ, γ̃ is constant
+ *     in Z (μ = 1). Φ(Y) = φ_fit(Y, Z_h(Y)); φ_Y = Φ′ + S′ δ J − S (1 − w)
+ *     Z_h′, the S′ term bounded by δ/2 |S′|. Z_h and S are read from their
+ *     tables by the cubic Hermite interpolation of rule 1336 (b).
+ */
+export const RULE_1337_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1338. THE BLENDED EQUATION OF STATE'S SECOND CHECK: WHAT FAILS, WHAT
+ * IS MENDED, WHAT IS NOT CLAIMED (27 September 2026, 20:04; the second run of
+ * `scripts/verify-air-eos-blended.ts`, on rule 1337).
+ *
+ * (a) THE NUMBERS, rule 1334 (a)(7) as fixed: Hilsenrath–Klein passes (1.77
+ *     %, median 0.57 %); the derivatives match central differences within
+ *     8.7·10⁻⁶ (passes); on the fine grid γ̃ − 1 ≥ 0.074, ∂p/∂e ≥ 0.107
+ *     ρ(γ̃ − 1) and c² ≥ 0.333 eγ̃(γ̃ − 1) everywhere — but 𝒢 ≤ 0 at 28 787 of
+ *     2 588 451 points, down to −57: check (2) FAILS as fixed. Of those, 278
+ *     lie at or below Z_h (Y ≈ −0.55 … −0.50, the band seam near the edge,
+ *     Z ≈ 3.0–3.1), the rest beyond Z_h for −4.5 ≲ Y ≲ 2.3, where γ̃ is held
+ *     in Z and varies in Y only through its value at Z_h, whose kinks (the
+ *     data's edge a polyline, the switch to Z₀ − 0.05) bend it.
+ * (b) THE MEND: rule 1334 (a)(6) counted 𝒢 among the zeros that set the
+ *     effective edge; rule 1336 (b) left it out by oversight. Z₀ is the first
+ *     Z above 0.72 where μ, κ, γ̃ − 1 or 𝒢 (central differences along the
+ *     isentrope, ε = 10⁻⁴) reaches 0.
+ * (c) WHAT IS NOT CLAIMED: beyond Z_h — past the data or the fit's failure,
+ *     T above about 16 000–27 000 K — the continued function is a safety net
+ *     that keeps γ̃ > 1, p > 0, ∂p/∂e > 0 and c² > 0, not a physical
+ *     equation of state, and its convexity is not claimed: check (2) is
+ *     judged at and below Z_h, 𝒢's least value beyond is reported. Its states
+ *     are counted, and rule 1334 (e) makes C1 and C2 undetermined if they
+ *     ever hold more than 1 % of E. The record keeps both verdicts: the grid
+ *     check as fixed, FAILED; below Z_h after the mend, whatever it gives.
+ */
+export const RULE_1338_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1339. Z_h LIPSCHITZ AND THE CONTINUATION'S SLOPE THE FIT'S OWN (27
+ * September 2026, 20:13; the third run of `scripts/verify-air-eos-blended.ts`,
+ * on rule 1338).
+ *
+ * (a) WHAT IT FOUND. With 𝒢 among the zeros (rule 1338 (b)), Z₀(Y) jumps
+ *     where a zero appears or vanishes between neighbouring Y; the table's
+ *     Hermite reading turns the jump into a steep Z_h′, Φ′ = (γ̃_Y +
+ *     γ̃_Z Z_h′)/(γ̃ − 1) follows it, and c² fell to −0.85 eγ̃(γ̃ − 1) at Y =
+ *     −0.48, Z = 4.08 beyond Z_h. And 𝒢 = −55 «at or below Z_h» (Y = −4.53,
+ *     Z = 3.37) came from differences straddling Z_h, where the tabulated
+ *     slope S differs from the fit's between nodes, so γ̃_Z jumps a little.
+ * (b) THE MEND. (1) Z_h is replaced by its Lipschitz lower envelope,
+ *     Z_h*(Y) = min over Y′ of Z_h(Y′) + L|Y − Y′| with L = 0.5, on the same
+ *     nodes: never above Z_h, so still below Z₀ − 0.05 and the data's edge,
+ *     and its Hermite reading's |Z_h*′| ≤ 1.5 L (1.33 L measured), which
+ *     bounds the Φ′ term. (2) The continuation's slope
+ *     is the fit's own at (Y, Z_h*(Y)), S = γ̃_Z/(γ̃ − 1) there, so φ and φ_Z
+ *     are exactly continuous at Z_h*; S′ enters only through S′δJ (at most
+ *     0.025|S′|) and is taken by central differences of S in Y (h = 10⁻⁵),
+ *     the one derivative not in closed form, its error far below the checks'
+ *     tolerances. Rule 1338 (c) stands.
+ */
+export const RULE_1339_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1340. PHASE 5 CLOSED: P2, P3 AND P7a AS POPPER LETS THEM COUNT; V3
+ * CLOSED WITH ITS RESIDUAL; P7b'S PREDICTION FIXED BEFORE IT RUNS (27
+ * September 2026, 20:36; `~/Desktop/Nimbus-laboratorio/p1/fase5/`:
+ * `boltzmann-P2.md`, `eulero-P2-Dh.md`, `tycho-P3.md`, `rayleigh-P7a.md`,
+ * `popper-P3.md`, `popper-P2-P7a.md`).
+ *
+ * (a) P2 (rules 1330 (a), 1331 (a)): read at the foot, converged, the same
+ *     Taylor–Sedov start in Boltzmann's Lagrangian code and in Eulero's
+ *     surrogate gives p(1)/p(2) = 2.981 and 2.983, p(1)/p(2.8) = 4.793 and
+ *     4.795 — D_S = −0.07 and −0.04 % (Popper: the finest grid's foot and
+ *     peak already bracket the surrogate, |D_S| ≤ 0.3 and 0.6 % without
+ *     extrapolating; Boltzmann's ±0.005 on the second ratio is about half
+ *     the honest ±0.012). With Boltzmann's hot sphere (10 m, ρ₀, at rest,
+ *     2 kt) 2.981 ± 0.005 and 4.79 ± 0.013 against 2.978 ± 0.001 and
+ *     4.786 ± 0.002: D_h = +0.10 and +0.08 % (Lagrangian less surrogate,
+ *     rule 1330 (a)'s sense, as D_S). Both within 1 %: the scheme is
+ *     clean. And the hot sphere and the Sedov start give one shape within
+ *     0.2 % in both codes: the start is not the cause either.
+ * (b) V3 CLOSED (rule 1332 (e)): the converged shape departs from Brode's
+ *     Eq. 17 by about −1.6 % at λ = 1 and +3 to +5.5 % at λ = 2–2.8, a
+ *     residual of Eq. 17's, whose own accuracy RM-1363 does not state (rule
+ *     1328); V3 stays FAILED as fixed, the residual declared, and step 2's
+ *     measured data judge the solver in its place.
+ * (c) P3 (rule 1329 (b)): UNDECIDED as fixed — the wall's peak at 15° grows
+ *     +12.8, +9.3, +4.2 % per halving (2 → 16 cells in the stem), the gain
+ *     at 28° (2.665 on the finest) short of 2.92–2.97 and still rising.
+ *     Popper: the bench is clean (the angle convention right, the planar
+ *     copy differs from the solver in geometry only, the edges without
+ *     effect), and criterion (c) could not be met by construction — 2.9451
+ *     is a singular point of the polar theory, the band ±0.8 % about 0.003°
+ *     of angle, at 28° the regular reflection behind it does not exist: a
+ *     defect of the test, declared as rule 1299 (b) declared V1's. On the two
+ *     criteria that could decide, P3 leans toward T2's premise. Taken into
+ *     P4: a stem steady in metres does not mean a converged ground peak —
+ *     the peak is a spike behind the stem's foot that the recorded maximum
+ *     clips, as in V3.
+ * (d) P7a (rules 1329 (b), 1330 (f)), in Popper's words: the linear half of
+ *     T3 stays for a source as long as the 250 Mt pulse (a ≈ 0.8–1 H; with a
+ *     = H in the US 1976 atmosphere a gain of 1.13 over uniform air at 100
+ *     km, 56 % of the isothermal 2.02, the Lamb wave 27 s late — a lag that
+ *     could not fail, its band set from the same kinematics); it reaches the
+ *     edge of undecided at 1.2–1.3 H and would die beyond 1.8 H, lengths the
+ *     250 Mt pulse does not have. The choice a = H was anchored in the
+ *     synthesis's and Maxwell's earlier writings, not in a rule. The
+ *     nonlinear half, and which pulse the burst really launches, go to P7b.
+ * (e) P7b's PREDICTION, fixed before it runs (step 2, rule 1333 (f)):
+ *     Rayleigh's, a lift of the ground peak over uniform air at 100 km
+ *     between ×1.1 and ×1.6 in the US 1976 atmosphere, against ×2.9 in the
+ *     isothermal one.
+ */
+export const RULE_1340_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1341. Z_h's SLOPE BOUNDED AT 0.1, NOT 0.5: THE COST DECLARED (27
+ * September 2026, 20:40; the fourth run and a fast check on Z = 2.5–4.2,
+ * `scratchpad/fast-check.ts`, before the full check).
+ *
+ * (a) WHAT L = 0.5 LEFT. Near Y ≈ −4.7 and Z ≈ 3.3, below the data's edge,
+ *     the fit turns up steeply (μ up to 3.5); the envelope's cone of slope
+ *     0.5, down from the band seam's low Z_h (3.183 at Y = −4.54, where 𝒢
+ *     reaches 0 across the blend), runs through it, S′ ≈ −105 there, and
+ *     S′δJ drove c² to −1.08 eγ̃(γ̃ − 1) at Y = −4.73, Z = 3.33; the
+ *     derivatives' worst 1.35·10⁻⁵ beat 10⁻⁵.
+ * (b) L = 0.1, chosen after L = 0.5 failed and disclosed as such (no other
+ *     value tried) — a
+ *     parameter of the safety net, the checks unchanged: on Z = 2.5–4.2 the
+ *     least c² is 0.479 eγ̃(γ̃ − 1), 𝒢 at and below Z_h at least 0.463, the
+ *     derivatives within 9.8·10⁻⁶; beyond Z_h 𝒢 ≤ 0 at 25 515 points (not
+ *     claimed, rule 1338 (c)).
+ * (c) THE COST: from Y = −0.5 up nothing changes; below, the fit is used to
+ *     about 11 000–16 000 K instead of 17 000–21 000 K (Z_h 3.43, 3.33,
+ *     3.23, 3.24, 3.19, 3.09 and 2.99 at Y = −7, −6, −5, −4, −3, −2 and −1,
+ *     against the data's edge 3.57 … 3.22). C1's source (Z ≤ 2.39) is far
+ *     below. The band seam at Y = −4.5, which sets the lowest Z_h, is the
+ *     place to widen its blend (rule 1334 (a)(7)) if the range is wanted.
+ */
+export const RULE_1341_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1342. THE SEAM AT Y = −4.5 BLENDED OVER ±0.1 (27 September 2026,
+ * 21:02; the fifth run of `scripts/verify-air-eos-blended.ts`, on rule 1341,
+ * and `scratchpad/hk-check.ts`).
+ *
+ * (a) WHAT RULE 1341 COST. With Z_h's slope bounded at 0.1, the cone from the
+ *     seam's low Z_h (3.183 at Y = −4.54, 𝒢 reaching 0 across the ±0.05
+ *     blend) put Hilsenrath–Klein's points at 14 000 K and 10⁻⁵ and 10⁻⁴ of
+ *     their ρ₀ beyond Z_h, where the safety net is no equation of state:
+ *     check (1) FAILED, worst 10.94 % (median 0.58 %). Checks (2) and (3)
+ *     passed; the entropy wave (4) passed on rule 1339's run (4.3·10⁻⁵,
+ *     6.3·10⁻⁶, 2.4·10⁻⁶, 5.4·10⁻⁷ on 100–800 cells), inside the fit and
+ *     untouched since.
+ * (b) THE MEND, the one rule 1334 (a)(7) foresaw (δ widened where 𝒢 reaches
+ *     0): the seam at Y = −4.5 is blended over ±0.1 in Y; ±0.2 and ±0.3 give
+ *     the same Z_h. The seam's zero of 𝒢 goes, Z_h there rises to 3.35 (3.39
+ *     at Y = −5, 3.29 at −4), Hilsenrath–Klein returns to the raw fit's
+ *     1.77 % (median 0.57 %), and on Z = 2.5–4.2 the least c² is 0.788
+ *     eγ̃(γ̃ − 1), 𝒢 at and below Z_h at least 0.463, the derivatives within
+ *     9.8·10⁻⁶. The seam at Y = −0.5 keeps ±0.05. Rule 1341 (c)'s ranges
+ *     rise accordingly; the full check's numbers are its own record.
+ */
+export const RULE_1342_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1343. REAL AIR IN THE CPU SOLVER, AND V7 (27 September 2026, 21:14;
+ * `src/physics/solvers/blast2d/solver.ts`, `scripts/verify-blast-v7.ts`,
+ * `blastV7Baseline.json`, `verifyBlastV7.json`).
+ *
+ * (a) THE INTERFACE, as rule 1334 (b) fixed it: the option eos: 'ideal' |
+ *     'air', the ideal gas the default, real air refused without the limiter
+ *     'has'. A cell or a face state lies in the cold branch when its internal
+ *     energy per volume is at most ρ·RT₀·10^0.58 — tested on the ideal gas's
+ *     own quantities (E − ½ρ|u|², or p/(γ − 1) at a face) and, there, the
+ *     ideal gas's own expressions are used unchanged: (γ − 1)(E − ½ρ|u|²),
+ *     √(γp/ρ), p/(γ − 1) (1.4 − 1 is not 0.4 in floating point, so the
+ *     literal is never written). Hot states take `airBlended`: p and c² at
+ *     the cells; at a face, e by Newton on e(γ̃ − 1) = p/ρ from the e of the
+ *     cell the state was reconstructed from (the left state's from the left
+ *     cell, the right's from the right), inside the bracket [RT₀·10^0.58, p/(0.05ρ)]; the
+ *     characteristic fields' c̄² = Γ̄p̄/ρ̄ with Γ = ρc²/p of each cell (γ in
+ *     the cold branch), the ghosts' Γ and e copied as their ρ/α. The
+ *     positivity limiter and the cells' soundness still read (γ − 1)(E −
+ *     ½ρ|u|²), whose sign is p's since γ̃ > 1. The order of rule 1334 (g) is
+ *     kept but for one thing: the evaluator's cost is to be timed on T4's
+ *     whole large run (rule 1334 (d)), which needs this interface first.
+ * (b) V7 REDUCED — not yet the set rule 1334 (c) fixed (V1, V2, V4, V5, G1's
+ *     eight cases and a short T2 on the CPU, G0–G2 on the GPU; in (ii) V1,
+ *     V4, T0 and V5 at Mach ≤ 1.3): five short cases — an acoustic pulse, Sod along
+ *     z, a Lamb ring in the isothermal atmosphere, a Mach 1.3 shock along z,
+ *     a 30-step T2 (1 kt in a 45 m hemisphere, 10 m cells) — each hashed
+ *     (SHA-256 of the state, the ground's peaks and the time), the baseline
+ *     taken on 5c877af4 before the interface was written and reproduced
+ *     twice: (i) with the ideal gas all five hash as the baseline — PASSES;
+ *     (ii) with real air the three cold cases hash as the ideal gas's —
+ *     PASSES; (iii) the short T2's ground peaks where the wave has arrived,
+ *     real air against ideal: 3.9 MPa against 8.8 MPa at 5 m, 2.1 against
+ *     4.1 MPa at 45 m — the source's pressure halves (γ̃ − 1 near 0.2 in the
+ *     dissociated sphere), reported. The solver's and the equation of
+ *     state's 17 unit tests pass. The reduced set covers the pulse (V1's
+ *     kind), Sod (V2's), the Lamb ring (V4's), the weak shock (V5's) and a
+ *     short T2, each short; V1's self-convergence, V2's and V5's own scripts
+ *     rerun give JSONs identical to the committed ones (rule 1344). Open:
+ *     G1's eight cases on the CPU, T0, V4 in full, and G0–G2 once the GPU has
+ *     the interface.
+ * (c) THE COST, first sight (not rule 1334 (d)'s measure): 120 × 120 cells of
+ *     5 m, 1 kt in 40 m, 40 steps: 57.8 ms a step in real air against 34.2
+ *     in the ideal gas, but each step longer (the hot gas's c lower), about
+ *     1.6 times as much time — near parity per simulated second.
+ */
+export const RULE_1343_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1344. THE THIRTEENTH REVIEW'S MENDS, AND WHAT THEY GAVE (27 September
+ * 2026, 21:29; `scripts/tmp/review9-*`).
+ *
+ * (a) V7 (i) EXTENDED: V1's self-convergence, V2 and V5 rerun on the
+ *     interface's code give JSONs whose every number is the committed one
+ *     (only the wall clock's seconds differ) — the ideal gas's outputs to the
+ *     bit on three of rule 1334 (c)'s scripts, beside rule 1343's five hashes.
+ *     Still open: G1's eight cases on the CPU, T0, V4 in full, G0–G2.
+ * (b) THE CHECK'S GRID BETWEEN THE NODES: rule 1334 (a)(7)'s grid ran every
+ *     0.01 in Y on the tables' own nodes and never sampled between them; the
+ *     review found 𝒢 down to 0.300 there (Y = −0.453, Z = 2.656, positive).
+ *     The grid now runs from −7.495 (half a node off): Hilsenrath–Klein 1.77
+ *     % (median 0.57 %); γ̃ − 1 ≥ 0.0738, ∂p/∂e ≥ 0.107 ρ(γ̃ − 1), c² ≥
+ *     0.787 eγ̃(γ̃ − 1) everywhere; 𝒢 at and below Z_h at least 0.349 —
+ *     PASSES; the derivatives within 2.1·10⁻⁶ — PASSES; beyond Z_h, not
+ *     claimed, 𝒢 ≤ 0 at 118 points, down to −0.33 (on the nodes it had been
+ *     about 20 000: the Hermite reading's knots). Rule 1342 (b)'s «at least
+ *     0.463» was the nodes' value.
+ * (c) The unit test of the seams now tries the band blends' ends in Y (Y =
+ *     −4.6, −4.4, −0.55, −0.45, f and f_Y across y ± 10⁻⁹), not in Z inside
+ *     the blend; rule 1340 (a)'s D_h is +0.10 and +0.08 % in rule 1330 (a)'s
+ *     sense; rule 1339 (b)(1)'s bound reads 1.5 L for the Hermite reading;
+ *     rule 1341 (b) tried no value but 0.5 and 0.1; rule 1343 (a) names the
+ *     cell each face state's Newton starts from.
+ */
+export const RULE_1344_WRITTEN = '2026-09-27' as const;

@@ -1,0 +1,11 @@
+{
+  "rule": "1334 (c) V7 (i)",
+  "commit": "5c877af4",
+  "hashes": {
+    "pulse": "77f0ee6870fa60ae45b09b2a61f99b192b9a53bd681d6289424b4f1382660c6c",
+    "sod": "5a17cc5800126cf766e3cbbeac2d5618d9a6a5de9c7fad30c7df5dba09aa494a",
+    "lamb": "b54554aff4c52aa3229310c6258a480d64474da1c15795492178f6d5abfc97b5",
+    "weakShock": "9fbe5ce0179acce8e5953a29408279328708056a52887f6a74b57ef8f3da73a9",
+    "t2": "07264431ef6337eeba581fa95f4cfb1f581de4bea5d87ce15f7b64b0fbc13ee2"
+  }
+}

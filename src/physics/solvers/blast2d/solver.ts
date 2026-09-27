@@ -26,10 +26,13 @@
  *   (rule 1280).
  *
  * The reference implementation, float64 and SI throughout; its tests are the
- * six of rule 1254 (c).
+ * six of rule 1254 (c). With `eos: 'air'` (rule 1334) the gas is real air —
+ * `airBlended` above Z = 0.58, the ideal gas's own arithmetic below it — and
+ * the positivity limiter is required.
  */
 
 import type { Atmosphere } from './atmosphere.js';
+import { AIR_COLD_E, airBlended } from './airEos.js';
 
 /** Three ghost layers on every side, for the fifth-order reconstruction. */
 const G = 3;
@@ -220,6 +223,9 @@ export interface BlastOptions {
    *  momentum equation imposes at the wall ('momentum', the default), or the
    *  plain mirror of the runs made before rule 1306. */
   readonly groundSlope?: 'mirror' | 'momentum';
+  /** Rule 1334: the ideal gas (the default) or real air, which needs the
+   *  limiter 'has'. */
+  readonly eos?: 'ideal' | 'air';
 }
 
 /** Rule 1277's work arrays: each face's high-order and Lax–Friedrichs flux
@@ -247,6 +253,8 @@ export class BlastSolver2D {
   readonly limiter: 'mood' | 'has';
   /** Rules 1304–1306: the ground's ghosts of p/β. */
   readonly groundSlope: 'mirror' | 'momentum';
+  /** Rule 1334: the equation of state. */
+  readonly eos: 'ideal' | 'air';
 
   /** Conserved variables per cell, ghosts included: ρ, ρu, ρv, E (no potential). */
   readonly rho: Float64Array;
@@ -320,6 +328,14 @@ export class BlastSolver2D {
   private readonly fxL = new Float64Array(4);
   private readonly fxR = new Float64Array(4);
   private readonly star = new Float64Array(4);
+  /** Rule 1334 (b), real air only: each cell's Γ = ρc²/p and specific
+   *  internal energy, ghosts included (the face's c̄ and Newton's start). */
+  private readonly gam: Float64Array | undefined;
+  private readonly eint: Float64Array | undefined;
+  /** c² of the last face state `faceInternal` turned. */
+  private faceC2 = 0;
+  /** Newton's iterations at the faces, over the run (real air). */
+  faceIterations = 0;
 
   constructor(grid: BlastGrid, atmosphere: Atmosphere, options: BlastOptions = {}) {
     const { nr, nz, dx } = grid;
@@ -331,6 +347,9 @@ export class BlastSolver2D {
     this.cfl = options.cfl ?? 0.4;
     this.limiter = options.limiter ?? 'mood';
     this.groundSlope = options.groundSlope ?? 'momentum';
+    this.eos = options.eos ?? 'ideal';
+    if (this.eos === 'air' && this.limiter !== 'has')
+      throw new Error("blast2d: rule 1334 -- real air needs the limiter 'has'");
     this.atmosphere = atmosphere;
     this.stride = nr + 2 * G;
     const n = this.stride * (nz + 2 * G);
@@ -364,6 +383,8 @@ export class BlastSolver2D {
     this.pre2 = f();
     this.pre3 = f();
     this.low = new Uint8Array(n);
+    this.gam = this.eos === 'air' ? f() : undefined;
+    this.eint = this.eos === 'air' ? f() : undefined;
     this.rC = Float64Array.from({ length: nr }, (_, i) => (i + 0.5) * dx);
     this.rF = Float64Array.from({ length: nr + 1 }, (_, i) => i * dx);
     this.alphaC = Float64Array.from({ length: nz }, (_, j) => atmosphere.alpha((j + 0.5) * dx));
@@ -416,7 +437,9 @@ export class BlastSolver2D {
     const r = this.rho[k] ?? 0;
     const a = this.mr[k] ?? 0;
     const b = this.mz[k] ?? 0;
-    return (this.gamma - 1) * ((this.en[k] ?? 0) - (0.5 * (a * a + b * b)) / r);
+    const rhoE = (this.en[k] ?? 0) - (0.5 * (a * a + b * b)) / r;
+    if (this.eos === 'ideal' || rhoE <= r * AIR_COLD_E) return (this.gamma - 1) * rhoE;
+    return airBlended(rhoE / r, r).p;
   }
 
   /** Volume of a cell of ring i (m³). */
@@ -523,7 +546,7 @@ export class BlastSolver2D {
 
   /** Fill w for the interior and its ghosts from the conserved state. */
   private primitives(): number {
-    const { nr, nz, gamma, stride } = this;
+    const { nr, nz, gamma, stride, gam, eint } = this;
     const { rho0, p0 } = this.atmosphere;
     let fastest = 0;
     for (let j = 0; j < nz; j++) {
@@ -534,12 +557,27 @@ export class BlastSolver2D {
         const r = this.rho[k] ?? 0;
         const u = (this.mr[k] ?? 0) / r;
         const v = (this.mz[k] ?? 0) / r;
-        const p = (gamma - 1) * ((this.en[k] ?? 0) - 0.5 * r * (u * u + v * v));
+        const rhoE = (this.en[k] ?? 0) - 0.5 * r * (u * u + v * v);
+        let p: number;
+        let c: number;
+        if (gam === undefined || eint === undefined || rhoE <= r * AIR_COLD_E) {
+          p = (gamma - 1) * rhoE;
+          c = Math.sqrt((gamma * p) / r);
+          if (gam !== undefined && eint !== undefined) {
+            gam[k] = gamma;
+            eint[k] = rhoE / r;
+          }
+        } else {
+          const hot = airBlended(rhoE / r, r);
+          p = hot.p;
+          c = Math.sqrt(hot.c2);
+          gam[k] = (r * hot.c2) / p;
+          eint[k] = rhoE / r;
+        }
         this.q1[k] = r / a;
         this.vu[k] = u;
         this.vv[k] = v;
         this.q4[k] = p / b;
-        const c = Math.sqrt((gamma * p) / r);
         const s = Math.abs(u) + Math.abs(v) + 2 * c;
         if (s > fastest) fastest = s;
       }
@@ -561,6 +599,12 @@ export class BlastSolver2D {
         this.vu[out] = this.vu[last] ?? 0;
         this.vv[out] = this.vv[last] ?? 0;
         this.q4[out] = this.q4[last] ?? 0;
+        if (gam !== undefined && eint !== undefined) {
+          gam[ghost] = gam[inner] ?? 0;
+          eint[ghost] = eint[inner] ?? 0;
+          gam[out] = gam[last] ?? 0;
+          eint[out] = eint[last] ?? 0;
+        }
       }
     }
     // Rules 1304–1306: at the wall ∂p/∂z = −ρg, so q = p/(p₀β) has the slope
@@ -589,6 +633,12 @@ export class BlastSolver2D {
         this.vu[out] = this.vu[last] ?? 0;
         this.vv[out] = this.vv[last] ?? 0;
         this.q4[out] = this.q4[last] ?? 0;
+        if (gam !== undefined && eint !== undefined) {
+          gam[ghost] = gam[inner] ?? 0;
+          eint[ghost] = eint[inner] ?? 0;
+          gam[out] = gam[last] ?? 0;
+          eint[out] = eint[last] ?? 0;
+        }
       }
     }
     return fastest / this.dx;
@@ -682,7 +732,7 @@ export class BlastSolver2D {
    * r), and the two face values projected back.
    */
   private reconstructCharacteristic(step: number): void {
-    const { nr, nz, stride, gamma } = this;
+    const { nr, nz, stride, gamma, gam } = this;
     const { rho0, p0 } = this.atmosphere;
     const radialDir = step === 1;
     const lines = radialDir ? nz : nr;
@@ -714,7 +764,9 @@ export class BlastSolver2D {
         const kr = kl + step;
         const rhoBar = 0.5 * a * ((q1[kl] ?? 0) + (q1[kr] ?? 0));
         const pBar = 0.5 * b * ((q4[kl] ?? 0) + (q4[kr] ?? 0));
-        const c = Math.sqrt((gamma * pBar) / rhoBar);
+        // Rule 1334 (b): c̄² = Γ̄p̄/ρ̄, Γ̄ = γ in the ideal gas and the cold branch.
+        const gBar = gam === undefined ? gamma : 0.5 * ((gam[kl] ?? 0) + (gam[kr] ?? 0));
+        const c = Math.sqrt((gBar * pBar) / rhoBar);
         const z = rhoBar * c;
         const c2 = c * c;
         for (let m = 0; m < 6; m++) {
@@ -759,6 +811,43 @@ export class BlastSolver2D {
   }
 
   /**
+   * Rule 1334 (b): a face state's internal energy per volume from (ρ, p) —
+   * the ideal gas's p/(γ − 1) where that lies in the cold branch, else
+   * Newton on e(γ̃ − 1) = p/ρ from the upwind cell's e, kept inside a
+   * bracket (e(γ̃ − 1) rises with e) — its c² left in `faceC2`.
+   */
+  private faceInternal(r: number, p: number, guess: number): number {
+    const g = this.gamma;
+    const cold = p / (g - 1);
+    if (!(cold > r * AIR_COLD_E)) {
+      this.faceC2 = (g * p) / r;
+      return cold;
+    }
+    const target = p / r;
+    // e(γ̃ − 1) − p/ρ is negative at the cold branch's top (γ̃ = 1.4 there)
+    // and positive at p/(0.05ρ) (γ̃ − 1 ≥ 0.074 wherever it is defined).
+    let lo = AIR_COLD_E;
+    let hi = target / 0.05;
+    let e = guess > lo && guess < hi ? guess : cold / r;
+    for (let it = 0; it < 80; it++) {
+      const s = airBlended(e, r);
+      const f = s.p / r - target;
+      if (Math.abs(f) <= 1e-14 * target) {
+        this.faceC2 = s.c2;
+        return r * e;
+      }
+      if (f > 0) hi = e;
+      else lo = e;
+      let next = e - f / s.dpde;
+      if (!(next > lo && next < hi)) next = 0.5 * (lo + hi);
+      this.faceIterations++;
+      e = next;
+    }
+    this.faceC2 = airBlended(e, r).c2;
+    return r * e;
+  }
+
+  /**
    * HLLC flux (Toro) across a face, in the face's frame: normal speed `un`,
    * tangential `ut`. Writes (mass, normal momentum, tangential momentum,
    * energy) into `this.flux`.
@@ -771,13 +860,28 @@ export class BlastSolver2D {
     rR: number,
     unR: number,
     utR: number,
-    pR: number
+    pR: number,
+    guessL = NaN,
+    guessR = NaN
   ): void {
     const g = this.gamma;
-    const cL = Math.sqrt((g * pL) / rL);
-    const cR = Math.sqrt((g * pR) / rR);
-    const eL = pL / (g - 1) + 0.5 * rL * (unL * unL + utL * utL);
-    const eR = pR / (g - 1) + 0.5 * rR * (unR * unR + utR * utR);
+    let cL: number;
+    let cR: number;
+    let eL: number;
+    let eR: number;
+    if (this.eos === 'ideal') {
+      cL = Math.sqrt((g * pL) / rL);
+      cR = Math.sqrt((g * pR) / rR);
+      eL = pL / (g - 1) + 0.5 * rL * (unL * unL + utL * utL);
+      eR = pR / (g - 1) + 0.5 * rR * (unR * unR + utR * utR);
+    } else {
+      // Rule 1334 (b): E_K from (p_K, ρ_K) by the equation of state, Davis's
+      // speeds with its c.
+      eL = this.faceInternal(rL, pL, guessL) + 0.5 * rL * (unL * unL + utL * utL);
+      cL = Math.sqrt(this.faceC2);
+      eR = this.faceInternal(rR, pR, guessR) + 0.5 * rR * (unR * unR + utR * utR);
+      cR = Math.sqrt(this.faceC2);
+    }
     const sL = Math.min(unL - cL, unR - cR);
     const sR = Math.max(unL + cL, unR + cR);
     const out = this.flux;
@@ -1085,13 +1189,23 @@ export class BlastSolver2D {
   ): number {
     const u = mr / rho;
     const v = mz / rho;
-    const p = (this.gamma - 1) * (en - 0.5 * rho * (u * u + v * v));
+    const rhoE = en - 0.5 * rho * (u * u + v * v);
+    let p: number;
+    let c: number;
+    if (this.eos === 'ideal' || rhoE <= rho * AIR_COLD_E) {
+      p = (this.gamma - 1) * rhoE;
+      c = Math.sqrt((this.gamma * p) / rho);
+    } else {
+      const hot = airBlended(rhoE / rho, rho);
+      p = hot.p;
+      c = Math.sqrt(hot.c2);
+    }
     const un = dir === 0 ? u : v;
     out[o] = rho * un;
     out[o + 1] = mr * un + (dir === 0 ? p : 0);
     out[o + 2] = mz * un + (dir === 1 ? p : 0);
     out[o + 3] = (en + p) * un;
-    return Math.abs(un) + Math.sqrt((this.gamma * p) / rho);
+    return Math.abs(un) + c;
   }
 
   /**
@@ -1113,8 +1227,12 @@ export class BlastSolver2D {
         const r = this.rho[k] ?? 0;
         const u = (this.mr[k] ?? 0) / r;
         const v = (this.mz[k] ?? 0) / r;
-        const p = (gamma - 1) * ((this.en[k] ?? 0) - 0.5 * r * (u * u + v * v));
-        const c = Math.sqrt((gamma * p) / r);
+        const rhoE = (this.en[k] ?? 0) - 0.5 * r * (u * u + v * v);
+        let c: number;
+        if (this.eos === 'ideal' || rhoE <= r * AIR_COLD_E) {
+          const p = (gamma - 1) * rhoE;
+          c = Math.sqrt((gamma * p) / r);
+        } else c = Math.sqrt(airBlended(rhoE / r, r).c2);
         if (Math.abs(u) + c > ar) ar = Math.abs(u) + c;
         if (Math.abs(v) + c > az) az = Math.abs(v) + c;
       }
@@ -1140,7 +1258,9 @@ export class BlastSolver2D {
           a * (this.t1[kr] ?? 0),
           this.tu[kr] ?? 0,
           this.tv[kr] ?? 0,
-          b * (this.t4[kr] ?? 0)
+          b * (this.t4[kr] ?? 0),
+          this.eint?.[kl] ?? NaN,
+          this.eint?.[kr] ?? NaN
         );
         const o = 4 * (j * (nr + 1) + f);
         work.high[o] = out[0] ?? 0;
@@ -1190,7 +1310,9 @@ export class BlastSolver2D {
           a * (this.t1[kr] ?? 0),
           this.tv[kr] ?? 0,
           this.tu[kr] ?? 0,
-          b * (this.t4[kr] ?? 0)
+          b * (this.t4[kr] ?? 0),
+          this.eint?.[kl] ?? NaN,
+          this.eint?.[kr] ?? NaN
         );
         const o = 4 * (off + g * nr + i);
         work.high[o] = out[0] ?? 0;
