@@ -15,6 +15,9 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { uniformAtmosphere } from '../src/physics/solvers/blast2d/atmosphere.js';
+import { sedovStart } from '../src/physics/solvers/blast2d/sedov.js';
+import { BlastSolver2D } from '../src/physics/solvers/blast2d/solver.js';
 import { withGpuPage } from './blast2d-gpu.js';
 
 const P0 = 101_325;
@@ -78,6 +81,19 @@ function readAt(r: Run, range: number): { value: number; uncertainty: number } {
 const runs: Run[] = [];
 for (const dx of GRIDS) runs.push(await run(dx));
 
+/** The energy each grid's start put in above the air at rest over the half
+ *  space (J): the cells' averages of the Taylor–Sedov field, on the CPU, as
+ *  the GPU's start builds them — against E, the half of the mirror's 2E. */
+const injected = GRIDS.map((dx) => {
+  const reach = Math.ceil(40 / dx) + 2;
+  const solver = new BlastSolver2D({ nr: reach, nz: reach, dx }, uniformAtmosphere(1.225, P0));
+  return sedovStart(solver, 2 * E, 40);
+});
+for (const [n, dx] of GRIDS.entries())
+  console.log(
+    `${String(dx)} m: injected ${(((injected[n] ?? 0) / E - 1) * 100).toFixed(3)} % from E`
+  );
+
 const rows = LAMBDAS.map((l) => {
   const reads = runs.map((r) => readAt(r, l * EPS));
   const v = reads.map((x) => x.value);
@@ -129,5 +145,5 @@ console.log(`V3 ${passes ? 'PASSES' : 'FAILS'}`);
 if (GRIDS.length === 3)
   writeFileSync(
     'src/physics/validation/verifyBlastV3.json',
-    `${JSON.stringify({ rule: '1295 (c) V3, 1314, 1315, 1318 (d)', tolerance: TOLERANCE, grids: GRIDS, steps: runs.map((r) => r.steps), rows, passes }, null, 2)}\n`
+    `${JSON.stringify({ rule: '1295 (c) V3, 1314, 1315, 1318 (d)', tolerance: TOLERANCE, grids: GRIDS, steps: runs.map((r) => r.steps), energy: E, injectedEnergy: injected, rows, passes }, null, 2)}\n`
   );

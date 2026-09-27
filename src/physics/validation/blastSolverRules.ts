@@ -2482,3 +2482,55 @@ export const RULE_1330_WRITTEN = '2026-09-27' as const;
  *     pass for a shock's; residual RMS under 5 % of Δp.
  */
 export const RULE_1331_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1332. T3 RECORDED ON THE PRESENT SCHEME, THE LIMITER'S BLENDS
+ * COUNTED, AND V3'S INJECTED ENERGY (27 September 2026, 19:00;
+ * `docs/BLAST2D_T3.md`, `src/physics/validation/blast2dT3.json`,
+ * `verifyBlastV3.json`).
+ *
+ * (a) T3 on the scheme of rules 1309–1317 (the characteristic
+ *     reconstruction, the ground's slope, the mirror), on the GPU: the 78
+ *     standard cases (1 260, 630 and 315 m at 250 Mt, H = 6.76 km); the 26
+ *     sensitivity cases deferred by rule 1329 (c), their column «—». It
+ *     FAILS as rule 1291 recorded it: 53 judged, 51 left out, none beyond
+ *     the domain, 3 lower bounds; the worst relative error 3.687 (rule
+ *     1291: 3.620; the ratio 4.69 at the ground, 2 psi), the median 0.262
+ *     (0.230); by threshold the worst 1.980, 3.687, 2.044, 1.405 and the
+ *     median 0.182, 0.167, 0.215, 0.845 at 1, 2, 4 and 10 psi.
+ * (b) WHAT MOVED: of 67 readings with a value on both schemes the median
+ *     change is +0.97 %, from −5.5 % to +92 %. The changes beyond 5 % lie
+ *     where the reach is ill-determined — a contour's tip (1 psi at 1.27 km
+ *     scaled, 0.501 → 0.634; 2 psi at 0.84, 0.90 and 0.95 km, +11, +21,
+ *     +69 %) — and in one reading on the finest grid alone: 4 psi at
+ *     0.0476 km (3 km at 250 Mt), the 315 m reach 1.108 → 2.122 km scaled
+ *     (70 → 134 km), the coarser two unchanged (1.097, 1.091). The ground's
+ *     peak stays above 27.6 kPa out to 134 km on the finest grid only: rule
+ *     1292's non-convergence, in the band where the mediators' T2 puts a
+ *     stem thinner than the cells (rule 1329 (a)) — a datum for P4, no
+ *     verdict. The 1 psi reading at 0.1587 km is now a lower bound on all
+ *     three grids (the reach at the domain's edge, 3.10 km scaled).
+ * (c) THE LIMITER'S BLENDS: 2 764 056 faces over the 78 cases, 1.6 × 10⁻⁶ of
+ *     the face updates (steps × 3 stages × 2 directions × cells), against
+ *     1.8 × 10⁻⁷ in rule 1291's runs — about nine times as often, at most
+ *     7.3 × 10⁻⁵ in one case (1 260 m, the burst at 10 km). They gather in
+ *     the bursts below 33 km (at 250 Mt), fall to hundreds above 50 km and
+ *     rise again at 75–80 km. A blend moves a face toward the first-order,
+ *     positive state: more dissipation, not a source of the excess. Where
+ *     in the domain they fall is not recorded; stated, not located.
+ * (d) V3's INJECTED ENERGY, now in `verifyBlastV3.json`: the start's cells
+ *     hold −0.055, +0.006 and +0.026 % of E above the air at rest on 5, 2.5
+ *     and 1.25 m (E the half space's share of the mirror's 2E). V3's gap to
+ *     Eq. 17 (rule 1328) owes nothing to the energy put in.
+ * (e) PHASE 5 CLOSED IN PART (Andrea, 19:02: is step 1 worth this much
+ *     time?). P2 and P3, running, finish and are recorded; P7a (a linear
+ *     code, minutes) runs; P1 is dropped (rule 1330 (b): it decides
+ *     nothing). P7b and P4 move to step 2 (rule 1295), where the real
+ *     atmosphere enters the solver and answers T3 directly; P5 moves to
+ *     step 3 (the moving source); P6 falls. If P2 finds a defect of the
+ *     scheme (rule 1331 (a)), it is mended before step 2; otherwise V3
+ *     closes with its residual declared — the converged shape departs from
+ *     Eq. 17 by −2 to +5.5 %, Eq. 17's own accuracy unstated (rule 1328) —
+ *     and step 2's measured data judge the solver in its place.
+ */
+export const RULE_1332_WRITTEN = '2026-09-27' as const;
