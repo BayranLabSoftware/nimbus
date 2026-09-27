@@ -71,7 +71,7 @@ const f = (x: number | null, d = 3): string => (x === null ? '—' : x.toFixed(d
 const lines = [
   '# Blast solver — T2: 1 kt against Glasstone & Dolan (rules 1254, 1256)',
   '',
-  `Overall: ${String(overall.judged)} readings judged, ${String(overall.left)} left out (${String(overall.beyond)} of them beyond the domain, rule 1276); ${String(overall.bounds)} judged readings are lower bounds («≥»); worst ${f(overall.worst)}, median ${f(overall.median)} — **${overall.passes ? 'PASSES' : 'FAILS'}** (every judged reach within 0.10, median within 0.05). First-order fall-backs: ${String(fallbacks)}.`,
+  `Overall: ${String(overall.judged)} readings judged, ${String(overall.left)} left out (${String(overall.beyond)} of them beyond the domain, rule 1276); ${String(overall.bounds)} judged readings are lower bounds («≥»); worst ${f(overall.worst)}, median ${f(overall.median)} — **${overall.passes ? 'PASSES' : 'FAILS'}** (every judged reach within 0.10, median within 0.05). Faces blended by the positivity limiter (rules 1277–1278; first-order fall-backs without it): ${String(fallbacks)}.`,
   '',
 ];
 for (const t of thresholds) {

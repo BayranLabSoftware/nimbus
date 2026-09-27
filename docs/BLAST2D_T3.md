@@ -1,6 +1,6 @@
 # Blast solver — T3: 250 Mt against Aftosmis, Mathias & Tarano (2019) (rules 1254, 1256)
 
-Scale height 6.76 km (their Fig. 3's caption); distances in km scaled to 1 kt (×63.0 at 250 Mt). Overall: 53 judged, 51 left out (0 of them beyond the domain, rule 1276); 3 judged readings are lower bounds («≥»); worst 3.687, median 0.262 — **FAILS**. First-order fall-backs: 2764056.
+Scale height 6.76 km (their Fig. 3's caption); distances in km scaled to 1 kt (×63.0 at 250 Mt). Overall: 53 judged, 51 left out (0 of them beyond the domain, rule 1276); 3 judged readings are lower bounds («≥»); worst 3.687, median 0.262 — **FAILS**. Faces blended by the positivity limiter (rules 1277–1278; first-order fall-backs without it): 2764056.
 
 ## 1 psi — worst 1.980, median 0.182, 19 judged
 

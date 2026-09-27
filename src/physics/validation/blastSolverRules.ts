@@ -2498,13 +2498,15 @@ export const RULE_1331_WRITTEN = '2026-09-27' as const;
  *     1291: 3.620; the ratio 4.69 at the ground, 2 psi), the median 0.262
  *     (0.230); by threshold the worst 1.980, 3.687, 2.044, 1.405 and the
  *     median 0.182, 0.167, 0.215, 0.845 at 1, 2, 4 and 10 psi.
- * (b) WHAT MOVED: of 67 readings with a value on both schemes the median
+ * (b) WHAT MOVED: of the 67 readings with a value on both schemes (the 104
+ *     less 29 null reaches and 8 lower bounds) the median
  *     change is +0.97 %, from −5.5 % to +92 %. The changes beyond 5 % lie
  *     where the reach is ill-determined — a contour's tip (1 psi at 1.27 km
  *     scaled, 0.501 → 0.634; 2 psi at 0.84, 0.90 and 0.95 km, +11, +21,
  *     +69 %) — and in one reading on the finest grid alone: 4 psi at
  *     0.0476 km (3 km at 250 Mt), the 315 m reach 1.108 → 2.122 km scaled
- *     (70 → 134 km), the coarser two unchanged (1.097, 1.091). The ground's
+ *     (70 → 134 km), the coarser two near 1.1 on both schemes (1.192 and
+ *     1.071 before, 1.097 and 1.091 now). The ground's
  *     peak stays above 27.6 kPa out to 134 km on the finest grid only: rule
  *     1292's non-convergence, in the band where the mediators' T2 puts a
  *     stem thinner than the cells (rule 1329 (a)) — a datum for P4, no
@@ -2514,8 +2516,9 @@ export const RULE_1331_WRITTEN = '2026-09-27' as const;
  *     the face updates (steps × 3 stages × 2 directions × cells), against
  *     1.8 × 10⁻⁷ in rule 1291's runs — about nine times as often, at most
  *     7.3 × 10⁻⁵ in one case (1 260 m, the burst at 10 km). They gather in
- *     the bursts below 33 km (at 250 Mt), fall to hundreds above 50 km and
- *     rise again at 75–80 km. A blend moves a face toward the first-order,
+ *     the bursts below 33 km (at 250 Mt), fall to about a thousand at 50–53
+ *     km and to hundreds or fewer from 57 to 70 km, and rise again at 75–80
+ *     km. A blend moves a face toward the first-order,
  *     positive state: more dissipation, not a source of the excess. Where
  *     in the domain they fall is not recorded; stated, not located.
  * (d) V3's INJECTED ENERGY, now in `verifyBlastV3.json`: the start's cells
@@ -2534,3 +2537,200 @@ export const RULE_1331_WRITTEN = '2026-09-27' as const;
  *     and step 2's measured data judge the solver in its place.
  */
 export const RULE_1332_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1333. STEP 2'S VALIDATION: THE MEASURES AND THEIR CRITERIA, FIXED
+ * BEFORE ANY TARGET IS READ (27 September 2026, 19:28, completed at 19:35 and
+ * 19:44 by the twelfth and thirteenth reviews, `scripts/tmp/review9-*`; Keplero's dossier
+ * `~/Desktop/Nimbus-laboratorio/p2/keplero-dati-validazione.md`, which
+ * carries the sources' forms, declared uncertainties and mutual spread and no
+ * target value; the Director has read none). Step 2 of rule 1295 (a).
+ *
+ * (a) WHAT THE SOURCES ARE. None of those in hand tabulates raw test data.
+ *     Needham & Crepeau 1981 (DNA 5648T, the DNA 1-kt standard, N&C) is a fit
+ *     to radiation-hydrodynamic calculations extrapolated to zero zone size,
+ *     checked against fits to tests; Brode 1987 (PSR 1419-3, B87) is mostly
+ *     fits to calculations, two of its laws fits to data (the arrival time's
+ *     Eq. 40, «Empirical 59»; the thermal minimum's Eq. 80); Glasstone &
+ *     Dolan 1977 (G&D) gives curves «computed for nearly ideal conditions».
+ *     The blast comparison of this step is therefore with the field's
+ *     standard, declared as such (rule 1295 (b)); the thermal pulse's laws
+ *     and the fireball's radius at Trinity are the measurements. The
+ *     sources' spread: N&C and B87 within 3 % in range at equal pressure from
+ *     3 MPa to 3 kPa, −6 to +16 % in pressure at equal range (up to +10 % in
+ *     C1's span); G&D +4 to +16 % above N&C; N&C's declared fit error 5 % at
+ *     most; the tests themselves scatter by ±20 % and more (B87 p. 3).
+ * (b) THE BLAST'S SHARE f_b, AN INPUT FIXED A PRIORI, never calibrated on a
+ *     blast target (no imposed factor, rule 1295 (a)). Central: f_b = 1 −
+ *     f_th − f_n, f_th G&D's thermal partition at 1 kt at the lowest altitude
+ *     of its Table 7.88, f_n the prompt nuclear radiation's share of G&D
+ *     §1.25. Its interval: f_th ±25 % (G&D p. 310) and f_n ±50 % (our choice:
+ *     G&D calls it a rule of thumb), added linearly; and, a model's
+ *     uncertainty, up to 1 − f_n: the thermal pulse leaves mostly after the
+ *     shock's separation, from the fireball's heat, which a hydrodynamic
+ *     calculation keeps largely in its hot core (rule 1328 (b): about a
+ *     fifth of E), so subtracting f_th may understate the wave's energy. The
+ *     interval is [1 − 1.25 f_th − 1.5 f_n, 1 − 0.5 f_n]. Without gravity the
+ *     flow scales exactly by the cube root at fixed ambient air, whatever the
+ *     local equation of state p(ρ, e), with the source scaled with it (or a
+ *     point; the Sedov start's fixed 40 m moves a peak by 0.3 % at most, rule
+ *     1328 (b)): one run gives every f_b. Once radiation is in (e), f_b is
+ *     the physics' output instead.
+ * (c) THE FREE-AIR BURST, 1 kt at sea level, no gravity, judged on REAL AIR
+ *     (the perfect gas run and reported beside it, the difference real air's
+ *     effect). Free air without gravity is spherical: the judged value is
+ *     the one-dimensional spherical solver's of the same scheme and the same
+ *     equation of state (rule 1328's surrogate, brought into the project
+ *     with its tests), refined to 0.156 m and read converged by rule 1256
+ *     (c) with rule 1318 (d)'s band; the product's two-dimensional solver
+ *     (the ground a mirror, W/2 in the half space) on 5, 2.5 and 1.25 m
+ *     within 1 % of the one-dimensional one at the same cell at every range
+ *     of C1 — else the step stops there, a defect. A reading's error counts
+ *     with its band: |off| + band.
+ *     C1 PEAK OVERPRESSURE against N&C's Eq. 7 at 100, 150, 200, 300, 500,
+ *        700 m, 1, 1.5 and 2 km scaled. PASSES if with the central f_b every
+ *        reading's |off| + band ≤ 12 % (N&C's 5 % and its spread to B87 in
+ *        C1's span, 10 %, in quadrature: 11.2 %, rounded up) with the central
+ *        source (rule 1334 (e)); CONSISTENT if not, but ONE pair of f_b and
+ *        source, each within its declared interval, brings every reading
+ *        within 12 % at once; FAILS otherwise. The two radii's spread is
+ *        reported beside each reading, not added to its band. From 20 to 100 m reported, not judged — a
+ *        choice, not a physical marker: N&C excludes below about 15 m and the
+ *        fireball's radiative growth, which (e) adds, shapes the shock there.
+ *        B87 and G&D reported beside it.
+ *     C2 ARRIVAL TIME against B87's Eq. 40, a fit to test data: read at the
+ *        front's 5 % foot (rules 1326–1327), the clock from the hot sphere's
+ *        birth — the detonation; a point source's time to reach the sphere's
+ *        radius, the other choice, is part of the source's interval —
+ *        judged only from 300 m, where the two clocks differ by 1.6 % at
+ *        most (12.4 % at 100 m), to 1 km, where the ±7 % spread to the
+ *        calculations' Eq. 39 was measured, and within Eq. 40's data range
+ *        (rule 1334 (f)); reported below 300 m and beyond 1 km. Within ±7 %
+ *        (|off| + band) with the central f_b and source PASSES; with one
+ *        pair of the intervals for every range CONSISTENT; else FAILS.
+ *     C3 POSITIVE IMPULSE: reported against N&C and B87, no verdict — the
+ *        two differ by up to 51 % between each other.
+ * (d) TRINITY: the fireball's radius against time from Mack's photographs
+ *     (Taylor 1950, Proc. R. Soc. A 201, 175 — to be downloaded by Andrea,
+ *     the publisher answers 403), the yield from Selby et al. 2021 (arXiv
+ *     2103.06258, not yet read or checked). Its criterion is fixed by its
+ *     own rule once the source is in hand and before its table is read.
+ * (e) RADIATION, when it is built (its own rules): t_max within ±11 % of
+ *     B87's Eq. 76 (a band spanning 90 % of the test data), t_min within ±12 %
+ *     of Eq. 80, the thermal fraction — G&D's, the thermal energy emitted in
+ *     the first minute over the total yield (§7.02, §7.88) — within ±25 % of
+ *     its Table 7.88; then C1–C2 again with f_b the physics' own.
+ * (f) ORDER: real air in the solver and its verification (its own rule,
+ *     from Eulero's design); C1–C3; P7b and P4 moved here by rule 1332 (e) —
+ *     T3 again with real air and the US 1976 atmosphere, code against code;
+ *     Trinity; radiation. Two heavy computations at a time. The targets are
+ *     read by the scripts that judge, after this rule is committed.
+ */
+export const RULE_1333_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1334. REAL AIR IN THE SOLVER: THE DESIGN, ITS VERIFICATION, C1'S
+ * SOURCE AND C2'S RANGE, BEFORE THE CODE (27 September 2026, 19:36, completed
+ * at 19:44 by the thirteenth review, `scripts/tmp/review9-*`; Eulero's
+ * design `~/Desktop/Nimbus-laboratorio/p2/eulero-aria-reale.md`, its three
+ * probes `scripts/tmp/lab-eulero-eos-*.ts`; Keplero's
+ * `p2/keplero-eq40.md`).
+ *
+ * (a) THE EQUATION OF STATE ENTERS BLENDED. Measured: the fit's jumps between
+ *     columns (up to 2.3 % in p and 2.9 % in a, rule 1313) and between
+ *     density bands (up to 2.2 % in p and 8.2 % in a at Y = −0.5, Z = 3.0)
+ *     make a contact at constant pressure ring at 0.6 % of p on 100 to 800
+ *     cells without converging, while blended it converges (4.3·10⁻⁵ to
+ *     5.4·10⁻⁷). So: (1) the cold branch, Z ≤ 0.58 (T ≲ 420 K), is the ideal
+ *     gas at γ = 1.4 exactly — the fit's constant first columns (γ̃ 1.3965 to
+ *     1.3988, within the fit's own error of true cold air's 1.400) dropped —
+ *     so the far field and the background are today's scheme; (2) a C¹ blend
+ *     w = s²(3 − 2s) from 1.4 to the second column over 0.58 ≤ Z ≤ 0.72; (3)
+ *     the same blend between the higher columns over |Z − Z_b| < 0.05, and
+ *     (4) between the density bands over ±0.05 in Y, replacing the linear
+ *     ramps; (5) c² always from the exact derivatives of the blended γ̃, w′
+ *     included (rule 1308 (d)(5)); (6) no exception inside the solver: beyond
+ *     the EFFECTIVE edge — the lesser of the data's Z_max(Y) (rule 1319 (c))
+ *     and the first Z where ∂p/∂e, c² or 𝒢 reaches 0 (at ρ₀ Z = 2.998,
+ *     before the data's 3.031, rule 1320 (d)) — γ̃ is held constant in Z,
+ *     joined to the fit by the same C¹ blend, so c does not jump; in density
+ *     the nearest band is taken; every such evaluation counted; (7) before
+ *     use the blended and held function passes
+ *     Hilsenrath–Klein's 49 points (at most 5 %, median at most 2 %), γ̃ > 1,
+ *     ∂p/∂e > 0, c² > 0 and the fundamental derivative 𝒢 > 0 on a fine grid,
+ *     the held zone included (there γ̃_Z = 0 and c² = e[(γ̃ − 1)γ̃ +
+ *     γ̃_Y/ln 10]) (δ widened where 𝒢 reaches 0), and the entropy wave's test
+ *     converging.
+ * (b) THE SCHEME. HLLC's star states are the equation of state's own; only E_K
+ *     comes from (p_K, ρ_K) by the equation of state and Davis's speeds take
+ *     its c. The characteristic fields of rule 1309 are exact for any
+ *     equation of state (the pressure row of the Jacobian is ρc²); the face's
+ *     c̄² = Γ̄p̄/ρ̄, Γ = ρc²/p per cell — in the cold branch Γ SET to the
+ *     literal 1.4, never computed, so today's formula holds to the bit. ρ/α
+ *     and p/β are reconstructed as now; e at a face by Newton on e(γ̃ − 1) =
+ *     p/ρ from the upwind cell's e, with a safeguarding bracket on the CPU
+ *     and the GPU alike; on the GPU a fixed count of iterations, three
+ *     unless the residual |e(γ̃ − 1) − p/ρ|/(p/ρ) measured on G1's hot cases
+ *     exceeds 10⁻⁶ after them, then as many as bring it below. The
+ *     positivity limiter's arithmetic is unchanged, reading q = 0.4(E −
+ *     |m|²/2ρ): since γ̃ > 1, p > 0 ⇔ ρe > 0, and ρe is concave in the
+ *     conserved state. α = max(|u| + c) is kept for Lax–Friedrichs (measured
+ *     margin 2.62 over the fit's domain).
+ * (c) VERIFICATION, criteria fixed now:
+ *     V6 REAL-AIR RIEMANN against an exact solver written apart, from the
+ *        publications (Colella & Glaz 1985; Menikoff & Plohr 1989;
+ *        Quartapelle et al. 2003), sharing with the scheme only the blended
+ *        equation of state. Its own checks first: with the ideal gas it gives
+ *        V2's exact solution within 10⁻¹²; Rankine–Hugoniot residuals at most
+ *        10⁻¹²; halving its RK4 step moves it under 10⁻¹⁰. Cases: (a) 50 atm
+ *        and 8 000 K against 1 atm and 300 K; (b) 1 000 atm and 15 000 K
+ *        against 1 atm and 300 K; (c) a shock inside a single column. On four
+ *        grids: the L1 order of density at least 0.8 between the two finest,
+ *        the shock within one cell and the plateau p* within 0.5 % on the
+ *        finest.
+ *     V7 THE COLD LIMIT, TO THE BIT: (i) with the equation of state's
+ *        interface and the ideal gas, V1, V2, V4, V5, G1's eight cases and a
+ *        short T2 on the CPU, and G0–G2 on the GPU, identical to the bit; (ii)
+ *        with real air, the cases that stay below Z = 0.58 throughout (V1,
+ *        V4, T0, V5 at Mach ≤ 1.3) identical to the bit; (iii) T2 in ideal
+ *        and in real air, the difference reported.
+ *     V8 THE CONTACT AT CONSTANT PRESSURE through every blend, planar and
+ *        axisymmetric: max |Δp|/p converging with order at least 2 between
+ *        the two finest of four grids.
+ *     G1 repeated on hot cases (T2 and T4's large one) with its criteria.
+ * (d) THE COST, measured before the evaluator is chosen (the module as it
+ *     stands, 778 ns a state, would make a hot cell 12–15 times dearer): an
+ *     optimised single pass giving γ̃, γ̃_Y and γ̃_Z is written first and timed
+ *     on T4's large case; if the whole run then costs more than 30 % over the
+ *     ideal gas, the blended function is tabulated once in (Y, Z) with
+ *     bicubic Hermite interpolation, c² from the same interpolant (Swesty
+ *     1996), and the table passes (a)(7) again.
+ * (e) C1'S SOURCE. The Sedov start's core (rule 1315's floor) lies far beyond
+ *     the fit, a nuclear core at 10⁶–10⁷ K beyond any equation of state
+ *     without radiation. C1's source is a hot sphere of air at rest at
+ *     ambient density holding f_b·W in free air (W/2 in the solver's half
+ *     space): central radius 40 m at 1 kt (12.7 MJ/kg, Z ≈ 2.21), its
+ *     interval 35–45 m (19.0 to 8.95 MJ/kg, Z ≈ 2.39 to 2.06, inside the
+ *     fit), scaled with (f_b·W)^(1/3) so its specific energy is fixed. The
+ *     source's size is a model's uncertainty like f_b's: measured in the
+ *     one-dimensional surrogate (ideal gas, 1 and 0.5 m cells), 35 m against
+ *     45 m moves the peak by +9.0 % at 100 m and 5–7 % out to 700 m, the
+ *     foot's arrival by −8.1 % at 100 m and under 1 % from 300 m — a
+ *     systematic error of the size of the tolerances, reported beside every
+ *     reading and entering only CONSISTENT (rule 1333 (c)). If the states
+ *     counted beyond the effective edge ever hold more than 1 % of E, C1 and
+ *     C2 are undetermined. The Sedov start stays for
+ *     verification. Gilmore's tables (above 25 000 K) and radiation wait for
+ *     T3's source and rule 1333 (e).
+ * (f) C2'S RANGE. B87 states Eq. 40's data range in time and overpressure,
+ *     «from 17,200 to 0.07 psi» (pp. 31, 34), not in distance; its T is the
+ *     shock's arrival at radius R, a discontinuity, timed from the instant of
+ *     detonation (p. 41). C2 is judged at C1's ranges from 300 m to 1 km
+ *     where N&C's peak (read by the judging script) lies between 0.48 kPa and
+ *     119 MPa.
+ * (g) ORDER: (a) and its checks; the evaluator and its cost; the CPU
+ *     interface and V7 (i); the hot branch with V6, V8 and V7 (ii)–(iii); the
+ *     GPU with G0–G2 and G1 on hot cases; the one-dimensional solver into the
+ *     project; then C1–C3 (rule 1333).
+ */
+export const RULE_1334_WRITTEN = '2026-09-27' as const;

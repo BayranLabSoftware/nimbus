@@ -207,7 +207,7 @@ const f = (x: number | null, d = 3): string =>
 const lines = [
   "# Blast solver — T4: Collins et al. (2017)'s Table 2 (rules 1254, 1260)",
   '',
-  `${String(checks.filter((c) => c.within).length)} of ${String(checks.length)} numbers within 15 % (${String(checks.filter((c) => c.lowerBound).length)} solver readings are lower bounds «≥», ${String(checks.filter((c) => c.beyondDomain).length)} of them beyond the domain and to be run again, rule 1276) — **${passes ? 'PASSES' : 'FAILS'}**. First-order fall-backs: ${String(fallbacks)}.`,
+  `${String(checks.filter((c) => c.within).length)} of ${String(checks.length)} numbers within 15 % (${String(checks.filter((c) => c.lowerBound).length)} solver readings are lower bounds «≥», ${String(checks.filter((c) => c.beyondDomain).length)} of them beyond the domain and to be run again, rule 1276) — **${passes ? 'PASSES' : 'FAILS'}**. Faces blended by the positivity limiter (rules 1277–1278; first-order fall-backs without it): ${String(fallbacks)}.`,
   '',
   '| Mt | Source | Quantity | Collins | Solver (5 m) | Ratio | Within | Grids 20/10/5 m | Order | Extrapolated |',
   '| --: | --- | --- | --: | --: | --: | --- | --- | --: | --: |',
