@@ -2078,3 +2078,39 @@ export const RULE_1318_WRITTEN = '2026-09-27' as const;
  *     strong phase.
  */
 export const RULE_1319_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1320. ERRATA FROM THE FIFTH REVIEW (OF EFE52E2, RULE 1319) (27
+ * September 2026, 14:27; the review's proofs in `scripts/tmp/review5-*.ts`).
+ * The solver's code, CPU and GPU, found without numerical error; the rest
+ * corrected before the push.
+ *
+ * (a) THE TEST OF RULE 1316 (b) DID NOT TEST WHAT IT SAID: on data of degree
+ *     ≤ 2 every candidate is exact whatever the weights, and faults put in
+ *     on purpose (linear weights 1/3 each, or 0.9/0.05/0.05; β₀ and β₂
+ *     swapped; τ times 1 000) all passed it. The test is written again: the
+ *     face values of smooth non-polynomial data (a cosine), even and odd
+ *     through the mirrored ghosts, on two cells a factor 2 apart, at a
+ *     column far from the axis — observed order at least 4.5, which each of
+ *     those faults breaks — and at the axis, where rule 1310 (b)'s odd case
+ *     is reported by the test's own numbers, not asserted small.
+ * (b) TEXT, rule 1319 (b): «all as before or better» is false for G2 — mass
+ *     8.7·10⁻¹¹ (was 2.4·10⁻¹¹), energy 2.7·10⁻⁷ (was 1.2·10⁻⁷), both within
+ *     their criteria (10⁻⁶ and 10⁻⁴); «no longer worse than the rows above»
+ *     is false — the ground's row stays the worst by a little (6.04·10⁻⁵
+ *     against 5.62·10⁻⁵ in the row above on 500 m), now on the smooth trend
+ *     of the rows above; the «13 tests» are 9 of the solver's and 4 of the
+ *     air module's.
+ * (c) TEXT, rule 1318 (c) and the air module's comment: the review's own
+ *     readings of Fig. 11 there were taken off a scan tilted by 0.46°, 0.01–
+ *     0.04 too low. At the edge of rule 1319 (c) the module's temperatures
+ *     run from 16 609 K (10⁻⁴ ρ₀) to 25 192 K (10² ρ₀) and 27 522 K (10³ ρ₀);
+ *     the comment says so.
+ * (d) RECORDED: the module's effective reach is narrower than the data's
+ *     edge where ∂p/∂e|ρ turns non-positive first (on ρ₀ from Z = 2.998, the
+ *     edge 3.031; 720 points of a fine grid inside the edge refused) — the
+ *     hand-over to Gilmore will take the effective reach, not the edge
+ *     alone. V5 radial is run again on the GPU when it is free (the mirror
+ *     of rule 1317 (e) acts in uniform air too).
+ */
+export const RULE_1320_WRITTEN = '2026-09-27' as const;

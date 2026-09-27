@@ -5,11 +5,12 @@
  * (22)–(28) and its Tables A1–A6 (`airEosRp1181.json`, two blind
  * transcriptions, identical), from 10⁻⁷ to 10³ times ρ₀ (outside, the
  * nearest band). Their reach in energy is the report's data (its Fig. 11:
- * log₁₀(e/RT₀) up to about 3.0 at ρ₀, 3.57 at 10⁻⁷ ρ₀), which end near
- * 17 700–23 000 K from 10⁻⁷ to 10² ρ₀ and reach 25 000 K only at 10³ ρ₀
- * (its Fig. 13). The module refuses (a RangeError) beyond that edge (rule
- * 1319 (c)), and wherever γ̃ ≤ 1, a² ≤ 0, ∂p/∂e|ρ ≤ 0 or T does not rise with
- * e (rules 1317 (b), 1318 (a)).
+ * log₁₀(e/RT₀) up to 3.03 at ρ₀, 3.57 at 10⁻⁷ ρ₀, rule 1319 (c)): at that
+ * edge the module's temperature runs from 16 609 K (10⁻⁴ ρ₀) to 25 192 K
+ * (10² ρ₀) and 27 522 K (10³ ρ₀) (rule 1320 (c)). The module refuses (a
+ * RangeError) beyond the edge, and wherever γ̃ ≤ 1, a² ≤ 0, ∂p/∂e|ρ ≤ 0 or T
+ * does not rise with e (rules 1317 (b), 1318 (a)) — which on some isochores
+ * comes before the edge (on ρ₀ from Z = 2.998).
  *
  * γ̃ = h/e is fitted in Y = log₁₀(ρ/ρ₀) and Z = log₁₀(e/RT₀) as
  *   γ̃ = P₁(Y, Z) + P₂(Y, Z)/[1 ± exp(a₂₁ + a₂₂Y + a₂₃Z + a₂₄YZ)],

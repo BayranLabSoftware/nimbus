@@ -153,26 +153,47 @@ describe("rule 1297's radial reconstruction (Mignone 2014)", () => {
         }
   });
 
-  it('reconstructs, WENO-Z and all, smooth data even or odd across the axis (rule 1316 (b))', () => {
-    // Degree ≤ 2: every candidate is exact, whatever the nonlinear weights;
-    // odd data through the mirrored ghosts (signed coordinates) included.
-    for (const i of [-1, 0, 1, 2, 3, 5, 7, 300])
-      for (const parity of [1, -1])
-        for (const degree of [0, 1, 2]) {
-          const f = (x: number): number => {
-            const base = parity === 1 ? x * x + 0.7 : x * (x * x + 1.3);
-            return degree === 0 ? (parity === 1 ? 2 : x) : degree === 1 ? 3 * x - 1 : base;
-          };
-          if (parity === -1 && degree === 2) continue;
-          const k = radialCoefficients(i);
-          const cells = [i - 2, i - 1, i, i + 1, i + 2].map((j) => average(f, j));
-          const [a, b, c, d, e] = cells as [number, number, number, number, number];
-          const up = weno5zCylindrical(a, b, c, d, e, k, 0);
-          const down = weno5zCylindrical(a, b, c, d, e, k, 1);
-          const scale = Math.max(1, Math.abs(f(i + 1)), Math.abs(f(i)));
-          expect(Math.abs(up - f(i + 1))).toBeLessThan(1e-9 * scale);
-          expect(Math.abs(down - f(i))).toBeLessThan(1e-9 * scale);
-        }
+  it("converges at fifth order on smooth data, the axis's odd case at third (rules 1316 (b), 1320 (a))", () => {
+    // g in physical units r = x·h; the error of both faces of cell i.
+    const faceError = (g: (r: number) => number, h: number, i: number): number => {
+      const f = (x: number): number => g(x * h);
+      const [a, b, c, d, e] = [i - 2, i - 1, i, i + 1, i + 2].map((j) => average(f, j)) as [
+        number,
+        number,
+        number,
+        number,
+        number,
+      ];
+      const k = radialCoefficients(i);
+      return Math.max(
+        Math.abs(weno5zCylindrical(a, b, c, d, e, k, 0) - f(i + 1)),
+        Math.abs(weno5zCylindrical(a, b, c, d, e, k, 1) - f(i))
+      );
+    };
+    const even = (r: number): number => Math.cos(r / 5);
+    const odd = (r: number): number => Math.sin(r / 5);
+    const order = (e1: number, e2: number): number => Math.log2(e1 / e2);
+    // Far from the axis, the same physical face (r = 301) on h = 1, 1/2, 1/4:
+    // wrong linear weights, swapped indicators or a scaled τ fall to about 3.
+    for (const g of [even, odd]) {
+      const e1 = faceError(g, 1, 300);
+      const e2 = faceError(g, 0.5, 601);
+      const e3 = faceError(g, 0.25, 1203);
+      expect(order(e1, e2)).toBeGreaterThan(4.5);
+      expect(order(e2, e3)).toBeGreaterThan(4.5);
+    }
+    // At the axis, the columns fixed and the data refined: even data at
+    // fifth order and more through the mirrored ghosts ...
+    for (const i of [0, 1, 2]) {
+      const e2 = faceError(even, 0.5, i);
+      const e3 = faceError(even, 0.25, i);
+      expect(order(e2, e3)).toBeGreaterThan(5);
+    }
+    // ... odd data in the axis cell at third order: rule 1310 (b)'s known
+    // defect (about 2.9 here); the test says when it is mended.
+    const o = order(faceError(odd, 0.5, 0), faceError(odd, 0.25, 0));
+    expect(o).toBeGreaterThan(2.5);
+    expect(o).toBeLessThan(3.5);
   });
 
   it('has positive linear weights that sum to one', () => {
