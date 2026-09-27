@@ -930,3 +930,31 @@ export const RULE_1281_WRITTEN = '2026-09-27' as const;
  *     fixed; nothing is changed between a test's runs and its verdict.
  */
 export const RULE_1282_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1283. T2 ON RULE 1280'S SCHEME: FAILED AS FIXED (27 September 2026,
+ * 02:08; `blast2dT2.json`, `docs/BLAST2D_T2.md`).
+ *
+ * (a) THE NUMBERS. 78 runs on the GPU (1.5 hours of GPU time, three pages at
+ *     once), no fall-back of any kind, no reading beyond the domain. Of 104
+ *     readings 60 judged (44 left out by rule 1256 (a)): worst 0.80, median
+ *     0.122 — the criterion 0.10 and 0.05. By threshold: 1 psi median 0.31,
+ *     2 psi 0.096, 4 psi 0.024, 10 psi 0.040 (10 psi alone would pass).
+ *     T2 FAILS.
+ * (b) THE SHAPE. Below the curves' knee the solver lies 9 to 14 % beyond G&D
+ *     at 1 psi (heights 0.16 to 0.52 km), 19 to 34 % at the lowest four
+ *     heights, while at 2 and 4 psi it lies within 9 % of G&D there; above the knee (from 0.59 km) 34 to 75 % beyond, the curve
+ *     falling more slowly with height than G&D's. Converged: the three grids
+ *     within a few per cent almost everywhere.
+ * (c) A DIAGNOSTIC, not a criterion: rule 1267's equivalence — G&D's 1 kt
+ *     free-air curve is the air shock of about 0.72 kt of this source — with
+ *     range and height scaled as W^(1/3). The medians become 0.095, 0.065,
+ *     0.081 and 0.089 (1, 2, 4, 10 psi), the worst 0.38: below the knee 1 psi
+ *     within 5 %, the higher thresholds 5 to 12 % short; above the knee still
+ *     10 to 38 % beyond. The energy accounts for the offset below the knee,
+ *     not for the knee.
+ * (d) The energy convention for judging against nuclear data (G&D's yield is
+ *     not the air shock's) is Andrea's decision, open since rule 1267; the
+ *     knee is a question of its own. Nothing is changed here.
+ */
+export const RULE_1283_WRITTEN = '2026-09-27' as const;

@@ -1,0 +1,1737 @@
+{
+  "rule": "1254 (c) T2, T5",
+  "grids": [20, 10, 5],
+  "overall": {
+    "judged": 60,
+    "left": 44,
+    "beyond": 0,
+    "bounds": 0,
+    "worst": 0.7999191890083797,
+    "median": 0.12164484372644768,
+    "passes": false
+  },
+  "fallbacks": 0,
+  "seconds": 5328.458800000013,
+  "thresholds": [
+    {
+      "psi": 1,
+      "verdict": {
+        "judged": 25,
+        "left": 1,
+        "beyond": 0,
+        "bounds": 0,
+        "worst": 0.7506728258808064,
+        "median": 0.31214044553633524,
+        "passes": false
+      },
+      "rows": [
+        {
+          "psi": 1,
+          "h": 0,
+          "reference": 1.1733,
+          "solver": 1.5395343847477823,
+          "ratio": 1.3121404455363352,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.5697696781483759, 1.5742778374078064, 1.5395343847477823],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.0347434526600241,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.0159,
+          "reference": 1.2082,
+          "solver": 1.6206453542061627,
+          "ratio": 1.3413717548470143,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.5700287264691004, 1.550708779619868, 1.6206453542061627],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.06993657458629476,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.0476,
+          "reference": 1.2967,
+          "solver": 1.5476258445624067,
+          "ratio": 1.1935111009195702,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.5906368126042059, 1.5895392222895217, 1.5476258445624067],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.04301096804179916,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.0794,
+          "reference": 1.3892,
+          "solver": 1.6680603623815862,
+          "ratio": 1.2007344963875513,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.743806810630917, 1.6975985599132477, 1.6680603623815862],
+            "order": 0.6455686819471098,
+            "extrapolated": 1.6157206905350798,
+            "error": 0.05233967184650634,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.1587,
+          "reference": 1.607,
+          "solver": 1.8299944624622129,
+          "ratio": 1.1387644445937852,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.8332962156213422, 1.832990951498596, 1.8299944624622129],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.0033017531591292837,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.1873,
+          "reference": 1.6816,
+          "solver": 1.8989867948176007,
+          "ratio": 1.1292737837878215,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.8657355479143065, 1.9028228114213375, 1.8989867948176007],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.037087263507030954,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.2064,
+          "reference": 1.7293,
+          "solver": 1.9431141942026677,
+          "ratio": 1.1236420483448029,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.8927081319730577, 1.944315859768752, 1.9431141942026677],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.051607727795694336,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.2381,
+          "reference": 1.8069,
+          "solver": 2.0132042800231615,
+          "ratio": 1.1141758149444694,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.9472128478155353, 2.013672964672202, 2.0132042800231615],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.06646011685666653,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.2926,
+          "reference": 1.9401,
+          "solver": 2.1279556665166877,
+          "ratio": 1.096827826667021,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.9953302210917196, 2.1196107556885533, 2.1279556665166877],
+            "order": 3.896559908809814,
+            "extrapolated": 2.1285563234542693,
+            "error": 0.0006006569375816007,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.3175,
+          "reference": 1.9899,
+          "solver": 2.173472943863285,
+          "ratio": 1.0922523462803584,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [2.0270625474003587, 2.161295767778224, 2.173472943863285],
+            "order": 3.4624902446845183,
+            "extrapolated": 2.174687825258678,
+            "error": 0.0012148813953927196,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.3651,
+          "reference": 2.0535,
+          "solver": 2.2677398130218247,
+          "ratio": 1.1043291030055147,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [2.047360481828004, 2.221073760532854, 2.2677398130218247],
+            "order": 1.896262699299906,
+            "extrapolated": 2.284880844115278,
+            "error": 0.01714103109345322,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.4286,
+          "reference": 2.1032,
+          "solver": 2.3578536242310477,
+          "ratio": 1.1210791290562228,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [2.0691945480525797, 2.268896277095376, 2.3578536242310477],
+            "order": 1.1666611537562324,
+            "extrapolated": 2.429310157493864,
+            "error": 0.07145653326281609,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.4762,
+          "reference": 2.141,
+          "solver": 2.4026528055272762,
+          "ratio": 1.1222105583966726,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [2.0858495601546063, 2.281179529614871, 2.4026528055272762],
+            "order": 0.6852743625591662,
+            "extrapolated": 2.6024418300837246,
+            "error": 0.19978902455644842,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.5238,
+          "reference": 2.1122,
+          "solver": 2.4029591737020133,
+          "ratio": 1.137657027602506,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [2.0793226116578825, 2.2752239741259355, 2.4029591737020133],
+            "order": 0.6169712927564966,
+            "extrapolated": 2.6423195912246675,
+            "error": 0.23936041752265425,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.5873,
+          "reference": 1.7551,
+          "solver": 2.3475741621481734,
+          "ratio": 1.337572880262192,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [2.057495504618893, 2.2437294792861135, 2.3475741621481734],
+            "order": 0.8426889397316593,
+            "extrapolated": 2.4784615374666044,
+            "error": 0.13088737531843098,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.635,
+          "reference": 1.5881,
+          "solver": 2.2734005199734204,
+          "ratio": 1.431522271880499,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [2.0448792762361205, 2.20949955745193, 2.2734005199734204],
+            "order": 1.3652325193718025,
+            "extrapolated": 2.3139422260145994,
+            "error": 0.040541706041179015,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.6826,
+          "reference": 1.5274,
+          "solver": 2.1987420435482994,
+          "ratio": 1.4395325674664785,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [2.0267263872503367, 2.1732866896788834, 2.1987420435482994],
+            "order": 2.525453358983491,
+            "extrapolated": 2.20409256843045,
+            "error": 0.005350524882150598,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.7461,
+          "reference": 1.4637,
+          "solver": 2.1375546584728524,
+          "ratio": 1.460377576329065,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.9932978119963236, 2.122782928740152, 2.1375546584728524],
+            "order": 3.1318756043370124,
+            "extrapolated": 2.1394568252990727,
+            "error": 0.0019021668262202418,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.7937,
+          "reference": 1.421,
+          "solver": 2.0930532961431956,
+          "ratio": 1.4729439100233608,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.9799592000052169, 2.0862774577212106, 2.0930532961431956],
+            "order": 3.971846085335387,
+            "extrapolated": 2.0935145265075614,
+            "error": 0.00046123036436584997,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.8413,
+          "reference": 1.3762,
+          "solver": 2.0385882916424687,
+          "ratio": 1.4813168810074615,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.9650700654362865, 2.048470802448466, 2.0385882916424687],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.08340073701217943,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.9048,
+          "reference": 1.3146,
+          "solver": 1.9657787733766456,
+          "ratio": 1.4953436584334745,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.9256086997377482, 2.002012510522485, 1.9657787733766456],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.07640381078473668,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 0.9524,
+          "reference": 1.2688,
+          "solver": 1.924738551179978,
+          "ratio": 1.516975528988003,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.90508089094105, 1.9670507367092196, 1.924738551179978],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.06196984576816966,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 1.032,
+          "reference": 1.1873,
+          "solver": 1.8538089719329776,
+          "ratio": 1.5613652589345384,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.8644757786036024, 1.9059494445903526, 1.8538089719329776],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.05214047265737509,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 1.111,
+          "reference": 1.1037,
+          "solver": 1.81014852241003,
+          "ratio": 1.6400729567908219,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.8253847436726829, 1.844268187982968, 1.81014852241003],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.03411966557293811,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 1.191,
+          "reference": 1.0132,
+          "solver": 1.7737817071824333,
+          "ratio": 1.7506728258808064,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.7858010781831721, 1.7797012255458458, 1.7737817071824333],
+            "order": 0.04329459292230577,
+            "extrapolated": 1.5794720127784896,
+            "error": 0.19430969440394374,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 1,
+          "h": 1.27,
+          "reference": 0.9038,
+          "solver": 1.7237481287901713,
+          "ratio": 1.9072229794093507,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [1.7336728564472512, 1.7124055592734226, 1.7237481287901713],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.02126729717382858,
+            "lowerBound": false
+          }
+        }
+      ]
+    },
+    {
+      "psi": 2,
+      "verdict": {
+        "judged": 18,
+        "left": 8,
+        "beyond": 0,
+        "bounds": 0,
+        "worst": 0.7999191890083797,
+        "median": 0.09567751899264176,
+        "passes": false
+      },
+      "rows": [
+        {
+          "psi": 2,
+          "h": 0,
+          "reference": 0,
+          "solver": 0.9488823503577056,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0.9184195914789339, 0.9501474346480685, 0.9488823503577056],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.03172784316913457,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.0159,
+          "reference": 0.8084,
+          "solver": 0.9193859823545416,
+          "ratio": 1.1372909232490618,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0.9189568728529162, 0.9241887218304716, 0.9193859823545416],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.005231848977555464,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.0476,
+          "reference": 0.871,
+          "solver": 0.9345939429088237,
+          "ratio": 1.0730125636151822,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.9225367812851883, 0.9714952065295687, 0.9345939429088237],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.04895842524438032,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.0794,
+          "reference": 0.9347,
+          "solver": 1.0178894595059376,
+          "ratio": 1.0890012405113272,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.0345986900582234, 1.0250056360313269, 1.0178894595059376],
+            "order": 0.43088788323846444,
+            "extrapolated": 0.9974443756010258,
+            "error": 0.02044508390491173,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.1587,
+          "reference": 1.059,
+          "solver": 1.1078066835670735,
+          "ratio": 1.046087519893365,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.0885297249100538, 1.1101978942093327, 1.1078066835670735],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.02166816929927884,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.1873,
+          "reference": 1.1097,
+          "solver": 1.1482690322819233,
+          "ratio": 1.0347562695160164,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.1048393897897342, 1.1570544322846168, 1.1482690322819233],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.052215042494882624,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.2064,
+          "reference": 1.1425,
+          "solver": 1.1739739683903343,
+          "ratio": 1.0275483311950409,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.119255123664779, 1.1841630143209034, 1.1739739683903343],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.06490789065612446,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.2381,
+          "reference": 1.1853,
+          "solver": 1.213886586725526,
+          "ratio": 1.0241175961575348,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.15027987075136, 1.2243126830077427, 1.213886586725526],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.0740328122563827,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.2926,
+          "reference": 1.244,
+          "solver": 1.2783849308972959,
+          "ratio": 1.02764061969236,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.1646263870816576, 1.2787134906705488, 1.2783849308972959],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.11408710358889129,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.3175,
+          "reference": 1.2638,
+          "solver": 1.3030652051918685,
+          "ratio": 1.0310691606202473,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.1772977189528573, 1.2929773995485327, 1.3030652051918685],
+            "order": 3.5194511834861015,
+            "extrapolated": 1.3040289519076425,
+            "error": 0.0009637467157739277,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.3651,
+          "reference": 1.2619,
+          "solver": 1.3184319035547394,
+          "ratio": 1.0447990360208728,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.1691128418916148, 1.3020108438005702, 1.3184319035547394],
+            "order": 3.016700272778223,
+            "extrapolated": 1.320746964359578,
+            "error": 0.0023150608048385646,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.4286,
+          "reference": 1.1594,
+          "solver": 1.278068992791305,
+          "ratio": 1.1023537974739563,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.1565676295859082, 1.2868951910521933, 1.278068992791305],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.1303275614662851,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.4762,
+          "reference": 0.9078,
+          "solver": 1.2031924484363734,
+          "ratio": 1.3253937524084307,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.1484626053074527, 1.2575742329541058, 1.2031924484363734],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.10911162764665305,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.5238,
+          "reference": 0.867,
+          "solver": 1.1430678575247168,
+          "ratio": 1.3184173673872166,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.124469253106837, 1.2201227419937042, 1.1430678575247168],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.0956534888868672,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.5873,
+          "reference": 0.7994,
+          "solver": 1.0884245782114437,
+          "ratio": 1.3615518866793141,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.09288615286402, 1.1637045009615123, 1.0884245782114437],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.07527992275006867,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.635,
+          "reference": 0.745,
+          "solver": 1.0534835760547334,
+          "ratio": 1.4140719141674274,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.0759158772751862, 1.1199100797130688, 1.0534835760547334],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.06642650365833536,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.6826,
+          "reference": 0.696,
+          "solver": 1.0276638342535822,
+          "ratio": 1.476528497490779,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.0447193286426382, 1.0764914292682928, 1.0276638342535822],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.04882759501471057,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.7461,
+          "reference": 0.6264,
+          "solver": 0.9681944939470104,
+          "ratio": 1.5456489366970154,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [1.0039687951636773, 1.0134067267676683, 0.9681944939470104],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.045212232820657894,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.7937,
+          "reference": 0.5617,
+          "solver": 0.9242881999898104,
+          "ratio": 1.6455193163429063,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.978575400760876, 0.9598264977786181, 0.9242881999898104],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.054287200771065636,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.8413,
+          "reference": 0.4821,
+          "solver": 0.8677410410209397,
+          "ratio": 1.7999191890083797,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.9461696402671071, 0.8946719565034849, 0.8677410410209397],
+            "order": 0.9352442716846862,
+            "extrapolated": 0.8382184680707712,
+            "error": 0.02952257295016858,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.9048,
+          "reference": 0.3568,
+          "solver": 0.813256093963016,
+          "ratio": 2.279305196084686,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0.8685395862763614, 0.820323670349224, 0.813256093963016],
+            "order": 2.7702219784474593,
+            "extrapolated": 0.8120421777629419,
+            "error": 0.001213916200074161,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 0.9524,
+          "reference": 0.1908,
+          "solver": 0.7218275061576356,
+          "ratio": 3.7831630301762873,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0.7602951159527938, 0.7471643463293479, 0.7218275061576356],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.038467609795158175,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 1.032,
+          "reference": 0,
+          "solver": 0.5887281055807759,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0.4898948938060035, 0.6181426245868055, 0.5887281055807759],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.12824773078080198,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 1.111,
+          "reference": 0,
+          "solver": 0.4063897291518179,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0.478170706619913, 0.4063897291518179],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.478170706619913,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 1.191,
+          "reference": 0,
+          "solver": 0.11126333283548656,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0.26414255618615234, 0.11126333283548656],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.26414255618615234,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 2,
+          "h": 1.27,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        }
+      ]
+    },
+    {
+      "psi": 4,
+      "verdict": {
+        "judged": 11,
+        "left": 15,
+        "beyond": 0,
+        "bounds": 0,
+        "worst": 0.5781982535066028,
+        "median": 0.02433804211899049,
+        "passes": false
+      },
+      "rows": [
+        {
+          "psi": 4,
+          "h": 0,
+          "reference": 0,
+          "solver": 0.5981538182722138,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0.5451653861038555, 0.6012217879518305, 0.5981538182722138],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.056056401847975,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.0159,
+          "reference": 0.518,
+          "solver": 0.57275780083048,
+          "ratio": 1.1057100402132818,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0.5482897411742061, 0.5729811289203977, 0.57275780083048],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.024691387746191507,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.0476,
+          "reference": 0.5538,
+          "solver": 0.5936678197542575,
+          "ratio": 1.071989562575402,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.5531250853692615, 0.6104678947556148, 0.5936678197542575],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.05734280938635328,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.0794,
+          "reference": 0.5876,
+          "solver": 0.6384740209529661,
+          "ratio": 1.0865793413086557,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.6289228022089431, 0.6437872129477057, 0.6384740209529661],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.014864410738762546,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.1587,
+          "reference": 0.683,
+          "solver": 0.6688392144761279,
+          "ratio": 0.9792667854701725,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.65761097931155, 0.6917568996160516, 0.6688392144761279],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.03414592030450159,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.1873,
+          "reference": 0.7069,
+          "solver": 0.707830055057018,
+          "ratio": 1.001315681223678,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.6623499149460688, 0.7159067804196683, 0.707830055057018],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.0535568654735995,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.2064,
+          "reference": 0.7268,
+          "solver": 0.7236747405632952,
+          "ratio": 0.995699973257148,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.6672544842699245, 0.729010759789393, 0.7236747405632952],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.061756275519468495,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.2381,
+          "reference": 0.7527,
+          "solver": 0.7545805359659511,
+          "ratio": 1.0024983870943949,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.6797389360563616, 0.7443126584388696, 0.7545805359659511],
+            "order": 2.6528092013257947,
+            "extrapolated": 0.7565219348925643,
+            "error": 0.0019413989266131582,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.2926,
+          "reference": 0.7815,
+          "solver": 0.7886353616702264,
+          "ratio": 1.0091303412286967,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.6684396523689374, 0.7521351125584863, 0.7886353616702264],
+            "order": 1.1972430598884072,
+            "extrapolated": 0.8168642466522774,
+            "error": 0.028228884982051006,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.3175,
+          "reference": 0.7944,
+          "solver": 0.775065859340674,
+          "ratio": 0.9756619578810095,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.6667546384172136, 0.7429195305663132, 0.775065859340674],
+            "order": 1.244472161372693,
+            "extrapolated": 0.7985420106378407,
+            "error": 0.023476151297166736,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.3651,
+          "reference": 0.7666,
+          "solver": 0.6988867934787752,
+          "ratio": 0.9116707454719218,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.643918398911786, 0.7142431725889641, 0.6988867934787752],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.07032477367717804,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.4286,
+          "reference": 0.4782,
+          "solver": 0.6282235080900068,
+          "ratio": 1.3137254456085463,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0.6135244812115509, 0.6550263876812499, 0.6282235080900068],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.04150190646969898,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.4762,
+          "reference": 0.4145,
+          "solver": 0.5925288372667403,
+          "ratio": 1.429502623080194,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.5893087913660935, 0.6013884123737814, 0.5925288372667403],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.01207962100768789,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.5238,
+          "reference": 0.3519,
+          "solver": 0.5553679654089735,
+          "ratio": 1.5781982535066028,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.5410740343851692, 0.5450093488996379, 0.5553679654089735],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.014293931023804274,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.5873,
+          "reference": 0.2494,
+          "solver": 0.44067745167283967,
+          "ratio": 1.766950487862228,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0.3728531429360497, 0.45077627016550714, 0.44067745167283967],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.07792312722945743,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.635,
+          "reference": 0.06740000000000002,
+          "solver": 0.34889107178924267,
+          "ratio": 5.176425397466507,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0.07934965035707692, 0.36640490375795076, 0.34889107178924267],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.28705525340087384,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.6826,
+          "reference": 0,
+          "solver": 0.20739865428330198,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0.26214675494047507, 0.20739865428330198],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.26214675494047507,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.7461,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.7937,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.8413,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.9048,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 0.9524,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 1.032,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 1.111,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 1.191,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 4,
+          "h": 1.27,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        }
+      ]
+    },
+    {
+      "psi": 10,
+      "verdict": {
+        "judged": 6,
+        "left": 20,
+        "beyond": 0,
+        "bounds": 0,
+        "worst": 0.06853274863587766,
+        "median": 0.03979309601139702,
+        "passes": true
+      },
+      "rows": [
+        {
+          "psi": 10,
+          "h": 0,
+          "reference": 0,
+          "solver": 0.3318897181100065,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0.28595025438056737, 0.34090607458002414, 0.3318897181100065],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.05495582019945677,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.0159,
+          "reference": 0.327,
+          "solver": 0.34778150718481293,
+          "ratio": 1.063552009739489,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0.29578689083443094, 0.3377222122455208, 0.34778150718481293],
+            "order": 2.059636724053912,
+            "extrapolated": 0.3509559748294924,
+            "error": 0.0031744676446794906,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.0476,
+          "reference": 0.3419,
+          "solver": 0.35699484085853234,
+          "ratio": 1.0441498708936308,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.31546314926404806, 0.36357474505418436, 0.35699484085853234],
+            "order": null,
+            "extrapolated": null,
+            "error": 0.0481115957901363,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.0794,
+          "reference": 0.3578,
+          "solver": 0.3736964438769956,
+          "ratio": 1.0444282947931682,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.34151732381912286, 0.3720912926012779, 0.3736964438769956],
+            "order": 4.2515226653811755,
+            "extrapolated": 0.37378538470509,
+            "error": 0.00008894082809440818,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.1587,
+          "reference": 0.4016,
+          "solver": 0.39907854954897864,
+          "ratio": 0.9937214879207635,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.34500172573140836, 0.3826849957092195, 0.39907854954897864],
+            "order": 1.2007955209597203,
+            "extrapolated": 0.41170194977443947,
+            "error": 0.012623400225460824,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.1873,
+          "reference": 0.4225,
+          "solver": 0.4116405759393972,
+          "ratio": 0.9742972211583365,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.3402547854083559, 0.38442234155216803, 0.4116405759393972],
+            "order": 0.6984135240796455,
+            "extrapolated": 0.4553492442741882,
+            "error": 0.043708668334791034,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.2064,
+          "reference": 0.4294,
+          "solver": 0.4141836437071373,
+          "ratio": 0.9645636788708367,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.3362695512260221, 0.3815231442922767, 0.4141836437071373],
+            "order": 0.47048549307103493,
+            "extrapolated": 0.49888945560348813,
+            "error": 0.08470581189635085,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.2381,
+          "reference": 0.4284,
+          "solver": 0.39904057048439,
+          "ratio": 0.9314672513641223,
+          "lowerBound": false,
+          "left": "judged",
+          "convergence": {
+            "reaches": [0.3281880857152763, 0.3669174941108494, 0.39904057048439],
+            "order": 0.2698193999206559,
+            "extrapolated": 0.5552379932386365,
+            "error": 0.15619742275424653,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.2926,
+          "reference": 0.2544,
+          "solver": 0.3345646677678404,
+          "ratio": 1.3151126877666681,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0.2761721273022967, 0.3192489561117726, 0.3345646677678404],
+            "order": 1.4918996423841562,
+            "extrapolated": 0.3430142925518708,
+            "error": 0.00844962478403044,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.3175,
+          "reference": 0.2166,
+          "solver": 0.3048573823490114,
+          "ratio": 1.4074671391921116,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0, 0.28013920155867494, 0.3048573823490114],
+            "order": 3.5024994097747837,
+            "extrapolated": 0.30724946605357817,
+            "error": 0.002392083704566783,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.3651,
+          "reference": 0.14,
+          "solver": 0.22490296901806442,
+          "ratio": 1.60644977870046,
+          "lowerBound": false,
+          "left": "illConditioned",
+          "convergence": {
+            "reaches": [0, 0.1732299534504237, 0.22490296901806442],
+            "order": 1.745205425119158,
+            "extrapolated": 0.24686881139909259,
+            "error": 0.021965842381028167,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.4286,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.4762,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.5238,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.5873,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.635,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.6826,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.7461,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.7937,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.8413,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.9048,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 0.9524,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 1.032,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 1.111,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 1.191,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        },
+        {
+          "psi": 10,
+          "h": 1.27,
+          "reference": 0,
+          "solver": 0,
+          "ratio": null,
+          "lowerBound": false,
+          "left": "zero",
+          "convergence": {
+            "reaches": [0, 0, 0],
+            "order": null,
+            "extrapolated": null,
+            "error": 0,
+            "lowerBound": false
+          }
+        }
+      ]
+    }
+  ]
+}
