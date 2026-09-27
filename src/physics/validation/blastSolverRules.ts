@@ -1181,3 +1181,31 @@ export const RULE_1291_WRITTEN = '2026-09-27' as const;
  *     the ground); Brode (1956) for the hot sphere itself.
  */
 export const RULE_1292_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1293. THE EXCESS NEAR THE GROUND, FURTHER (27 September 2026, 09:53).
+ * A diagnostic; nothing is changed.
+ *
+ * (a) THE NASA RECORD: NTRS holds only the poster of Aftosmis, Mathias &
+ *     Tarano's work (20170011263, fetched again with Andrea's leave, the
+ *     same bytes as rule 1242's, sha-256 71b29d5c…); it gives neither the
+ *     domain, the duration nor how a source at the ground was set. Their
+ *     paper says their simulations follow yield scaling up to about 10 Mt.
+ * (b) THIS SOLVER AT 1 AND 5 Mt, at the ground, the stratified atmosphere
+ *     against a uniform one of the same ground density: 1 psi +11 and +22 %,
+ *     2 psi +7 and +14 %, 4 psi +5 and +8 %, 10 psi +3 and +6 %. The
+ *     stratification's lift grows with the yield already below 10 Mt, where
+ *     Cart3D and nuclear experience (Glasstone & Dolan's scaling rests on
+ *     surface bursts of several megatons) see little.
+ * (c) THE WHOLE PICTURE: at mid heights this solver lies 5 to 30 % beyond
+ *     iSALE (T4), Cart3D above ~10 km (T3) and G&D (T2) alike — one offset,
+ *     which less accurate codes' dissipation of a weak shock over long paths
+ *     (this project's own TVD scheme lost 16 % of a peak in 1 km, rule 1261)
+ *     or, for G&D, the nuclear blast fraction could explain; near the ground
+ *     in a stratified atmosphere a lift of its own, 2 to 4.6 times Cart3D at
+ *     250 Mt. Brode's free-air solutions (Andrea is placing them) decide the
+ *     first; the second still wants an independent reference for a strong
+ *     explosion at the ground in an exponential atmosphere (Laumbach &
+ *     Probstein 1969 not found).
+ */
+export const RULE_1293_WRITTEN = '2026-09-27' as const;
