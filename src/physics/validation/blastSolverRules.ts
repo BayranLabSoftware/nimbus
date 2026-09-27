@@ -1209,3 +1209,36 @@ export const RULE_1292_WRITTEN = '2026-09-27' as const;
  *     Probstein 1969 not found).
  */
 export const RULE_1293_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1294. BRODE'S IDEAL-GAS BLAST READ: THIS SOLVER CONVERGES TO IT FROM
+ * BELOW — NO EXCESS OF ENERGY IN FREE AIR (27 September 2026, 10:09). A
+ * diagnostic, the first against an independent ideal-gas solution.
+ *
+ * (a) THE SOURCE. Brode, «Numerical Solutions of Spherical Blast Waves»,
+ *     RAND RM-1363 (placed by Andrea, scanned, sha-256 e2526ab70bdf964b…;
+ *     RM-1825 beside it, 2d96e7f55349221d…). An ideal gas, γ = 1.4, a
+ *     Lagrangian integration from 2 000 atm down to 0.1 atm; the energy's
+ *     length ε³ = E_tot/P₀ with E_tot the blast's energy in excess of the
+ *     air at rest (his Eqs. 1–2), λ = r/ε; the peak overpressure of the
+ *     point source (his Eq. 17) ΔP = 0.137/λ³ + 0.119/λ² + 0.269/λ − 0.019
+ *     atm for 0.1 < ΔP < 10 (0.26 < λ < 2.8).
+ * (b) THIS SOLVER IN ONE SPHERICAL DIMENSION (`scripts/blast1d-diagnostic.ts`,
+ *     1 kt in a 45 m sphere at sea level, fifth-order WENO): at 1 km
+ *     (λ = 2.89) 8.48, 9.07, 9.24 and 9.46 kPa on 5, 2, 1 and 0.5 m cells
+ *     against Brode's 9.51 (−0.5 %); at 0.5 km (λ = 1.45) 24.8 to 26.0
+ *     against 27.25 (−4.5 %, still rising).
+ * (c) IN TWO DIMENSIONS, T2's 1 kt at the ground on the limiter — by the
+ *     mirror a free-air 2 kt (ε = 435.5 m): on the 5 m grid −4 % at
+ *     λ = 2.5 to 2.8, −6 to −10 % at λ = 1 to 2, less nearer the source,
+ *     where the grids have not converged.
+ * (d) SO: the solver approaches the ideal-gas solution from below and holds
+ *     no energy it should not. T2's excess over G&D is then the nuclear
+ *     blast's smaller share (rule 1267), not the solver's; where iSALE (T4)
+ *     and Cart3D above ~10 km (T3) lie 5 to 30 % below this solver, they lie
+ *     further below the ideal-gas truth — their dissipation is the likelier
+ *     cause, though their atmospheres are stratified and Brode's is not. The
+ *     lift near the ground in a stratified atmosphere (rules 1292–1293) is a
+ *     question apart, still without an independent reference.
+ */
+export const RULE_1294_WRITTEN = '2026-09-27' as const;
