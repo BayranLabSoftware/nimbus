@@ -1,0 +1,55 @@
+{
+  "rule": "1295 (c) V1",
+  "criteria": {
+    "order": 3,
+    "relativeL1": 0.01
+  },
+  "results": [
+    {
+      "widthCells": 4,
+      "dx": 25,
+      "cells": 784,
+      "steps": 41,
+      "seconds": 0.044,
+      "relativeL1": 0.011313736965406935,
+      "maxOverAmplitude": 0.0030506487345315935,
+      "limitedFaces": 0,
+      "scaledFaces": 0
+    },
+    {
+      "widthCells": 8,
+      "dx": 12.5,
+      "cells": 3136,
+      "steps": 82,
+      "seconds": 0.201,
+      "relativeL1": 0.0033408398301851662,
+      "maxOverAmplitude": 0.0011221532354682702,
+      "limitedFaces": 0,
+      "scaledFaces": 0
+    },
+    {
+      "widthCells": 16,
+      "dx": 6.25,
+      "cells": 12544,
+      "steps": 164,
+      "seconds": 1.457,
+      "relativeL1": 0.0008540282770399786,
+      "maxOverAmplitude": 0.0003336118995585247,
+      "limitedFaces": 0,
+      "scaledFaces": 0
+    },
+    {
+      "widthCells": 32,
+      "dx": 3.125,
+      "cells": 50176,
+      "steps": 327,
+      "seconds": 11.545,
+      "relativeL1": 0.00021501901906005735,
+      "maxOverAmplitude": 0.00009627937957581992,
+      "limitedFaces": 0,
+      "scaledFaces": 0
+    }
+  ],
+  "orders": [1.7597928127280713, 1.9678550735737763, 1.9898195624983277],
+  "passes": false
+}

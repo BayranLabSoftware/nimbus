@@ -1242,3 +1242,87 @@ export const RULE_1293_WRITTEN = '2026-09-27' as const;
  *     question apart, still without an independent reference.
  */
 export const RULE_1294_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1295. THE PATH, AND THE VERIFICATION PROGRAMME THAT BEGINS IT (27
+ * September 2026, 10:17; Andrea: «sì, seguiamo questa strada, parti dalla
+ * verifica»). Written before the code.
+ *
+ * (a) THE PATH, the most exact rather than the quickest: (1) verification —
+ *     the solver solves its equations right, shown against exact solutions;
+ *     (2) real air and radiation in the fireball, validated on the nuclear
+ *     tests with no imposed factor; (3) the moving source from the entry
+ *     model, then three dimensions, validated on Chelyabinsk and Tunguska;
+ *     (4) fast models derived from it and the inputs' uncertainty carried
+ *     through; (5) publication, independent review and the NASA Ames group.
+ *     Each step verified and declared before the next is built on it.
+ * (b) WITH IT, as proposed in the same answer: against nuclear data the
+ *     blast's share of the yield is a declared input of the model, with its
+ *     uncertainty, until the physics of step 2 yields it (rule 1267's 0.72 is
+ *     a measurement, not a truth); T3 and T4 become comparisons between
+ *     codes, reported and discussed, no longer pass-or-fail. The measures are
+ *     exact solutions (verification) and observations (validation).
+ * (c) THE VERIFICATION TESTS, on the solver itself (the CPU reference; the
+ *     GPU where the grids need it), criteria fixed now:
+ *     V1 — SMOOTH ORDER. A small spherical acoustic pulse (10⁻⁶ p₀ — small
+ *       enough that the equations' nonlinearity, of the order of the
+ *       amplitude, stays below the errors measured — Gaussian, at rest,
+ *       isentropic) in a uniform atmosphere without gravity, centred on the
+ *       axis at the ground (the wall and the axis both in play); the exact
+ *       linear solution R·p' = ½[(R − ct)g(R − ct) + (R + ct)g(R + ct)] (g
+ *       the initial profile, evenly extended). Initial state and exact
+ *       solution as cell averages (Gauss quadrature, weighted by r). The L1
+ *       error of p' over the L1 norm of the exact p', at a fixed time, on four
+ *       grids (the pulse's width over 4, 8, 16 and 32 cells): the observed
+ *       order at least 3 between the two finest, the finest's error at most
+ *       1 %.
+ *     V2 — PLANAR RIEMANN. Sod's shock tube along z (uniform, no gravity);
+ *       the exact solution (Toro). The L1 error of density on four grids:
+ *       observed order at least 0.8 between the two finest; the shock within
+ *       one cell of the exact position on the finest.
+ *     V3 — BRODE. The point source's peak overpressure (RM-1363, Eq. 17) from
+ *       the two-dimensional solver — a ground burst read as the free-air
+ *       burst of twice its energy — on 5, 2.5 and 1.25 m cells for 1 kt: the
+ *       value extrapolated from the three (rule 1256 (c)) within 3 % of Eq.
+ *       17 for 1 ≤ λ ≤ 2.8, the finest grid's raw value reported beside it.
+ *     V4 — LAMB'S WAVE. In the isothermal atmosphere with gravity the mode
+ *       with no vertical velocity is exact in the linear equations: p' = c²ρ'
+ *       = P(r, t)e^{−z/(γH)}, u = U(r, t)e^{(γ−1)z/(γH)}, P and U obeying the
+ *       cylindrical wave equation at c. Started from it (10⁻⁵ p₀ at the
+ *       ground, a Gaussian ring, U = 0) with the top far enough that nothing
+ *       from it reaches 3H in the time run: |w| at most 1 % of |u|; the
+ *       vertical profile of p' within 1 % of e^{−z/(γH)} for z ≤ 3H; the
+ *       ground's P within 1 % of the cylindrical wave equation's solution
+ *       (computed apart to 10⁻⁶) on the finest grid, observed order at least
+ *       2. This is the test of the dynamics with gravity the lift near the
+ *       ground (rules 1292–1293) wants.
+ * (d) ORDER: V1, V2, V4, V3. Nothing is adjusted to pass; a failure is
+ *     diagnosed under its own rule. The scripts are the project's
+ *     (`scripts/verify-blast-*.ts`), their outcomes committed as JSON.
+ */
+export const RULE_1295_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1296. V1: FAILED AS FIXED — SECOND ORDER IN THE AXISYMMETRIC GEOMETRY,
+ * FIFTH IN THE PLANE (27 September 2026, 10:20; `verifyBlastV1.json`).
+ *
+ * (a) THE NUMBERS (`scripts/verify-blast-v1.ts`). The pulse's width over 4, 8,
+ *     16 and 32 cells: relative L1 error 1.13·10⁻², 3.34·10⁻³, 8.54·10⁻⁴,
+ *     2.15·10⁻⁴; observed orders 1.76, 1.97, 1.99. The finest's error is
+ *     within its 1 %; the order, 2 against at least 3, is not — V1 FAILS.
+ * (b) THE DIAGNOSIS (`scripts/verify-blast-v1-planar.ts`): the same pulse
+ *     planar along z, where the geometry plays no part, gives 3.1·10⁻³,
+ *     1.2·10⁻⁴, 5.2·10⁻⁶, 6.6·10⁻⁷ — orders 4.67, 4.57, then 2.97 where the
+ *     third-order Runge–Kutta's error takes over. The reconstruction is of
+ *     high order along a line; in r it is not. The cause: the cell averages
+ *     in r are weighted by r, and they are reconstructed with Cartesian
+ *     coefficients, and the axisymmetric source p/r takes the cell's value at
+ *     its centre — each second-order in the geometry. Mignone (2014, J.
+ *     Comput. Phys. 270, 784; arXiv 1404.0537) derives the reconstruction's
+ *     coefficients for r-weighted averages and finds their absence degrading
+ *     the accuracy near the axis «severely»: the mend's source, to be read
+ *     before it is written. (That reconstructing primitive variables from
+ *     averaged conserved ones is also second order in a nonlinear flow is a
+ *     second question, which these linear tests cannot see.)
+ */
+export const RULE_1296_WRITTEN = '2026-09-27' as const;
