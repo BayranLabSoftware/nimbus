@@ -101,9 +101,18 @@ fn weno5z(a: vec4<f32>, b: vec4<f32>, c: vec4<f32>, d: vec4<f32>, e: vec4<f32>) 
   let b1 = (13.0 / 12.0) * x1 * x1 + 0.25 * y1 * y1;
   let b2 = (13.0 / 12.0) * x2 * x2 + 0.25 * y2 * y2;
   let tau = abs(b0 - b2);
-  let w0 = 0.1 * (1.0 + tau / (b0 + 1e-20));
-  let w1 = 0.6 * (1.0 + tau / (b1 + 1e-20));
-  let w2 = 0.3 * (1.0 + tau / (b2 + 1e-20));
+  // Rule 1289: the Z weight dₖ(1 + τ/(βₖ + ε)) is dₖ/hₖ with hₖ in (0, 1];
+  // divided by the common 1/h_min the weights are dₖ·h_min/hₖ ≤ dₖ, and
+  // nothing overflows (unscaled, a zero β made one 10³³ and the product
+  // with its candidate passed single precision's range).
+  let h0 = (b0 + 1e-20) / (tau + b0 + 1e-20);
+  let h1 = (b1 + 1e-20) / (tau + b1 + 1e-20);
+  let h2 = (b2 + 1e-20) / (tau + b2 + 1e-20);
+  let hm = min(min(h0, h1), h2);
+  let one = vec4<f32>(1.0);
+  let w0 = 0.1 * select(hm / h0, one, h0 <= hm);
+  let w1 = 0.6 * select(hm / h1, one, h1 <= hm);
+  let w2 = 0.3 * select(hm / h2, one, h2 <= hm);
   return (w0 * q0 + w1 * q1 + w2 * q2) / (w0 + w1 + w2);
 }
 

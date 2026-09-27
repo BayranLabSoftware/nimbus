@@ -467,7 +467,7 @@ export class BlastSolverGpu {
       const [marked, stillBad] = await this.counts();
       if (marked > 0 || stillBad > 0)
         throw new Error(
-          `blast2d gpu: rule 1277 -- ${String(marked + stillBad)} cells left without positive density or pressure at t = ${String(this.time)} s`
+          `blast2d gpu: rule 1277 -- ${String(marked + stillBad)} cells left without positive density or pressure at t = ${String(this.time)} s, stage ${String(n + 1)} of step ${String(this.steps + 1)}`
         );
     }
     this.time += dt;
@@ -481,16 +481,41 @@ export class BlastSolverGpu {
    *  fluxes; returns the fluxes before and after rule 1277's limiter
    *  (deviation form) and the stage's speeds. */
   async debugFirstStage(
-    dt: number
+    dt: number,
+    stage = 1
   ): Promise<{ before: Float32Array; after: Float32Array; ar: number; az: number }> {
     const { nr, nz } = this;
     this.clearLow();
     this.setParams(0, 0, 0);
+    if (stage === 2) {
+      // The first stage whole, as stepHas takes it, then the second's fluxes.
+      this.dispatch([['primitives', this.interior]]);
+      ({ ar: this.ar, az: this.az } = await this.fastestPair());
+      this.copy(this.uPair, this.k0Pair);
+      this.lamR = (dt * (this.ar + this.az)) / (this.ar * this.dx);
+      this.lamZ = (dt * (this.ar + this.az)) / (this.az * this.dx);
+      this.setParams(Math.fround(dt), 0, 1);
+      this.copy(this.uPair, this.prePair);
+      this.dispatch([
+        ['ghostsR', nz],
+        ['ghostsZ', nr + 2 * G],
+        ['reconR', (nr + 2) * nz],
+        ['scaleR', (nr + 2) * nz],
+        ['fluxR', (nr + 1) * nz],
+        ['reconZ', nr * (nz + 2)],
+        ['scaleZ', nr * (nz + 2)],
+        ['fluxZ', nr * (nz + 1)],
+        ['limitR', nr * nz],
+        ['limitZ', nr * (nz + 1)],
+        ['rhs', this.interior],
+        ['stage', this.interior],
+      ]);
+    }
     this.dispatch([['primitives', this.interior]]);
     ({ ar: this.ar, az: this.az } = await this.fastestPair());
     this.lamR = (dt * (this.ar + this.az)) / (this.ar * this.dx);
     this.lamZ = (dt * (this.ar + this.az)) / (this.az * this.dx);
-    this.setParams(Math.fround(dt), 0, 1);
+    this.setParams(Math.fround(dt), stage === 2 ? 0.75 : 0, stage === 2 ? 0.25 : 1);
     this.dispatch([
       ['ghostsR', nz],
       ['ghostsZ', nr + 2 * G],

@@ -1084,3 +1084,44 @@ export const RULE_1287_WRITTEN = '2026-09-27' as const;
  *     failure is diagnosed like any other).
  */
 export const RULE_1288_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1289. RULE 1288'S FAILURE FOUND: THE FIFTH-ORDER WEIGHTS OVERFLOW IN
+ * SINGLE PRECISION; WRITTEN SCALED (27 September 2026, 05:00). Written
+ * before the code.
+ *
+ * (a) THE CAUSE. The NaN arises in the second stage of step 1 096 at the
+ *     domain's top face over column 14, before the limiter, on the GPU only.
+ *     The ghost rows above the top copy its values, so a stencil lying in
+ *     them has a smoothness indicator of exactly zero, and its Z weight is
+ *     d(1 + τ/(0 + ε)) with ε = 10⁻²⁰ (rule 1270's single-precision
+ *     choice): τ near 10¹³ (p/p̄ near 10⁶ in the rising jet) makes it some
+ *     10³³, times a candidate near 10⁶ — past single precision's 3.4·10³⁸:
+ *     infinite over infinite. The reference in double (ε = 10⁻⁴⁰, range
+ *     10³⁰⁸) never meets it.
+ * (b) THE MEND, the same normalised weights written so that nothing can
+ *     overflow: hₖ = (βₖ + ε)/(τ + βₖ + ε), in (0, 1], so that the Z weight
+ *     dₖ(1 + τ/(βₖ + ε)) is dₖ/hₖ; the weights used are dₖ·h_min/hₖ (h_min
+ *     the smallest; 1 where hₖ ≤ h_min, which also covers two that underflow
+ *     alike) — the Z weights divided by the common 1/h_min, which cancels in
+ *     the average. At rest every h is 1 and the weights are dₖ; a deviation
+ *     of zero still reconstructs to exactly zero. A first form tried
+ *     (multiplying by min β + ε) overflowed where every β is large and failed
+ *     the first step; not kept. On the GPU only; the reference is unchanged.
+ * (c) G0, G1 and G2 are run again, their criteria as fixed; then T3.
+ */
+export const RULE_1289_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1290. RULE 1289'S WEIGHTS: THE FAILING CASE RUNS, G0 TO G2 PASS AGAIN
+ * (27 September 2026, 05:09; `blast2dG1.json`).
+ *
+ * (a) T3 at 1.111 km scaled on the coarse grid now runs to its end on the
+ *     GPU in 8 672 steps, the reference's own count, the ground's peaks
+ *     within 0.09 % of it.
+ * (b) G0: exactly at rest. G2: mass to 2.4·10⁻¹¹ and 1.1·10⁻¹¹, energy to
+ *     5.3·10⁻⁹ and 1.9·10⁻⁷ of the source's. G1: all eight cases in the
+ *     reference's own number of steps, every reach within 0.010 %, every
+ *     peak within 0.13 %. ALL PASS. T3 runs again on the GPU, all its cases.
+ */
+export const RULE_1290_WRITTEN = '2026-09-27' as const;

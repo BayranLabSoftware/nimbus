@@ -179,12 +179,13 @@ export async function stepsWithDt(
 export async function fluxesAfter(
   c: GpuCase,
   dts: number[],
-  next: number
+  next: number,
+  stage = 1
 ): Promise<{ before: number[]; after: number[]; ar: number; az: number }> {
   const ref = reference(c);
   const solver = await trusted(new BlastSolverGpu(await gpuDevice(), ref, limiterOf(c)));
   for (const dt of dts) await solver.step(dt, true);
-  const r = await solver.debugFirstStage(next);
+  const r = await solver.debugFirstStage(next, stage);
   return { before: Array.from(r.before), after: Array.from(r.after), ar: r.ar, az: r.az };
 }
 
