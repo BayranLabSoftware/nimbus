@@ -29,6 +29,8 @@ export interface GpuCase {
   readonly sedovShock?: number;
   /** Rule 1277's limiter. */
   readonly limiter?: 'has';
+  /** Rules 1352–1354: real air (needs the limiter). */
+  readonly eos?: 'ideal' | 'air';
 }
 
 let device: GpuDevice | null = null;
@@ -41,7 +43,14 @@ async function gpuDevice(): Promise<GpuDevice> {
   const adapter = await gpu.requestAdapter({ powerPreference: 'high-performance' });
   if (adapter === null) throw new Error('no WebGPU adapter');
   adapterName = `${adapter.info?.vendor ?? ''} ${adapter.info?.architecture ?? ''}`.trim();
-  device = await adapter.requestDevice();
+  // Rules 1352 (c), 1354 (a): the adapter's own buffer limits, for grids whose
+  // flux buffer passes WebGPU's default 128 MiB.
+  device = await adapter.requestDevice({
+    requiredLimits: {
+      maxStorageBufferBindingSize: adapter.limits.maxStorageBufferBindingSize ?? 134_217_728,
+      maxBufferSize: adapter.limits.maxBufferSize ?? 268_435_456,
+    },
+  });
   return device;
 }
 
@@ -54,7 +63,11 @@ function atmosphereOf(c: GpuCase): Atmosphere {
 function reference(c: GpuCase, withSource = true): BlastSolver2D {
   const nr = Math.ceil((1.15 * c.rMax) / c.dx);
   const nz = Math.ceil(c.zMax / c.dx);
-  const solver = new BlastSolver2D({ nr, nz, dx: c.dx }, atmosphereOf(c));
+  const solver = new BlastSolver2D(
+    { nr, nz, dx: c.dx },
+    atmosphereOf(c),
+    c.eos === 'air' ? { limiter: 'has', eos: 'air' } : {}
+  );
   if (withSource && c.sedovShock !== undefined) {
     if (c.height !== 0) throw new Error('blast2d: rule 1314 -- the Sedov start is a ground burst');
     sedovStart(solver, 2 * c.energy, c.sedovShock);
@@ -123,6 +136,7 @@ export async function runCaseGpu(c: GpuCase, tEnd?: number): Promise<Record<stri
       : {}),
     redone: solver.redone,
     halvings: solver.halvings,
+    ...(solver.air ? { newtonResiduals: await solver.newtonResiduals() } : {}),
     ranges: Array.from({ length: last + 1 }, (_, i) => ref.radius(i)),
     peaks: Array.from(peak.subarray(0, last + 1)),
     // When each ground cell's peak was reached (s): which wave set it.

@@ -45,6 +45,8 @@ export interface BlastCase {
   /** Rule 1277: Hu, Adams & Shu's continuous limiter (absent: rules 1262,
    *  1264 and 1268's fall-backs). */
   readonly limiter?: 'has';
+  /** Rules 1343 and 1352: real air (needs the limiter); absent, the ideal gas. */
+  readonly eos?: 'ideal' | 'air';
 }
 
 export interface BlastRun {
@@ -87,11 +89,10 @@ export function runCase(c: BlastCase): BlastRun {
   // boundary's small reflection comes back after the reading is made.
   const nr = Math.ceil((1.15 * c.rMax) / c.dx);
   const nz = Math.ceil(c.zMax / c.dx);
-  const solver = new BlastSolver2D(
-    { nr, nz, dx: c.dx },
-    atmosphereOf(c),
-    c.limiter === undefined ? {} : { limiter: c.limiter }
-  );
+  const solver = new BlastSolver2D({ nr, nz, dx: c.dx }, atmosphereOf(c), {
+    ...(c.limiter === undefined ? {} : { limiter: c.limiter }),
+    ...(c.eos === undefined ? {} : { eos: c.eos }),
+  });
   if (c.sedovShock !== undefined) {
     if (c.height !== 0) throw new Error('blast2d: rule 1314 -- the Sedov start is a ground burst');
     sedovStart(solver, 2 * c.energy, c.sedovShock);

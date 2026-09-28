@@ -122,6 +122,8 @@ export function sedovStart(
   shockRadius: number,
   gamma = solver.gamma
 ): number {
+  // Rule 1354 (c): the core lies far beyond real air's fit.
+  if (solver.eos === 'air') throw new Error('blast2d: rule 1354 (c) -- no Sedov start in real air');
   const sol = sedovSolution(gamma);
   const rho0 = solver.backgroundDensity(0);
   const p0 = solver.backgroundPressure(0);

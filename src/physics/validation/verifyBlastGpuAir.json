@@ -1,0 +1,32 @@
+{
+  "rule": "1352 (b), 1355",
+  "g0": {
+    "uniform": 0,
+    "isothermal": 0,
+    "passes": true
+  },
+  "g2": {
+    "steps": 200,
+    "time": 0.4717822327511385,
+    "massChange": 1.282801995036608e-11,
+    "energyChange": 1.4451773007102952e-8,
+    "passes": true
+  },
+  "g1": {
+    "t2": {
+      "reaches": 1.7480352509924302e-7,
+      "peaks": 0.000002931497421143625,
+      "passes": true
+    },
+    "t4": {
+      "reaches": 0.0000018797966021555368,
+      "peaks": 0.000008106734490143097,
+      "passes": true
+    }
+  },
+  "newtonResiduals": {
+    "t2": 3,
+    "t4": 28
+  },
+  "passes": true
+}

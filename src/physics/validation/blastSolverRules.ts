@@ -3381,3 +3381,177 @@ export const RULE_1352_WRITTEN = '2026-09-28' as const;
  *     Taylor 1950 is in hand (rule 1333 (d)).
  */
 export const RULE_1353_WRITTEN = '2026-09-28' as const;
+
+/**
+ * RULE 1354. RULE 1352's DESIGN ADJUSTED BEFORE ITS CODE (28 September 2026,
+ * 07:07; the kernels read, the adapter asked for its limits).
+ *
+ * (a) ONE BUFFER FOR THE EQUATION OF STATE: WebGPU's default allows 8 storage
+ *     buffers to a kernel and fluxZ already binds 7; the table and each
+ *     cell's (Γ, e) share one storage buffer, EOS — the table's nodes first
+ *     (vec4 per node: γ̃, γ̃_Y, γ̃_Z, γ̃_YZ), then a vec4 per cell (Γ, e, 0, 0),
+ *     ghosts included — so every kernel stays within the default. This
+ *     adapter allows 10 storage buffers and 4 GiB buffers: the device asks
+ *     for maxStorageBufferBindingSize and maxBufferSize up to the adapter's
+ *     (rule 1352 (c)).
+ * (b) NEWTON AT THE FACES: up to 8 iterations, stopping where |e(γ̃ − 1) −
+ *     p/ρ| ≤ 10⁻⁶ p/ρ (single precision's floor), inside the bracket, the
+ *     residual left counted — in place of rule 1352 (a)'s «three, more if
+ *     needed», the same aim.
+ * (c) The Sedov start (rule 1314) is refused with real air on the CPU and the
+ *     GPU alike: its core lies beyond the fit (rule 1334 (e)).
+ */
+export const RULE_1354_WRITTEN = '2026-09-28' as const;
+
+/**
+ * RULE 1355. REAL AIR's OWN GPU KERNELS; THE GPU's IDEAL GAS TO THE BIT; THE
+ * AIR CHECKS' CASES FIXED BEFORE THEY RUN (28 September 2026, 07:16;
+ * `kernels.ts`, `solverGpu.ts`, `browserEntry.ts`,
+ * `scripts/verify-blast-gpu-air.ts`).
+ *
+ * (a) THE FIRST WRITING FAILED rule 1352 (b)(1): real air's branches written
+ *     into the ideal gas's kernels (guarded by P.air, the ideal gas's
+ *     expressions kept) moved the ideal gas's GPU results — peaks by up to
+ *     1.4·10⁻⁴ (T2), 3.4·10⁻⁶ (isothermal), a step's difference aloft —
+ *     all three hashes different. Metal compiles WGSL with fast math: a
+ *     kernel's changed code may move its roundings however its formulas
+ *     read. THE MEND: the ideal gas's kernels restored to the character, and
+ *     real air given kernels of its own (primitivesAir, ghostsAuxR/Z,
+ *     charRAir/ZAir, fluxRAir/ZAir, limitRAir/ZAir, peaksAir), dispatched
+ *     only with eos 'air'; the Params struct extended at its end; the device
+ *     asking for the adapter's buffer limits. GPU V7 then PASSES: the three
+ *     cases hash as on 1bbb978.
+ * (b) THE CHECKS' CASES (rule 1352 (b)(2)–(4)): G0 — uniform and isothermal
+ *     air at rest in real air, the largest speed after 200 steps exactly 0;
+ *     G2 — T2's 1 kt hot hemisphere (45 m, 20 m cells, uniform, real air),
+ *     200 steps, mass to 10⁻⁶ of the domain's and energy to 10⁻⁴ of the
+ *     source's; G1 — the CPU with the table against the GPU on T2 at the
+ *     ground (1 km, the stop of rules 1263 and 1274) and on T4's 5 Mt static
+ *     burst at 14 km (Collins's 8.968 MJ/kg sphere, 342 m cells, 50.4 km,
+ *     34 km high, the isothermal atmosphere): every reach at 1, 2, 4 and
+ *     10 psi within 0.5 %, the ground's peak within 1 % above 1 kPa. The
+ *     GPU's Newton residuals above 10⁻⁶ are reported.
+ */
+export const RULE_1355_WRITTEN = '2026-09-28' as const;
+
+/**
+ * RULE 1356. REAL AIR ABOVE THE FIT: GILMORE 1967, HOW IT IS TRANSCRIBED AND
+ * CHECKED, BEFORE ANY OF ITS NUMBERS IS READ INTO THE PROJECT (28 September
+ * 2026, 08:13; Andrea's choice A: the equation of state above 25 000 K
+ * first, which Trinity, T3's own source and radiation all need).
+ *
+ * (a) THE SOURCE: Gilmore, DASA 1917-1 (1967), Chapter 2 — Table 102, PV/RT;
+ *     Table 105, the dimensionless internal energy E/RT; Table 109, the
+ *     effective gamma — of equilibrium air, columns by the log of the
+ *     density's ratio to the sea level's, rows by temperature (seen on its
+ *     printed page 264: 4 figures, a mantissa and a power of ten). Taken:
+ *     10 000 K to 1 000 000 K, every row printed; log density ratio −7.0 to
+ *     +1.0, every column printed. The energy's zero and the reference
+ *     density read from the report's own text (Table 1, the chapter's
+ *     introduction) before the numbers are used.
+ * (b) ONE TRANSCRIPTION, AND CHECKS IN PLACE OF THE SECOND (Andrea's budget):
+ *     one amanuensis, blind to every other file; then, by script — (1) the
+ *     three tables against each other: Table 109's effective gamma against
+ *     the one PV/RT and E/RT give (1 + (PV/RT)/(E/RT) if the report defines
+ *     it as h/e; otherwise its own definition, read first), within the
+ *     4-figure rounding (±0.1 % of γ̃ − 1 and more where γ̃ − 1 is small, the
+ *     bound propagated); (2) smoothness: the second difference of ln(PV/RT)
+ *     and ln(E/RT) along T and along density beyond five times its local
+ *     median flags a cell; (3) the overlap: at 10 000–15 000 K against
+ *     Hilsenrath–Klein (independent) within 2 %, and below the fit's
+ *     effective edge against RP-1181 within its 4 %. Every flagged cell is
+ *     read again from the page, blind to its first reading, and the
+ *     readings' outcome recorded.
+ * (c) THE EXTENSION, its own rule once the numbers pass (b): above the fit,
+ *     the safety net of rules 1336–1339 replaced by Gilmore's air, joined C¹
+ *     to the blended fit where both hold (below Z_h, above about 12 000 K),
+ *     the table of rule 1347 extended in Z; its checks those of rule 1334
+ *     (a)(7) over the whole new range, V6 with a Riemann problem above
+ *     25 000 K, V8 across the join, G1 on a hot case.
+ * (d) THEN Trinity's criterion, fixed by its own rule before Taylor 1950's
+ *     table is read (rule 1333 (d)).
+ */
+export const RULE_1356_WRITTEN = '2026-09-28' as const;
+
+/**
+ * RULE 1357. TRINITY's CRITERION, FIXED BEFORE TAYLOR 1950's TABLE IS READ
+ * (28 September 2026, 09:12; rule 1333 (d); Taylor 1950, Proc. R. Soc. A
+ * 201, 175 — its text read, its data table not; Selby et al. 2021, arXiv
+ * 2103.06258).
+ *
+ * (a) WHAT IS MEASURED: the radius R of Mack's «ball of fire» against the
+ *     time t from initiation, read from his photographs over R ≈ 20–185 m.
+ *     The burst was 100 ft (30.5 m) above the ground; the ball's bottom met
+ *     the ground within 1 ms, its upper half going on as a nearly perfect
+ *     hemisphere «bounded by a sharp edge which must be taken as a shock
+ *     wave»; from R ≈ 130 m the light at the outer surface fell below the
+ *     interior's — the luminous edge no longer the shock (Taylor, pp. 175–
+ *     176). The yield: 24.8 ± 2 kt of TNT (Selby et al. 2021, a Bayesian
+ *     treatment, the ± as printed); R ∝ E^(1/5), so ±8 % in E is ±1.6 % in R.
+ * (b) THE MODEL: the free-air burst in the one-dimensional solver with real
+ *     air extended by Gilmore (rule 1356), in THE SITE's AIR — the Jornada
+ *     del Muerto at about 1.5 km: the US 1976 atmosphere there (about 84.6
+ *     kPa, 278 K, ρ ≈ 1.06 kg/m³) as the central air, the morning's own
+ *     temperature unknown to us, ρ ± 5 % (± 15 K) its interval (the review:
+ *     sea-level air, R ∝ ρ^(−1/5), would put R 3.5–4 % low, twice the
+ *     tolerance); the whole yield in a hot sphere of air at rest at ambient
+ *     density whose specific energy stays inside the extended table: its
+ *     radius r_s the least that keeps e below the table's top at ambient
+ *     density, and 1.5 r_s beside it (the source's interval); radiation
+ *     absent (Taylor's own argument, that radiation and the hot air's
+ *     specific heat act against each other, is not assumed: its effect is
+ *     what the comparison shows). R(t) the shock's radius from each cell's
+ *     foot arrival (rule 1349 (b)), converged on three grids. THE GROUND is
+ *     left out, a choice resting on Taylor's text (p. 175: the ground's
+ *     impact «does not appear to have disturbed» the upper half) and TESTED
+ *     before the verdict counts: the same burst at 30.5 m above a rigid
+ *     ground in the two-dimensional solver with real air, its shock's
+ *     radius straight up from the burst against the free-air run's within
+ *     1 % over the judged range — else the two-dimensional run, the ground
+ *     in, is the one judged (a reflected shock merged with the direct one
+ *     could raise R by up to 15 %).
+ * (c) THE CRITERION: judged at every tabulated point with 3 r_s ≤ R ≤ 130 m
+ *     (the source's memory below, the luminous edge's separation above),
+ *     the model's R at the measured t against the measured R: PASSES if with
+ *     24.8 kt and r_s every |off| + band ≤ 2 % (the yield's 1.6 %, rounded
+ *     up; the photographs' reading error is not stated and is not added);
+ *     CONSISTENT if one set (yield in 22.8–26.8 kt, the air's density within
+ *     ± 5 %, source radius in r_s … 1.5 r_s) brings every point within 2 %;
+ *     FAILS otherwise. The points
+ *     below 3 r_s and above 130 m reported, not judged. The table is read
+ *     by the judging script only, after this rule is committed.
+ */
+export const RULE_1357_WRITTEN = '2026-09-28' as const;
+
+/**
+ * RULE 1358. REAL AIR ON THE GPU PASSES ITS CHECKS; C1's TWO-DIMENSIONAL
+ * CHECK FAILS AS FIXED, AND WHY (28 September 2026, 09:34;
+ * `verifyBlastGpuAir.json`, `verifyBlastC1TwoD.json`).
+ *
+ * (a) THE GPU's REAL AIR (rule 1355 (b)): G0 — the largest speed after 200
+ *     steps exactly 0, uniform and isothermal — PASSES; G2 — mass 1.3·10⁻¹¹
+ *     of the domain's, energy 1.45·10⁻⁸ of the source's — PASSES; G1 — the
+ *     CPU (the table) against the GPU, the same step counts (1 342 and
+ *     3 101), reaches and peaks within 0.001 % on T2 and T4's 5 Mt — PASSES.
+ *     Faces whose Newton left a residual above 10⁻⁶: 3 in T2, 28 in T4.
+ * (b) C1's TWO-DIMENSIONAL CHECK (rule 1352 (c)): the GPU's free-air burst
+ *     against the one-dimensional run at the same cell, C1's ranges for f_b
+ *     = 0.600 and 0.936: the largest departure 3.24 % on 5 m, 1.09 % on
+ *     2.5 m and 1.24 % on 1.25 m (1984 residual faces over 54 102 steps) —
+ *     FAILS as fixed (1 % on each grid). On 1.25 m every other reading lies
+ *     within 0.46 %.
+ * (c) WHY: the one-dimensional run's peak comes 14 ms after its foot out to
+ *     550 m, 30–37 ms after it from 590 to 650 m, 21 ms at 700 m and 16–17
+ *     ms beyond — in 590–700 m (the readings at 500 m for f_b = 0.600 and
+ *     700 m for 0.936) the recorded maximum is the second shock, from the
+ *     hot sphere's core, catching the first. Its timing depends on the
+ *     source's shape — an exact sphere in one dimension, a hemisphere of
+ *     cells in two — and there the two codes part by about 1 %. The same
+ *     zone holds rule 1353 (d)'s dip in real air's effect.
+ * (d) FOR C1: moving every reading by 1.24 % leaves the verdict — at f_b =
+ *     0.936 the worst C1 reading goes from 8.5 % to at most 9.8 %, under
+ *     12 % — so C1 stays CONSISTENT for the product's two-dimensional solver
+ *     as for the one-dimensional one; the formal check stays failed. C2's
+ *     arrivals were not compared in two dimensions — not claimed.
+ */
+export const RULE_1358_WRITTEN = '2026-09-28' as const;

@@ -17,7 +17,18 @@
  * reference does; rules 1297–1298's radial reconstruction for r-weighted
  * averages and the axisymmetric source as a mean over the cell (sourceR);
  * and rule 1309's reconstruction in characteristic fields (charR, charZ).
+ *
+ * Real air (rules 1352–1354) has kernels of its own — primitivesAir,
+ * ghostsAuxR/Z, charRAir/ZAir, fluxRAir/ZAir, limitRAir/ZAir, peaksAir —
+ * appended below and dispatched only with eos 'air', so the ideal gas's
+ * kernels stay as they were to the bit (Metal compiles with fast math, and
+ * any change to a kernel's code may move its roundings): a state whose
+ * internal energy exceeds ρ·e_c takes p and c² from the blended function's
+ * bicubic table (the buffer EOS: the nodes, then each cell's (Γ, e)); below,
+ * the ideal gas's own arithmetic.
  */
+
+import { AIR_TABLE_GEOMETRY as TG } from '../airEos.js';
 
 export const WORKGROUP = 128;
 
@@ -31,6 +42,7 @@ struct Params {
   keepLo: f32, addHi: f32, addLo: f32, time: f32,
   lamR: f32, lamZ: f32, epsRho: f32, epsP: f32,
   ar: f32, az: f32, has: u32, slope: f32,
+  air: u32, eCold: f32,
 };
 
 @group(0) @binding(0) var<uniform> P: Params;
@@ -681,5 +693,329 @@ var<workgroup> scratch: array<f32, WG>;
     step = step / 2u;
   }
   if (lid.x == 0u) { SPEED[n + wid.x] = scratch[0]; }
+}
+
+// =====================================================================
+// Real air (rules 1352–1354): the table, the hot states, and the kernels
+// dispatched in place of the ideal gas's with eos 'air'.
+// =====================================================================
+@group(0) @binding(21) var<storage, read_write> EOS: array<vec4<f32>>;
+const TNY: i32 = ${String(TG.ny)};
+const TNZ: i32 = ${String(TG.nz)};
+const TSTEP: f32 = ${String(TG.step)};
+const TZ0: f32 = ${String(TG.zFrom)};
+const TZTOP: f32 = ${String(TG.zTop)};
+const RHOA: f32 = ${String(TG.rho0)};
+const RTA: f32 = ${String(TG.rt0)};
+const LOG10_2: f32 = 0.30102999566398120;
+const LN10: f32 = 2.302585092994046;
+const AUXB: i32 = TNY * TNZ;
+
+// The table's γ̃, γ̃_Y, γ̃_Z at (Y, Z): bicubic Hermite as airGammaTable.
+fn tableGamma(y: f32, z: f32) -> vec3<f32> {
+  let yc = clamp(y, -7.0, 3.0);
+  let zc = min(z, TZTOP);
+  let x = (yc + 7.0) / TSTEP;
+  let w = (zc - TZ0) / TSTEP;
+  let m = min(TNY - 2, i32(floor(x)));
+  let n = clamp(i32(floor(w)), 0, TNZ - 2);
+  let u = x - f32(m);
+  let v = w - f32(n);
+  let u2 = u * u; let u3 = u2 * u; let v2 = v * v; let v3 = v2 * v;
+  let a = vec4<f32>(2.0 * u3 - 3.0 * u2 + 1.0, u3 - 2.0 * u2 + u, -2.0 * u3 + 3.0 * u2, u3 - u2);
+  let da = vec4<f32>(6.0 * u2 - 6.0 * u, 3.0 * u2 - 4.0 * u + 1.0, -6.0 * u2 + 6.0 * u, 3.0 * u2 - 2.0 * u);
+  let b = vec4<f32>(2.0 * v3 - 3.0 * v2 + 1.0, v3 - 2.0 * v2 + v, -2.0 * v3 + 3.0 * v2, v3 - v2);
+  let db = vec4<f32>(6.0 * v2 - 6.0 * v, 3.0 * v2 - 4.0 * v + 1.0, -6.0 * v2 + 6.0 * v, 3.0 * v2 - 2.0 * v);
+  var f = 0.0; var fy = 0.0; var fz = 0.0;
+  for (var i = 0; i < 2; i++) {
+    let wy = select(a.z, a.x, i == 0);
+    let sy = select(a.w, a.y, i == 0) * TSTEP;
+    let dwy = select(da.z, da.x, i == 0) / TSTEP;
+    let dsy = select(da.w, da.y, i == 0);
+    for (var j = 0; j < 2; j++) {
+      let wz = select(b.z, b.x, j == 0);
+      let sz = select(b.w, b.y, j == 0) * TSTEP;
+      let dwz = select(db.z, db.x, j == 0) / TSTEP;
+      let dsz = select(db.w, db.y, j == 0);
+      let q = EOS[(m + i) * TNZ + (n + j)];
+      f += wy * wz * q.x + sy * wz * q.y + wy * sz * q.z + sy * sz * q.w;
+      fy += dwy * wz * q.x + dsy * wz * q.y + dwy * sz * q.z + dsy * sz * q.w;
+      fz += wy * dwz * q.x + sy * dwz * q.y + wy * dsz * q.z + sy * dsz * q.w;
+    }
+  }
+  if (z > TZTOP) { fz = 0.0; }
+  if (yc != y) { fy = 0.0; }
+  return vec3<f32>(f, fy, fz);
+}
+// A hot state at (ρ, e): (p, c², Γ = ρc²/p, (∂p/∂e)/ρ).
+fn hotEval(rho: f32, e: f32) -> vec4<f32> {
+  let g = tableGamma(log2(rho / RHOA) * LOG10_2, log2(e / RTA) * LOG10_2);
+  let p = rho * e * (g.x - 1.0);
+  let c2 = e * ((g.x - 1.0) * (g.x + g.z / LN10) + g.y / LN10);
+  return vec4<f32>(p, c2, rho * c2 / p, g.x - 1.0 + g.z / LN10);
+}
+// Rule 1343 (a) on the GPU: a face state's internal energy per volume and its
+// c² from (ρ, p); Newton from the cell's e inside [e_c, p/(0.05ρ)], up to 8
+// iterations to 10⁻⁶ (rule 1354 (b)), a residual left counted in COUNT[4].
+fn faceInternal(r: f32, p: f32, guess: f32) -> vec2<f32> {
+  let g = P.gamma;
+  let cold = p / (g - 1.0);
+  if (!(cold > r * P.eCold)) { return vec2<f32>(cold, g * p / r); }
+  let t = p / r;
+  var lo = P.eCold;
+  var hi = t / 0.05;
+  var e = select(cold / r, guess, guess > lo && guess < hi);
+  var s = hotEval(r, e);
+  var f = s.x / r - t;
+  for (var it = 0; it < 8; it++) {
+    if (abs(f) <= 1e-6 * t) { break; }
+    if (f > 0.0) { hi = e; } else { lo = e; }
+    var next = e - f / s.w;
+    if (!(next > lo && next < hi)) { next = 0.5 * (lo + hi); }
+    e = next;
+    s = hotEval(r, e);
+    f = s.x / r - t;
+  }
+  if (abs(f) > 1e-6 * t) { atomicAdd(&COUNT[4], 1u); }
+  return vec2<f32>(r * e, s.y);
+}
+// HLLC as hllc, the sides' energies and speeds by the equation of state.
+fn hllcAir(rL: f32, unL: f32, utL: f32, pL: f32, rR: f32, unR: f32, utR: f32, pR: f32,
+    guessL: f32, guessR: f32) -> vec4<f32> {
+  let fl = faceInternal(rL, pL, guessL);
+  let fr = faceInternal(rR, pR, guessR);
+  let cL = sqrt(fl.y);
+  let cR = sqrt(fr.y);
+  let eL = fl.x + 0.5 * rL * (unL * unL + utL * utL);
+  let eR = fr.x + 0.5 * rR * (unR * unR + utR * utR);
+  let sL = min(unL - cL, unR - cR);
+  let sR = max(unL + cL, unR + cR);
+  if (sL >= 0.0) { return vec4<f32>(rL * unL, rL * unL * unL + pL, rL * unL * utL, unL * (eL + pL)); }
+  if (sR <= 0.0) { return vec4<f32>(rR * unR, rR * unR * unR + pR, rR * unR * utR, unR * (eR + pR)); }
+  let aL = rL * (sL - unL);
+  let aR = rR * (sR - unR);
+  let sStar = (pR - pL + unL * aL - unR * aR) / (aL - aR);
+  if (sStar >= 0.0) {
+    let q = (sStar - unL) / (sL - sStar);
+    let f = aL / (sL - sStar);
+    return vec4<f32>(
+      rL * unL + sL * rL * q,
+      rL * unL * unL + pL + sL * rL * sL * q,
+      rL * unL * utL + sL * rL * utL * q,
+      unL * (eL + pL) + sL * (sStar - unL) * (eL / (sL - sStar) + f * (sStar + pL / aL)));
+  }
+  let q = (sStar - unR) / (sR - sStar);
+  let f = aR / (sR - sStar);
+  return vec4<f32>(
+    rR * unR + sR * rR * q,
+    rR * unR * unR + pR + sR * rR * sR * q,
+    rR * unR * utR + sR * rR * utR * q,
+    unR * (eR + pR) + sR * (sStar - unR) * (eR / (sR - sStar) + f * (sStar + pR / aR)));
+}
+
+// ---- primitives with real air: hot where the full internal energy passes
+//      ρ·e_c; each cell's (Γ, e) into EOS ----
+@compute @workgroup_size(WG) fn primitivesAir(@builtin(global_invocation_id) id: vec3<u32>) {
+  let n = u32(P.nr * P.nz);
+  if (id.x >= n) { return; }
+  let i = i32(id.x) % P.nr;
+  let j = i32(id.x) / P.nr;
+  let k = cell(i, j);
+  let bg = ROW[j];
+  let q = state(k);
+  let rho = bg.x + q.x;
+  let u = q.y / rho;
+  let v = q.z / rho;
+  let ke = 0.5 * rho * (u * u + v * v);
+  let rhoE = bg.y / (P.gamma - 1.0) + q.w - ke;
+  var pdev: f32;
+  var c2: f32;
+  if (rhoE > rho * P.eCold) {
+    let h = hotEval(rho, rhoE / rho);
+    pdev = h.x - bg.y;
+    c2 = h.y;
+    EOS[AUXB + k] = vec4<f32>(h.z, rhoE / rho, 0.0, 0.0);
+  } else {
+    pdev = (P.gamma - 1.0) * (q.w - ke);
+    c2 = P.gamma * (bg.y + pdev) / rho;
+    EOS[AUXB + k] = vec4<f32>(P.gamma, rhoE / rho, 0.0, 0.0);
+  }
+  W[k] = vec4<f32>(q.x / bg.x, u, v, pdev / bg.y);
+  let c = sqrt(c2);
+  SPEED[id.x] = abs(u) + c;
+  SPEEDV[id.x] = abs(v) + c;
+}
+
+// ---- the cells' (Γ, e) into the ghosts, as W's (after ghostsR / ghostsZ) ----
+@compute @workgroup_size(WG) fn ghostsAuxR(@builtin(global_invocation_id) id: vec3<u32>) {
+  let j = i32(id.x);
+  if (j >= P.nz) { return; }
+  for (var g = 1; g <= G; g++) {
+    EOS[AUXB + cell(-g, j)] = EOS[AUXB + cell(g - 1, j)];
+    EOS[AUXB + cell(P.nr - 1 + g, j)] = EOS[AUXB + cell(P.nr - 1, j)];
+  }
+}
+@compute @workgroup_size(WG) fn ghostsAuxZ(@builtin(global_invocation_id) id: vec3<u32>) {
+  let i = i32(id.x) - G;
+  if (i >= P.nr + G) { return; }
+  for (var g = 1; g <= G; g++) {
+    EOS[AUXB + cell(i, -g)] = EOS[AUXB + cell(i, g - 1)];
+    EOS[AUXB + cell(i, P.nz - 1 + g)] = EOS[AUXB + cell(i, P.nz - 1)];
+  }
+}
+
+// ---- charFace with c̄² = Γ̄p̄/ρ̄ (rule 1352 (a)) ----
+fn charFaceAir(kl: i32, step: i32, a: f32, b: f32, atL: i32, atR: i32, radial: bool) {
+  let kr = kl + step;
+  let wl = W[kl];
+  let wr = W[kr];
+  let rhoBar = 0.5 * a * (2.0 + wl.x + wr.x);
+  let pBar = 0.5 * b * (2.0 + wl.w + wr.w);
+  let gBar = 0.5 * (EOS[AUXB + kl].x + EOS[AUXB + kr].x);
+  let c = sqrt(gBar * pBar / rhoBar);
+  let z = rhoBar * c;
+  let c2 = c * c;
+  var x: array<vec4<f32>, 6>;
+  for (var m = 0; m < 6; m++) {
+    let w = W[kl + (m - 2) * step];
+    let un = select(w.z, w.y, radial);
+    let ut = select(w.y, w.z, radial);
+    let p = b * w.w;
+    x[m] = vec4<f32>(p - z * un, c2 * a * w.x - p, ut, p + z * un);
+  }
+  var l: vec4<f32>;
+  var r: vec4<f32>;
+  if (radial) {
+    l = weno5zCyl(x[0], x[1], x[2], x[3], x[4], atL);
+    r = weno5zCyl(x[1], x[2], x[3], x[4], x[5], atR);
+  } else {
+    l = weno5z(x[0], x[1], x[2], x[3], x[4]);
+    r = weno5z(x[5], x[4], x[3], x[2], x[1]);
+  }
+  let pl = 0.5 * (l.x + l.w);
+  let unl = (l.w - l.x) / (2.0 * z);
+  let rl = (l.y + pl) / c2;
+  let pr = 0.5 * (r.x + r.w);
+  let unr = (r.w - r.x) / (2.0 * z);
+  let rr = (r.y + pr) / c2;
+  if (radial) {
+    S[kl] = vec4<f32>(rl / a, unl, l.z, pl / b);
+    T[kr] = vec4<f32>(rr / a, unr, r.z, pr / b);
+  } else {
+    S[kl] = vec4<f32>(rl / a, l.z, unl, pl / b);
+    T[kr] = vec4<f32>(rr / a, r.z, unr, pr / b);
+  }
+}
+@compute @workgroup_size(WG) fn charRAir(@builtin(global_invocation_id) id: vec3<u32>) {
+  let width = P.nr + 1;
+  if (id.x >= u32(width * P.nz)) { return; }
+  let f = i32(id.x) % width;
+  let j = i32(id.x) / width;
+  let bg = ROW[j];
+  charFaceAir(cell(f - 1, j), 1, bg.x, bg.y, 6 * f, 6 * (f + 1) + 3, true);
+}
+@compute @workgroup_size(WG) fn charZAir(@builtin(global_invocation_id) id: vec3<u32>) {
+  let height = P.nz + 1;
+  if (id.x >= u32(P.nr * height)) { return; }
+  let i = i32(id.x) % P.nr;
+  let g = i32(id.x) / P.nr;
+  let bg = FACE[g];
+  charFaceAir(cell(i, g - 1), P.stride, bg.x, bg.y, 0, 0, false);
+}
+
+// ---- fluxes with real air (the limiter's path: every face at fifth order) ----
+@compute @workgroup_size(WG) fn fluxRAir(@builtin(global_invocation_id) id: vec3<u32>) {
+  let width = P.nr + 1;
+  if (id.x >= u32(width * P.nz)) { return; }
+  let f = i32(id.x) % width;
+  let j = i32(id.x) / width;
+  let kl = cell(f - 1, j);
+  let kr = cell(f, j);
+  let l = S[kl];
+  let r = T[kr];
+  let bg = ROW[j];
+  let fl = hllcAir(bg.x * (1.0 + l.x), l.y, l.z, bg.y * (1.0 + l.w), bg.x * (1.0 + r.x), r.y, r.z,
+    bg.y * (1.0 + r.w), EOS[AUXB + kl].y, EOS[AUXB + kr].y);
+  F[id.x] = vec4<f32>(fl.x, fl.y - bg.y, fl.z, fl.w);
+}
+@compute @workgroup_size(WG) fn fluxZAir(@builtin(global_invocation_id) id: vec3<u32>) {
+  let height = P.nz + 1;
+  if (id.x >= u32(P.nr * height)) { return; }
+  let i = i32(id.x) % P.nr;
+  let g = i32(id.x) / P.nr;
+  let kl = cell(i, g - 1);
+  let kr = cell(i, g);
+  let l = S[kl];
+  let r = T[kr];
+  let bg = FACE[g];
+  let fl = hllcAir(bg.x * (1.0 + l.x), l.z, l.y, bg.y * (1.0 + l.w), bg.x * (1.0 + r.x), r.z, r.y,
+    bg.y * (1.0 + r.w), EOS[AUXB + kl].y, EOS[AUXB + kr].y);
+  F[(P.nr + 1) * P.nz + i32(id.x)] = vec4<f32>(fl.x, fl.z, fl.y - bg.y, fl.w);
+}
+
+// ---- the limiter with real air's Euler flux (its proxy unchanged) ----
+fn eosPressure(s: vec4<f32>) -> f32 {
+  let rhoE = s.w - 0.5 * (s.y * s.y + s.z * s.z) / s.x;
+  if (rhoE > s.x * P.eCold) { return hotEval(s.x, rhoE / s.x).x; }
+  return (P.gamma - 1.0) * rhoE;
+}
+fn eulerFluxAir(s: vec4<f32>, dir: i32) -> vec4<f32> {
+  let p = eosPressure(s);
+  let un = select(s.z, s.y, dir == 0) / s.x;
+  return vec4<f32>(s.x * un, s.y * un + select(0.0, p, dir == 0), s.z * un + select(0.0, p, dir == 1), (s.w + p) * un);
+}
+@compute @workgroup_size(WG) fn limitRAir(@builtin(global_invocation_id) id: vec3<u32>) {
+  if (id.x >= u32(P.nr * P.nz)) { return; }
+  let f = i32(id.x) % P.nr + 1;
+  let j = i32(id.x) / P.nr;
+  let o = j * (P.nr + 1) + f;
+  let pb = ROW[j].y;
+  let sl = full(cell(f - 1, j), j);
+  let inside = f < P.nr;
+  let sr = select(sl, full(cell(f, j), j), inside);
+  let low = 0.5 * (eulerFluxAir(sl, 0) + eulerFluxAir(sr, 0)) - 0.5 * P.ar * (sr - sl);
+  let high = F[o] + vec4<f32>(0.0, pb, 0.0, 0.0);
+  let lim = limitFace(high, low, sl, sourceOf(sl, f - 1, j), true, sr, sourceOf(sr, f, j), inside, P.lamR);
+  F[o] = lim - vec4<f32>(0.0, pb, 0.0, 0.0);
+}
+@compute @workgroup_size(WG) fn limitZAir(@builtin(global_invocation_id) id: vec3<u32>) {
+  if (id.x >= u32(P.nr * (P.nz + 1))) { return; }
+  let i = i32(id.x) % P.nr;
+  let g = i32(id.x) / P.nr;
+  let o = (P.nr + 1) * P.nz + g * P.nr + i;
+  let pb = FACE[g].y;
+  let below = g > 0;
+  let above = g < P.nz;
+  var sl: vec4<f32>;
+  var sr: vec4<f32>;
+  if (below) { sl = full(cell(i, g - 1), g - 1); }
+  if (above) { sr = full(cell(i, g), g); }
+  if (!below) { sl = vec4<f32>(sr.x, sr.y, -sr.z, sr.w); }
+  if (!above) { sr = sl; }
+  let low = 0.5 * (eulerFluxAir(sl, 1) + eulerFluxAir(sr, 1)) - 0.5 * P.az * (sr - sl);
+  let high = F[o] + vec4<f32>(0.0, 0.0, pb, 0.0);
+  var srcL = vec4<f32>(0.0);
+  var srcR = vec4<f32>(0.0);
+  if (below) { srcL = sourceOf(sl, i, g - 1); }
+  if (above) { srcR = sourceOf(sr, i, g); }
+  let lim = limitFace(high, low, sl, srcL, below, sr, srcR, above, P.lamZ);
+  F[o] = lim - vec4<f32>(0.0, 0.0, pb, 0.0);
+}
+
+// ---- the ground's peaks with real air ----
+@compute @workgroup_size(WG) fn peaksAir(@builtin(global_invocation_id) id: vec3<u32>) {
+  let i = i32(id.x);
+  if (i >= P.nr) { return; }
+  let bg = ROW[0];
+  let k = cell(i, 0);
+  let q = state(k);
+  let rho = bg.x + q.x;
+  let ke = 0.5 * (q.y * q.y + q.z * q.z) / rho;
+  let rhoE = bg.y / (P.gamma - 1.0) + q.w - ke;
+  var over = (P.gamma - 1.0) * (q.w - ke);
+  if (rhoE > rho * P.eCold) { over = hotEval(rho, rhoE / rho).x - bg.y; }
+  let old = PEAK[i];
+  if (over > old.x) { PEAK[i] = vec4<f32>(over, P.time, over, 0.0); }
+  else { PEAK[i] = vec4<f32>(old.x, old.y, over, 0.0); }
 }
 `;

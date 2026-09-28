@@ -498,6 +498,17 @@ const TABLE_STEP = 0.01;
 const TABLE_Z_TOP = 4.5;
 const TABLE_NY = Math.round(10 / TABLE_STEP) + 1;
 const TABLE_NZ = Math.round((TABLE_Z_TOP - AIR_COLD_Z) / TABLE_STEP) + 1;
+/** The table's geometry and the reference state, for the GPU's shader. */
+export const AIR_TABLE_GEOMETRY = {
+  ny: TABLE_NY,
+  nz: TABLE_NZ,
+  step: TABLE_STEP,
+  zFrom: AIR_COLD_Z,
+  zTop: TABLE_Z_TOP,
+  rho0: AIR_RHO0,
+  rt0: RT0,
+  eCold: AIR_COLD_E,
+} as const;
 let airTableData: Float64Array | null = null;
 
 /** The table: 4 numbers per node (f, f_Y, f_Z, f_YZ), node (m, n) at
@@ -525,6 +536,30 @@ function airTable(): Float64Array {
   airBlendedCounts.clamped = saved.clamped;
   airTableData = t;
   return t;
+}
+
+/** Rules 1352–1354: the table for the GPU — its nodes (γ̃, γ̃_Y, γ̃_Z, γ̃_YZ)
+ *  in single precision, and its geometry. */
+export function airTableForGpu(): {
+  nodes: Float32Array;
+  ny: number;
+  nz: number;
+  step: number;
+  zFrom: number;
+  zTop: number;
+  rho0: number;
+  rt0: number;
+} {
+  return {
+    nodes: Float32Array.from(airTable()),
+    ny: TABLE_NY,
+    nz: TABLE_NZ,
+    step: TABLE_STEP,
+    zFrom: AIR_COLD_Z,
+    zTop: TABLE_Z_TOP,
+    rho0: AIR_RHO0,
+    rt0: RT0,
+  };
 }
 
 /** Cubic Hermite basis and its derivative at u ∈ [0, 1]. */

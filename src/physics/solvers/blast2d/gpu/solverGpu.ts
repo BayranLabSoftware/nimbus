@@ -9,6 +9,7 @@
  * copies within a step held as double-floats (rule 1272).
  */
 
+import { airTableForGpu, AIR_TABLE_GEOMETRY } from '../airEos.js';
 import { radialCoefficients, type BlastSolver2D } from '../solver.js';
 import { BLAST2D_WGSL, WORKGROUP } from './kernels.js';
 import { BUFFER, MAP_READ, type GpuBuffer, type GpuDevice } from './webgpu.js';
@@ -38,6 +39,17 @@ const KERNELS = [
   'charZ',
   'mirrorR',
   'mirrorZ',
+  // Rules 1352–1354: real air's own kernels.
+  'primitivesAir',
+  'ghostsAuxR',
+  'ghostsAuxZ',
+  'charRAir',
+  'charZAir',
+  'fluxRAir',
+  'fluxZAir',
+  'limitRAir',
+  'limitZAir',
+  'peaksAir',
 ] as const;
 type Kernel = (typeof KERNELS)[number];
 
@@ -49,6 +61,8 @@ export class BlastSolverGpu {
   readonly nz: number;
   readonly dx: number;
   readonly gamma: number;
+  /** Rules 1352–1354: real air (the reference solver's eos). */
+  readonly air: boolean;
   readonly cfl: number;
   time = 0;
   steps = 0;
@@ -97,6 +111,7 @@ export class BlastSolverGpu {
     this.nz = reference.nz;
     this.dx = reference.dx;
     this.gamma = reference.gamma;
+    this.air = reference.eos === 'air';
     this.cfl = reference.cfl;
     const { nr, nz, dx, gamma } = this;
     this.stride = nr + 2 * G;
@@ -151,8 +166,10 @@ export class BlastSolverGpu {
     const make = (bytes: number, usage: number = storage): GpuBuffer =>
       device.createBuffer({ size: Math.max(16, bytes), usage });
     const vec4s = 16 * this.cells;
-    this.params = make(80, BUFFER.UNIFORM | BUFFER.COPY_DST);
+    this.params = make(96, BUFFER.UNIFORM | BUFFER.COPY_DST);
     this.has = options.limiter === 'has';
+    if (this.air && !this.has)
+      throw new Error("blast2d gpu: rule 1352 -- real air needs the limiter 'has'");
     // Rule 1277's floors: min(10⁻¹³, the initial minimum), as the reference.
     let rhoMin = Infinity;
     let pMin = Infinity;
@@ -196,7 +213,14 @@ export class BlastSolverGpu {
     this.low = make(4 * this.cells);
     this.speed = make(4 * (this.interior + this.partials));
     this.speedV = make(4 * (this.interior + this.partials));
-    this.count = make(16);
+    // Rule 1354 (b): COUNT[4] the faces whose Newton left a residual.
+    this.count = make(32);
+    // Rules 1352–1354: the table's nodes then each cell's (Γ, e); a stub in
+    // the ideal gas, whose kernels never read it.
+    const eos = this.air
+      ? make(16 * (AIR_TABLE_GEOMETRY.ny * AIR_TABLE_GEOMETRY.nz + this.cells))
+      : make(16);
+    if (this.air) device.queue.writeBuffer(eos, 0, airTableForGpu().nodes);
     this.peak = make(16 * nr);
     this.readback = make(
       Math.max(4 * this.partials, 16, 16 * nr),
@@ -239,6 +263,7 @@ export class BlastSolverGpu {
       this.speedV,
       radialBuffer,
       source,
+      eos,
     ];
     const groups = {} as Record<Kernel, unknown>;
     for (const name of KERNELS) {
@@ -255,7 +280,7 @@ export class BlastSolverGpu {
   }
 
   private setParams(dt: number, keep: number, add: number): void {
-    const data = new ArrayBuffer(80);
+    const data = new ArrayBuffer(96);
     const ints = new Int32Array(data, 0, 4);
     const floats = new Float32Array(data, 16, 14);
     const flags = new Uint32Array(data, 72, 1);
@@ -283,6 +308,9 @@ export class BlastSolverGpu {
     flags[0] = this.has ? 1 : 0;
     // Rule 1306: the ground's slope factor 1/H, the reference's own choice.
     new Float32Array(data, 76, 1)[0] = this.groundLift;
+    // Rules 1352–1354: real air, and the cold branch's top e_c.
+    new Uint32Array(data, 80, 1)[0] = this.air ? 1 : 0;
+    new Float32Array(data, 84, 1)[0] = AIR_TABLE_GEOMETRY.eCold;
     this.device.queue.writeBuffer(this.params, 0, data);
   }
 
@@ -459,7 +487,7 @@ export class BlastSolverGpu {
     const { nr, nz } = this;
     this.clearLow();
     this.setParams(0, 0, 0);
-    this.dispatch([['primitives', this.interior]]);
+    this.dispatch([[this.air ? 'primitivesAir' : 'primitives', this.interior]]);
     ({ ar: this.ar, az: this.az } = await this.fastestPair());
     // A diagnostic may impose the step (the reference's), `force`.
     const dt = Math.fround(
@@ -474,29 +502,37 @@ export class BlastSolverGpu {
     ];
     for (const [n, [keep, add]] of stages.entries()) {
       if (n > 0) {
-        this.dispatch([['primitives', this.interior]]);
+        this.dispatch([[this.air ? 'primitivesAir' : 'primitives', this.interior]]);
         ({ ar: this.ar, az: this.az } = await this.fastestPair());
       }
       this.lamR = (dt * (this.ar + this.az)) / (this.ar * this.dx);
       this.lamZ = (dt * (this.ar + this.az)) / (this.az * this.dx);
       this.setParams(dt, keep, add);
       this.copy(this.uPair, this.prePair);
+      // Rules 1352–1354: real air's kernels in place of the ideal gas's.
+      const air = this.air;
       this.dispatch([
         ['ghostsR', nz],
         ['ghostsZ', nr + 2 * G],
+        ...(air
+          ? ([
+              ['ghostsAuxR', nz],
+              ['ghostsAuxZ', nr + 2 * G],
+            ] as [Kernel, number][])
+          : []),
         ['reconR', (nr + 2) * nz],
-        ['charR', (nr + 1) * nz],
+        [air ? 'charRAir' : 'charR', (nr + 1) * nz],
         ['mirrorR', nz],
         ['scaleR', (nr + 2) * nz],
-        ['fluxR', (nr + 1) * nz],
+        [air ? 'fluxRAir' : 'fluxR', (nr + 1) * nz],
         ['sourceR', nr * nz],
         ['reconZ', nr * (nz + 2)],
-        ['charZ', nr * (nz + 1)],
+        [air ? 'charZAir' : 'charZ', nr * (nz + 1)],
         ['mirrorZ', nr],
         ['scaleZ', nr * (nz + 2)],
-        ['fluxZ', nr * (nz + 1)],
-        ['limitR', nr * nz],
-        ['limitZ', nr * (nz + 1)],
+        [air ? 'fluxZAir' : 'fluxZ', nr * (nz + 1)],
+        [air ? 'limitRAir' : 'limitR', nr * nz],
+        [air ? 'limitZAir' : 'limitZ', nr * (nz + 1)],
         ['rhs', this.interior],
         ['stage', this.interior],
         ['check', this.interior],
@@ -510,7 +546,7 @@ export class BlastSolverGpu {
     this.time += dt;
     this.steps++;
     this.setParams(dt, 0, 0);
-    this.dispatch([['peaks', this.nr]]);
+    this.dispatch([[this.air ? 'peaksAir' : 'peaks', this.nr]]);
     return dt;
   }
 
@@ -705,6 +741,17 @@ export class BlastSolverGpu {
     return v;
   }
 
+  /** Rule 1354 (b): faces whose Newton left a residual above 10⁻⁶. */
+  async newtonResiduals(): Promise<number> {
+    const encoder = this.device.createCommandEncoder();
+    encoder.copyBufferToBuffer(this.count, 16, this.readback, 0, 4);
+    this.device.queue.submit([encoder.finish()]);
+    await this.readback.mapAsync(MAP_READ, 0, 4);
+    const v = new Uint32Array(this.readback.getMappedRange(0, 4).slice(0))[0] ?? 0;
+    this.readback.unmap();
+    return v;
+  }
+
   /** Rule 1277: cells whose face states were scaled, over the stages (with
    *  the limiter, `fallbacks` counts the faces blended). */
   async scaledFaces(): Promise<number> {
@@ -764,5 +811,24 @@ function usedBindings(name: Kernel): number[] {
     case 'mirrorR':
     case 'mirrorZ':
       return [0, 3, 4];
+    case 'primitivesAir':
+      return [0, 1, 2, 9, 12, 18, 21];
+    case 'ghostsAuxR':
+    case 'ghostsAuxZ':
+      return [0, 21];
+    case 'charRAir':
+      return [0, 2, 3, 4, 9, 19, 21];
+    case 'charZAir':
+      return [0, 2, 3, 4, 10, 19, 21];
+    case 'fluxRAir':
+      return [0, 3, 4, 5, 9, 13, 21];
+    case 'fluxZAir':
+      return [0, 3, 4, 5, 10, 13, 21];
+    case 'limitRAir':
+      return [0, 1, 5, 9, 13, 20, 21];
+    case 'limitZAir':
+      return [0, 1, 5, 9, 10, 13, 20, 21];
+    case 'peaksAir':
+      return [0, 1, 9, 14, 21];
   }
 }
