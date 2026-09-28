@@ -294,6 +294,37 @@ const windows = others
   });
 console.log('shares that bring the readings within, per source:', JSON.stringify(windows));
 
+// Rule 1351 (c): the sources' spread at each range (the converged peaks at the
+// central share, largest less smallest over the central source's), and real
+// air's effect (real air over the ideal gas, the central source and share).
+const available = others.filter((o) => o.runs !== null);
+const spread = C1_RANGES.map((r) => {
+  const peaks = available.map(
+    (o) => readings(o.runs ?? [], fbCentral).c1.find((x) => x.r === r)?.model ?? NaN
+  );
+  const mid = main.c1.find((x) => x.r === r)?.model ?? NaN;
+  return {
+    r,
+    sources: available.map((o) => o.radius),
+    spread: (Math.max(...peaks) - Math.min(...peaks)) / mid,
+  };
+});
+const idealRuns = runsBy(CENTRAL, 'ideal');
+const realAir =
+  idealRuns === null
+    ? null
+    : readings(idealRuns, fbCentral).c1.map((x) => {
+        const air = main.c1.find((y) => y.r === x.r)?.model ?? NaN;
+        return { r: x.r, airOverIdeal: air / x.model };
+      });
+for (const x of spread)
+  console.log(
+    `sources ${x.sources.join('/')} m at ${String(x.r)} m: spread ${(x.spread * 100).toFixed(1)} % of the central`
+  );
+if (realAir !== null)
+  for (const x of realAir)
+    console.log(`real air over the ideal gas at ${String(x.r)} m: ${x.airOverIdeal.toFixed(3)}`);
+
 const verdict = (pass: boolean, consistent: object | null): string =>
   undetermined
     ? 'UNDETERMINED'
@@ -336,6 +367,8 @@ writeFileSync(
       beyondShareMax: beyond,
       central: main,
       consistent: { scanned, c1: c1Consistent, c2: c2Consistent, windows },
+      spread,
+      realAir,
       c1: verdict(c1Pass, c1Consistent),
       c2: verdict(c2Pass, c2Consistent),
     },

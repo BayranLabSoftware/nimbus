@@ -138,6 +138,9 @@ export class BlastSolver1D {
       this.rho[i] = air.rho0;
       this.en[i] = air.p0 / (this.gamma - 1);
     }
+    // Rule 1352 (a): real air needs a cold background.
+    if (this.eos === 'air' && !(air.p0 / ((this.gamma - 1) * air.rho0) <= AIR_COLD_E))
+      throw new Error('blast1d: rule 1352 (a) -- real air needs a background below 415 K');
     this.probes = (options.probes ?? []).map((radius) => {
       const cell = Math.min(n - 2, Math.max(0, Math.floor(radius / dr - 0.5)));
       return {
@@ -452,10 +455,10 @@ export class BlastSolver1D {
           pr.next[side]++;
         }
         pr.previous[side] = over;
-        // The first positive phase's impulse (over·Δt, a rectangle per step;
-        // opened and closed at over > 0 — a threshold against rounding noise
-        // at rest is a later mend, the thirteenth review's note).
-        if (pr.phase[side] === 0 && over > 0) pr.phase[side] = 1;
+        // The first positive phase's impulse (over·Δt, a rectangle per step):
+        // opened above 10 Pa, closed at 0 or below (rule 1351 (a)), so that
+        // rounding noise at rest neither opens nor closes it.
+        if (pr.phase[side] === 0 && over > LADDER_FROM) pr.phase[side] = 1;
         if (pr.phase[side] === 1) {
           if (over > 0) pr.impulse[side] += over * dt;
           else pr.phase[side] = 2;

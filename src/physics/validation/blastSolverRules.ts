@@ -3268,3 +3268,116 @@ export const RULE_1349_WRITTEN = '2026-09-27' as const;
  *     the ideal gas's runs, for the sources' spread and real air's effect.
  */
 export const RULE_1350_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1351. C1's LOOSE ENDS CLOSED BEFORE ANYTHING NEW (27 September 2026,
+ * 23:55; Andrea: the night's work «per bene, senza lasciare cose indietro»).
+ *
+ * (a) THE PHASE'S THRESHOLD (the thirteenth review's note): a probe's first
+ *     positive phase opens when p − p₀ first exceeds 10 Pa (the ladder's
+ *     first rung) and closes when it falls to 0 or below, so rounding noise
+ *     at rest (measured up to ±10⁻⁹ Pa) can neither open nor close it; the
+ *     impulse sums (p − p₀)Δt within it.
+ * (b) THE ONE-DIMENSIONAL SOLVER's TESTS (rule 1333 (c): «brought into the
+ *     project with its tests»): air at rest stays at rest (|Δp|/p ≤ 10⁻¹²
+ *     after 50 steps, ideal gas and real air); a hot sphere keeps its energy
+ *     (≤ 10⁻¹⁰ relative before its wave reaches the outer boundary); a weak
+ *     pulse, in the cold branch throughout, gives the same state to the bit
+ *     in real air as in the ideal gas; a real-air hot sphere runs with no
+ *     fall-back and positive pressures; a probe reads its foot before the
+ *     cell's peak, a positive impulse, and a closed phase once the wave has
+ *     passed.
+ * (c) THE RUNS AGAIN, all on one code: real air with the 35, 40 and 45 m
+ *     sources and the ideal gas with the 40 m source, on the five grids of
+ *     rule 1349 (a) — the runs of rule 1350, made before (a), kept apart in
+ *     `scripts/tmp/blast1d-c1-rule1350/`. Then C1–C3 judged again by the
+ *     same script and criteria; recorded beside: the sources' spread at each
+ *     range, real air's effect (real air over the ideal gas, same source and
+ *     share), and whether the verdicts of rule 1350 change.
+ * (d) THEN one review (Gauss), the commit and the push. The GPU's real air
+ *     (rule 1333 (c)'s two-dimensional check) only after, with its own rule
+ *     written before its code; nothing unverified pushed.
+ */
+export const RULE_1351_WRITTEN = '2026-09-27' as const;
+
+/**
+ * RULE 1352. REAL AIR ON THE GPU: THE DESIGN AND ITS TESTS, BEFORE THE CODE
+ * (28 September 2026, 00:12; for the next session — not begun tonight, rule
+ * 1351 (d); `src/physics/solvers/blast2d/gpu/kernels.ts`, `solverGpu.ts`,
+ * `browserEntry.ts`).
+ *
+ * (a) THE DESIGN. The GPU keeps each cell's deviations (ρ − ρ̄, ρu, ρv,
+ *     E − Ē) and forms p − p̄ = (γ − 1)(E − Ē − ½ρ|u|²). With eos 'air': a
+ *     cell is cold when Ē + (E − Ē) − ½ρ|u|² ≤ ρ·RT₀·10^0.58 and then today's
+ *     expression is used unchanged. Ē = p̄/(γ − 1) is a PREMISE — the
+ *     background cold, true of the uniform and isothermal atmospheres used so
+ *     far, false of the US 1976 atmosphere above about 120 km (T > 415 K),
+ *     where T3's domain reaches at 250 Mt: the CPU (from tonight) and the GPU
+ *     refuse real air over a background with e > RT₀·10^0.58 anywhere; before
+ *     P4 and P7b, Ē comes from the equation of state and G0 is run in that
+ *     atmosphere;
+ *     hot, e = (Ē + (E − Ē) − ½ρ|u|²)/ρ and p, c² come from the table of rule
+ *     1347 (c) — uploaded once as a storage buffer of f32 (γ̃, γ̃_Y, γ̃_Z, γ̃_YZ)
+ *     per node, read by the same bicubic Hermite formula — and p − p̄ = p − p̄
+ *     (no cancellation matters away from rest). A buffer AUX holds each
+ *     cell's Γ = ρc²/p and e, its ghosts copied as W's. The characteristic
+ *     fields take c̄² = Γ̄p̄/ρ̄; HLLC's face energies come from Newton on
+ *     e(γ̃ − 1) = p/ρ inside the bracket of rule 1343 (a), a fixed count of
+ *     iterations (three, more if G1's hot cases leave a residual above 10⁻⁶
+ *     — in f32 the floor is 10⁻⁶ itself); the Lax–Friedrichs flux, the
+ *     speeds and the ground's peaks take the same branches; the positivity
+ *     check keeps its proxy.
+ * (b) THE TESTS, criteria fixed now: (1) GPU V7 — with the ideal gas three
+ *     short GPU runs hash (peaks, ranges, peak times, steps) as the baseline
+ *     taken tonight on the unchanged kernels (`scripts/verify-blast-gpu-v7.ts`,
+ *     each case run twice to show the GPU reproduces itself); (2) G0 with
+ *     real air: air at rest stays exactly at rest; (3) G1 with real air: the
+ *     CPU (the table) against the GPU on T2's 1 kt on 20 m cells and T4's 5
+ *     Mt static on its coarse grid — every reach at 1, 2, 4 and 10 psi within
+ *     0.5 %, the ground's peak within 1 % wherever above 1 kPa; (4) G2 with
+ *     real air: mass and energy kept as G2 fixed them.
+ * (c) THEN C1's TWO-DIMENSIONAL CHECK (rule 1333 (c)): the free-air burst as
+ *     the ground's mirror (W/2 in the half space, the 40 m hot sphere), on
+ *     the GPU with real air, against the one-dimensional run at the same cell
+ *     — within 1 % at C1's ranges read for the central f_b and for f_b =
+ *     0.936 (R/f_b^(1/3)) — on 5, 2.5 and 1.25 m over the whole 2.7 km. At
+ *     1.25 m (4.67 million cells) the flux buffer, 142 MiB, passes WebGPU's
+ *     default single-buffer limit of 128 MiB (the device is requested with no
+ *     requiredLimits): the device asks the adapter for higher
+ *     maxStorageBufferBindingSize and maxBufferSize; only if the adapter
+ *     refuses is the 1.25 m check cut to 1.3 km (ranges up to 1 km) and the
+ *     limit declared.
+ */
+export const RULE_1352_WRITTEN = '2026-09-28' as const;
+
+/**
+ * RULE 1353. C1–C3 ON ONE CODE: THE VERDICTS STAND; THE SOURCES' SPREAD AND
+ * REAL AIR'S EFFECT (28 September 2026, 03:18; rule 1351 (c);
+ * `verifyBlastC1.json`, the runs in `scripts/tmp/blast1d-c1/`).
+ *
+ * (a) THE RUNS, all on the code of rule 1351 (a): real air with the 35, 40
+ *     and 45 m sources and the ideal gas with the 40 m source, five grids
+ *     each, no fall-back, nothing beyond Z_h. The one-dimensional solver's
+ *     five tests pass. The phase's threshold changed no reading: C1, C2 and
+ *     C3 are those of rule 1350 to every printed digit.
+ * (b) THE VERDICTS, every source now run (so FAILS was possible): C1 and C2
+ *     CONSISTENT — both within at once for f_b 0.921–0.975 with the 35 m
+ *     source and 0.882–0.975 with the 40 m; with the 45 m source no f_b
+ *     brings C1 within (its lower near-field peaks; C2 alone 0.722–0.975).
+ *     With the central f_b (0.600) neither passes, as rule 1350 (b) found.
+ * (c) THE SOURCES' SPREAD at the central share, largest less smallest over
+ *     the central source's peak: 6.0, 11.5, 11.2, 6.5, 6.1, 7.0, 6.5, 6.2,
+ *     6.1 % at 100 m … 2 km — the source's size weighs about 6 % even far
+ *     out, as the thirteenth review measured (rule 1334 (e)).
+ * (d) REAL AIR'S EFFECT, the 40 m source at the central share, real air's
+ *     converged peak over the ideal gas's: 0.689, 0.765, 0.798, 0.831, 0.770,
+ *     0.867, 0.872, 0.878, 0.881 at 100 m … 2 km — the same energy in real
+ *     air drives a wave 12–31 % weaker, the dissociated core holding its
+ *     energy. The dip at 500 m is in the finest grid's own values (0.770
+ *     there against 0.826 at 300 m and 0.864 at 700 m), not the
+ *     extrapolation's; reported, not investigated.
+ * (e) OPEN, carried to rule 1352's session: C1's two-dimensional check on the
+ *     GPU; the blast share from radiation (rule 1333 (e)); Trinity once
+ *     Taylor 1950 is in hand (rule 1333 (d)).
+ */
+export const RULE_1353_WRITTEN = '2026-09-28' as const;

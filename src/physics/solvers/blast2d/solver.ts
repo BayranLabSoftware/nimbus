@@ -410,6 +410,16 @@ export class BlastSolver2D {
         ? Array.from({ length: nr + 2 }, (_, q) => radialCoefficients(q - 1))
         : undefined;
     this.fillAtRest();
+    // Rule 1352 (a): the cold branch's arithmetic assumes the background
+    // cold (Ē = p̄/(γ − 1)); real air over a hot background is refused.
+    if (this.eos === 'air')
+      for (let j = 0; j < nz; j++) {
+        const e =
+          (atmosphere.p0 * (this.betaC[j] ?? 0)) /
+          ((this.gamma - 1) * atmosphere.rho0 * (this.alphaC[j] ?? 1));
+        if (!(e <= AIR_COLD_E))
+          throw new Error('blast2d: rule 1352 (a) -- real air needs a background below 415 K');
+      }
   }
 
   /** Index of interior cell (i, j), 0 ≤ i < nr, 0 ≤ j < nz; ghosts at −2, −1. */
